@@ -44,28 +44,29 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // FASTER TRANSITION: Reduced the end range from 0.4 to 0.25 for a "snappier" feel
-  const centerScale = useTransform(scrollYProgress, [0, 0.25], [1, 15]); 
+  // FIXED: Even faster transition (snappier)
+  // Max scale reduced to 3 so it doesn't look "too big"
+  const centerScale = useTransform(scrollYProgress, [0, 0.5], [1, 3]); 
   
   // PARALLAX EFFECTS:
-  // The grid inside the card moves differently to create depth
-  const gridScale = useTransform(scrollYProgress, [0, 0.25], [1, 2]);
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.15], [0.1, 0]); // Fade grid out as it expands
+  const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.3], [0.1, 0]);
   
-  // Side columns move AWAY vertically while fading (Parallax)
-  const leftY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
-  const rightY = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
-  const sideOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  // Side columns move AWAY vertically while fading
+  const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -150]);
+  const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 150]);
+  const sideOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   
-  // Overlay kicks in faster to complete the transition
-  const overlayOpacity = useTransform(scrollYProgress, [0.15, 0.3], [0, 1]);
+  // Overlay kicks in very early to smooth the boundary
+  const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % caseStudies.length);
   };
 
   return (
-    <section ref={containerRef} className="relative h-[250vh] bg-primary text-primary-foreground selection:bg-white/30 selection:text-white">
+    // FIXED: Reduced height to 125vh - Minimal scroll distance required now
+    <section ref={containerRef} className="relative h-[125vh] bg-primary text-primary-foreground selection:bg-white/30 selection:text-white">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-6 md:px-12 lg:px-16 py-12">
         
         {/* Vertical Divider Lines */}
