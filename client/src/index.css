@@ -8,19 +8,20 @@
   --font-serif: 'Libre Baskerville', serif;
 
   --color-background: hsl(25 30% 95%); /* Light warm paper background */
-  --color-foreground: hsl(15 40% 15%); /* Deep warm brown text */
+  --color-foreground: #231123; /* Deep purple/black text to match primary */
 
-  --color-primary: hsl(15 50% 30%); /* Deep terracotta/leather */
+  /* UPDATED PRIMARY COLOR */
+  --color-primary: #231123; 
   --color-primary-foreground: hsl(30 20% 95%);
 
   --color-muted: hsl(25 20% 90%);
-  --color-muted-foreground: hsl(15 20% 40%);
+  --color-muted-foreground: hsl(280 10% 40%); /* Adjusted to match purple tone */
 
   --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(15 40% 15%);
+  --color-card-foreground: #231123;
 
-  --color-border: hsl(25 20% 85%);
-  --color-input: hsl(25 20% 85%);
+  --color-border: hsl(280 10% 85%);
+  --color-input: hsl(280 10% 85%);
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -33,7 +34,6 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground selection:bg-primary/20;
-    /* Gentle grain overlay could be nice here via an image, but keeping it simple for now */
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
