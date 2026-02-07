@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import pixelHero from "@/assets/pixel-hero.png"; 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 
 const caseStudies = [
   {
@@ -130,10 +130,7 @@ export function Hero() {
                    </div>
                    
                    {/* Stacked Cards Container */}
-                   <div 
-                      className="relative w-full aspect-[4/5] cursor-pointer"
-                      onClick={handleNext}
-                   >
+                   <div className="relative w-full aspect-[4/5] perspective-1000">
                      <AnimatePresence initial={false} mode="popLayout">
                        {caseStudies.map((study, index) => {
                          // Only render current and next 2 cards to simulate stack
@@ -144,27 +141,29 @@ export function Hero() {
                            <motion.div
                              key={study.id}
                              layoutId={study.id}
-                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                             initial={{ scale: 0.9, opacity: 0, y: 40 }}
                              animate={{ 
-                               scale: 1 - diff * 0.05, 
-                               opacity: 1 - diff * 0.3,
-                               y: diff * 15,
-                               zIndex: 10 - diff
+                               scale: 1 - diff * 0.1,  // More exaggerated scale difference
+                               opacity: 1 - diff * 0.4,
+                               y: diff * 25,           // More visible offset
+                               zIndex: 10 - diff,
+                               rotateX: diff * -5      // Slight 3D rotation
                              }}
-                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                             transition={{ duration: 0.4, ease: "easeOut" }}
-                             className="absolute inset-0 w-full h-full bg-white/5 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden group shadow-2xl"
-                             style={{
-                               transformOrigin: "bottom center"
-                             }}
+                             exit={{ opacity: 0, scale: 0.9, y: -40 }}
+                             transition={{ duration: 0.5, ease: "easeInOut" }}
+                             className="absolute inset-0 w-full h-full bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
+                             onClick={handleNext}
                            >
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                              {/* Overlay to darken background cards */}
+                              {diff > 0 && <div className="absolute inset-0 bg-primary/40 z-20 transition-all" />}
                               
-                              <div className="absolute top-4 right-4 flex gap-2">
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 z-0" />
+                              
+                              <div className="absolute top-4 right-4 flex gap-2 z-10">
                                 <div className={`w-2 h-2 rounded-full animate-pulse ${study.color}`} />
                               </div>
 
-                              <div className="absolute bottom-6 left-6 pr-4">
+                              <div className="absolute bottom-6 left-6 pr-4 z-10">
                                   <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">
                                     Case Study {study.id}
                                   </span>
@@ -182,13 +181,24 @@ export function Hero() {
                      </AnimatePresence>
                    </div>
                    
-                   <div className="flex justify-end gap-2 mt-2">
-                      {caseStudies.map((_, idx) => (
-                        <div 
-                          key={idx}
-                          className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-white" : "w-2 bg-white/20"}`}
-                        />
-                      ))}
+                   {/* Navigation Controls */}
+                   <div className="flex justify-between items-center mt-2 px-2">
+                      <div className="flex gap-2">
+                          {caseStudies.map((_, idx) => (
+                            <div 
+                              key={idx}
+                              className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-white" : "w-2 bg-white/20"}`}
+                            />
+                          ))}
+                      </div>
+                      
+                      <button 
+                        onClick={handleNext}
+                        className="p-2 rounded-full border border-white/20 hover:bg-white hover:text-primary transition-all group"
+                        aria-label="Next case study"
+                      >
+                         <ChevronRight className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
+                      </button>
                    </div>
                 </div>
              </div>
