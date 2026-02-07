@@ -5,21 +5,22 @@
 
 @theme inline {
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Outfit', sans-serif;
+  --font-serif: 'Libre Baskerville', serif;
 
-  --color-background: hsl(15 40% 15%); /* Deep warm brown/red base */
-  --color-foreground: hsl(30 20% 95%); /* Warm white */
+  --color-background: hsl(25 30% 95%); /* Light warm paper background */
+  --color-foreground: hsl(15 40% 15%); /* Deep warm brown text */
 
-  --color-primary: hsl(25 85% 60%); /* Terracotta accent */
+  --color-primary: hsl(15 50% 30%); /* Deep terracotta/leather */
   --color-primary-foreground: hsl(30 20% 95%);
 
-  --color-muted: hsl(15 30% 25%);
-  --color-muted-foreground: hsl(25 40% 70%);
+  --color-muted: hsl(25 20% 90%);
+  --color-muted-foreground: hsl(15 20% 40%);
 
-  --color-card: hsl(15 40% 15% / 0.4);
-  --color-card-foreground: hsl(30 20% 95%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(15 40% 15%);
 
-  --color-border: hsl(25 30% 30%);
+  --color-border: hsl(25 20% 85%);
+  --color-input: hsl(25 20% 85%);
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -31,18 +32,24 @@
     @apply border-border;
   }
   body {
-    @apply font-sans antialiased bg-background text-foreground selection:bg-primary/30;
-    background: linear-gradient(135deg, hsl(15 40% 12%) 0%, hsl(18 50% 20%) 50%, hsl(22 45% 25%) 100%);
-    min-height: 100vh;
+    @apply font-sans antialiased bg-background text-foreground selection:bg-primary/20;
+    /* Gentle grain overlay could be nice here via an image, but keeping it simple for now */
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
   }
 }
 
 @layer utilities {
   .text-stroke {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    -webkit-text-stroke: 1px currentColor;
   }
   
   .glass-panel {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl;
+    @apply bg-white/60 backdrop-blur-md border border-white/40 shadow-xl;
+  }
+
+  .serif-display {
+    font-family: 'Libre Baskerville', serif;
   }
 }

@@ -1,7 +1,16 @@
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const links = [
     { name: "Our Story", href: "#" },
     { name: "The Collective Model", href: "#" },
@@ -9,10 +18,15 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12 bg-transparent text-white/90">
+    <nav className={cn(
+      "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12 transition-all duration-300",
+      scrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-4" : "bg-transparent"
+    )}>
       <div className="flex items-center gap-2">
-        <div className="size-6 bg-white/20 rounded-sm backdrop-blur-sm border border-white/30" />
-        <span className="font-display font-bold text-xl tracking-tight text-white">
+        <span className={cn(
+          "font-serif font-bold text-xl tracking-tight transition-colors",
+          scrolled ? "text-foreground" : "text-primary"
+        )}>
           Story Shapers
         </span>
       </div>
@@ -22,7 +36,10 @@ export function Navbar() {
           <a
             key={link.name}
             href={link.href}
-            className="text-sm font-medium hover:text-white transition-colors opacity-80 hover:opacity-100"
+            className={cn(
+              "text-sm font-medium transition-colors hover:opacity-100 opacity-80",
+              scrolled ? "text-foreground" : "text-foreground"
+            )}
           >
             {link.name}
           </a>
@@ -31,7 +48,12 @@ export function Navbar() {
 
       <a
         href="#"
-        className="hidden md:flex items-center justify-center px-6 py-2.5 border border-white/20 rounded text-sm font-medium hover:bg-white/10 transition-colors backdrop-blur-sm"
+        className={cn(
+          "hidden md:flex items-center justify-center px-6 py-2.5 border rounded text-sm font-medium transition-colors",
+          scrolled 
+            ? "border-foreground text-foreground hover:bg-foreground hover:text-background" 
+            : "border-primary text-primary hover:bg-primary hover:text-white"
+        )}
       >
         Let's Talk
       </a>
