@@ -36,8 +36,8 @@ export function Hero() {
           >
              <div className="mb-auto pt-12">
                <h1 className="text-4xl md:text-5xl lg:text-5xl leading-[1.4] text-white mb-12 tracking-tight">
-                 <span className="font-serif italic block text-3xl md:text-4xl mb-4 opacity-80">We're The</span>
-                 <span className="font-pixel text-white block leading-normal mt-2 text-2xl md:text-3xl lg:text-4xl">STORY<br/>SHAPERS</span>
+                 <span className="font-serif italic block text-3xl md:text-4xl mb-4 opacity-80">We're</span>
+                 <span className="font-pixel text-white block leading-normal mt-2 text-2xl md:text-3xl lg:text-4xl">THE STORY<br/>SHAPERS.</span>
                </h1>
                
                <p className="font-sans text-xl text-white/60 max-w-md leading-relaxed mb-16 font-light">
