@@ -34,17 +34,24 @@ export function ProblemFraming() {
     <section className="relative py-24 px-8 md:px-12 bg-primary text-primary-foreground min-h-screen flex flex-col justify-center">
       <div className="max-w-[1400px] mx-auto w-full">
         {/* Header - SIMPLIFIED since Hero transitions into this */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-end">
-          <div className="hidden lg:block">
-            {/* Visual spacer or maybe a pixel art icon here instead of the duplicate text */}
-             <div className="w-16 h-16 border-l-2 border-t-2 border-white/20" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-start">
+          <div className="hidden lg:col-span-4 lg:flex flex-col sticky top-32">
+             {/* Left side Anchor Content */}
+             <div className="flex flex-col border-l border-white/20 pl-8 py-2">
+                <span className="font-pixel text-6xl text-white/10 mb-4 select-none">02</span>
+                <span className="font-mono text-xs uppercase tracking-widest text-primary-foreground/60">The Reality</span>
+             </div>
           </div>
-          <div className="flex flex-col justify-end">
-            <p className="text-xl md:text-2xl font-light opacity-90 leading-relaxed">
-              <span className="font-pixel text-xs text-primary-foreground/50 block mb-4 uppercase tracking-widest">The Reality</span>
-              More tools. More dashboards. More content. <br/>
+          
+          <div className="lg:col-span-8 flex flex-col justify-end">
+            <p className="text-xl md:text-3xl font-light opacity-90 leading-relaxed font-serif">
+              <span className="block mb-8 text-primary-foreground/40 font-sans text-lg">
+                More tools. More dashboards. More content.
+              </span>
               The brands we meet aren't struggling because they're doing too little. <br/>
-              <span className="font-medium border-b border-primary-foreground/30 font-serif italic mt-2 inline-block">They're struggling because they're doing too much — without knowing why.</span>
+              <span className="text-white border-b border-white/20 italic mt-4 inline-block pb-1">
+                They're struggling because they're doing too much — without knowing why.
+              </span>
             </p>
           </div>
         </div>
