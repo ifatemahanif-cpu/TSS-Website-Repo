@@ -1,6 +1,9 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import pixelHero from "@/assets/pixel-hero.png"; 
+import gradientEmerald from "@/assets/gradient-emerald.png";
+import gradientPurple from "@/assets/gradient-purple.png";
+import gradientWarm from "@/assets/gradient-warm.png";
 import { ArrowRight, ChevronRight, ArrowDown } from "lucide-react";
 
 const caseStudies = [
@@ -9,21 +12,24 @@ const caseStudies = [
     client: "Lumina Tech",
     category: "Strategic Narrative",
     desc: "Crafting compelling stories that drive market action.",
-    color: "bg-emerald-500"
+    color: "bg-emerald-500",
+    image: gradientEmerald
   },
   {
     id: "02",
     client: "Velvet Space", 
     category: "Brand Identity",
     desc: "Redefining luxury for the digital-first generation.",
-    color: "bg-purple-500"
+    color: "bg-purple-500",
+    image: gradientPurple
   },
   {
     id: "03",
     client: "Apex Growth",
     category: "GTM Strategy", 
     desc: "From zero to market leader in 90 days.",
-    color: "bg-orange-500"
+    color: "bg-orange-500",
+    image: gradientWarm
   }
 ];
 
@@ -216,19 +222,31 @@ export function Hero() {
                              }}
                              exit={{ opacity: 0, scale: 0.9, y: -40 }}
                              transition={{ duration: 0.5, ease: "easeInOut" }}
-                             className="absolute inset-0 w-full h-full bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
+                             className="absolute inset-0 w-full h-full bg-[#1a0b1a] border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
                              onClick={handleNext}
                            >
-                              {/* Overlay to darken background cards */}
-                              {diff > 0 && <div className="absolute inset-0 bg-primary/40 z-20 transition-all" />}
-                              
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 z-0" />
-                              
-                              <div className="absolute top-4 right-4 flex gap-2 z-10">
-                                <div className={`w-2 h-2 rounded-full animate-pulse ${study.color}`} />
+                              {/* Gradient Image Background */}
+                              <div className="absolute inset-0 z-0">
+                                <img 
+                                  src={study.image} 
+                                  alt="" 
+                                  className="w-full h-full object-cover opacity-80 scale-110"
+                                />
+                                {/* Grain Overlay */}
+                                <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay"></div>
                               </div>
 
-                              <div className="absolute bottom-6 left-6 pr-4 z-10">
+                              {/* Overlay to darken background cards - Adjusted for images */}
+                              {diff > 0 && <div className="absolute inset-0 bg-primary/60 backdrop-blur-[2px] z-20 transition-all duration-500" />}
+                              
+                              {/* Text Readability Gradient */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 z-10" />
+                              
+                              <div className="absolute top-4 right-4 flex gap-2 z-20">
+                                <div className="w-2 h-2 rounded-full bg-white/40 backdrop-blur-sm" />
+                              </div>
+
+                              <div className="absolute bottom-6 left-6 pr-4 z-20">
                                   <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">
                                     Case Study {study.id}
                                   </span>
