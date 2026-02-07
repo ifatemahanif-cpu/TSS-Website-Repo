@@ -141,14 +141,14 @@ export function Hero() {
                   </div>
                   
                   {/* Card Content */}
-                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center">
-                     <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-tight mb-4">
-                       Marketing has never been <span className="italic text-white/50">louder.</span>
+                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center items-center text-center">
+                     <h3 className="text-2xl md:text-3xl lg:text-5xl text-white leading-tight mb-6">
+                       <span className="font-serif italic opacity-70 block mb-2 text-xl">Marketing has never been</span>
+                       <span className="font-pixel text-white block text-3xl md:text-5xl lg:text-6xl tracking-tighter mt-4">LOUDER</span>
                      </h3>
-                     <div className="space-y-3 opacity-30">
-                        <div className="h-1 w-full bg-gradient-to-r from-white to-transparent rounded" />
-                        <div className="h-1 w-3/4 bg-gradient-to-r from-white to-transparent rounded" />
-                        <div className="h-1 w-5/6 bg-gradient-to-r from-white to-transparent rounded" />
+                     <div className="space-y-3 opacity-30 w-full max-w-[200px] mx-auto">
+                        <div className="h-1 w-full bg-gradient-to-r from-transparent via-white to-transparent rounded" />
+                        <div className="h-1 w-3/4 bg-gradient-to-r from-transparent via-white to-transparent rounded mx-auto" />
                      </div>
                   </div>
 

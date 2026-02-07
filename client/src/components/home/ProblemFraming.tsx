@@ -31,21 +31,20 @@ export function ProblemFraming() {
   ];
 
   return (
-    <section className="relative py-24 px-8 md:px-12 bg-primary text-primary-foreground">
-      <div className="max-w-[1400px] mx-auto">
-        {/* Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
-          <div>
-            <h2 className="text-4xl md:text-6xl font-serif mb-8 leading-tight">
-              Marketing has <br/>
-              <span className="opacity-60 italic">never been louder.</span>
-            </h2>
+    <section className="relative py-24 px-8 md:px-12 bg-primary text-primary-foreground min-h-screen flex flex-col justify-center">
+      <div className="max-w-[1400px] mx-auto w-full">
+        {/* Header - SIMPLIFIED since Hero transitions into this */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-end">
+          <div className="hidden lg:block">
+            {/* Visual spacer or maybe a pixel art icon here instead of the duplicate text */}
+             <div className="w-16 h-16 border-l-2 border-t-2 border-white/20" />
           </div>
           <div className="flex flex-col justify-end">
             <p className="text-xl md:text-2xl font-light opacity-90 leading-relaxed">
+              <span className="font-pixel text-xs text-primary-foreground/50 block mb-4 uppercase tracking-widest">The Reality</span>
               More tools. More dashboards. More content. <br/>
               The brands we meet aren't struggling because they're doing too little. <br/>
-              <span className="font-medium border-b border-primary-foreground/30">They're struggling because they're doing too much — without knowing why.</span>
+              <span className="font-medium border-b border-primary-foreground/30 font-serif italic mt-2 inline-block">They're struggling because they're doing too much — without knowing why.</span>
             </p>
           </div>
         </div>
