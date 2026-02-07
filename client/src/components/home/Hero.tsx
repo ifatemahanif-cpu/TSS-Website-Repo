@@ -1,10 +1,44 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import pixelHero from "@/assets/pixel-hero.png"; // New pixel art asset
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import pixelHero from "@/assets/pixel-hero.png"; 
 import { ArrowRight } from "lucide-react";
+
+const caseStudies = [
+  {
+    id: "01",
+    client: "Lumina Tech",
+    category: "Strategic Narrative",
+    desc: "Crafting compelling stories that drive market action.",
+    color: "bg-emerald-500"
+  },
+  {
+    id: "02",
+    client: "Velvet Space", 
+    category: "Brand Identity",
+    desc: "Redefining luxury for the digital-first generation.",
+    color: "bg-purple-500"
+  },
+  {
+    id: "03",
+    client: "Apex Growth",
+    category: "GTM Strategy", 
+    desc: "From zero to market leader in 90 days.",
+    color: "bg-orange-500"
+  }
+];
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Auto-cycle the carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % caseStudies.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -13,6 +47,10 @@ export function Hero() {
   const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 5]); 
   const sideOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % caseStudies.length);
+  };
 
   return (
     <section ref={containerRef} className="relative h-[250vh] bg-primary text-primary-foreground selection:bg-white/30 selection:text-white">
@@ -79,37 +117,78 @@ export function Hero() {
              </motion.div>
           </div>
 
-          {/* RIGHT COLUMN */}
+          {/* RIGHT COLUMN - Stacked Carousel */}
           <motion.div 
             style={{ opacity: sideOpacity }}
             className="lg:col-span-4 flex flex-col justify-end h-full order-3 relative z-10 py-12 pl-8"
           >
              <div className="h-full flex flex-col justify-end">
-                <div className="flex flex-col gap-8">
-                   <div className="flex items-center gap-3 mb-2">
+                <div className="flex flex-col gap-8 w-full max-w-sm ml-auto">
+                   <div className="flex items-center gap-3 mb-2 justify-end">
                       <span className="font-mono text-white/40 text-xs tracking-wider uppercase">Latest Work</span>
                       <div className="h-[1px] w-8 bg-white/20" />
                    </div>
                    
-                   {/* Simplified single card for cleaner look */}
-                   <div className="w-full aspect-[4/5] bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer group relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                      
-                      <div className="absolute top-4 right-4">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                      </div>
+                   {/* Stacked Cards Container */}
+                   <div 
+                      className="relative w-full aspect-[4/5] cursor-pointer"
+                      onClick={handleNext}
+                   >
+                     <AnimatePresence initial={false} mode="popLayout">
+                       {caseStudies.map((study, index) => {
+                         // Only render current and next 2 cards to simulate stack
+                         const diff = (index - activeIndex + caseStudies.length) % caseStudies.length;
+                         if (diff > 2) return null;
 
-                      <div className="absolute bottom-6 left-6">
-                          <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">Case Study 01</span>
-                          <span className="font-serif text-2xl text-white group-hover:underline decoration-white/30 underline-offset-4">Lumina Tech</span>
-                      </div>
+                         return (
+                           <motion.div
+                             key={study.id}
+                             layoutId={study.id}
+                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                             animate={{ 
+                               scale: 1 - diff * 0.05, 
+                               opacity: 1 - diff * 0.3,
+                               y: diff * 15,
+                               zIndex: 10 - diff
+                             }}
+                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                             transition={{ duration: 0.4, ease: "easeOut" }}
+                             className="absolute inset-0 w-full h-full bg-white/5 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden group shadow-2xl"
+                             style={{
+                               transformOrigin: "bottom center"
+                             }}
+                           >
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                              
+                              <div className="absolute top-4 right-4 flex gap-2">
+                                <div className={`w-2 h-2 rounded-full animate-pulse ${study.color}`} />
+                              </div>
+
+                              <div className="absolute bottom-6 left-6 pr-4">
+                                  <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">
+                                    Case Study {study.id}
+                                  </span>
+                                  <span className="block font-serif text-2xl text-white mb-2 leading-none">
+                                    {study.client}
+                                  </span>
+                                  <p className="font-mono text-white/40 text-[10px] leading-relaxed line-clamp-2">
+                                    // {study.category}<br/>
+                                    {study.desc}
+                                  </p>
+                              </div>
+                           </motion.div>
+                         );
+                       })}
+                     </AnimatePresence>
                    </div>
                    
-                   <div className="mt-4 border-l border-white/10 pl-4">
-                      <p className="font-mono text-white/40 text-[10px] max-w-[200px] leading-relaxed">
-                        // STRATEGIC NARRATIVE<br/>
-                        Crafting compelling stories that drive market action.
-                      </p>
+                   <div className="flex justify-end gap-2 mt-2">
+                      {caseStudies.map((_, idx) => (
+                        <div 
+                          key={idx}
+                          className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-white" : "w-2 bg-white/20"}`}
+                        />
+                      ))}
                    </div>
                 </div>
              </div>
