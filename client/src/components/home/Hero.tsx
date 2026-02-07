@@ -51,9 +51,8 @@ export function Hero() {
   });
 
   // FIXED: Even faster transition (snappier)
-  // Scale adjusted for the Core System fly-through
-  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 40]); 
-  const centerRotate = useTransform(scrollYProgress, [0, 0.4], [0, 90]);
+  // Scale adjusted for the Frame Expansion effect
+  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 15]); 
   
   // PARALLAX EFFECTS:
   const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
@@ -115,33 +114,28 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN - Strategic Core System */}
+          {/* CENTER COLUMN - The Shaper's Frame (Crop Marks) */}
           <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
              <motion.div 
-               style={{ scale: centerScale, opacity: 1, rotate: centerRotate }}
-               className="relative flex items-center justify-center"
+               style={{ opacity: 1, scale: centerScale }}
+               className="relative w-48 h-48 flex items-center justify-center"
              >
-                {/* Layer 1: The Core (Pulsing) */}
-                <div className="w-16 h-16 bg-white mix-blend-difference animate-pulse relative z-30" />
+                {/* Top Left Corner */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white transition-all duration-1000 ease-in-out" />
+                
+                {/* Top Right Corner */}
+                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white transition-all duration-1000 ease-in-out" />
+                
+                {/* Bottom Left Corner */}
+                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white transition-all duration-1000 ease-in-out" />
+                
+                {/* Bottom Right Corner */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white transition-all duration-1000 ease-in-out" />
 
-                {/* Layer 2: Inner Orbit (Spinning Clockwise) */}
-                <div className="absolute inset-0 flex items-center justify-center z-20">
-                   <div className="w-32 h-32 border-2 border-dashed border-white/60 animate-[spin_10s_linear_infinite]" />
+                {/* The "Focus" Label - Subtle technical detail */}
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-50">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white">Focus</span>
                 </div>
-
-                {/* Layer 3: Outer Frame (Spinning Counter-Clockwise) */}
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                   <div className="w-48 h-48 border border-white/20 flex items-center justify-center animate-[spin_15s_linear_infinite_reverse]">
-                      {/* Decorative corners */}
-                      <div className="absolute top-0 left-0 w-2 h-2 bg-white" />
-                      <div className="absolute top-0 right-0 w-2 h-2 bg-white" />
-                      <div className="absolute bottom-0 left-0 w-2 h-2 bg-white" />
-                      <div className="absolute bottom-0 right-0 w-2 h-2 bg-white" />
-                   </div>
-                </div>
-
-                {/* Layer 4: The 'Glow' behind everything */}
-                <div className="absolute w-[300px] h-[300px] bg-purple-500/20 rounded-full blur-[60px] animate-pulse -z-10" />
              </motion.div>
           </div>
 
