@@ -13,9 +13,9 @@ export default function Home() {
         <ProblemFraming />
         <Team />
         <Services />
-        <footer className="bg-foreground text-background py-12 px-8 text-center">
+        <footer className="bg-primary text-white border-t border-white/10 py-12 px-8 text-center">
            <h2 className="font-serif text-2xl mb-4">The Story Shapers</h2>
-           <p className="opacity-50 text-sm">© 2026 The Story Shapers. All rights reserved.</p>
+           <p className="opacity-40 text-xs font-mono tracking-widest uppercase">© 2026 The Story Shapers. All rights reserved.</p>
         </footer>
       </main>
     </div>

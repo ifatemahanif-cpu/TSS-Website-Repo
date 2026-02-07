@@ -69,30 +69,37 @@ export function ProblemFraming() {
            ))}
         </div>
 
-        {/* What We Do Differently */}
-        <div className="bg-primary-foreground/5 rounded-2xl p-8 md:p-16 border border-primary-foreground/10">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif mb-6">We're marketing's missing middle.</h2>
-            <p className="text-lg opacity-80">
+        {/* What We Do Differently - Redesigned to match dark/pixel theme */}
+        <div className="relative border border-white/10 bg-[#2A152A] p-8 md:p-16 overflow-hidden group">
+          {/* Pixel corners decoration */}
+          <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/40" />
+          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-white/40" />
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-white/40" />
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/40" />
+
+          <div className="max-w-3xl mx-auto text-center mb-16 relative z-10">
+            <span className="font-pixel text-[10px] text-primary-foreground/40 uppercase tracking-widest mb-4 block">Our Approach</span>
+            <h2 className="text-3xl md:text-5xl font-serif mb-6 text-white">We're marketing's <span className="italic text-white/60">missing middle.</span></h2>
+            <p className="text-lg opacity-70 font-sans max-w-xl mx-auto">
               We fix the thinking before we fix the marketing. Most problems aren't execution problems. They're clarity problems.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
             {caseStudies.map((study, i) => (
-              <div key={i} className="bg-primary-foreground/10 p-8 rounded-xl hover:bg-primary-foreground/15 transition-colors">
+              <div key={i} className="group/card bg-white/5 border border-white/5 p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
                 <div className="flex justify-between items-start mb-6">
-                  <h4 className="font-bold text-xl">{study.brand}</h4>
-                  <ArrowUpRight className="opacity-50" />
+                  <h4 className="font-serif font-bold text-xl text-white">{study.brand}</h4>
+                  <ArrowUpRight className="opacity-30 group-hover/card:opacity-100 transition-opacity w-5 h-5" />
                 </div>
-                <div className="space-y-4 text-sm opacity-90">
+                <div className="space-y-6 text-sm opacity-90">
                   <div>
-                    <span className="opacity-50 block text-xs uppercase tracking-wider mb-1">Challenge</span>
-                    {study.problem}
+                    <span className="opacity-40 block font-mono text-[10px] uppercase tracking-widest mb-2 text-white">Challenge</span>
+                    <p className="font-light text-white/80">{study.problem}</p>
                   </div>
-                  <div>
-                    <span className="opacity-50 block text-xs uppercase tracking-wider mb-1">Impact</span>
-                    {study.result}
+                  <div className="pt-4 border-t border-white/5">
+                    <span className="opacity-40 block font-mono text-[10px] uppercase tracking-widest mb-2 text-white">Impact</span>
+                    <p className="font-medium text-white">{study.result}</p>
                   </div>
                 </div>
               </div>
