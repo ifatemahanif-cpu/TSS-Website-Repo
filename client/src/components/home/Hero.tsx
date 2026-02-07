@@ -95,7 +95,7 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN - Pixel Art */}
+          {/* CENTER COLUMN - Section 2 Preview */}
           <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
              <motion.div 
                style={{ scale: centerScale }}
@@ -104,16 +104,50 @@ export function Hero() {
                 {/* Glow */}
                 <div className="absolute w-[60%] h-[60%] bg-purple-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 
-                {/* Pixel Art Image */}
-                <img 
-                  src={pixelHero} 
-                  alt="Abstract Pixel Sculpture" 
-                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
-                  style={{ 
-                    filter: "drop-shadow(0 0 40px rgba(100,50,200,0.1))",
-                    imageRendering: "pixelated" // Enforce crisp edges
-                  }}
-                />
+                {/* Section 2 Snapshot Card */}
+                <div className="relative z-10 w-full h-full bg-[#231123] border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-white/20 transition-colors group">
+                  {/* Decorative Grid Background */}
+                  <div className="absolute inset-0 opacity-10" 
+                       style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
+                  />
+                  
+                  {/* Card Header */}
+                  <div className="relative z-10 flex justify-between items-center border-b border-white/10 pb-4">
+                     <div className="flex gap-2">
+                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-red-500/50 transition-colors" />
+                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-yellow-500/50 transition-colors" />
+                     </div>
+                     <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-widest text-white/40">02 // The Reality</span>
+                  </div>
+                  
+                  {/* Card Content */}
+                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center">
+                     <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-tight mb-4">
+                       Marketing has never been <span className="italic text-white/50">louder.</span>
+                     </h3>
+                     <div className="space-y-3 opacity-30">
+                        <div className="h-1 w-full bg-gradient-to-r from-white to-transparent rounded" />
+                        <div className="h-1 w-3/4 bg-gradient-to-r from-white to-transparent rounded" />
+                        <div className="h-1 w-5/6 bg-gradient-to-r from-white to-transparent rounded" />
+                     </div>
+                  </div>
+
+                  {/* Card Footer / Visual Data */}
+                  <div className="relative z-10 mt-auto pt-6 border-t border-white/10 flex justify-between items-end">
+                      <div className="flex gap-1 items-end h-12 opacity-60">
+                         <div className="w-2 bg-white/20 h-[40%]" />
+                         <div className="w-2 bg-white/40 h-[60%]" />
+                         <div className="w-2 bg-white/20 h-[30%]" />
+                         <div className="w-2 bg-white/80 h-[100%] animate-pulse" />
+                         <div className="w-2 bg-white/30 h-[50%]" />
+                         <div className="w-2 bg-white/50 h-[70%]" />
+                      </div>
+                      <div className="text-right">
+                        <span className="block font-pixel text-[8px] text-white/30 mb-1">SIGNAL_TO_NOISE</span>
+                        <span className="block font-mono text-xs text-red-400">CRITICAL</span>
+                      </div>
+                  </div>
+                </div>
              </motion.div>
           </div>
 
