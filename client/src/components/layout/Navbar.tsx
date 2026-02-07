@@ -25,7 +25,7 @@ export function Navbar() {
       <div className="flex items-center gap-2">
         <span className={cn(
           "font-serif font-bold text-xl tracking-tight transition-colors",
-          scrolled ? "text-foreground" : "text-primary"
+          scrolled ? "text-foreground" : "text-white"
         )}>
           Story Shapers
         </span>
@@ -38,7 +38,7 @@ export function Navbar() {
             href={link.href}
             className={cn(
               "text-sm font-medium transition-colors hover:opacity-100 opacity-80",
-              scrolled ? "text-foreground" : "text-foreground"
+              scrolled ? "text-foreground" : "text-white"
             )}
           >
             {link.name}
@@ -52,7 +52,7 @@ export function Navbar() {
           "hidden md:flex items-center justify-center px-6 py-2.5 border rounded text-sm font-medium transition-colors",
           scrolled 
             ? "border-foreground text-foreground hover:bg-foreground hover:text-background" 
-            : "border-primary text-primary hover:bg-primary hover:text-white"
+            : "border-white/30 text-white hover:bg-white hover:text-primary"
         )}
       >
         Let's Talk
