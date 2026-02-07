@@ -141,12 +141,11 @@ export function Hero() {
                   </div>
                   
                   {/* Card Content */}
-                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center items-center text-center w-full">
+                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center items-center text-center w-full px-4">
                      <h3 className="w-full text-white leading-tight mb-6">
-                       <span className="font-serif italic opacity-70 block mb-2 text-lg md:text-xl">Marketing has never been</span>
-                       {/* Adjusted font sizes to prevent clipping */}
-                       <span className="font-pixel text-white block text-2xl md:text-4xl lg:text-5xl tracking-tight mt-2 break-words w-full px-2">
-                         LOUDER
+                       <span className="font-serif italic opacity-80 block mb-2 text-xl md:text-2xl">Marketing has never been</span>
+                       <span className="font-pixel text-white block text-lg md:text-xl tracking-tight mt-2 break-words w-full">
+                         LOUDER.
                        </span>
                      </h3>
                      <div className="space-y-3 opacity-30 w-full max-w-[200px] mx-auto">
