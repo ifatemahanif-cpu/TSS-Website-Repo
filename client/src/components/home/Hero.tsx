@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import pixelHero from "@/assets/pixel-hero.png"; 
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight, ArrowDown } from "lucide-react";
 
 const caseStudies = [
   {
@@ -148,6 +148,15 @@ export function Hero() {
                       </div>
                   </div>
                 </div>
+             </motion.div>
+
+             {/* Scroll Indicator */}
+             <motion.div 
+               style={{ opacity: sideOpacity }}
+               className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+             >
+                <span className="font-pixel text-[8px] uppercase tracking-widest text-white/30">SCROLL</span>
+                <ArrowDown className="w-4 h-4 text-white/40 animate-bounce" />
              </motion.div>
           </div>
 
