@@ -44,9 +44,21 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 5]); 
-  const sideOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
+  // FASTER TRANSITION: Reduced the end range from 0.4 to 0.25 for a "snappier" feel
+  const centerScale = useTransform(scrollYProgress, [0, 0.25], [1, 15]); 
+  
+  // PARALLAX EFFECTS:
+  // The grid inside the card moves differently to create depth
+  const gridScale = useTransform(scrollYProgress, [0, 0.25], [1, 2]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.15], [0.1, 0]); // Fade grid out as it expands
+  
+  // Side columns move AWAY vertically while fading (Parallax)
+  const leftY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
+  const rightY = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
+  const sideOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  
+  // Overlay kicks in faster to complete the transition
+  const overlayOpacity = useTransform(scrollYProgress, [0.15, 0.3], [0, 1]);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % caseStudies.length);
@@ -69,7 +81,7 @@ export function Hero() {
           
           {/* LEFT COLUMN */}
           <motion.div 
-            style={{ opacity: sideOpacity }}
+            style={{ opacity: sideOpacity, y: leftY }}
             className="lg:col-span-4 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
           >
              <div className="mb-auto pt-12">
@@ -106,9 +118,16 @@ export function Hero() {
                 
                 {/* Section 2 Snapshot Card */}
                 <div className="relative z-10 w-full h-full bg-[#231123] border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-white/20 transition-colors group">
-                  {/* Decorative Grid Background */}
-                  <div className="absolute inset-0 opacity-10" 
-                       style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
+                  {/* Decorative Grid Background - PARALLAX SCALING */}
+                  <motion.div 
+                       className="absolute inset-0" 
+                       style={{ 
+                         opacity: gridOpacity,
+                         scale: gridScale,
+                         backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', 
+                         backgroundSize: '20px 20px',
+                         transformOrigin: 'center center'
+                       }} 
                   />
                   
                   {/* Card Header */}
@@ -162,7 +181,7 @@ export function Hero() {
 
           {/* RIGHT COLUMN - Stacked Carousel */}
           <motion.div 
-            style={{ opacity: sideOpacity }}
+            style={{ opacity: sideOpacity, y: rightY }}
             className="lg:col-span-4 flex flex-col justify-end h-full order-3 relative z-10 py-12 pl-8"
           >
              <div className="h-full flex flex-col justify-end">
