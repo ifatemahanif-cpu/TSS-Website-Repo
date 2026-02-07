@@ -72,7 +72,7 @@ export function Hero() {
 
   return (
     // FIXED: Reduced height to 125vh - Minimal scroll distance required now
-    <section ref={containerRef} className="relative h-[125vh] bg-primary text-primary-foreground selection:bg-white/30 selection:text-white">
+    <section ref={containerRef} className="relative h-[125vh] bg-transparent text-primary-foreground selection:bg-white/30 selection:text-white">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-6 md:px-12 lg:px-16 py-12">
         
         {/* Vertical Divider Lines */}

@@ -41,7 +41,7 @@ export function Services() {
   ];
 
   return (
-    <section id="services" className="py-32 px-8 md:px-12 bg-primary text-primary-foreground border-t border-white/5">
+    <section id="services" className="py-32 px-8 md:px-12 bg-transparent text-primary-foreground border-t border-white/5">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
         
         <div className="lg:col-span-4 sticky top-32 h-fit">

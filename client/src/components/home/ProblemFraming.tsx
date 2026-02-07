@@ -31,7 +31,7 @@ export function ProblemFraming() {
   ];
 
   return (
-    <section className="relative py-24 px-8 md:px-12 bg-primary text-primary-foreground min-h-screen flex flex-col justify-center">
+    <section className="relative py-24 px-8 md:px-12 bg-transparent text-primary-foreground min-h-screen flex flex-col justify-center">
       <div className="max-w-[1400px] mx-auto w-full">
         {/* Header - SIMPLIFIED since Hero transitions into this */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-start">

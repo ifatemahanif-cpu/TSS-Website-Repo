@@ -7,7 +7,7 @@ import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 
 export default function Home() {
   return (
-    <div className="bg-background min-h-screen relative overflow-hidden">
+    <div className="bg-primary min-h-screen relative overflow-hidden">
       <BackgroundEffects />
       <Navbar />
       <main className="relative z-10">

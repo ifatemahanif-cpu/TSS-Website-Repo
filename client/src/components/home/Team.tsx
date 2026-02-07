@@ -26,7 +26,7 @@ export function Team() {
   ];
 
   return (
-    <section className="py-32 px-8 md:px-12 bg-primary text-primary-foreground border-t border-white/5">
+    <section className="py-32 px-8 md:px-12 bg-transparent text-primary-foreground border-t border-white/5">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
           <div className="lg:col-span-4 sticky top-32 h-fit">
