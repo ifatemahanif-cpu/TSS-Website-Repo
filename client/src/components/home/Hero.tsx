@@ -51,8 +51,8 @@ export function Hero() {
   });
 
   // FIXED: Even faster transition (snappier)
-  // Max scale reduced to 3 so it doesn't look "too big"
-  const centerScale = useTransform(scrollYProgress, [0, 0.5], [1, 3]); 
+  // Max scale increased massively for the "fly through" effect
+  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 50]); 
   
   // PARALLAX EFFECTS:
   const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
@@ -114,76 +114,27 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN - Section 2 Preview */}
+          {/* CENTER COLUMN - Typographic Portal */}
           <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
              <motion.div 
-               style={{ scale: centerScale }}
-               className="relative w-full aspect-square flex items-center justify-center p-8"
+               style={{ scale: centerScale, opacity: 1 }}
+               className="relative flex items-center justify-center mix-blend-difference"
              >
-                {/* Glow */}
-                <div className="absolute w-[60%] h-[60%] bg-purple-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                
-                {/* Section 2 Snapshot Card */}
-                <div className="relative z-10 w-full h-full bg-[#231123] border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-white/20 transition-colors group">
-                  {/* Decorative Grid Background - PARALLAX SCALING */}
-                  <motion.div 
-                       className="absolute inset-0" 
-                       style={{ 
-                         opacity: gridOpacity,
-                         scale: gridScale,
-                         backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', 
-                         backgroundSize: '20px 20px',
-                         transformOrigin: 'center center'
-                       }} 
-                  />
-                  
-                  {/* Card Header */}
-                  <div className="relative z-10 flex justify-between items-center border-b border-white/10 pb-4">
-                     <div className="flex gap-2">
-                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-red-500/50 transition-colors" />
-                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-yellow-500/50 transition-colors" />
-                     </div>
-                     <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-widest text-white/40">02 // The Reality</span>
-                  </div>
-                  
-                  {/* Card Content */}
-                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center items-center text-center w-full px-4">
-                     <h3 className="w-full text-white leading-tight mb-6">
-                       <span className="font-serif italic opacity-80 block mb-2 text-xl md:text-2xl">Marketing has never been</span>
-                       <span className="font-pixel text-white block text-lg md:text-xl tracking-tight mt-2 break-words w-full">
-                         LOUDER.
-                       </span>
-                     </h3>
-                     <div className="space-y-3 opacity-30 w-full max-w-[200px] mx-auto">
-                        <div className="h-1 w-full bg-gradient-to-r from-transparent via-white to-transparent rounded" />
-                        <div className="h-1 w-3/4 bg-gradient-to-r from-transparent via-white to-transparent rounded mx-auto" />
-                     </div>
-                  </div>
-
-                  {/* Card Footer / Visual Data */}
-                  <div className="relative z-10 mt-auto pt-6 border-t border-white/10 flex justify-between items-end">
-                      <div className="flex gap-1 items-end h-12 opacity-60">
-                         <div className="w-2 bg-white/20 h-[40%]" />
-                         <div className="w-2 bg-white/40 h-[60%]" />
-                         <div className="w-2 bg-white/20 h-[30%]" />
-                         <div className="w-2 bg-white/80 h-[100%] animate-pulse" />
-                         <div className="w-2 bg-white/30 h-[50%]" />
-                         <div className="w-2 bg-white/50 h-[70%]" />
-                      </div>
-                      <div className="text-right">
-                        <span className="block font-pixel text-[8px] text-white/30 mb-1">SIGNAL_TO_NOISE</span>
-                        <span className="block font-mono text-xs text-red-400">CRITICAL</span>
-                      </div>
-                  </div>
+                {/* The Portal Character - Massive Asterisk */}
+                <div className="relative z-10 text-[15rem] md:text-[20rem] leading-none font-serif text-white opacity-90 select-none flex items-center justify-center">
+                  <span className="relative top-[0.1em] text-stroke-0">*</span>
                 </div>
+
+                {/* Optional: Subtle glow behind it to lift it off the background */}
+                <div className="absolute w-[80%] h-[80%] bg-white/5 rounded-full blur-[80px] -z-10" />
              </motion.div>
 
-             {/* Scroll Indicator */}
+             {/* Scroll Indicator - Fades out quickly */}
              <motion.div 
                style={{ opacity: sideOpacity }}
-               className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+               className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
              >
-                <span className="font-pixel text-[8px] uppercase tracking-widest text-white/30">SCROLL</span>
+                <span className="font-pixel text-[8px] uppercase tracking-widest text-white/30">SCROLL TO ENTER</span>
                 <ArrowDown className="w-4 h-4 text-white/40 animate-bounce" />
              </motion.div>
           </div>
