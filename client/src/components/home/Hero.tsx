@@ -51,9 +51,8 @@ export function Hero() {
   });
 
   // FIXED: Even faster transition (snappier)
-  // Max scale increased massively for the "fly through" effect
-  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 50]); 
-  const centerRotate = useTransform(scrollYProgress, [0, 0.4], [0, 45]);
+  // Max scale increased for the "horizon line" expansion effect
+  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 200]); 
   
   // PARALLAX EFFECTS:
   const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
@@ -115,39 +114,14 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN - Pixel Portal */}
+          {/* CENTER COLUMN - The Living Cursor */}
           <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
+             {/* The Cursor Element */}
              <motion.div 
-               style={{ scale: centerScale, opacity: 1, rotate: centerRotate }}
-               className="relative flex items-center justify-center mix-blend-difference"
+               style={{ scaleX: centerScale, opacity: 1 }}
+               className="h-1 bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)] origin-center"
              >
-                {/* The Portal Shape - Pixel Octagon/Iris */}
-                <div className="relative z-10 opacity-90 select-none flex items-center justify-center text-white">
-                   <svg 
-                     width="300" 
-                     height="300" 
-                     viewBox="0 0 24 24" 
-                     fill="currentColor" 
-                     xmlns="http://www.w3.org/2000/svg"
-                     className="w-[20vw] h-[20vw] max-w-[300px] max-h-[300px]"
-                     style={{ shapeRendering: "crispEdges" }}
-                   >
-                     {/* Pixel Art Octagon Ring Path */}
-                     <path d="M8 0H16V2H20V4H22V8H24V16H22V20H20V22H16V24H8V22H4V20H2V16H0V8H2V4H4V2H8V0ZM16 2H8V4H4V8H2V16H4V20H8V22H16V20H20V16H22V8H20V4H16V2ZM8 6H16V8H18V16H16V18H8V16H6V8H8V6Z" />
-                   </svg>
-                </div>
-
-                {/* Optional: Subtle glow behind it to lift it off the background */}
-                <div className="absolute w-[80%] h-[80%] bg-white/10 rounded-full blur-[80px] -z-10" />
-             </motion.div>
-
-             {/* Scroll Indicator - Fades out quickly */}
-             <motion.div 
-               style={{ opacity: sideOpacity }}
-               className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-             >
-                <span className="font-pixel text-[8px] uppercase tracking-widest text-white/30">SCROLL TO ENTER</span>
-                <ArrowDown className="w-4 h-4 text-white/40 animate-bounce" />
+                <div className="w-4 h-8 bg-white/90 animate-pulse-fast" />
              </motion.div>
           </div>
 
@@ -158,8 +132,8 @@ export function Hero() {
           >
              <div className="h-full flex flex-col justify-end">
                 <div className="flex flex-col gap-8 w-full max-w-sm ml-auto">
-                   <div className="flex items-center gap-3 mb-2 justify-end">
-                      <span className="font-mono text-white/40 text-xs tracking-wider uppercase">Latest Work</span>
+                   {/* Simplified Header - Removed "Latest Work" text for decluttering */}
+                   <div className="flex items-center gap-3 mb-2 justify-end opacity-0">
                       <div className="h-[1px] w-8 bg-white/20" />
                    </div>
                    
