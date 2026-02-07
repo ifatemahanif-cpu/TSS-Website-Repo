@@ -62,4 +62,54 @@
   .font-pixel {
     font-family: 'Press Start 2P', cursive;
   }
+
+  /* Custom Radial Gradient for Vignette */
+  .bg-radial-gradient-vignette {
+    background: radial-gradient(circle at center, transparent 0%, rgba(10, 5, 10, 0.4) 60%, rgba(5, 2, 5, 0.8) 100%);
+  }
+
+  /* Animation Keyframes */
+  @keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(-10%, 5%); }
+    30% { transform: translate(5%, -10%); }
+    40% { transform: translate(-5%, 15%); }
+    50% { transform: translate(-10%, 5%); }
+    60% { transform: translate(15%, 0); }
+    70% { transform: translate(0, 10%); }
+    80% { transform: translate(-15%, 0); }
+    90% { transform: translate(10%, 5%); }
+  }
+
+  @keyframes aurora-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, -30px) scale(1.05); }
+  }
+
+  @keyframes aurora-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-40px, 40px) scale(1.1); }
+  }
+
+  @keyframes aurora-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(0.9); }
+  }
+
+  .animate-grain {
+    animation: grain 8s steps(10) infinite;
+  }
+
+  .animate-aurora-1 {
+    animation: aurora-1 20s ease-in-out infinite alternate;
+  }
+
+  .animate-aurora-2 {
+    animation: aurora-2 25s ease-in-out infinite alternate;
+  }
+
+  .animate-aurora-3 {
+    animation: aurora-3 18s ease-in-out infinite alternate;
+  }
 }

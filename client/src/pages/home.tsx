@@ -3,12 +3,14 @@ import { Hero } from "@/components/home/Hero";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
 import { Team } from "@/components/home/Team";
 import { Services } from "@/components/home/Services";
+import { BackgroundEffects } from "@/components/layout/BackgroundEffects";
 
 export default function Home() {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen relative overflow-hidden">
+      <BackgroundEffects />
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <ProblemFraming />
         <Team />
