@@ -50,20 +50,11 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // FIXED: Even faster transition (snappier)
-  // Scale adjusted for the Frame Expansion effect
-  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 15]); 
-  
-  // PARALLAX EFFECTS:
-  const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.3], [0.1, 0]);
-  
-  // Side columns move AWAY vertically while fading
-  const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -150]);
-  const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 150]);
+  // Simplified animations since we removed the central element
+  // Just keeping some subtle parallax
+  const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -50]);
+  const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 50]);
   const sideOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  
-  // Overlay kicks in very early to smooth the boundary
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
 
   const handleNext = () => {
@@ -71,33 +62,25 @@ export function Hero() {
   };
 
   return (
-    // FIXED: Reduced height to 125vh - Minimal scroll distance required now
     <section ref={containerRef} className="relative h-[125vh] bg-transparent text-primary-foreground selection:bg-white/30 selection:text-white">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-6 md:px-12 lg:px-16 py-12">
         
-        {/* Vertical Divider Lines */}
-        <div className="absolute inset-0 pointer-events-none z-0 flex justify-between px-6 md:px-12 lg:px-16 max-w-[1800px] mx-auto w-full">
-           <div className="w-[1px] h-full bg-white/5" />
-           <div className="w-[1px] h-full bg-white/5" />
-           <div className="w-[1px] h-full bg-white/5 hidden lg:block" />
-           <div className="w-[1px] h-full bg-white/5 hidden lg:block" />
-        </div>
-
-        {/* The 3-Column Grid */}
+        {/* The 2-Column Grid - Simplified Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center h-full max-w-[1800px] mx-auto w-full relative z-10">
           
-          {/* LEFT COLUMN */}
+          {/* LEFT COLUMN - Header (Expanded to 8 cols) */}
           <motion.div 
             style={{ opacity: sideOpacity, y: leftY }}
-            className="lg:col-span-4 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
+            className="lg:col-span-8 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
           >
-             <div className="mb-auto pt-12">
-               <h1 className="text-4xl md:text-5xl lg:text-5xl leading-[1.4] text-white mb-12 tracking-tight">
-                 <span className="font-serif italic block text-3xl md:text-4xl mb-4 opacity-80">We're</span>
-                 <span className="font-pixel text-white block leading-normal mt-2 text-2xl md:text-3xl lg:text-4xl">THE STORY<br/>SHAPERS.</span>
+             <div className="mb-auto pt-24">
+               <h1 className="text-5xl md:text-7xl lg:text-[7rem] leading-[0.9] text-white mb-16 tracking-tight">
+                 <span className="font-serif italic block text-4xl md:text-5xl mb-6 opacity-80">We're</span>
+                 <span className="font-pixel text-white block">THE STORY</span>
+                 <span className="font-pixel text-white block text-stroke-0 opacity-80">SHAPERS.</span>
                </h1>
                
-               <p className="font-sans text-xl text-white/60 max-w-md leading-relaxed mb-16 font-light">
+               <p className="font-sans text-2xl text-white/60 max-w-2xl leading-relaxed mb-20 font-light border-l-2 border-white/20 pl-8">
                  But you can call us the best marketing decision you’ve made this year.
                </p>
 
@@ -114,32 +97,7 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN - The Shaper's Frame (Crop Marks) */}
-          <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
-             <motion.div 
-               style={{ opacity: 1, scale: centerScale }}
-               className="relative w-48 h-48 flex items-center justify-center"
-             >
-                {/* Top Left Corner */}
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white transition-all duration-1000 ease-in-out" />
-                
-                {/* Top Right Corner */}
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white transition-all duration-1000 ease-in-out" />
-                
-                {/* Bottom Left Corner */}
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white transition-all duration-1000 ease-in-out" />
-                
-                {/* Bottom Right Corner */}
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white transition-all duration-1000 ease-in-out" />
-
-                {/* The "Focus" Label - Subtle technical detail */}
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-50">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white">Focus</span>
-                </div>
-             </motion.div>
-          </div>
-
-          {/* RIGHT COLUMN - Stacked Carousel */}
+          {/* RIGHT COLUMN - Stacked Carousel (4 cols) */}
           <motion.div 
             style={{ opacity: sideOpacity, y: rightY }}
             className="lg:col-span-4 flex flex-col justify-end h-full order-3 relative z-10 py-12 pl-8"
