@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import heroShape from "@/assets/hero-shape.png";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import pixelHero from "@/assets/pixel-hero.png"; // New pixel art asset
+import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -10,103 +10,104 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // EXPANSION LOGIC:
-  // The center column will scale up to cover the other columns
   const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 5]); 
-  // Fading out the side columns so they don't clip weirdly during expansion
   const sideOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  // Moving the center column content down/up if needed, or keeping it centered
-  const centerY = useTransform(scrollYProgress, [0, 0.5], [0, 0]);
-  
-  // Controls the "Curtain" overlay opacity for smooth transition to next section
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
 
   return (
-    <section ref={containerRef} className="relative h-[250vh] bg-primary text-primary-foreground">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 md:px-8 lg:px-12 py-12">
+    <section ref={containerRef} className="relative h-[250vh] bg-primary text-primary-foreground selection:bg-white/30 selection:text-white">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-6 md:px-12 lg:px-16 py-12">
         
+        {/* Vertical Divider Lines */}
+        <div className="absolute inset-0 pointer-events-none z-0 flex justify-between px-6 md:px-12 lg:px-16 max-w-[1800px] mx-auto w-full">
+           <div className="w-[1px] h-full bg-white/5" />
+           <div className="w-[1px] h-full bg-white/5" />
+           <div className="w-[1px] h-full bg-white/5 hidden lg:block" />
+           <div className="w-[1px] h-full bg-white/5 hidden lg:block" />
+        </div>
+
         {/* The 3-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-full max-w-[1600px] mx-auto w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center h-full max-w-[1800px] mx-auto w-full relative z-10">
           
-          {/* LEFT COLUMN (Text) - Fades out on scroll */}
+          {/* LEFT COLUMN */}
           <motion.div 
             style={{ opacity: sideOpacity }}
-            className="lg:col-span-4 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10"
+            className="lg:col-span-4 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
           >
-             <div className="mb-12">
-               <h1 className="font-serif font-semibold text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-white mb-8 tracking-tight">
+             <div className="mb-auto pt-12">
+               <h1 className="font-serif font-medium text-6xl md:text-7xl lg:text-8xl leading-[1.05] text-white mb-12 tracking-tight">
                  We're The <br />
-                 <span className="text-white/80 italic">Story Shapers.</span>
+                 <span className="italic text-white/90">Story Shapers.</span>
                </h1>
                
-               <p className="font-sans text-lg text-white/70 max-w-md leading-relaxed mb-10 font-light">
+               <p className="font-sans text-xl text-white/60 max-w-md leading-relaxed mb-16 font-light">
                  But you can call us the best marketing decision you’ve made this year.
                </p>
 
-               <button className="group w-fit flex items-center gap-3 text-white font-medium text-lg hover:gap-4 transition-all">
-                 <span className="border-b border-white/30 pb-1 group-hover:border-white transition-colors">
+               <button className="group flex items-center gap-4 text-white text-lg transition-all">
+                 <span className="border-b border-white/40 pb-1 group-hover:border-white transition-colors font-mono tracking-wide text-sm uppercase">
                    Talk to us
                  </span>
-                 <ArrowRight className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:text-white" />
+                 <ArrowRight className="w-5 h-5 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                </button>
              </div>
              
-             <div className="mt-auto">
-                <span className="text-xs uppercase tracking-widest text-white/40">Established 2026</span>
+             <div className="mt-auto pb-4">
+                <span className="font-mono text-xs text-white/30 tracking-widest uppercase">Est. 2026</span>
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN (Image) - EXPANDS on scroll */}
+          {/* CENTER COLUMN - Pixel Art */}
           <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
-             {/* The Expandable Wrapper */}
              <motion.div 
                style={{ scale: centerScale }}
-               className="relative w-full aspect-[3/4] md:aspect-square flex items-center justify-center"
+               className="relative w-full aspect-square flex items-center justify-center p-8"
              >
-                {/* Spotlight/Glow */}
-                <div className="absolute w-[300px] h-[300px] bg-white/5 rounded-full blur-[80px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                {/* Glow */}
+                <div className="absolute w-[60%] h-[60%] bg-purple-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 
-                {/* 3D Shape Image */}
+                {/* Pixel Art Image */}
                 <img 
-                  src={heroShape} 
-                  alt="Story Shapers Abstract" 
+                  src={pixelHero} 
+                  alt="Abstract Pixel Sculpture" 
                   className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
-                  style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.5))" }}
+                  style={{ 
+                    filter: "drop-shadow(0 0 40px rgba(100,50,200,0.1))",
+                    imageRendering: "pixelated" // Enforce crisp edges
+                  }}
                 />
              </motion.div>
           </div>
 
-          {/* RIGHT COLUMN (Cards/Nav) - Fades out on scroll */}
+          {/* RIGHT COLUMN */}
           <motion.div 
             style={{ opacity: sideOpacity }}
-            className="lg:col-span-4 flex flex-col justify-end h-full order-3 relative z-10"
+            className="lg:col-span-4 flex flex-col justify-end h-full order-3 relative z-10 py-12 pl-8"
           >
-             {/* "Click to go to 3rd section" Button area as requested */}
-             <div className="h-full flex flex-col justify-between py-12">
-                <div className="flex justify-end">
-                   <a href="#services" className="px-6 py-3 border border-white/20 rounded hover:bg-white hover:text-primary transition-colors text-sm font-medium text-white">
-                      Jump to Services
-                   </a>
-                </div>
+             <div className="h-full flex flex-col justify-end">
+                <div className="flex flex-col gap-8">
+                   <div className="flex items-center gap-3 mb-2">
+                      <span className="font-mono text-white/40 text-xs tracking-wider uppercase">Latest Work</span>
+                      <div className="h-[1px] w-8 bg-white/20" />
+                   </div>
+                   
+                   {/* Simplified single card for cleaner look */}
+                   <div className="w-full aspect-[4/5] bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all cursor-pointer group relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                      
+                      <div className="absolute top-4 right-4">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                      </div>
 
-                <div className="flex flex-col gap-6">
-                   <div className="flex items-center gap-2 mb-2">
-                      <span className="text-white/50 text-sm">Latest Work</span>
-                      <div className="h-[1px] w-12 bg-white/20" />
-                   </div>
-                   
-                   <div className="flex gap-4 w-full">
-                      <div className="aspect-[4/5] w-1/2 bg-white/10 backdrop-blur-sm border border-white/10 shadow-sm rounded-lg p-4 flex flex-col justify-end">
-                          <span className="text-xs font-medium uppercase tracking-wider opacity-50 text-white">Case Study</span>
-                          <span className="text-sm font-serif text-white">Lumina Tech</span>
-                      </div>
-                      <div className="aspect-[4/5] w-1/2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg flex items-center justify-center">
-                          <span className="text-xs opacity-50 text-white">View All</span>
+                      <div className="absolute bottom-6 left-6">
+                          <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">Case Study 01</span>
+                          <span className="font-serif text-2xl text-white group-hover:underline decoration-white/30 underline-offset-4">Lumina Tech</span>
                       </div>
                    </div>
                    
-                   <div className="mt-4">
-                      <p className="text-white/50 text-xs max-w-[200px]">
+                   <div className="mt-4 border-l border-white/10 pl-4">
+                      <p className="font-mono text-white/40 text-[10px] max-w-[200px] leading-relaxed">
+                        // STRATEGIC NARRATIVE<br/>
                         Crafting compelling stories that drive market action.
                       </p>
                    </div>
@@ -116,7 +117,6 @@ export function Hero() {
         
         </div>
 
-        {/* Transition Overlay - Matches the next section's background color */}
         <motion.div 
           style={{ opacity: overlayOpacity }}
           className="absolute inset-0 bg-primary z-0 pointer-events-none"
