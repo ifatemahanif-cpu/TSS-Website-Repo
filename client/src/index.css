@@ -7,6 +7,7 @@
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Libre Baskerville', serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-pixel: 'Press Start 2P', cursive;
 
   --color-background: hsl(25 30% 95%);
   --color-foreground: #231123;
@@ -56,5 +57,9 @@
   
   .font-mono {
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  .font-pixel {
+    font-family: 'Press Start 2P', cursive;
   }
 }

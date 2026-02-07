@@ -35,9 +35,9 @@ export function Hero() {
             className="lg:col-span-4 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
           >
              <div className="mb-auto pt-12">
-               <h1 className="font-serif font-medium text-6xl md:text-7xl lg:text-8xl leading-[1.05] text-white mb-12 tracking-tight">
-                 We're The <br />
-                 <span className="italic text-white/90">Story Shapers.</span>
+               <h1 className="text-4xl md:text-5xl lg:text-5xl leading-[1.4] text-white mb-12 tracking-tight">
+                 <span className="font-serif italic block text-3xl md:text-4xl mb-4 opacity-80">We're The</span>
+                 <span className="font-pixel text-white block leading-normal mt-2 text-2xl md:text-3xl lg:text-4xl">STORY<br/>SHAPERS</span>
                </h1>
                
                <p className="font-sans text-xl text-white/60 max-w-md leading-relaxed mb-16 font-light">
@@ -45,7 +45,7 @@ export function Hero() {
                </p>
 
                <button className="group flex items-center gap-4 text-white text-lg transition-all">
-                 <span className="border-b border-white/40 pb-1 group-hover:border-white transition-colors font-mono tracking-wide text-sm uppercase">
+                 <span className="border-b border-white/40 pb-1 group-hover:border-white transition-colors font-pixel text-xs uppercase tracking-wide">
                    Talk to us
                  </span>
                  <ArrowRight className="w-5 h-5 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
@@ -53,7 +53,7 @@ export function Hero() {
              </div>
              
              <div className="mt-auto pb-4">
-                <span className="font-mono text-xs text-white/30 tracking-widest uppercase">Est. 2026</span>
+                <span className="font-pixel text-[10px] text-white/30 tracking-widest uppercase">Est. 2026</span>
              </div>
           </motion.div>
 
