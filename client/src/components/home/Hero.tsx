@@ -51,8 +51,9 @@ export function Hero() {
   });
 
   // FIXED: Even faster transition (snappier)
-  // Max scale increased for the "horizon line" expansion effect
-  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 200]); 
+  // Scale adjusted for the Core System fly-through
+  const centerScale = useTransform(scrollYProgress, [0, 0.4], [1, 40]); 
+  const centerRotate = useTransform(scrollYProgress, [0, 0.4], [0, 90]);
   
   // PARALLAX EFFECTS:
   const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
@@ -114,14 +115,33 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* CENTER COLUMN - The Living Cursor */}
+          {/* CENTER COLUMN - Strategic Core System */}
           <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
-             {/* The Cursor Element */}
              <motion.div 
-               style={{ scaleX: centerScale, opacity: 1 }}
-               className="h-1 bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)] origin-center"
+               style={{ scale: centerScale, opacity: 1, rotate: centerRotate }}
+               className="relative flex items-center justify-center"
              >
-                <div className="w-4 h-8 bg-white/90 animate-pulse-fast" />
+                {/* Layer 1: The Core (Pulsing) */}
+                <div className="w-16 h-16 bg-white mix-blend-difference animate-pulse relative z-30" />
+
+                {/* Layer 2: Inner Orbit (Spinning Clockwise) */}
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                   <div className="w-32 h-32 border-2 border-dashed border-white/60 animate-[spin_10s_linear_infinite]" />
+                </div>
+
+                {/* Layer 3: Outer Frame (Spinning Counter-Clockwise) */}
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                   <div className="w-48 h-48 border border-white/20 flex items-center justify-center animate-[spin_15s_linear_infinite_reverse]">
+                      {/* Decorative corners */}
+                      <div className="absolute top-0 left-0 w-2 h-2 bg-white" />
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-white" />
+                      <div className="absolute bottom-0 left-0 w-2 h-2 bg-white" />
+                      <div className="absolute bottom-0 right-0 w-2 h-2 bg-white" />
+                   </div>
+                </div>
+
+                {/* Layer 4: The 'Glow' behind everything */}
+                <div className="absolute w-[300px] h-[300px] bg-purple-500/20 rounded-full blur-[60px] animate-pulse -z-10" />
              </motion.div>
           </div>
 
