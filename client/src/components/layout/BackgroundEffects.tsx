@@ -2,21 +2,21 @@ import { motion } from "framer-motion";
 
 export function BackgroundEffects() {
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none z-[-1] overflow-hidden">
+    <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden bg-[#231123]">
       {/* 1. Ambient Aurora Blobs */}
-      <div className="absolute inset-0 opacity-40">
+      <div className="absolute inset-0 opacity-60">
         {/* Blob 1: Deep Teal/Blue - Top Left */}
-        <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-[#2E0249] rounded-full blur-[120px] mix-blend-screen animate-aurora-1 opacity-60" />
+        <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-[#2E0249] rounded-full blur-[120px] mix-blend-screen animate-aurora-1 opacity-70" />
         
         {/* Blob 2: Magenta/Purple - Bottom Right */}
-        <div className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-[#570A57] rounded-full blur-[100px] mix-blend-screen animate-aurora-2 opacity-50" />
+        <div className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-[#570A57] rounded-full blur-[100px] mix-blend-screen animate-aurora-2 opacity-60" />
         
         {/* Blob 3: Accent Cyan - Moving freely */}
-        <div className="absolute top-[20%] left-[30%] w-[40vw] h-[40vw] bg-[#A91079] rounded-full blur-[120px] mix-blend-overlay animate-aurora-3 opacity-30" />
+        <div className="absolute top-[20%] left-[30%] w-[40vw] h-[40vw] bg-[#A91079] rounded-full blur-[120px] mix-blend-overlay animate-aurora-3 opacity-40" />
       </div>
 
       {/* 2. Animated Film Grain Noise */}
-      <div className="absolute inset-0 opacity-[0.07] mix-blend-overlay pointer-events-none">
+      <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none">
          <div 
            className="absolute inset-[-200%] w-[400%] h-[400%] animate-grain"
            style={{
@@ -27,7 +27,7 @@ export function BackgroundEffects() {
       </div>
 
       {/* 3. Vignette Overlay */}
-      <div className="absolute inset-0 bg-radial-gradient-vignette opacity-60" />
+      <div className="absolute inset-0 bg-radial-gradient-vignette opacity-70" />
     </div>
   );
 }
