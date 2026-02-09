@@ -10,17 +10,17 @@
   --font-pixel: 'Press Start 2P', cursive;
 
   --color-background: hsl(25 30% 95%);
-  --color-foreground: #231123;
+  --color-foreground: #1A2626;
 
-  /* DEEP PURPLE PRIMARY */
-  --color-primary: #231123; 
-  --color-primary-foreground: hsl(30 20% 95%);
+  /* MIDNIGHT TEAL PRIMARY */
+  --color-primary: #1A2626; 
+  --color-primary-foreground: hsl(180 20% 95%);
 
-  --color-muted: hsl(25 20% 90%);
-  --color-muted-foreground: hsl(280 10% 60%);
+  --color-muted: hsl(180 10% 90%);
+  --color-muted-foreground: hsl(180 10% 60%);
 
   --color-card: hsl(0 0% 100%);
-  --color-card-foreground: #231123;
+  --color-card-foreground: #1A2626;
 
   --color-border: hsl(280 10% 85%);
   --color-input: hsl(280 10% 85%);
