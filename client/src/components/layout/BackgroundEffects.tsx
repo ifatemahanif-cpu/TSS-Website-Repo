@@ -2,17 +2,17 @@ import { motion } from "framer-motion";
 
 export function BackgroundEffects() {
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden bg-[#231123]">
+    <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden bg-[#1A2626]">
       {/* 1. Ambient Aurora Blobs */}
       <div className="absolute inset-0 opacity-60">
-        {/* Blob 1: Deep Teal/Blue - Top Left */}
-        <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-[#2E0249] rounded-full blur-[120px] mix-blend-screen animate-aurora-1 opacity-70" />
+        {/* Blob 1: Deep Teal - Top Left */}
+        <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-[#0F3D3E] rounded-full blur-[120px] mix-blend-screen animate-aurora-1 opacity-60" />
         
-        {/* Blob 2: Magenta/Purple - Bottom Right */}
-        <div className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-[#570A57] rounded-full blur-[100px] mix-blend-screen animate-aurora-2 opacity-60" />
+        {/* Blob 2: Muted Cyan - Bottom Right */}
+        <div className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-[#105B63] rounded-full blur-[100px] mix-blend-screen animate-aurora-2 opacity-50" />
         
-        {/* Blob 3: Accent Cyan - Moving freely */}
-        <div className="absolute top-[20%] left-[30%] w-[40vw] h-[40vw] bg-[#A91079] rounded-full blur-[120px] mix-blend-overlay animate-aurora-3 opacity-40" />
+        {/* Blob 3: Warm Sand Accent - Moving freely */}
+        <div className="absolute top-[20%] left-[30%] w-[40vw] h-[40vw] bg-[#E8D5B5] rounded-full blur-[120px] mix-blend-overlay animate-aurora-3 opacity-20" />
       </div>
 
       {/* 2. Animated Film Grain Noise */}

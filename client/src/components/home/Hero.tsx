@@ -131,7 +131,7 @@ export function Hero() {
                              }}
                              exit={{ opacity: 0, scale: 0.9, y: -40 }}
                              transition={{ duration: 0.5, ease: "easeInOut" }}
-                             className="absolute inset-0 w-full h-full bg-[#1a0b1a] border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
+                             className="absolute inset-0 w-full h-full bg-[#152020] border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
                              onClick={handleNext}
                            >
                               {/* Gradient Image Background */}
