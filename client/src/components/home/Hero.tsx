@@ -125,7 +125,7 @@ export function Hero() {
                        style={{ 
                          opacity: gridOpacity,
                          scale: gridScale,
-                         backgroundImage: 'linear-gradient(#FDE8E9 1px, transparent 1px), linear-gradient(90deg, #FDE8E9 1px, transparent 1px)', 
+                         backgroundImage: 'linear-gradient(#FDF5BF 1px, transparent 1px), linear-gradient(90deg, #FDF5BF 1px, transparent 1px)', 
                          backgroundSize: '20px 20px',
                          transformOrigin: 'center center'
                        }} 

@@ -9,30 +9,30 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-pixel: 'Press Start 2P', cursive;
 
-  /* PAGE BACKGROUND - Pale Pink */
-  --color-background: #FDE8E9; 
-  --color-foreground: #0C0A3E; /* Deep Indigo text */
+  /* PAGE BACKGROUND - Pale Yellow/Cream */
+  --color-background: #FDF5BF; 
+  --color-foreground: #2C2C54; /* Deep Navy text */
 
-  /* PRIMARY - Deep Indigo/Midnight */
-  --color-primary: #0C0A3E; 
-  --color-primary-foreground: #FDE8E9; /* Light text on primary */
+  /* PRIMARY - Vibrant Magenta/Berry */
+  --color-primary: #A40E4C; 
+  --color-primary-foreground: #FDF5BF; /* Light text on primary */
 
-  /* SECONDARY - Deep Rose/Berry */
-  --color-secondary: #B33F62;
-  --color-secondary-foreground: #FDE8E9;
+  /* SECONDARY - Deep Navy/Indigo */
+  --color-secondary: #2C2C54;
+  --color-secondary-foreground: #FDF5BF;
 
-  /* ACCENT - Pale Pink */
-  --color-accent: #FDE8E9;
-  --color-accent-foreground: #0C0A3E;
+  /* ACCENT - Pale Yellow/Cream */
+  --color-accent: #FDF5BF;
+  --color-accent-foreground: #2C2C54;
 
-  --color-muted: #e6d0d1; 
-  --color-muted-foreground: #0C0A3E;
+  --color-muted: #eaddaa; 
+  --color-muted-foreground: #2C2C54;
 
   --color-card: #ffffff;
-  --color-card-foreground: #0C0A3E;
+  --color-card-foreground: #2C2C54;
 
-  --color-border: #B33F62;
-  --color-input: #e6d0d1;
+  --color-border: #2C2C54;
+  --color-input: #eaddaa;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
