@@ -118,14 +118,14 @@ export function Hero() {
                 <div className="absolute w-[60%] h-[60%] bg-purple-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 
                 {/* Section 2 Snapshot Card */}
-                <div className="relative z-10 w-full h-full bg-[#231123] border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-white/20 transition-colors group">
+                <div className="relative z-10 w-full h-full bg-primary border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-secondary transition-colors group">
                   {/* Decorative Grid Background - PARALLAX SCALING */}
                   <motion.div 
                        className="absolute inset-0" 
                        style={{ 
                          opacity: gridOpacity,
                          scale: gridScale,
-                         backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', 
+                         backgroundImage: 'linear-gradient(#EBEBD3 1px, transparent 1px), linear-gradient(90deg, #EBEBD3 1px, transparent 1px)', 
                          backgroundSize: '20px 20px',
                          transformOrigin: 'center center'
                        }} 
@@ -134,8 +134,8 @@ export function Hero() {
                   {/* Card Header */}
                   <div className="relative z-10 flex justify-between items-center border-b border-white/10 pb-4">
                      <div className="flex gap-2">
-                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-red-500/50 transition-colors" />
-                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-yellow-500/50 transition-colors" />
+                       <div className="w-2 h-2 rounded-full bg-secondary transition-colors" />
+                       <div className="w-2 h-2 rounded-full bg-white/20 transition-colors" />
                      </div>
                      <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-widest text-white/40">02 // The Reality</span>
                   </div>
@@ -143,12 +143,12 @@ export function Hero() {
                   {/* Card Content */}
                   <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center">
                      <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-tight mb-4">
-                       Marketing has never been <span className="italic text-white/50">louder.</span>
+                       Marketing has never been <span className="italic text-secondary">louder.</span>
                      </h3>
                      <div className="space-y-3 opacity-30">
-                        <div className="h-1 w-full bg-gradient-to-r from-white to-transparent rounded" />
-                        <div className="h-1 w-3/4 bg-gradient-to-r from-white to-transparent rounded" />
-                        <div className="h-1 w-5/6 bg-gradient-to-r from-white to-transparent rounded" />
+                        <div className="h-1 w-full bg-gradient-to-r from-secondary to-transparent rounded" />
+                        <div className="h-1 w-3/4 bg-gradient-to-r from-secondary to-transparent rounded" />
+                        <div className="h-1 w-5/6 bg-gradient-to-r from-secondary to-transparent rounded" />
                      </div>
                   </div>
 
@@ -158,13 +158,13 @@ export function Hero() {
                          <div className="w-2 bg-white/20 h-[40%]" />
                          <div className="w-2 bg-white/40 h-[60%]" />
                          <div className="w-2 bg-white/20 h-[30%]" />
-                         <div className="w-2 bg-white/80 h-[100%] animate-pulse" />
+                         <div className="w-2 bg-secondary h-[100%] animate-pulse" />
                          <div className="w-2 bg-white/30 h-[50%]" />
                          <div className="w-2 bg-white/50 h-[70%]" />
                       </div>
                       <div className="text-right">
                         <span className="block font-pixel text-[8px] text-white/30 mb-1">SIGNAL_TO_NOISE</span>
-                        <span className="block font-mono text-xs text-red-400">CRITICAL</span>
+                        <span className="block font-mono text-xs text-secondary">CRITICAL</span>
                       </div>
                   </div>
                 </div>
