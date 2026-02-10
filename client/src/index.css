@@ -9,87 +9,29 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-pixel: 'Press Start 2P', cursive;
 
-  /* PAGE BACKGROUND - Accent Green (as per request for accent to replace previous light bg role? Or should background be white/black?) 
-     Actually, usually accent is for highlights.
-     Let's map based on previous patterns:
-     Previous: Background was Accent (Cream).
-     New: Accent is #1C7C54 (Green). That might be too dark for a full background if text is black.
-     
-     Let's interpret:
-     Primary (Black) -> Dark Backgrounds / Text
-     Secondary (White) -> Light Text / Backgrounds
-     Accent (Green) -> Highlights
-     
-     If I follow the previous pattern strictly:
-     Background was #FDF5BF (Accent).
-     If I set background to #1C7C54, text needs to be white.
-     
-     However, standard "Black/White/Green" usually implies:
-     Bg: Black or White
-     Text: White or Black
-     Accent: Green
-     
-     The user said "primary to #000000, secondary to #FFFFFF, accent to #1C7C54".
-     In my previous mappings:
-     --color-background was the light color.
-     --color-foreground was the dark color.
-     --color-primary was the brand color (Magenta).
-     
-     Let's map for a "Dark Mode" feel since Primary is Black:
-     Background: #000000 (Primary)
-     Foreground: #FFFFFF (Secondary)
-     Primary: #000000 (Black) - Wait, if primary is black, buttons on black bg won't show.
-     
-     Let's try:
-     --color-primary: #000000 (Black)
-     --color-secondary: #FFFFFF (White)
-     --color-accent: #1C7C54 (Green)
-     
-     But the Hero uses `bg-primary`. If `bg-primary` is black, it works.
-     The page background was previously the "Accent" color (Cream).
-     If I make the page background Green (#1C7C54), it might be intense.
-     
-     Let's assume a clean high-contrast look:
-     Page Background: #FFFFFF (Secondary)
-     Text: #000000 (Primary)
-     Primary Brand Color: #000000 (Black)
-     Accent: #1C7C54 (Green) - used for highlights.
-     
-     BUT, looking at the Hero component, it uses `bg-primary` and `text-primary-foreground`.
-     If Primary is #000000:
-     Hero Bg: Black.
-     Hero Text: White (Primary Foreground).
-     
-     Page Body Background: previously was the light color.
-     Let's set Page Background to #FFFFFF (Secondary).
-     Foreground to #000000 (Primary).
-     
-     Let's adjust the variables.
-  */
-
-  /* PAGE BACKGROUND - White */
-  --color-background: #FFFFFF; 
+  /* PAGE BACKGROUND - Off-White (Accent) */
+  --color-background: #F7F7F9; 
   --color-foreground: #000000;
 
   /* PRIMARY - Black */
   --color-primary: #000000; 
-  --color-primary-foreground: #FFFFFF;
+  --color-primary-foreground: #F7F7F9;
 
-  /* SECONDARY - White (used for inverse) */
-  --color-secondary: #FFFFFF;
+  /* SECONDARY - Neon Green */
+  --color-secondary: #20FC8F;
   --color-secondary-foreground: #000000;
 
-  /* ACCENT - Emerald Green */
-  --color-accent: #1C7C54;
-  --color-accent-foreground: #FFFFFF;
+  /* ACCENT - Off-White */
+  --color-accent: #F7F7F9;
+  --color-accent-foreground: #000000;
 
-  --color-muted: #f4f4f5; 
+  --color-muted: #e4e4e7; 
   --color-muted-foreground: #71717a;
 
   --color-card: #FFFFFF;
   --color-card-foreground: #000000;
 
-  --color-border: #1C7C54; /* Green borders */
+  --color-border: #20FC8F; /* Neon Green borders */
   --color-input: #e4e4e7;
 
   --radius-sm: 0.25rem;
@@ -102,7 +44,7 @@
     @apply border-border;
   }
   body {
-    @apply font-sans antialiased bg-background text-foreground selection:bg-accent selection:text-white;
+    @apply font-sans antialiased bg-background text-foreground selection:bg-secondary selection:text-black;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
