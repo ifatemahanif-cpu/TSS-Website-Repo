@@ -9,18 +9,18 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-pixel: 'Press Start 2P', cursive;
 
-  --color-background: #E8E8E8;
-  --color-foreground: #1A1A1A;
+  --color-background: #F4F4F0;
+  --color-foreground: #111111;
 
-  /* SWEDISH INDUSTRIAL (Teenage Engineering Vibe) */
-  --color-primary: #FF3300; 
+  /* SWEDISH MODERN (Acne / Teenage Engineering) */
+  --color-primary: #0044CC; /* International Klein Blue or similar technical blue */
   --color-primary-foreground: #FFFFFF;
 
-  --color-muted: #D4D4D4;
+  --color-muted: #E5E5E0;
   --color-muted-foreground: #666666;
 
   --color-card: #FFFFFF;
-  --color-card-foreground: #1A1A1A;
+  --color-card-foreground: #111111;
 
   --color-border: hsl(280 10% 85%);
   --color-input: hsl(280 10% 85%);

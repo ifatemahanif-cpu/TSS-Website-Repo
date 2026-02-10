@@ -131,38 +131,36 @@ export function Hero() {
                              }}
                              exit={{ opacity: 0, scale: 0.9, y: -40 }}
                              transition={{ duration: 0.5, ease: "easeInOut" }}
-                             className="absolute inset-0 w-full h-full bg-[#E5E5E5] border border-black/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
+                             className="absolute inset-0 w-full h-full bg-white border border-black/10 rounded-none overflow-hidden shadow-sm origin-bottom"
                              onClick={handleNext}
                            >
-                              {/* Gradient Image Background */}
-                              <div className="absolute inset-0 z-0">
-                                <img 
-                                  src={study.image} 
-                                  alt="" 
-                                  className="w-full h-full object-cover opacity-60 scale-110"
+                              {/* Clean White Background for Swedish Style */}
+                              <div className="absolute inset-0 z-0 bg-white">
+                                {/* Optional: Technical Grid on Card */}
+                                <div 
+                                  className="absolute inset-0 opacity-[0.3]"
+                                  style={{
+                                    backgroundImage: `linear-gradient(#E5E5E5 1px, transparent 1px), linear-gradient(90deg, #E5E5E5 1px, transparent 1px)`,
+                                    backgroundSize: '20px 20px'
+                                  }}
                                 />
-                                {/* Grain Overlay */}
-                                <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay"></div>
                               </div>
 
                               {/* Overlay to darken background cards - Adjusted for images */}
-                              {diff > 0 && <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-20 transition-all duration-500" />}
-                              
-                              {/* Text Readability Gradient */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 z-10" />
+                              {diff > 0 && <div className="absolute inset-0 bg-white/80 backdrop-blur-[1px] z-20 transition-all duration-500" />}
                               
                               <div className="absolute top-4 right-4 flex gap-2 z-20">
-                                <div className="w-2 h-2 rounded-full bg-white/40 backdrop-blur-sm" />
+                                <div className="w-3 h-3 rounded-full border border-black/20" />
                               </div>
 
                               <div className="absolute bottom-6 left-6 pr-4 z-20">
-                                  <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">
+                                  <span className="block font-mono text-[10px] uppercase tracking-widest text-black/40 mb-2">
                                     Case Study {study.id}
                                   </span>
-                                  <span className="block font-serif text-2xl text-white mb-2 leading-none">
+                                  <span className="block font-serif text-2xl text-black mb-2 leading-none">
                                     {study.client}
                                   </span>
-                                  <p className="font-mono text-white/40 text-[10px] leading-relaxed line-clamp-2">
+                                  <p className="font-mono text-black/60 text-[10px] leading-relaxed line-clamp-2">
                                     // {study.category}<br/>
                                     {study.desc}
                                   </p>
