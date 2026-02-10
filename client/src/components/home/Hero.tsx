@@ -118,14 +118,14 @@ export function Hero() {
                 <div className="absolute w-[60%] h-[60%] bg-purple-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 
                 {/* Section 2 Snapshot Card */}
-                <div className="relative z-10 w-full h-full bg-[#0D3B66] border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-secondary transition-colors group">
+                <div className="relative z-10 w-full h-full bg-primary border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-secondary transition-colors group">
                   {/* Decorative Grid Background - PARALLAX SCALING */}
                   <motion.div 
                        className="absolute inset-0" 
                        style={{ 
                          opacity: gridOpacity,
                          scale: gridScale,
-                         backgroundImage: 'linear-gradient(#0D3B66 1px, transparent 1px), linear-gradient(90deg, #0D3B66 1px, transparent 1px)', 
+                         backgroundImage: 'linear-gradient(#20FC8F 1px, transparent 1px), linear-gradient(90deg, #20FC8F 1px, transparent 1px)', 
                          backgroundSize: '20px 20px',
                          transformOrigin: 'center center'
                        }} 
