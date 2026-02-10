@@ -131,7 +131,7 @@ export function Hero() {
                              }}
                              exit={{ opacity: 0, scale: 0.9, y: -40 }}
                              transition={{ duration: 0.5, ease: "easeInOut" }}
-                             className="absolute inset-0 w-full h-full bg-[#152020] border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
+                             className="absolute inset-0 w-full h-full bg-[#E5E5E5] border border-black/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
                              onClick={handleNext}
                            >
                               {/* Gradient Image Background */}
@@ -139,17 +139,17 @@ export function Hero() {
                                 <img 
                                   src={study.image} 
                                   alt="" 
-                                  className="w-full h-full object-cover opacity-80 scale-110"
+                                  className="w-full h-full object-cover opacity-60 scale-110"
                                 />
                                 {/* Grain Overlay */}
-                                <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay"></div>
+                                <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay"></div>
                               </div>
 
                               {/* Overlay to darken background cards - Adjusted for images */}
-                              {diff > 0 && <div className="absolute inset-0 bg-primary/60 backdrop-blur-[2px] z-20 transition-all duration-500" />}
+                              {diff > 0 && <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-20 transition-all duration-500" />}
                               
                               {/* Text Readability Gradient */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 z-10" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 z-10" />
                               
                               <div className="absolute top-4 right-4 flex gap-2 z-20">
                                 <div className="w-2 h-2 rounded-full bg-white/40 backdrop-blur-sm" />
@@ -179,17 +179,17 @@ export function Hero() {
                           {caseStudies.map((_, idx) => (
                             <div 
                               key={idx}
-                              className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-white" : "w-2 bg-white/20"}`}
+                              className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-black" : "w-2 bg-black/20"}`}
                             />
                           ))}
                       </div>
                       
                       <button 
                         onClick={handleNext}
-                        className="p-2 rounded-full border border-white/20 hover:bg-white hover:text-primary transition-all group"
+                        className="p-2 rounded-full border border-black/20 hover:bg-black hover:text-white transition-all group"
                         aria-label="Next case study"
                       >
-                         <ChevronRight className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
+                         <ChevronRight className="w-5 h-5 text-black group-hover:text-white transition-colors" />
                       </button>
                    </div>
                 </div>

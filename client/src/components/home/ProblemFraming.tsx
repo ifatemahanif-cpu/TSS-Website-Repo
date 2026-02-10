@@ -70,7 +70,7 @@ export function ProblemFraming() {
         </div>
 
         {/* What We Do Differently - Redesigned to match dark/pixel theme */}
-        <div className="relative border border-white/10 bg-[#2A152A] p-8 md:p-16 overflow-hidden group">
+        <div className="relative border border-white/10 bg-[#162121] p-8 md:p-16 overflow-hidden group">
           {/* Pixel corners decoration */}
           <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/40" />
           <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-white/40" />
