@@ -31,27 +31,21 @@ export function ProblemFraming() {
   ];
 
   return (
-    <section className="relative py-24 px-8 md:px-12 bg-transparent text-primary-foreground min-h-screen flex flex-col justify-center">
-      <div className="max-w-[1400px] mx-auto w-full">
-        {/* Header - SIMPLIFIED since Hero transitions into this */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-start">
-          <div className="hidden lg:col-span-4 lg:flex flex-col sticky top-32">
-             {/* Left side Anchor Content */}
-             <div className="flex flex-col border-l border-white/20 pl-8 py-2">
-                <span className="font-pixel text-6xl text-white/10 mb-4 select-none">02</span>
-                <span className="font-mono text-xs uppercase tracking-widest text-primary-foreground/60">The Reality</span>
-             </div>
+    <section className="relative py-24 px-8 md:px-12 bg-primary text-primary-foreground">
+      <div className="max-w-[1400px] mx-auto">
+        {/* Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+          <div>
+            <h2 className="text-4xl md:text-6xl font-serif mb-8 leading-tight">
+              Marketing has <br/>
+              <span className="opacity-60 italic">never been louder.</span>
+            </h2>
           </div>
-          
-          <div className="lg:col-span-8 flex flex-col justify-end">
-            <p className="text-xl md:text-3xl font-light opacity-90 leading-relaxed font-serif">
-              <span className="block mb-8 text-primary-foreground/40 font-sans text-lg">
-                More tools. More dashboards. More content.
-              </span>
+          <div className="flex flex-col justify-end">
+            <p className="text-xl md:text-2xl font-light opacity-90 leading-relaxed">
+              More tools. More dashboards. More content. <br/>
               The brands we meet aren't struggling because they're doing too little. <br/>
-              <span className="text-white border-b border-white/20 italic mt-4 inline-block pb-1">
-                They're struggling because they're doing too much — without knowing why.
-              </span>
+              <span className="font-medium border-b border-primary-foreground/30">They're struggling because they're doing too much — without knowing why.</span>
             </p>
           </div>
         </div>
@@ -69,37 +63,30 @@ export function ProblemFraming() {
            ))}
         </div>
 
-        {/* What We Do Differently - Redesigned to match dark/pixel theme */}
-        <div className="relative border border-white/10 bg-[#162121] p-8 md:p-16 overflow-hidden group">
-          {/* Pixel corners decoration */}
-          <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/40" />
-          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-white/40" />
-          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-white/40" />
-          <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/40" />
-
-          <div className="max-w-3xl mx-auto text-center mb-16 relative z-10">
-            <span className="font-pixel text-[10px] text-primary-foreground/40 uppercase tracking-widest mb-4 block">Our Approach</span>
-            <h2 className="text-3xl md:text-5xl font-serif mb-6 text-white">We're marketing's <span className="italic text-white/60">missing middle.</span></h2>
-            <p className="text-lg opacity-70 font-sans max-w-xl mx-auto">
+        {/* What We Do Differently */}
+        <div className="bg-primary-foreground/5 rounded-2xl p-8 md:p-16 border border-primary-foreground/10">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-serif mb-6">We're marketing's missing middle.</h2>
+            <p className="text-lg opacity-80">
               We fix the thinking before we fix the marketing. Most problems aren't execution problems. They're clarity problems.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {caseStudies.map((study, i) => (
-              <div key={i} className="group/card bg-white/5 border border-white/5 p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+              <div key={i} className="bg-primary-foreground/10 p-8 rounded-xl hover:bg-primary-foreground/15 transition-colors">
                 <div className="flex justify-between items-start mb-6">
-                  <h4 className="font-serif font-bold text-xl text-white">{study.brand}</h4>
-                  <ArrowUpRight className="opacity-30 group-hover/card:opacity-100 transition-opacity w-5 h-5" />
+                  <h4 className="font-bold text-xl">{study.brand}</h4>
+                  <ArrowUpRight className="opacity-50" />
                 </div>
-                <div className="space-y-6 text-sm opacity-90">
+                <div className="space-y-4 text-sm opacity-90">
                   <div>
-                    <span className="opacity-40 block font-mono text-[10px] uppercase tracking-widest mb-2 text-white">Challenge</span>
-                    <p className="font-light text-white/80">{study.problem}</p>
+                    <span className="opacity-50 block text-xs uppercase tracking-wider mb-1">Challenge</span>
+                    {study.problem}
                   </div>
-                  <div className="pt-4 border-t border-white/5">
-                    <span className="opacity-40 block font-mono text-[10px] uppercase tracking-widest mb-2 text-white">Impact</span>
-                    <p className="font-medium text-white">{study.result}</p>
+                  <div>
+                    <span className="opacity-50 block text-xs uppercase tracking-wider mb-1">Impact</span>
+                    {study.result}
                   </div>
                 </div>
               </div>

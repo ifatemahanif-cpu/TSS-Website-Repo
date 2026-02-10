@@ -9,18 +9,18 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-pixel: 'Press Start 2P', cursive;
 
-  --color-background: #F4F4F0;
-  --color-foreground: #111111;
+  --color-background: hsl(25 30% 95%);
+  --color-foreground: #231123;
 
-  /* SWEDISH MODERN (Acne / Teenage Engineering) */
-  --color-primary: #0044CC; /* International Klein Blue or similar technical blue */
-  --color-primary-foreground: #FFFFFF;
+  /* DEEP PURPLE PRIMARY */
+  --color-primary: #231123; 
+  --color-primary-foreground: hsl(30 20% 95%);
 
-  --color-muted: #E5E5E0;
-  --color-muted-foreground: #666666;
+  --color-muted: hsl(25 20% 90%);
+  --color-muted-foreground: hsl(280 10% 60%);
 
-  --color-card: #FFFFFF;
-  --color-card-foreground: #111111;
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: #231123;
 
   --color-border: hsl(280 10% 85%);
   --color-input: hsl(280 10% 85%);
@@ -61,55 +61,5 @@
 
   .font-pixel {
     font-family: 'Press Start 2P', cursive;
-  }
-
-  /* Custom Radial Gradient for Vignette */
-  .bg-radial-gradient-vignette {
-    background: radial-gradient(circle at center, transparent 0%, rgba(10, 5, 10, 0.4) 60%, rgba(5, 2, 5, 0.8) 100%);
-  }
-
-  /* Animation Keyframes */
-  @keyframes grain {
-    0%, 100% { transform: translate(0, 0); }
-    10% { transform: translate(-5%, -5%); }
-    20% { transform: translate(-10%, 5%); }
-    30% { transform: translate(5%, -10%); }
-    40% { transform: translate(-5%, 15%); }
-    50% { transform: translate(-10%, 5%); }
-    60% { transform: translate(15%, 0); }
-    70% { transform: translate(0, 10%); }
-    80% { transform: translate(-15%, 0); }
-    90% { transform: translate(10%, 5%); }
-  }
-
-  @keyframes aurora-1 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(50px, -30px) scale(1.05); }
-  }
-
-  @keyframes aurora-2 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(-40px, 40px) scale(1.1); }
-  }
-
-  @keyframes aurora-3 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, -20px) scale(0.9); }
-  }
-
-  .animate-grain {
-    animation: grain 8s steps(10) infinite;
-  }
-
-  .animate-aurora-1 {
-    animation: aurora-1 20s ease-in-out infinite alternate;
-  }
-
-  .animate-aurora-2 {
-    animation: aurora-2 25s ease-in-out infinite alternate;
-  }
-
-  .animate-aurora-3 {
-    animation: aurora-3 18s ease-in-out infinite alternate;
   }
 }

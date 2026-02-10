@@ -1,9 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import pixelHero from "@/assets/pixel-hero.png"; 
-import gradientEmerald from "@/assets/gradient-emerald.png";
-import gradientPurple from "@/assets/gradient-purple.png";
-import gradientWarm from "@/assets/gradient-warm.png";
 import { ArrowRight, ChevronRight, ArrowDown } from "lucide-react";
 
 const caseStudies = [
@@ -12,24 +9,21 @@ const caseStudies = [
     client: "Lumina Tech",
     category: "Strategic Narrative",
     desc: "Crafting compelling stories that drive market action.",
-    color: "bg-emerald-500",
-    image: gradientEmerald
+    color: "bg-emerald-500"
   },
   {
     id: "02",
     client: "Velvet Space", 
     category: "Brand Identity",
     desc: "Redefining luxury for the digital-first generation.",
-    color: "bg-purple-500",
-    image: gradientPurple
+    color: "bg-purple-500"
   },
   {
     id: "03",
     client: "Apex Growth",
     category: "GTM Strategy", 
     desc: "From zero to market leader in 90 days.",
-    color: "bg-orange-500",
-    image: gradientWarm
+    color: "bg-orange-500"
   }
 ];
 
@@ -50,11 +44,20 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Simplified animations since we removed the central element
-  // Just keeping some subtle parallax
-  const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -50]);
-  const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 50]);
+  // FIXED: Even faster transition (snappier)
+  // Max scale reduced to 3 so it doesn't look "too big"
+  const centerScale = useTransform(scrollYProgress, [0, 0.5], [1, 3]); 
+  
+  // PARALLAX EFFECTS:
+  const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.3], [0.1, 0]);
+  
+  // Side columns move AWAY vertically while fading
+  const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -150]);
+  const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 150]);
   const sideOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  
+  // Overlay kicks in very early to smooth the boundary
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
 
   const handleNext = () => {
@@ -62,25 +65,33 @@ export function Hero() {
   };
 
   return (
-    <section ref={containerRef} className="relative h-[125vh] bg-transparent text-primary-foreground selection:bg-white/30 selection:text-white">
+    // FIXED: Reduced height to 125vh - Minimal scroll distance required now
+    <section ref={containerRef} className="relative h-[125vh] bg-primary text-primary-foreground selection:bg-white/30 selection:text-white">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-6 md:px-12 lg:px-16 py-12">
         
-        {/* The 2-Column Grid - Simplified Layout */}
+        {/* Vertical Divider Lines */}
+        <div className="absolute inset-0 pointer-events-none z-0 flex justify-between px-6 md:px-12 lg:px-16 max-w-[1800px] mx-auto w-full">
+           <div className="w-[1px] h-full bg-white/5" />
+           <div className="w-[1px] h-full bg-white/5" />
+           <div className="w-[1px] h-full bg-white/5 hidden lg:block" />
+           <div className="w-[1px] h-full bg-white/5 hidden lg:block" />
+        </div>
+
+        {/* The 3-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center h-full max-w-[1800px] mx-auto w-full relative z-10">
           
-          {/* LEFT COLUMN - Header (Expanded to 8 cols) */}
+          {/* LEFT COLUMN */}
           <motion.div 
             style={{ opacity: sideOpacity, y: leftY }}
-            className="lg:col-span-8 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
+            className="lg:col-span-4 flex flex-col justify-center h-full order-2 lg:order-1 relative z-10 py-12"
           >
-             <div className="mb-auto pt-24">
-               <h1 className="text-5xl md:text-7xl lg:text-[7rem] leading-[0.9] text-white mb-16 tracking-tight">
-                 <span className="font-serif italic block text-4xl md:text-5xl mb-6 opacity-80">We're</span>
-                 <span className="font-pixel text-white block">THE STORY</span>
-                 <span className="font-pixel text-white block text-stroke-0 opacity-80">SHAPERS.</span>
+             <div className="mb-auto pt-12">
+               <h1 className="text-4xl md:text-5xl lg:text-5xl leading-[1.4] text-white mb-12 tracking-tight">
+                 <span className="font-serif italic block text-3xl md:text-4xl mb-4 opacity-80">We're</span>
+                 <span className="font-pixel text-white block leading-normal mt-2 text-2xl md:text-3xl lg:text-4xl">THE STORY<br/>SHAPERS.</span>
                </h1>
                
-               <p className="font-sans text-2xl text-white/60 max-w-2xl leading-relaxed mb-20 font-light border-l-2 border-white/20 pl-8">
+               <p className="font-sans text-xl text-white/60 max-w-md leading-relaxed mb-16 font-light">
                  But you can call us the best marketing decision you’ve made this year.
                </p>
 
@@ -97,15 +108,87 @@ export function Hero() {
              </div>
           </motion.div>
 
-          {/* RIGHT COLUMN - Stacked Carousel (4 cols) */}
+          {/* CENTER COLUMN - Section 2 Preview */}
+          <div className="lg:col-span-4 h-full relative flex items-center justify-center order-1 lg:order-2 z-20 pointer-events-none">
+             <motion.div 
+               style={{ scale: centerScale }}
+               className="relative w-full aspect-square flex items-center justify-center p-8"
+             >
+                {/* Glow */}
+                <div className="absolute w-[60%] h-[60%] bg-purple-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                
+                {/* Section 2 Snapshot Card */}
+                <div className="relative z-10 w-full h-full bg-[#231123] border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl rounded-sm hover:border-white/20 transition-colors group">
+                  {/* Decorative Grid Background - PARALLAX SCALING */}
+                  <motion.div 
+                       className="absolute inset-0" 
+                       style={{ 
+                         opacity: gridOpacity,
+                         scale: gridScale,
+                         backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', 
+                         backgroundSize: '20px 20px',
+                         transformOrigin: 'center center'
+                       }} 
+                  />
+                  
+                  {/* Card Header */}
+                  <div className="relative z-10 flex justify-between items-center border-b border-white/10 pb-4">
+                     <div className="flex gap-2">
+                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-red-500/50 transition-colors" />
+                       <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-yellow-500/50 transition-colors" />
+                     </div>
+                     <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-widest text-white/40">02 // The Reality</span>
+                  </div>
+                  
+                  {/* Card Content */}
+                  <div className="relative z-10 mt-4 flex-1 flex flex-col justify-center">
+                     <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-tight mb-4">
+                       Marketing has never been <span className="italic text-white/50">louder.</span>
+                     </h3>
+                     <div className="space-y-3 opacity-30">
+                        <div className="h-1 w-full bg-gradient-to-r from-white to-transparent rounded" />
+                        <div className="h-1 w-3/4 bg-gradient-to-r from-white to-transparent rounded" />
+                        <div className="h-1 w-5/6 bg-gradient-to-r from-white to-transparent rounded" />
+                     </div>
+                  </div>
+
+                  {/* Card Footer / Visual Data */}
+                  <div className="relative z-10 mt-auto pt-6 border-t border-white/10 flex justify-between items-end">
+                      <div className="flex gap-1 items-end h-12 opacity-60">
+                         <div className="w-2 bg-white/20 h-[40%]" />
+                         <div className="w-2 bg-white/40 h-[60%]" />
+                         <div className="w-2 bg-white/20 h-[30%]" />
+                         <div className="w-2 bg-white/80 h-[100%] animate-pulse" />
+                         <div className="w-2 bg-white/30 h-[50%]" />
+                         <div className="w-2 bg-white/50 h-[70%]" />
+                      </div>
+                      <div className="text-right">
+                        <span className="block font-pixel text-[8px] text-white/30 mb-1">SIGNAL_TO_NOISE</span>
+                        <span className="block font-mono text-xs text-red-400">CRITICAL</span>
+                      </div>
+                  </div>
+                </div>
+             </motion.div>
+
+             {/* Scroll Indicator */}
+             <motion.div 
+               style={{ opacity: sideOpacity }}
+               className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+             >
+                <span className="font-pixel text-[8px] uppercase tracking-widest text-white/30">SCROLL</span>
+                <ArrowDown className="w-4 h-4 text-white/40 animate-bounce" />
+             </motion.div>
+          </div>
+
+          {/* RIGHT COLUMN - Stacked Carousel */}
           <motion.div 
             style={{ opacity: sideOpacity, y: rightY }}
             className="lg:col-span-4 flex flex-col justify-end h-full order-3 relative z-10 py-12 pl-8"
           >
              <div className="h-full flex flex-col justify-end">
                 <div className="flex flex-col gap-8 w-full max-w-sm ml-auto">
-                   {/* Simplified Header - Removed "Latest Work" text for decluttering */}
-                   <div className="flex items-center gap-3 mb-2 justify-end opacity-0">
+                   <div className="flex items-center gap-3 mb-2 justify-end">
+                      <span className="font-mono text-white/40 text-xs tracking-wider uppercase">Latest Work</span>
                       <div className="h-[1px] w-8 bg-white/20" />
                    </div>
                    
@@ -131,36 +214,26 @@ export function Hero() {
                              }}
                              exit={{ opacity: 0, scale: 0.9, y: -40 }}
                              transition={{ duration: 0.5, ease: "easeInOut" }}
-                             className="absolute inset-0 w-full h-full bg-white border border-black/10 rounded-none overflow-hidden shadow-sm origin-bottom"
+                             className="absolute inset-0 w-full h-full bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl origin-bottom"
                              onClick={handleNext}
                            >
-                              {/* Clean White Background for Swedish Style */}
-                              <div className="absolute inset-0 z-0 bg-white">
-                                {/* Optional: Technical Grid on Card */}
-                                <div 
-                                  className="absolute inset-0 opacity-[0.3]"
-                                  style={{
-                                    backgroundImage: `linear-gradient(#E5E5E5 1px, transparent 1px), linear-gradient(90deg, #E5E5E5 1px, transparent 1px)`,
-                                    backgroundSize: '20px 20px'
-                                  }}
-                                />
-                              </div>
-
-                              {/* Overlay to darken background cards - Adjusted for images */}
-                              {diff > 0 && <div className="absolute inset-0 bg-white/80 backdrop-blur-[1px] z-20 transition-all duration-500" />}
+                              {/* Overlay to darken background cards */}
+                              {diff > 0 && <div className="absolute inset-0 bg-primary/40 z-20 transition-all" />}
                               
-                              <div className="absolute top-4 right-4 flex gap-2 z-20">
-                                <div className="w-3 h-3 rounded-full border border-black/20" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 z-0" />
+                              
+                              <div className="absolute top-4 right-4 flex gap-2 z-10">
+                                <div className={`w-2 h-2 rounded-full animate-pulse ${study.color}`} />
                               </div>
 
-                              <div className="absolute bottom-6 left-6 pr-4 z-20">
-                                  <span className="block font-mono text-[10px] uppercase tracking-widest text-black/40 mb-2">
+                              <div className="absolute bottom-6 left-6 pr-4 z-10">
+                                  <span className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-2">
                                     Case Study {study.id}
                                   </span>
-                                  <span className="block font-serif text-2xl text-black mb-2 leading-none">
+                                  <span className="block font-serif text-2xl text-white mb-2 leading-none">
                                     {study.client}
                                   </span>
-                                  <p className="font-mono text-black/60 text-[10px] leading-relaxed line-clamp-2">
+                                  <p className="font-mono text-white/40 text-[10px] leading-relaxed line-clamp-2">
                                     // {study.category}<br/>
                                     {study.desc}
                                   </p>
@@ -177,17 +250,17 @@ export function Hero() {
                           {caseStudies.map((_, idx) => (
                             <div 
                               key={idx}
-                              className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-black" : "w-2 bg-black/20"}`}
+                              className={`h-1 rounded-full transition-all duration-300 ${idx === activeIndex ? "w-8 bg-white" : "w-2 bg-white/20"}`}
                             />
                           ))}
                       </div>
                       
                       <button 
                         onClick={handleNext}
-                        className="p-2 rounded-full border border-black/20 hover:bg-black hover:text-white transition-all group"
+                        className="p-2 rounded-full border border-white/20 hover:bg-white hover:text-primary transition-all group"
                         aria-label="Next case study"
                       >
-                         <ChevronRight className="w-5 h-5 text-black group-hover:text-white transition-colors" />
+                         <ChevronRight className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
                       </button>
                    </div>
                 </div>
