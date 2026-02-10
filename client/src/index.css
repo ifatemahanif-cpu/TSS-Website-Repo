@@ -9,9 +9,9 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-pixel: 'Press Start 2P', cursive;
 
-  /* PAGE BACKGROUND - Off-White (Accent) */
-  --color-background: #F7F7F9; 
-  --color-foreground: #000000;
+  /* PAGE BACKGROUND - Black */
+  --color-background: #000000; 
+  --color-foreground: #F7F7F9; /* Off-White text */
 
   /* PRIMARY - Black */
   --color-primary: #000000; 
@@ -25,14 +25,14 @@
   --color-accent: #F7F7F9;
   --color-accent-foreground: #000000;
 
-  --color-muted: #e4e4e7; 
-  --color-muted-foreground: #71717a;
+  --color-muted: #1a1a1a; 
+  --color-muted-foreground: #a1a1aa;
 
-  --color-card: #FFFFFF;
-  --color-card-foreground: #000000;
+  --color-card: #121212;
+  --color-card-foreground: #F7F7F9;
 
   --color-border: #20FC8F; /* Neon Green borders */
-  --color-input: #e4e4e7;
+  --color-input: #27272a;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -57,7 +57,7 @@
   }
   
   .glass-panel {
-    @apply bg-white/60 backdrop-blur-md border border-white/40 shadow-xl;
+    @apply bg-black/60 backdrop-blur-md border border-white/20 shadow-xl;
   }
 
   .serif-display {
