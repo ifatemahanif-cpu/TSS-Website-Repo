@@ -45,26 +45,27 @@ export function Hero() {
   const sideOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -120]);
   const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 120]);
+  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[130vh]"
+      className="relative h-[115vh]"
       style={{ backgroundColor: "#0C0A3E" }}
       data-testid="hero-section"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
-        <div className="flex-1 flex flex-col lg:flex-row w-full relative gap-8 lg:gap-16 px-6 md:px-12 lg:px-20">
+        <div className="flex-1 flex flex-col lg:flex-row w-full relative gap-6 lg:gap-10 px-6 md:px-10 lg:px-16 items-center">
 
           <motion.div
             style={{ opacity: sideOpacity, y: leftY }}
             className="lg:w-1/2 flex flex-col justify-center relative z-10"
           >
-            <div className="pt-20 lg:pt-0 lg:max-w-xl">
+            <div className="pt-16 lg:pt-0">
               <h1
-                className="leading-[0.85] mb-8"
+                className="leading-[0.85] mb-6"
                 style={{
                   fontSize: "clamp(3rem, 8vw, 7rem)",
                   letterSpacing: "-0.04em",
@@ -83,7 +84,7 @@ export function Hero() {
               </h1>
 
               <p
-                className="font-sans text-base md:text-lg max-w-sm leading-relaxed mb-10"
+                className="font-sans text-base md:text-lg max-w-sm leading-relaxed mb-8"
                 style={{ color: "rgba(253,232,233,0.5)" }}
               >
                 We fix the thinking before we fix the marketing. Most problems aren't execution problems — they're clarity problems.
@@ -164,6 +165,27 @@ export function Hero() {
             ))}
           </motion.div>
         </div>
+
+        <motion.div
+          style={{ opacity: scrollIndicatorOpacity }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+          data-testid="scroll-indicator"
+        >
+          <span
+            className="font-mono text-[10px] uppercase tracking-[0.3em]"
+            style={{ color: "rgba(253,232,233,0.4)" }}
+          >
+            Scroll
+          </span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="font-mono text-sm"
+            style={{ color: "rgba(253,232,233,0.4)" }}
+          >
+            ↓
+          </motion.div>
+        </motion.div>
 
         <motion.div
           style={{ opacity: overlayOpacity }}
