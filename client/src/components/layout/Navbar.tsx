@@ -20,7 +20,7 @@ export function Navbar() {
   return (
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12 transition-all duration-300",
-      scrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-4" : "bg-transparent"
+      scrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-4" : "bg-transparent border-b border-white/10"
     )}>
       <div className="flex items-center gap-2">
         <span className={cn(
