@@ -67,16 +67,16 @@ export function Hero() {
               <h1
                 className="leading-[0.85] mb-6"
                 style={{
-                  fontSize: "clamp(3rem, 8vw, 7rem)",
+                  fontSize: "clamp(3.5rem, 10vw, 9rem)",
                   letterSpacing: "-0.04em",
                   fontWeight: 400,
                   color: "#FDE8E9",
                 }}
               >
-                <span className="font-serif italic block opacity-70" style={{ fontSize: "0.4em", marginBottom: "0.5rem" }}>
+                <span className="font-serif italic block opacity-70" style={{ fontSize: "0.35em", marginBottom: "0.5rem" }}>
                   We're
                 </span>
-                <span className="font-pixel block" style={{ lineHeight: 1.2, fontSize: "0.35em" }}>
+                <span className="font-pixel block" style={{ lineHeight: 1.3, fontSize: "0.45em" }}>
                   THE STORY
                   <br />
                   SHAPERS.
