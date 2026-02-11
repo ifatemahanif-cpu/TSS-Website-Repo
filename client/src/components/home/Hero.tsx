@@ -108,9 +108,7 @@ export function Hero() {
                   e.currentTarget.style.backgroundColor = "#7B1E7A";
                   e.currentTarget.style.color = "#FDE8E9";
                 }}
-              >
-                Initialize Engine →
-              </a>
+              >Let's talk →</a>
             </div>
           </motion.div>
 
