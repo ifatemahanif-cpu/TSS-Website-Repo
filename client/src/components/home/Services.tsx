@@ -42,25 +42,25 @@ export function Services() {
   ];
 
   return (
-    <section className="py-24 px-8 md:px-12 bg-background text-foreground">
+    <section className="py-24 px-8 md:px-12 bg-stone-100 text-foreground">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
         
         <div className="lg:col-span-5">
            <div className="sticky top-32">
-             <span className="text-secondary font-medium tracking-widest text-sm uppercase mb-4 block">How We Work</span>
-             <h2 className="text-4xl md:text-5xl font-serif mb-8 text-foreground">
+             <span className="text-primary font-medium tracking-widest text-sm uppercase mb-4 block">How We Work</span>
+             <h2 className="text-4xl md:text-5xl font-serif mb-8">
                Interactive Discovery.
              </h2>
              <p className="text-lg text-muted-foreground mb-12">
                We don't just deliver decks. We build systems that let your team keep running after we leave.
              </p>
              
-             <div className="bg-card/5 p-8 rounded-xl shadow-sm border border-border/20 backdrop-blur-sm">
-               <h3 className="font-serif text-xl mb-4 text-foreground">Ready to start?</h3>
+             <div className="bg-white p-8 rounded-xl shadow-sm border border-border">
+               <h3 className="font-serif text-xl mb-4">Ready to start?</h3>
                <p className="text-muted-foreground mb-6 text-sm">
                  Let's fix the thinking before we fix the marketing.
                </p>
-               <button className="w-full bg-secondary text-secondary-foreground py-3 rounded hover:bg-secondary/80 transition-colors font-medium">
+               <button className="w-full bg-foreground text-background py-3 rounded hover:bg-primary transition-colors font-medium">
                  Book a Discovery Call
                </button>
              </div>
@@ -70,19 +70,19 @@ export function Services() {
         <div className="lg:col-span-7">
           <Accordion type="single" collapsible className="w-full space-y-4">
             {services.map((service) => (
-              <AccordionItem key={service.id} value={service.id} className="bg-card/5 border-none rounded-lg px-6 shadow-sm data-[state=open]:ring-1 data-[state=open]:ring-secondary/50">
+              <AccordionItem key={service.id} value={service.id} className="bg-white border-none rounded-lg px-6 shadow-sm data-[state=open]:ring-1 data-[state=open]:ring-primary/20">
                 <AccordionTrigger className="hover:no-underline py-6">
                   <div className="flex flex-col items-start text-left gap-1">
-                    <span className="text-xl font-serif font-medium text-foreground">{service.title}</span>
+                    <span className="text-xl font-serif font-medium">{service.title}</span>
                     <span className="text-sm text-muted-foreground font-normal">{service.subtitle}</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="pt-2 pb-6 pl-4 border-l-2 border-secondary/20 ml-2">
+                  <div className="pt-2 pb-6 pl-4 border-l-2 border-primary/20 ml-2">
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {service.items.map((item, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <div className="w-1.5 h-1.5 rounded-full bg-secondary" />
+                        <li key={idx} className="flex items-center gap-2 text-sm">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                           {item}
                         </li>
                       ))}

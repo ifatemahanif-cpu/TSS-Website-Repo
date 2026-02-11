@@ -46,7 +46,7 @@ export function Team() {
             <div key={i} className="group relative">
               <div className="aspect-[3/4] bg-muted mb-6 overflow-hidden rounded-lg">
                  {/* Placeholder for team image - in a real app would be real photos */}
-                 <div className="w-full h-full bg-white/5 flex items-center justify-center text-muted-foreground group-hover:scale-105 transition-transform duration-700">
+                 <div className="w-full h-full bg-stone-200 flex items-center justify-center text-stone-400 group-hover:scale-105 transition-transform duration-700">
                     [Photo: {member.name}]
                  </div>
               </div>
