@@ -38,15 +38,7 @@ const engineCells = Array.from({ length: 48 });
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [seed, setSeed] = useState(9938210);
   const [shapeState, setShapeState] = useState(0);
-
-  useEffect(() => {
-    const seedTimer = setInterval(() => {
-      setSeed(Math.floor(Math.random() * 9999999));
-    }, 2000);
-    return () => clearInterval(seedTimer);
-  }, []);
 
   useEffect(() => {
     const shapeTimer = setInterval(() => {
@@ -212,12 +204,7 @@ export function Hero() {
                 </motion.div>
               </div>
 
-              <div
-                className="absolute bottom-6 left-6 font-mono text-[10px] leading-relaxed z-10"
-                style={{ color: "rgba(253,232,233,0.2)" }}
-              >
-                SEED: {seed}
-              </div>
+
             </motion.div>
           </div>
 
