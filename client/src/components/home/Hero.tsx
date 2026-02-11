@@ -34,6 +34,20 @@ const caseStudies = [
   },
 ];
 
+function AnimatedDots() {
+  const dots = [".", "..", "..."];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % dots.length);
+    }, 800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <span style={{ display: "inline-block", minWidth: "1.5em", textAlign: "left" }}>{dots[index]}</span>;
+}
+
 function TypewriterHeading() {
   const text = "Our work";
   const [displayedCount, setDisplayedCount] = useState(0);
@@ -114,7 +128,7 @@ export function Hero() {
                 <span className="font-pixel block" style={{ lineHeight: 1.3, fontSize: "0.45em" }}>
                   THE STORY
                   <br />
-                  SHAPERS.
+                  SHAPERS<AnimatedDots />
                 </span>
               </h1>
 
