@@ -9,30 +9,30 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-pixel: 'Press Start 2P', cursive;
 
-  /* PAGE BACKGROUND - Warm Beige */
-  --color-background: #EBEBD3; 
-  --color-foreground: #083D77; /* Deep Blue text */
+  /* PAGE BACKGROUND - Accent (Light Pink/White) */
+  --color-background: #FDE8E9; 
+  --color-foreground: #0C0A3E; /* Primary text */
 
-  /* PRIMARY - Deep Blue */
-  --color-primary: #083D77; 
-  --color-primary-foreground: #EBEBD3; /* Beige text on blue */
+  /* PRIMARY - Deep Purple/Blue */
+  --color-primary: #0C0A3E; 
+  --color-primary-foreground: #FDE8E9; /* Accent text on primary */
 
-  /* SECONDARY - Vibrant Pink/Red */
-  --color-secondary: #DA4167;
-  --color-secondary-foreground: #EBEBD3;
+  /* SECONDARY - Purple/Magenta */
+  --color-secondary: #7B1E7A;
+  --color-secondary-foreground: #FDE8E9;
 
-  /* ACCENT - Beige (Redundant but mapped for components) */
-  --color-accent: #EBEBD3;
-  --color-accent-foreground: #083D77;
+  /* ACCENT - Light Pink/White (Redundant but mapped for components) */
+  --color-accent: #FDE8E9;
+  --color-accent-foreground: #0C0A3E;
 
-  --color-muted: #dcdcc0; /* Slightly darker beige */
-  --color-muted-foreground: #083D77; /* Blue text */
+  --color-muted: #e6d0d1; /* Slightly darker accent */
+  --color-muted-foreground: #0C0A3E; 
 
   --color-card: #ffffff;
-  --color-card-foreground: #083D77;
+  --color-card-foreground: #0C0A3E;
 
-  --color-border: #DA4167; /* Pink borders for pop */
-  --color-input: #dcdcc0;
+  --color-border: #7B1E7A; /* Secondary borders */
+  --color-input: #e6d0d1;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
