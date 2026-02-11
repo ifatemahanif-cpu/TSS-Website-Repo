@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const caseStudies = [
   {
@@ -33,6 +33,41 @@ const caseStudies = [
     output: "1,000+ / Quarter",
   },
 ];
+
+function TypewriterHeading() {
+  const text = "Our work";
+  const [displayedCount, setDisplayedCount] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    if (!deleting) {
+      if (displayedCount < text.length) {
+        timeout = setTimeout(() => setDisplayedCount((c) => c + 1), 120);
+      } else {
+        timeout = setTimeout(() => setDeleting(true), 2000);
+      }
+    } else {
+      if (displayedCount > 0) {
+        timeout = setTimeout(() => setDisplayedCount((c) => c - 1), 60);
+      } else {
+        timeout = setTimeout(() => setDeleting(false), 500);
+      }
+    }
+    return () => clearTimeout(timeout);
+  }, [displayedCount, deleting]);
+
+  return (
+    <h2
+      className="font-pixel text-xs uppercase tracking-wider mb-4"
+      style={{ color: "rgba(253,232,233,0.5)" }}
+      data-testid="text-our-work"
+    >
+      {text.slice(0, displayedCount)}
+      <span className="inline-block w-[2px] h-[1em] ml-1 align-middle" style={{ backgroundColor: "rgba(253,232,233,0.5)", animation: "blink 1s step-end infinite" }} />
+    </h2>
+  );
+}
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -116,13 +151,8 @@ export function Hero() {
             style={{ opacity: sideOpacity, y: rightY }}
             className="lg:w-1/2 flex flex-col justify-center relative z-10"
           >
-            <h2
-              className="font-pixel text-xs uppercase tracking-wider mb-4"
-              style={{ color: "rgba(253,232,233,0.5)" }}
-              data-testid="text-our-work"
-            >
-              Our work
-            </h2>
+            <TypewriterHeading />
+
             <div
               className="grid grid-cols-4 px-4 py-2 text-[10px] font-mono uppercase tracking-wider"
               style={{
