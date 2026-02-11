@@ -45,7 +45,7 @@ function AnimatedDots() {
     return () => clearInterval(interval);
   }, []);
 
-  return <span style={{ display: "inline-block", minWidth: "1.5em", textAlign: "left" }}>{dots[index]}</span>;
+  return <span style={{ display: "inline-block", minWidth: "1.5em", textAlign: "left", letterSpacing: "-0.15em" }}>{dots[index]}</span>;
 }
 
 function TypewriterHeading() {
