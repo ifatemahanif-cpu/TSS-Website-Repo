@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 
 const caseStudies = [
   {
@@ -34,40 +34,18 @@ const caseStudies = [
   },
 ];
 
-const engineCells = Array.from({ length: 48 });
-
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [shapeState, setShapeState] = useState(0);
-
-  useEffect(() => {
-    const shapeTimer = setInterval(() => {
-      setShapeState((prev) => (prev + 1) % 5);
-    }, 3000);
-    return () => clearInterval(shapeTimer);
-  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const centerScale = useTransform(scrollYProgress, [0, 0.5], [1, 2.8]);
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.3], [0.15, 0]);
   const sideOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -120]);
   const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 120]);
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
-
-  const shapeStyles = [
-    { width: 180, height: 180, borderRadius: "0%", rotate: 0, borderStyle: "solid" as const },
-    { width: 140, height: 220, borderRadius: "50%", rotate: 15, borderStyle: "dotted" as const },
-    { width: 260, height: 90, borderRadius: "100px", rotate: -5, borderStyle: "solid" as const },
-    { width: 160, height: 160, borderRadius: "0%", rotate: 0, borderStyle: "solid" as const },
-    { width: 200, height: 200, borderRadius: "20px", rotate: 0, borderStyle: "solid" as const },
-  ];
-
-  const currentShape = shapeStyles[shapeState];
 
   return (
     <section
@@ -134,79 +112,6 @@ export function Hero() {
               </a>
             </div>
           </motion.div>
-
-          <div
-            className="lg:w-[30%] relative flex items-center justify-center z-20"
-            style={{ borderLeft: "1px solid rgba(253,232,233,0.08)", borderRight: "1px solid rgba(253,232,233,0.08)" }}
-          >
-            <motion.div
-              style={{ scale: centerScale }}
-              className="relative w-full h-full flex items-center justify-center"
-            >
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                style={{ opacity: gridOpacity }}
-              >
-                <div
-                  className="w-full h-full grid grid-cols-12 grid-rows-4"
-                  style={{ gap: "1px" }}
-                >
-                  {engineCells.map((_, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        borderRight: "1px solid rgba(253,232,233,0.06)",
-                        borderBottom: "1px solid rgba(253,232,233,0.06)",
-                      }}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-
-              <div className="relative z-10">
-                <motion.div
-                  animate={{
-                    width: currentShape.width,
-                    height: currentShape.height,
-                    borderRadius: currentShape.borderRadius,
-                    rotate: currentShape.rotate,
-                  }}
-                  transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-                  style={{
-                    border: `1px ${currentShape.borderStyle} rgba(123,30,122,0.6)`,
-                    position: "relative",
-                  }}
-                  data-testid="variant-object"
-                >
-                  <motion.div
-                    className="absolute top-1/2 left-1/2"
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      backgroundColor: "#7B1E7A",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                    animate={{ scale: [1, 1.4, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-
-                  <span
-                    className="absolute font-mono text-[9px]"
-                    style={{
-                      top: -18,
-                      left: 0,
-                      color: "rgba(253,232,233,0.3)",
-                    }}
-                  >
-                    Generating...
-                  </span>
-                </motion.div>
-              </div>
-
-
-            </motion.div>
-          </div>
 
           <motion.div
             style={{ opacity: sideOpacity, y: rightY }}
