@@ -116,6 +116,13 @@ export function Hero() {
             style={{ opacity: sideOpacity, y: rightY }}
             className="lg:w-1/2 flex flex-col justify-center relative z-10"
           >
+            <h2
+              className="font-pixel text-xs uppercase tracking-wider mb-4"
+              style={{ color: "rgba(253,232,233,0.5)" }}
+              data-testid="text-our-work"
+            >
+              Our work
+            </h2>
             <div
               className="grid grid-cols-4 px-4 py-2 text-[10px] font-mono uppercase tracking-wider"
               style={{
