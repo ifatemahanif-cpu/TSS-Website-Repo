@@ -56,13 +56,13 @@ export function Hero() {
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
-        <div className="flex-1 flex flex-col lg:flex-row w-full relative">
+        <div className="flex-1 flex flex-col lg:flex-row w-full relative gap-8 lg:gap-16 px-6 md:px-12 lg:px-20">
 
           <motion.div
             style={{ opacity: sideOpacity, y: leftY }}
-            className="lg:w-[35%] flex flex-col justify-center p-6 md:p-10 relative z-10"
+            className="lg:w-1/2 flex flex-col justify-center relative z-10"
           >
-            <div className="pt-16">
+            <div className="pt-20 lg:pt-0 lg:max-w-xl">
               <h1
                 className="leading-[0.85] mb-8"
                 style={{
@@ -115,7 +115,7 @@ export function Hero() {
 
           <motion.div
             style={{ opacity: sideOpacity, y: rightY }}
-            className="lg:w-[35%] flex flex-col justify-center relative z-10"
+            className="lg:w-1/2 flex flex-col justify-center relative z-10"
           >
             <div
               className="grid grid-cols-4 px-4 py-2 text-[10px] font-mono uppercase tracking-wider"
@@ -133,7 +133,7 @@ export function Hero() {
             {caseStudies.map((study) => (
               <div
                 key={study.id}
-                className="grid grid-cols-4 px-4 py-4 items-baseline cursor-pointer transition-all duration-200 group"
+                className="grid grid-cols-4 px-4 py-5 items-baseline cursor-pointer transition-all duration-200 group"
                 style={{
                   borderBottom: "1px solid rgba(253,232,233,0.08)",
                   color: "#FDE8E9",
