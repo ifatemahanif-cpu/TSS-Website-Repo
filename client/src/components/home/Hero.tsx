@@ -91,20 +91,19 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const sideOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
-  const leftY = useTransform(scrollYProgress, [0, 0.4], [0, -120]);
-  const rightY = useTransform(scrollYProgress, [0, 0.4], [0, 120]);
-  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
+  const sideOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const leftY = useTransform(scrollYProgress, [0, 0.5], [0, -80]);
+  const rightY = useTransform(scrollYProgress, [0, 0.5], [0, 80]);
+  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[115vh]"
+      className="relative h-screen"
       style={{ backgroundColor: "#0C0A3E" }}
       data-testid="hero-section"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
+      <div className="h-full w-full overflow-hidden flex flex-col">
 
         <div className="flex-1 flex flex-col lg:flex-row w-full relative gap-6 lg:gap-10 px-6 md:px-10 lg:px-16 items-center">
 
@@ -236,13 +235,6 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 pointer-events-none z-0"
-          aria-hidden="true"
-        >
-          <div className="w-full h-full" style={{ backgroundColor: "#0C0A3E" }} />
-        </motion.div>
       </div>
     </section>
   );
