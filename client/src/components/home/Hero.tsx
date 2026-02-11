@@ -1,37 +1,18 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [shapeState, setShapeState] = useState(0);
   const orbRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setShapeState((prev) => (prev + 1) % 5);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const centerScale = useTransform(scrollYProgress, [0, 0.5], [1, 2.5]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
   const contentY = useTransform(scrollYProgress, [0, 0.4], [0, -80]);
   const overlayOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
-
-  const shapeStyles = [
-    { width: 160, height: 160, borderRadius: "0%", rotate: 0, borderStyle: "solid" as const },
-    { width: 120, height: 200, borderRadius: "50%", rotate: 15, borderStyle: "dotted" as const },
-    { width: 220, height: 80, borderRadius: "100px", rotate: -5, borderStyle: "solid" as const },
-    { width: 140, height: 140, borderRadius: "0%", rotate: 20, borderStyle: "solid" as const },
-    { width: 180, height: 180, borderRadius: "20px", rotate: 0, borderStyle: "solid" as const },
-  ];
-
-  const currentShape = shapeStyles[shapeState];
 
   const handleOrbMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!orbRef.current) return;
@@ -151,43 +132,6 @@ export function Hero() {
           </div>
         </motion.div>
 
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <motion.div style={{ scale: centerScale }}>
-            <motion.div
-              animate={{
-                width: currentShape.width,
-                height: currentShape.height,
-                borderRadius: currentShape.borderRadius,
-                rotate: currentShape.rotate,
-              }}
-              transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-              style={{
-                border: `1px ${currentShape.borderStyle} rgba(253,232,233,0.25)`,
-                position: "relative",
-              }}
-              data-testid="variant-object"
-            >
-              <motion.div
-                className="absolute top-1/2 left-1/2"
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  backgroundColor: "#FDE8E9",
-                  transform: "translate(-50%, -50%)",
-                }}
-                animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span
-                className="absolute font-mono text-[9px]"
-                style={{ top: -18, left: 0, color: "rgba(253,232,233,0.25)" }}
-              >
-                Generating...
-              </span>
-            </motion.div>
-          </motion.div>
-        </div>
 
         <div
           className="fixed top-0 left-0 w-full h-full pointer-events-none z-[900]"
