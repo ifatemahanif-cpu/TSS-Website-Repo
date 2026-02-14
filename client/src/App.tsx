@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import OurStory from "@/pages/our-story";
 import CollectiveModel from "@/pages/collective-model";
+import Join from "@/pages/join";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/our-story" component={OurStory} />
       <Route path="/collective-model" component={CollectiveModel} />
+      <Route path="/join" component={Join} />
       <Route component={NotFound} />
     </Switch>
   );
