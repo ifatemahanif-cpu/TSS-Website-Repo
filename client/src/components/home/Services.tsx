@@ -1,6 +1,86 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const services = [
+  {
+    id: "clarity",
+    title: "Clarity & Direction",
+    subtitle: "You've outgrown gut decisions. Investors want a story. Your team wants a plan. You want both — yesterday.",
+    items: [
+      "Brand audit + competitive landscape",
+      "Positioning & differentiation",
+      "Messaging hierarchy + value proposition",
+      "GTM strategy + 90-day roadmap",
+    ],
+  },
+  {
+    id: "website",
+    title: "Website & Messaging",
+    subtitle: "Traffic is fine. Conversions aren't. People land, scroll, leave. Something's off — you just can't name it.",
+    items: [
+      "Website structure + information architecture",
+      "Homepage + service page copy",
+      "Conversion-led messaging + CTAs",
+      "Landing page optimisation",
+    ],
+  },
+  {
+    id: "content",
+    title: "Content Systems",
+    subtitle: "Your founder posts when they remember. Your social feels random. You know consistency matters — you just can't maintain it.",
+    items: [
+      "Content pillars + editorial strategy",
+      "Calendar + distribution plan",
+      "Templates + storytelling frameworks",
+      "Repurposing system (AI-assisted where it helps)",
+    ],
+  },
+  {
+    id: "discovery",
+    title: "Discoverability",
+    subtitle: "You're doing good work. But when someone searches for what you do, you don't show up. Your competitors do.",
+    items: [
+      "SEO strategy + content opportunity mapping",
+      "On-page optimisation + internal linking",
+      "AEO-ready structuring (answers + intent)",
+      "Authority-building plan",
+    ],
+  },
+  {
+    id: "campaigns",
+    title: "Brand & Campaigns",
+    subtitle: "You've done the one-off launches. Now you need marketing that compounds — not campaigns that spike and fade.",
+    items: [
+      "Brand marketing strategy + campaign calendar",
+      "Integrated campaign planning",
+      "Launch messaging + creative direction",
+      "Always-on storytelling system",
+    ],
+  },
+  {
+    id: "fractional",
+    title: "Fractional Leadership",
+    subtitle: "You're not ready for a full-time CMO. But you're past the point where the founder can do it all. You need a senior mind in the room — not another agency.",
+    items: [
+      "Fractional CMO / advisory retainers",
+      "Quarterly planning + prioritisation",
+      "Campaign reviews + performance dashboards",
+      "Team enablement + operating playbooks",
+    ],
+  },
+  {
+    id: "ai",
+    title: "AI-Powered Solutions",
+    subtitle: "Some problems don't need more people. They need smarter systems. We build custom AI workflows for content, research, reporting, and ops — tailored to your stack, your team, your constraints.",
+    items: [
+      "AI content assistants tuned to your voice",
+      "Automated reporting + insight generation",
+      "Research and competitive monitoring systems",
+      "Workflow automation for lean teams",
+    ],
+  },
+];
+
 const questions = [
   {
     id: 1,
@@ -128,16 +208,21 @@ const areaLabels: Record<ScoreKey, { title: string; description: string }> = {
 };
 
 export function Services() {
-  const [currentStep, setCurrentStep] = useState(-1);
+  const [expandedService, setExpandedService] = useState<string | null>(null);
+  const [quizActive, setQuizActive] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [scores, setScores] = useState<Record<ScoreKey, number>>({
     clarity: 0, website: 0, content: 0, discovery: 0, campaigns: 0, fractional: 0, ai: 0,
   });
   const [direction, setDirection] = useState(1);
 
-  const isStarted = currentStep >= 0;
-  const isFinished = currentStep >= questions.length;
-  const progress = isStarted ? Math.min(currentStep / questions.length, 1) : 0;
+  const isFinished = quizActive && currentStep >= questions.length;
+  const progress = quizActive ? Math.min(currentStep / questions.length, 1) : 0;
+
+  const toggleService = useCallback((id: string) => {
+    setExpandedService(prev => prev === id ? null : id);
+  }, []);
 
   const handleAnswer = useCallback((questionIndex: number, optionIndex: number) => {
     if (answers[questionIndex] !== undefined) return;
@@ -157,20 +242,23 @@ export function Services() {
       }
     }
     setScores(freshScores);
-
     setDirection(1);
     setTimeout(() => {
       setCurrentStep(questionIndex + 1);
     }, 400);
   }, [answers]);
 
-  const handleStart = useCallback(() => {
+  const handleStartQuiz = useCallback(() => {
+    setQuizActive(true);
     setCurrentStep(0);
+    setAnswers({});
+    setScores({ clarity: 0, website: 0, content: 0, discovery: 0, campaigns: 0, fractional: 0, ai: 0 });
     setDirection(1);
   }, []);
 
   const handleRestart = useCallback(() => {
-    setCurrentStep(-1);
+    setQuizActive(false);
+    setCurrentStep(0);
     setAnswers({});
     setScores({ clarity: 0, website: 0, content: 0, discovery: 0, campaigns: 0, fractional: 0, ai: 0 });
     setDirection(-1);
@@ -196,174 +284,445 @@ export function Services() {
         }}
       >
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
-            <div className="lg:w-[42%] shrink-0">
+          <div className="mb-10 md:mb-14">
+            <span
+              className="block mb-3 tracking-[0.3em] uppercase"
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.7rem",
+                color: "#7B1E7A",
+                letterSpacing: "0.3em",
+              }}
+              data-testid="text-services-label"
+            >
+              004 / How We Work
+            </span>
+            <h2
+              className="mb-5"
+              style={{
+                color: "#FDE8E9",
+                lineHeight: 1.1,
+                letterSpacing: "-0.03em",
+              }}
+              data-testid="text-services-heading"
+            >
               <span
-                className="block mb-3 tracking-[0.3em] uppercase"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.7rem",
-                  color: "#7B1E7A",
-                  letterSpacing: "0.3em",
-                }}
-                data-testid="text-services-label"
-              >
-                004 / How We Work
-              </span>
-              <h2
-                className="mb-5"
-                style={{
-                  color: "#FDE8E9",
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.03em",
-                }}
-                data-testid="text-services-heading"
-              >
-                <span
-                  style={{
-                    fontFamily: "'Libre Baskerville', serif",
-                    fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
-                    fontWeight: 400,
-                  }}
-                >
-                  Interactive{" "}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
-                    fontWeight: 300,
-                    fontStyle: "italic",
-                    opacity: 0.6,
-                  }}
-                >
-                  Discovery
-                </span>
-              </h2>
-              <p
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                  color: "rgba(253, 232, 233, 0.6)",
-                  lineHeight: 1.8,
+                  fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
+                  fontWeight: 400,
                 }}
-                data-testid="text-services-intro"
               >
-                Not sure what you need? Answer 10 questions. We'll tell you what's missing and where to start.
-              </p>
+                Interactive{" "}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                  opacity: 0.6,
+                }}
+              >
+                Discovery
+              </span>
+            </h2>
+            <p
+              className="max-w-3xl"
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
+                color: "rgba(253, 232, 233, 0.55)",
+                lineHeight: 1.8,
+              }}
+              data-testid="text-services-intro"
+            >
+              We don't just deliver decks. We build systems that let your team keep running after we leave.
+            </p>
+          </div>
 
-              {isStarted && !isFinished && (
-                <div className="mt-8">
-                  <div className="flex items-center justify-between mb-2">
-                    <span
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+            {services.map((service, idx) => (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: idx * 0.06, duration: 0.4 }}
+                style={{
+                  border: `1px solid ${expandedService === service.id ? "rgba(123, 30, 122, 0.5)" : "rgba(253, 232, 233, 0.06)"}`,
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  transition: "border-color 0.3s",
+                  backgroundColor: expandedService === service.id ? "rgba(123, 30, 122, 0.08)" : "rgba(253, 232, 233, 0.02)",
+                }}
+                className={service.id === "ai" ? "md:col-span-2" : ""}
+                data-testid={`card-service-${service.id}`}
+              >
+                <button
+                  onClick={() => toggleService(service.id)}
+                  className="w-full text-left"
+                  style={{
+                    padding: "1.25rem 1.5rem",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    color: "#FDE8E9",
+                  }}
+                  data-testid={`button-toggle-${service.id}`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.5rem",
+                            color: "#7B1E7A",
+                            letterSpacing: "0.15em",
+                            opacity: 0.6,
+                          }}
+                        >
+                          0{idx + 1}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: "'Inter', sans-serif",
+                            fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                            fontWeight: 500,
+                            color: "#FDE8E9",
+                          }}
+                        >
+                          {service.title}
+                        </span>
+                      </div>
+                      <p
+                        style={{
+                          fontFamily: "'Libre Baskerville', serif",
+                          fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
+                          color: "rgba(253, 232, 233, 0.4)",
+                          lineHeight: 1.7,
+                        }}
+                      >
+                        {service.subtitle}
+                      </p>
+                    </div>
+                    <motion.span
+                      animate={{ rotate: expandedService === service.id ? 45 : 0 }}
+                      transition={{ duration: 0.2 }}
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.6rem",
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: "1.2rem",
                         color: "#7B1E7A",
-                        letterSpacing: "0.15em",
+                        opacity: 0.6,
+                        lineHeight: 1,
+                        flexShrink: 0,
+                        marginTop: "0.25rem",
                       }}
                     >
-                      QUESTION {currentStep + 1} / {questions.length}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.6rem",
-                        color: "rgba(253, 232, 233, 0.3)",
-                        letterSpacing: "0.1em",
-                      }}
-                    >
-                      {Math.round(progress * 100)}%
-                    </span>
+                      +
+                    </motion.span>
                   </div>
-                  <div
-                    style={{
-                      height: "2px",
-                      backgroundColor: "rgba(123, 30, 122, 0.2)",
-                      borderRadius: "1px",
-                      overflow: "hidden",
-                    }}
-                  >
+                </button>
+                <AnimatePresence>
+                  {expandedService === service.id && (
                     <motion.div
-                      style={{
-                        height: "100%",
-                        backgroundColor: "#7B1E7A",
-                        borderRadius: "1px",
-                      }}
-                      animate={{ width: `${progress * 100}%` }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
-                    />
-                  </div>
-                </div>
-              )}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <div
+                        style={{
+                          padding: "0 1.5rem 1.25rem 1.5rem",
+                          borderTop: "1px solid rgba(123, 30, 122, 0.15)",
+                          marginTop: "0",
+                          paddingTop: "1rem",
+                        }}
+                      >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {service.items.map((item, itemIdx) => (
+                            <div
+                              key={itemIdx}
+                              className="flex items-start gap-2"
+                            >
+                              <span
+                                style={{
+                                  width: "4px",
+                                  height: "4px",
+                                  borderRadius: "50%",
+                                  backgroundColor: "#7B1E7A",
+                                  flexShrink: 0,
+                                  marginTop: "0.5rem",
+                                }}
+                              />
+                              <span
+                                style={{
+                                  fontFamily: "'Inter', sans-serif",
+                                  fontSize: "0.8rem",
+                                  color: "rgba(253, 232, 233, 0.6)",
+                                  lineHeight: 1.6,
+                                }}
+                              >
+                                {item}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
 
-              {isFinished && (
-                <div className="mt-8">
-                  <div
-                    style={{
-                      height: "2px",
-                      backgroundColor: "#7B1E7A",
-                      borderRadius: "1px",
-                    }}
-                  />
+          <div
+            style={{
+              border: "1px solid rgba(123, 30, 122, 0.25)",
+              borderRadius: "16px",
+              overflow: "hidden",
+            }}
+          >
+            {!quizActive ? (
+              <div
+                className="flex flex-col md:flex-row items-center justify-between gap-6"
+                style={{ padding: "clamp(1.5rem, 3vw, 2.5rem)" }}
+              >
+                <div className="flex-1">
                   <span
-                    className="block mt-2"
+                    className="block mb-2"
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.6rem",
+                      fontSize: "0.55rem",
                       color: "#7B1E7A",
-                      letterSpacing: "0.15em",
+                      letterSpacing: "0.2em",
+                      opacity: 0.7,
                     }}
                   >
-                    DIAGNOSTIC COMPLETE
+                    MARKETING DIAGNOSTIC
                   </span>
-                </div>
-              )}
-            </div>
-
-            <div className="flex-1 w-full lg:w-auto" style={{ minHeight: "420px" }}>
-              <AnimatePresence mode="wait" custom={direction}>
-                {!isStarted && (
-                  <motion.div
-                    key="start"
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ duration: 0.35 }}
-                    className="flex flex-col items-center justify-center text-center"
-                    style={{ minHeight: "420px" }}
+                  <h3
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(1.1rem, 1.6vw, 1.3rem)",
+                      color: "#FDE8E9",
+                      lineHeight: 1.4,
+                      marginBottom: "0.5rem",
+                    }}
                   >
+                    Not sure what you need?
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "0.85rem",
+                      color: "rgba(253, 232, 233, 0.45)",
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    Answer 10 questions. We'll tell you what's missing and where to start.
+                  </p>
+                </div>
+                <button
+                  onClick={handleStartQuiz}
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.15em",
+                    color: "#FDE8E9",
+                    backgroundColor: "#7B1E7A",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "0.9rem 2rem",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    whiteSpace: "nowrap" as const,
+                    flexShrink: 0,
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B2E9A"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
+                  data-testid="button-start-quiz"
+                >
+                  GET OUR RECOMMENDATION
+                </button>
+              </div>
+            ) : (
+              <div style={{ padding: "clamp(1.5rem, 3vw, 2.5rem)" }}>
+                {!isFinished && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.6rem",
+                          color: "#7B1E7A",
+                          letterSpacing: "0.15em",
+                        }}
+                      >
+                        QUESTION {currentStep + 1} / {questions.length}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.6rem",
+                          color: "rgba(253, 232, 233, 0.3)",
+                          letterSpacing: "0.1em",
+                        }}
+                      >
+                        {Math.round(progress * 100)}%
+                      </span>
+                    </div>
                     <div
                       style={{
-                        border: "1px solid rgba(123, 30, 122, 0.3)",
-                        borderRadius: "16px",
-                        padding: "clamp(2rem, 3vw, 3rem)",
-                        maxWidth: "500px",
-                        width: "100%",
+                        height: "2px",
+                        backgroundColor: "rgba(123, 30, 122, 0.2)",
+                        borderRadius: "1px",
+                        overflow: "hidden",
                       }}
                     >
+                      <motion.div
+                        style={{
+                          height: "100%",
+                          backgroundColor: "#7B1E7A",
+                          borderRadius: "1px",
+                        }}
+                        animate={{ width: `${progress * 100}%` }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <AnimatePresence mode="wait" custom={direction}>
+                  {!isFinished && currentStep < questions.length && (
+                    <motion.div
+                      key={`q-${currentStep}`}
+                      custom={direction}
+                      initial={{ opacity: 0, x: direction * 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: direction * -40 }}
+                      transition={{ duration: 0.35 }}
+                    >
                       <span
-                        className="block mb-4"
+                        className="block mb-3"
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.55rem",
                           color: "#7B1E7A",
                           letterSpacing: "0.2em",
-                          opacity: 0.7,
+                          opacity: 0.6,
                         }}
                       >
-                        MARKETING DIAGNOSTIC
+                        Q{String(currentStep + 1).padStart(2, "0")}
                       </span>
                       <h3
                         style={{
                           fontFamily: "'Libre Baskerville', serif",
-                          fontSize: "clamp(1.1rem, 1.8vw, 1.4rem)",
+                          fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
+                          color: "#FDE8E9",
+                          lineHeight: 1.6,
+                          marginBottom: "1.25rem",
+                        }}
+                        data-testid={`text-quiz-question-${currentStep}`}
+                      >
+                        {questions[currentStep].question}
+                      </h3>
+                      <div className="space-y-3">
+                        {questions[currentStep].options.map((option, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleAnswer(currentStep, idx)}
+                            className="w-full text-left"
+                            style={{
+                              fontFamily: "'Inter', sans-serif",
+                              fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
+                              color: answers[currentStep] === idx ? "#FDE8E9" : "rgba(253, 232, 233, 0.6)",
+                              backgroundColor: answers[currentStep] === idx ? "rgba(123, 30, 122, 0.3)" : "rgba(253, 232, 233, 0.03)",
+                              border: `1px solid ${answers[currentStep] === idx ? "rgba(123, 30, 122, 0.6)" : "rgba(253, 232, 233, 0.08)"}`,
+                              borderRadius: "10px",
+                              padding: "0.9rem 1.1rem",
+                              cursor: "pointer",
+                              transition: "all 0.2s",
+                              lineHeight: 1.6,
+                            }}
+                            onMouseEnter={e => {
+                              if (answers[currentStep] !== idx) {
+                                e.currentTarget.style.borderColor = "rgba(123, 30, 122, 0.4)";
+                                e.currentTarget.style.backgroundColor = "rgba(253, 232, 233, 0.05)";
+                              }
+                            }}
+                            onMouseLeave={e => {
+                              if (answers[currentStep] !== idx) {
+                                e.currentTarget.style.borderColor = "rgba(253, 232, 233, 0.08)";
+                                e.currentTarget.style.backgroundColor = "rgba(253, 232, 233, 0.03)";
+                              }
+                            }}
+                            data-testid={`button-quiz-option-${currentStep}-${idx}`}
+                          >
+                            <span className="flex items-start gap-3">
+                              <span
+                                className="shrink-0 mt-0.5"
+                                style={{
+                                  fontFamily: "'JetBrains Mono', monospace",
+                                  fontSize: "0.6rem",
+                                  color: "#7B1E7A",
+                                  opacity: 0.6,
+                                }}
+                              >
+                                {String.fromCharCode(65 + idx)}
+                              </span>
+                              {option.text}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {isFinished && (
+                    <motion.div
+                      key="results"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <div className="mb-6">
+                        <div
+                          style={{
+                            height: "2px",
+                            backgroundColor: "#7B1E7A",
+                            borderRadius: "1px",
+                            marginBottom: "0.75rem",
+                          }}
+                        />
+                        <span
+                          className="block mb-4"
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.55rem",
+                            color: "#7B1E7A",
+                            letterSpacing: "0.2em",
+                          }}
+                        >
+                          DIAGNOSTIC COMPLETE
+                        </span>
+                      </div>
+
+                      <h3
+                        style={{
+                          fontFamily: "'Libre Baskerville', serif",
+                          fontSize: "clamp(1.1rem, 1.5vw, 1.25rem)",
                           color: "#FDE8E9",
                           lineHeight: 1.5,
-                          marginBottom: "1rem",
+                          marginBottom: "0.5rem",
                         }}
+                        data-testid="text-quiz-results-heading"
                       >
-                        Let's find out what's missing.
+                        {topAreas.length > 0
+                          ? "Here's where to focus first."
+                          : "You're in great shape."}
                       </h3>
                       <p
                         style={{
@@ -371,297 +730,141 @@ export function Services() {
                           fontSize: "0.85rem",
                           color: "rgba(253, 232, 233, 0.45)",
                           lineHeight: 1.7,
-                          marginBottom: "2rem",
+                          marginBottom: "1.5rem",
                         }}
                       >
-                        10 quick questions about your brand's marketing. No sign-up. Instant results.
+                        {topAreas.length > 0
+                          ? "Based on your answers, these are the areas where strategic attention would have the most impact."
+                          : "Your marketing foundations look solid. A conversation could still uncover opportunities to compound what's working."}
                       </p>
-                      <button
-                        onClick={handleStart}
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "0.7rem",
-                          letterSpacing: "0.15em",
-                          color: "#FDE8E9",
-                          backgroundColor: "#7B1E7A",
-                          border: "none",
-                          borderRadius: "8px",
-                          padding: "0.9rem 2rem",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B2E9A"; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
-                        data-testid="button-start-quiz"
-                      >
-                        START DIAGNOSTIC
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
 
-                {isStarted && !isFinished && (
-                  <motion.div
-                    key={`q-${currentStep}`}
-                    custom={direction}
-                    initial={{ opacity: 0, x: direction * 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: direction * -40 }}
-                    transition={{ duration: 0.35 }}
-                    style={{ minHeight: "420px" }}
-                    className="flex flex-col justify-center"
-                  >
-                    <span
-                      className="block mb-4"
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.55rem",
-                        color: "#7B1E7A",
-                        letterSpacing: "0.2em",
-                        opacity: 0.6,
-                      }}
-                    >
-                      Q{String(currentStep + 1).padStart(2, "0")}
-                    </span>
-                    <h3
-                      style={{
-                        fontFamily: "'Libre Baskerville', serif",
-                        fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
-                        color: "#FDE8E9",
-                        lineHeight: 1.6,
-                        marginBottom: "1.5rem",
-                      }}
-                      data-testid={`text-quiz-question-${currentStep}`}
-                    >
-                      {questions[currentStep].question}
-                    </h3>
-                    <div className="space-y-3">
-                      {questions[currentStep].options.map((option, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleAnswer(currentStep, idx)}
-                          className="w-full text-left group"
-                          style={{
-                            fontFamily: "'Inter', sans-serif",
-                            fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
-                            color: answers[currentStep] === idx ? "#FDE8E9" : "rgba(253, 232, 233, 0.6)",
-                            backgroundColor: answers[currentStep] === idx ? "rgba(123, 30, 122, 0.3)" : "rgba(253, 232, 233, 0.03)",
-                            border: `1px solid ${answers[currentStep] === idx ? "rgba(123, 30, 122, 0.6)" : "rgba(253, 232, 233, 0.08)"}`,
-                            borderRadius: "10px",
-                            padding: "1rem 1.25rem",
-                            cursor: "pointer",
-                            transition: "all 0.2s",
-                            lineHeight: 1.6,
-                          }}
-                          onMouseEnter={e => {
-                            if (answers[currentStep] !== idx) {
-                              e.currentTarget.style.borderColor = "rgba(123, 30, 122, 0.4)";
-                              e.currentTarget.style.backgroundColor = "rgba(253, 232, 233, 0.05)";
-                            }
-                          }}
-                          onMouseLeave={e => {
-                            if (answers[currentStep] !== idx) {
-                              e.currentTarget.style.borderColor = "rgba(253, 232, 233, 0.08)";
-                              e.currentTarget.style.backgroundColor = "rgba(253, 232, 233, 0.03)";
-                            }
-                          }}
-                          data-testid={`button-quiz-option-${currentStep}-${idx}`}
-                        >
-                          <span className="flex items-start gap-3">
-                            <span
-                              className="shrink-0 mt-0.5"
-                              style={{
-                                fontFamily: "'JetBrains Mono', monospace",
-                                fontSize: "0.6rem",
-                                color: "#7B1E7A",
-                                opacity: 0.6,
-                              }}
-                            >
-                              {String.fromCharCode(65 + idx)}
-                            </span>
-                            {option.text}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {isFinished && (
-                  <motion.div
-                    key="results"
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -40 }}
-                    transition={{ duration: 0.4 }}
-                    style={{ minHeight: "420px" }}
-                    className="flex flex-col justify-center"
-                  >
-                    <span
-                      className="block mb-4"
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.55rem",
-                        color: "#7B1E7A",
-                        letterSpacing: "0.2em",
-                        opacity: 0.7,
-                      }}
-                    >
-                      YOUR RESULTS
-                    </span>
-                    <h3
-                      style={{
-                        fontFamily: "'Libre Baskerville', serif",
-                        fontSize: "clamp(1.1rem, 1.6vw, 1.3rem)",
-                        color: "#FDE8E9",
-                        lineHeight: 1.5,
-                        marginBottom: "0.5rem",
-                      }}
-                      data-testid="text-quiz-results-heading"
-                    >
-                      {topAreas.length > 0
-                        ? "Here's where to focus first."
-                        : "You're in great shape."}
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: "0.85rem",
-                        color: "rgba(253, 232, 233, 0.45)",
-                        lineHeight: 1.7,
-                        marginBottom: "1.5rem",
-                      }}
-                    >
-                      {topAreas.length > 0
-                        ? "Based on your answers, these are the areas where strategic attention would have the most impact."
-                        : "Your marketing foundations look solid. A conversation could still uncover opportunities to compound what's working."}
-                    </p>
-
-                    <div className="space-y-3 mb-8">
-                      {topAreas.length > 0 ? topAreas.map(([key, val], idx) => (
-                        <motion.div
-                          key={key}
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.15 * idx, duration: 0.4 }}
-                          style={{
-                            border: "1px solid rgba(123, 30, 122, 0.3)",
-                            borderRadius: "10px",
-                            padding: "1rem 1.25rem",
-                          }}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+                        {topAreas.length > 0 ? topAreas.map(([key, val], idx) => (
+                          <motion.div
+                            key={key}
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.15 * idx, duration: 0.4 }}
+                            style={{
+                              border: "1px solid rgba(123, 30, 122, 0.3)",
+                              borderRadius: "10px",
+                              padding: "1rem 1.1rem",
+                            }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span
+                                style={{
+                                  fontFamily: "'Inter', sans-serif",
+                                  fontSize: "0.85rem",
+                                  color: "#FDE8E9",
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {areaLabels[key].title}
+                              </span>
+                              <span
+                                style={{
+                                  fontFamily: "'JetBrains Mono', monospace",
+                                  fontSize: "0.5rem",
+                                  color: "#7B1E7A",
+                                  opacity: 0.8,
+                                }}
+                              >
+                                #{idx + 1}
+                              </span>
+                            </div>
+                            <p
                               style={{
                                 fontFamily: "'Inter', sans-serif",
-                                fontSize: "0.9rem",
-                                color: "#FDE8E9",
-                                fontWeight: 500,
+                                fontSize: "0.75rem",
+                                color: "rgba(253, 232, 233, 0.4)",
+                                lineHeight: 1.5,
                               }}
                             >
-                              {areaLabels[key].title}
-                            </span>
-                            <span
+                              {areaLabels[key].description}
+                            </p>
+                            <div className="mt-2" style={{ height: "3px", borderRadius: "2px", backgroundColor: "rgba(123, 30, 122, 0.15)" }}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${Math.min((val / 6) * 100, 100)}%` }}
+                                transition={{ delay: 0.3 + 0.15 * idx, duration: 0.6, ease: "easeOut" }}
+                                style={{
+                                  height: "100%",
+                                  backgroundColor: "#7B1E7A",
+                                  borderRadius: "2px",
+                                }}
+                              />
+                            </div>
+                          </motion.div>
+                        )) : (
+                          <div
+                            className="md:col-span-3"
+                            style={{
+                              border: "1px solid rgba(123, 30, 122, 0.3)",
+                              borderRadius: "10px",
+                              padding: "1rem 1.25rem",
+                            }}
+                          >
+                            <p
                               style={{
-                                fontFamily: "'JetBrains Mono', monospace",
-                                fontSize: "0.55rem",
-                                color: "#7B1E7A",
-                                opacity: 0.8,
+                                fontFamily: "'Inter', sans-serif",
+                                fontSize: "0.85rem",
+                                color: "rgba(253, 232, 233, 0.6)",
+                                lineHeight: 1.7,
                               }}
                             >
-                              PRIORITY {idx + 1}
-                            </span>
+                              No critical gaps detected. Your marketing foundations are stronger than most. Let's talk about what's next.
+                            </p>
                           </div>
-                          <p
-                            style={{
-                              fontFamily: "'Inter', sans-serif",
-                              fontSize: "0.8rem",
-                              color: "rgba(253, 232, 233, 0.45)",
-                              lineHeight: 1.6,
-                            }}
-                          >
-                            {areaLabels[key].description}
-                          </p>
-                          <div className="mt-2" style={{ height: "3px", borderRadius: "2px", backgroundColor: "rgba(123, 30, 122, 0.15)" }}>
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${Math.min((val / 6) * 100, 100)}%` }}
-                              transition={{ delay: 0.3 + 0.15 * idx, duration: 0.6, ease: "easeOut" }}
-                              style={{
-                                height: "100%",
-                                backgroundColor: "#7B1E7A",
-                                borderRadius: "2px",
-                              }}
-                            />
-                          </div>
-                        </motion.div>
-                      )) : (
-                        <div
-                          style={{
-                            border: "1px solid rgba(123, 30, 122, 0.3)",
-                            borderRadius: "10px",
-                            padding: "1rem 1.25rem",
-                          }}
-                        >
-                          <p
-                            style={{
-                              fontFamily: "'Inter', sans-serif",
-                              fontSize: "0.85rem",
-                              color: "rgba(253, 232, 233, 0.6)",
-                              lineHeight: 1.7,
-                            }}
-                          >
-                            No critical gaps detected. Your marketing foundations are stronger than most. Let's talk about what's next.
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                        )}
+                      </div>
 
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        onClick={handleRestart}
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "0.65rem",
-                          letterSpacing: "0.1em",
-                          color: "rgba(253, 232, 233, 0.5)",
-                          backgroundColor: "transparent",
-                          border: "1px solid rgba(253, 232, 233, 0.12)",
-                          borderRadius: "8px",
-                          padding: "0.75rem 1.5rem",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(253, 232, 233, 0.25)"; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(253, 232, 233, 0.12)"; }}
-                        data-testid="button-retake-quiz"
-                      >
-                        RETAKE
-                      </button>
-                      <button
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "0.65rem",
-                          letterSpacing: "0.1em",
-                          color: "#FDE8E9",
-                          backgroundColor: "#7B1E7A",
-                          border: "none",
-                          borderRadius: "8px",
-                          padding: "0.75rem 1.5rem",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B2E9A"; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
-                        data-testid="button-book-call"
-                      >
-                        BOOK A DISCOVERY CALL
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          onClick={handleRestart}
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.6rem",
+                            letterSpacing: "0.1em",
+                            color: "rgba(253, 232, 233, 0.5)",
+                            backgroundColor: "transparent",
+                            border: "1px solid rgba(253, 232, 233, 0.12)",
+                            borderRadius: "8px",
+                            padding: "0.7rem 1.25rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(253, 232, 233, 0.25)"; }}
+                          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(253, 232, 233, 0.12)"; }}
+                          data-testid="button-retake-quiz"
+                        >
+                          RETAKE
+                        </button>
+                        <button
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.6rem",
+                            letterSpacing: "0.1em",
+                            color: "#FDE8E9",
+                            backgroundColor: "#7B1E7A",
+                            border: "none",
+                            borderRadius: "8px",
+                            padding: "0.7rem 1.25rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B2E9A"; }}
+                          onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
+                          data-testid="button-book-call"
+                        >
+                          BOOK A DISCOVERY CALL
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
           </div>
         </div>
       </div>
