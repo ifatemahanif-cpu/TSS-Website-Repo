@@ -127,9 +127,7 @@ export function Team() {
                 letterSpacing: "0.3em",
               }}
               data-testid="text-team-label"
-            >
-              003 / The 3 Marketeers
-            </span>
+            >003 / Team</span>
             <h2
               className="mb-4"
               style={{
