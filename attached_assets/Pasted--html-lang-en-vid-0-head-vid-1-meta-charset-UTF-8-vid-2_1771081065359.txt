@@ -1,0 +1,335 @@
+<html lang="en" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Uplane | Autonomous Ad Intelligence</title>
+    <script src="https://cdn.tailwindcss.com" vid="5"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="6">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="7">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet" vid="8">
+    <style vid="9">
+        :root {
+            --c-salmon: #FF9678;
+            --c-periwinkle: #CCD7E4;
+            --c-sage: #C8DFA8;
+            --c-cream: #F5F2EA;
+            --c-ink: #1A1A18;
+            --c-paper: #FFFFFF;
+        }
+
+        body {
+            background-color: #000; 
+            font-family: 'Inter', sans-serif;
+            color: var(--c-ink);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .serif {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 0.95;
+        }
+
+        .card {
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        
+        .blob-mask {
+            clip-path: path('M140.5,20.5 C220.5,-20.5 300.5,50.5 280.5,150.5 C260.5,250.5 180.5,300.5 100.5,280.5 C20.5,260.5 -20.5,100.5 40.5,40.5 C70.5,10.5 100.5,40.5 140.5,20.5 Z');
+        }
+
+        .blob-outline {
+            fill: transparent;
+            stroke: var(--c-ink);
+            stroke-width: 0.75px;
+        }
+
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(-20px, -10px); }
+        }
+
+        .animate-float {
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .animate-drift {
+            animation: drift 20s linear infinite alternate;
+        }
+
+        
+        .text-balance {
+            text-wrap: balance;
+        }
+
+        
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .thin-line {
+            height: 1px;
+            background-color: var(--c-ink);
+            opacity: 0.2;
+            width: 100%;
+        }
+
+        .link-btn {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .link-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .link-btn:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-4 lg:p-6" vid="10">
+
+    
+    <nav class="fixed top-8 left-0 w-full z-50 pointer-events-none px-8 mix-blend-difference text-white" vid="11">
+        <div class="flex justify-between items-center max-w-[1800px] mx-auto" vid="12">
+            <div class="text-2xl serif pointer-events-auto cursor-pointer" vid="13">Uplane.</div>
+            <div class="hidden md:flex gap-8 text-sm font-medium pointer-events-auto" vid="14">
+                <a href="#" class="hover:opacity-70 transition-opacity" vid="15">Intelligence</a>
+                <a href="#" class="hover:opacity-70 transition-opacity" vid="16">Campaigns</a>
+                <a href="#" class="hover:opacity-70 transition-opacity" vid="17">Pricing</a>
+            </div>
+            <a href="#" class="text-sm underline underline-offset-4 pointer-events-auto hover:no-underline" vid="18">Log in</a>
+        </div>
+    </nav>
+
+    
+    <main class="grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto max-w-[1800px]" vid="19">
+
+        
+        <section class="col-span-1 md:col-span-7 lg:col-span-8 bg-[#FF9678] card min-h-[80vh] relative flex flex-col justify-between p-8 md:p-16 group" vid="20">
+            
+            
+            <div class="absolute inset-0 opacity-10 pointer-events-none" vid="21">
+                <svg width="100%" height="100%" viewBox="0 0 800 800" vid="22">
+                    <path d="M 100 400 Q 400 100 700 400 T 100 400" fill="none" stroke="black" stroke-width="2" class="animate-drift" vid="23"></path>
+                    <path d="M 50 500 Q 350 200 650 500 T 50 500" fill="none" stroke="black" stroke-width="2" class="animate-drift" style="animation-delay: -5s" vid="24"></path>
+                </svg>
+            </div>
+
+            <div class="relative z-10 mt-24" vid="25">
+                <h1 class="text-[14vw] md:text-[7vw] leading-[0.85] mb-6" vid="26">
+                    Design that<br vid="27">
+                    <span class="italic pr-4" vid="28">learns</span> from<br vid="29">
+                    revenue.
+                </h1>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-end gap-8" vid="30">
+                <p class="max-w-sm text-lg md:text-xl opacity-90 leading-relaxed" vid="31">
+                    Uplane doesn't just manage your ads. It iterates them. An autonomous creative director trained on $4B of ad spend.
+                </p>
+                
+                <div class="flex flex-col gap-2" vid="32">
+                    <span class="text-xs uppercase tracking-widest opacity-60 mb-2" vid="33">Performance</span>
+                    <div class="text-4xl serif" vid="34">23x ROAS</div>
+                    <div class="text-sm opacity-70" vid="35">Average uplift in Q3</div>
+                </div>
+
+                <button class="md:hidden bg-black text-[#FF9678] px-6 py-3 rounded-full w-full mt-4" vid="36">Start Trial</button>
+            </div>
+        </section>
+
+        
+        <section class="col-span-1 md:col-span-5 lg:col-span-4 bg-[#F5F2EA] card min-h-[50vh] md:min-h-[80vh] relative flex flex-col items-center justify-center p-8 overflow-hidden" vid="37">
+            
+            
+            <div class="relative w-full aspect-[3/4] max-w-md animate-float" vid="38">
+                <svg viewBox="0 0 200 250" class="absolute inset-0 w-full h-full drop-shadow-2xl" vid="39">
+                    <defs vid="40">
+                        <clipPath id="organic-blob" vid="41">
+                            <path d="M40,-60 C60,-45 75,-20 78,5 C81,30 72,55 55,72 C38,89 13,98 -10,95 C-33,92 -54,77 -68,56 C-82,35 -89,8 -85,-18 C-81,-44 -66,-69 -45,-83 C-24,-97 2,-100 25,-95 Z" transform="translate(100 125) scale(1.1)" vid="42"></path>
+                        </clipPath>
+                    </defs>
+                    <image href="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&amp;w=2564&amp;auto=format&amp;fit=crop" width="200" height="250" preserveAspectRatio="xMidYMid slice" clip-path="url(#organic-blob)" vid="43"></image>
+                    
+                    
+                     <path d="M40,-60 C60,-45 75,-20 78,5 C81,30 72,55 55,72 C38,89 13,98 -10,95 C-33,92 -54,77 -68,56 C-82,35 -89,8 -85,-18 C-81,-44 -66,-69 -45,-83 C-24,-97 2,-100 25,-95 Z" transform="translate(100 125) scale(1.15)" fill="none" stroke="#1A1A18" stroke-width="0.5" vid="44"></path>
+                </svg>
+
+                
+                <div class="absolute bottom-10 -right-4 bg-white p-4 rounded-2xl shadow-xl max-w-[160px] rotate-3" vid="45">
+                    <p class="serif text-xl leading-none italic" vid="46">"Generate variant B."</p>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="col-span-1 md:col-span-5 lg:col-span-4 bg-[#CCD7E4] card min-h-[60vh] p-8 md:p-12 flex flex-col justify-between" vid="47">
+            <div vid="48">
+                <h2 class="text-4xl md:text-5xl serif mb-6" vid="49">The Feedback Loop</h2>
+                <p class="text-lg opacity-80 text-balance" vid="50">
+                    Conventional tools post ads. Uplane watches user behavior to rewrite copy and adjust visuals in real-time.
+                </p>
+            </div>
+
+            
+            <div class="relative h-64 w-full mt-8" vid="51">
+                <svg class="w-full h-full overflow-visible" vid="52">
+                    
+                    <g transform="translate(50, 50)" vid="53">
+                        <circle cx="0" cy="0" r="40" fill="transparent" stroke="#1A1A18" stroke-width="0.5" vid="54"></circle>
+                        <text x="0" y="5" text-anchor="middle" font-family="Inter" font-size="10" vid="55">DATA IN</text>
+                    </g>
+                    
+                    
+                    <g transform="translate(250, 150)" vid="56">
+                        <circle cx="0" cy="0" r="45" fill="transparent" stroke="#1A1A18" stroke-width="0.5" vid="57"></circle>
+                         <text x="0" y="0" text-anchor="middle" font-family="Inter" font-size="10" vid="58">VARIANT</text>
+                         <text x="0" y="12" text-anchor="middle" font-family="Instrument Serif" font-style="italic" font-size="12" vid="59">Generation</text>
+                    </g>
+
+                    
+                    <g transform="translate(100, 220)" vid="60">
+                        <circle cx="0" cy="0" r="30" fill="transparent" stroke="#1A1A18" stroke-width="0.5" vid="61"></circle>
+                        <text x="0" y="5" text-anchor="middle" font-family="Inter" font-size="10" vid="62">SCALE</text>
+                    </g>
+
+                    
+                    <path d="M 90 50 C 150 50, 150 150, 205 150" fill="none" stroke="#1A1A18" stroke-width="0.5" marker-end="url(#arrow)" vid="63"></path>
+                    <path d="M 250 195 C 250 220, 180 220, 130 220" fill="none" stroke="#1A1A18" stroke-width="0.5" marker-end="url(#arrow)" vid="64"></path>
+                    <path d="M 50 90 C 50 150, 70 200, 80 200" fill="none" stroke="#1A1A18" stroke-width="0.5" stroke-dasharray="4 4" vid="65"></path>
+
+                    
+                    <defs vid="66">
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth" vid="67">
+                          <path d="M0,0 L0,6 L9,3 z" fill="#1A1A18" vid="68"></path>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+
+        
+        <section class="col-span-1 md:col-span-7 lg:col-span-8 bg-[#C8DFA8] card min-h-[60vh] p-8 md:p-16 flex flex-col" vid="69">
+            <div class="mb-12" vid="70">
+                <h2 class="text-5xl serif mb-4" vid="71">Platform Capabilities</h2>
+                <div class="thin-line" vid="72"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 flex-grow" vid="73">
+                
+                <div class="group cursor-pointer" vid="74">
+                    <div class="h-[120px] w-full relative mb-4" vid="75">
+                         
+                        <svg viewBox="0 0 200 100" class="w-full h-full" vid="76">
+                            <path d="M10,50 Q50,0 100,50 T190,50" fill="none" stroke="#1A1A18" stroke-width="0.5" class="group-hover:stroke-[1px] transition-all duration-500" vid="77"></path>
+                            <circle cx="100" cy="50" r="5" fill="#1A1A18" vid="78"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl serif mb-2" vid="79">Multivariate Testing</h3>
+                    <p class="text-sm opacity-70 max-w-xs" vid="80">Automatically deploys 50+ variations across Meta, TikTok, and Google Ads simultaneously.</p>
+                    <div class="mt-4" vid="81">
+                        <span class="text-xs font-medium uppercase tracking-widest link-btn inline-block" vid="82">Explore +</span>
+                    </div>
+                </div>
+
+                
+                <div class="group cursor-pointer" vid="83">
+                    <div class="h-[120px] w-full relative mb-4" vid="84">
+                         
+                        <svg viewBox="0 0 200 100" class="w-full h-full" vid="85">
+                             <ellipse cx="100" cy="50" rx="80" ry="30" fill="none" stroke="#1A1A18" stroke-width="0.5" class="group-hover:rotate-6 transition-transform duration-700 origin-center" vid="86"></ellipse>
+                             <ellipse cx="100" cy="50" rx="30" ry="80" fill="none" stroke="#1A1A18" stroke-width="0.5" class="group-hover:-rotate-6 transition-transform duration-700 origin-center" vid="87"></ellipse>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl serif mb-2" vid="88">Audience Cloning</h3>
+                    <p class="text-sm opacity-70 max-w-xs" vid="89">Identifies your highest LTV customers and rebuilds lookalike models from scratch.</p>
+                    <div class="mt-4" vid="90">
+                        <span class="text-xs font-medium uppercase tracking-widest link-btn inline-block" vid="91">Explore +</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="col-span-1 md:col-span-12 bg-[#1A1A18] text-[#F5F2EA] card min-h-[50vh] p-8 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden" vid="92">
+             
+             <div class="absolute top-0 left-0 w-full h-full opacity-10" vid="93">
+                 <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full" vid="94">
+                     <path d="M0 100 C 20 0 50 0 100 100 Z" fill="#FFFFFF" vid="95"></path>
+                 </svg>
+             </div>
+
+             <div class="relative z-10" vid="96">
+                 <h2 class="text-6xl md:text-8xl serif mb-8 tracking-tight" vid="97">
+                     Stop guessing.
+                 </h2>
+                 <p class="text-xl md:text-2xl opacity-70 mb-12 max-w-xl mx-auto font-light" vid="98">
+                     Join the 400+ brands using Uplane to automate their creative strategy.
+                 </p>
+                 
+                 <a href="#" class="group inline-flex flex-col items-center gap-2" vid="99">
+                     <div class="text-2xl md:text-3xl serif italic group-hover:-translate-y-1 transition-transform duration-300" vid="100">
+                         Request Access
+                     </div>
+                     <div class="h-[1px] w-full bg-[#F5F2EA] group-hover:scale-x-110 transition-transform duration-300" vid="101"></div>
+                 </a>
+             </div>
+
+             <div class="absolute bottom-8 left-0 w-full px-8 flex justify-between text-xs opacity-30 uppercase tracking-widest" vid="102">
+                 <span vid="103">© 2024 Uplane Inc.</span>
+                 <div class="flex gap-4" vid="104">
+                     <span vid="105">Privacy</span>
+                     <span vid="106">Terms</span>
+                 </div>
+             </div>
+        </section>
+
+    </main>
+
+    
+    <div class="fixed bottom-8 right-8 z-50 mix-blend-exclusion" vid="107">
+        <div class="w-16 h-16 rounded-full border border-white flex items-center justify-center animate-spin-slow" vid="108">
+            <svg viewBox="0 0 100 100" class="w-full h-full p-2 fill-white" vid="109">
+                <path id="curve" d="M 50 50 m -37 0 a 37 37 0 1 1 74 0 a 37 37 0 1 1 -74 0" fill="transparent" vid="110"></path>
+                <text font-size="14" letter-spacing="3" vid="111">
+                    <textPath href="#curve" vid="112">
+                        START NOW • START NOW •
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+    </div>
+
+    <style vid="113">
+        .animate-spin-slow {
+            animation: spin 10s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+</body></html>
