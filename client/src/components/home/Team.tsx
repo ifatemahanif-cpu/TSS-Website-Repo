@@ -138,7 +138,7 @@ export function Team() {
               }}
               data-testid="text-team-heading"
             >The 3 Marketeers</h2>
-            <div className="max-w-3xl space-y-4">
+            <div className="max-w-5xl space-y-4">
               <p
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
