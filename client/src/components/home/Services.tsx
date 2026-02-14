@@ -313,7 +313,7 @@ export function Services() {
                   fontWeight: 400,
                 }}
               >
-                Interactive{" "}
+                Find Your{" "}
               </span>
               <span
                 style={{
@@ -324,7 +324,7 @@ export function Services() {
                   opacity: 0.6,
                 }}
               >
-                Discovery
+                Fix
               </span>
             </h2>
             <p
