@@ -184,66 +184,6 @@ export default function Contact() {
               </Link>
             </motion.div>
 
-            {/* Page heading */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <span
-                className="block mb-4"
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.7rem",
-                  color: "#7B1E7A",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Get in Touch
-              </span>
-
-              <h1
-                className="mb-6"
-                style={{
-                  color: "#FDE8E9",
-                  lineHeight: 1.15,
-                  letterSpacing: "-0.03em",
-                }}
-                data-testid="text-contact-heading"
-              >
-                <span
-                  style={{
-                    fontFamily: "'Libre Baskerville', serif",
-                    fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
-                    fontWeight: 400,
-                  }}
-                >
-                  Two ways to{" "}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
-                    fontWeight: 300,
-                    fontStyle: "italic",
-                    opacity: 0.6,
-                  }}
-                >
-                  start a conversation.
-                </span>
-              </h1>
-
-              <div
-                style={{
-                  height: "2px",
-                  background: "linear-gradient(to right, #7B1E7A, transparent)",
-                  marginBottom: "3rem",
-                  borderRadius: "1px",
-                }}
-              />
-            </motion.div>
-
             {/* ===== SECTION 1: Join the Collective ===== */}
             <motion.div
               id="join"
