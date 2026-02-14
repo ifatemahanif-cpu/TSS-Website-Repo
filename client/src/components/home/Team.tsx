@@ -139,9 +139,7 @@ export function Team() {
                 lineHeight: 1.6,
               }}
               data-testid="text-team-heading"
-            >
-              Deliberately assembled.
-            </h2>
+            >The 3 Marketeers</h2>
             <div className="max-w-3xl space-y-4">
               <p
                 style={{
@@ -215,7 +213,6 @@ export function Team() {
           )}
         </div>
       </div>
-
       <AnimatePresence>
         {expandedIndex !== null && (
           <TeamModal
