@@ -624,8 +624,8 @@ export default function Join() {
               </p>
 
               <div className="text-center">
-                <a
-                  href="#"
+                <Link
+                  href="/contact#join"
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
@@ -645,7 +645,7 @@ export default function Join() {
                   data-testid="button-fill-form"
                 >
                   FILL THE FORM
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>

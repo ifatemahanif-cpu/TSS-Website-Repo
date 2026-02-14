@@ -526,8 +526,8 @@ export default function CollectiveModel() {
 
               {/* CTA */}
               <div className="mt-14 text-center">
-                <a
-                  href="#"
+                <Link
+                  href="/contact#talk"
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
@@ -547,7 +547,7 @@ export default function CollectiveModel() {
                   data-testid="button-lets-talk"
                 >
                   LET'S TALK
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>
