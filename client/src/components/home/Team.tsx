@@ -81,15 +81,15 @@ export function Team() {
   const fanProgress = useTransform(scrollYProgress, [0.15, 0.55], [0, 1]);
 
   const desktopFanConfigs = [
-    { rotate: -8, x: -340, y: 20 },
+    { rotate: -10, x: -180, y: 20 },
     { rotate: 0, x: 0, y: -10 },
-    { rotate: 8, x: 340, y: 20 },
+    { rotate: 10, x: 180, y: 20 },
   ];
 
   const tabletFanConfigs = [
-    { rotate: -6, x: -220, y: 15 },
+    { rotate: -8, x: -140, y: 15 },
     { rotate: 0, x: 0, y: -8 },
-    { rotate: 6, x: 220, y: 15 },
+    { rotate: 8, x: 140, y: 15 },
   ];
 
   const handleCardClick = useCallback((index: number) => {
@@ -112,122 +112,215 @@ export function Team() {
         style={{
           backgroundColor: "#0C0A3E",
           borderRadius: "20px",
-          minHeight: isMobile ? "auto" : "140vh",
+          minHeight: isMobile ? "auto" : "100vh",
           padding: "clamp(2rem, 4vw, 4rem)",
         }}
       >
         <div className="max-w-[1400px] mx-auto">
-          <div className="mb-6 md:mb-10">
-            <span
-              className="block mb-3 tracking-[0.3em] uppercase"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.7rem",
-                color: "#7B1E7A",
-                letterSpacing: "0.3em",
-              }}
-              data-testid="text-team-label"
-            >003 / Team</span>
-            <h2
-              className="mb-4"
-              style={{
-                color: "#FDE8E9",
-                lineHeight: 1.1,
-                letterSpacing: "-0.03em",
-              }}
-              data-testid="text-team-heading"
-            >
-              <span
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
-                  fontWeight: 400,
-                }}
-              >
-                The 3{" "}
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
-                  fontWeight: 300,
-                  fontStyle: "italic",
-                  opacity: 0.6,
-                }}
-              >
-                Marketeers
-              </span>
-            </h2>
-            <div className="max-w-5xl space-y-4">
-              <p
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                  color: "rgba(253, 232, 233, 0.6)",
-                  lineHeight: 1.8,
-                }}
-                data-testid="text-team-intro-1"
-              >
-                The Story Shapers is built around complementary ways of thinking that every growing brand eventually needs in the room. It's not here to just generate more ideas, but to generate better decisions. When you work with us, this is the leadership layer you are actually buying into.
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-                  color: "rgba(253, 232, 233, 0.45)",
-                  lineHeight: 1.8,
-                }}
-                data-testid="text-team-intro-2"
-              >
-                We didn't build The Story Shapers around personalities or job titles. It's a deliberately assembled group of senior marketing and brand leaders who have owned real decisions across brands, stages, and moments of change. We've sat inside early-stage uncertainty. We've navigated scale-up complexity. We've led brand resets, growth inflection points, and narrative reinventions.
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.8rem, 1.1vw, 0.9rem)",
-                  color: "rgba(253, 232, 233, 0.4)",
-                  lineHeight: 1.7,
-                }}
-                data-testid="text-team-intro-3"
-              >
-                We know what it feels like when the right decision is obvious — and when it isn't. And we know how expensive the wrong one can be.
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.8rem, 1.1vw, 0.9rem)",
-                  color: "rgba(253, 232, 233, 0.35)",
-                  lineHeight: 1.7,
-                }}
-                data-testid="text-team-intro-4"
-              >
-                The people you meet are the people who do the thinking. And the people who do the thinking are the people who stay accountable for it.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex justify-center mb-4">
-            <span
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.6rem",
-                color: "rgba(253, 232, 233, 0.25)",
-                letterSpacing: "0.15em",
-              }}
-            >
-              CLICK A CARD TO READ MORE
-            </span>
-          </div>
-
           {isMobile ? (
-            <MobileCards onCardClick={handleCardClick} />
+            <>
+              <div className="mb-6">
+                <span
+                  className="block mb-3 tracking-[0.3em] uppercase"
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.7rem",
+                    color: "#7B1E7A",
+                    letterSpacing: "0.3em",
+                  }}
+                  data-testid="text-team-label"
+                >003 / Team</span>
+                <h2
+                  className="mb-4"
+                  style={{
+                    color: "#FDE8E9",
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.03em",
+                  }}
+                  data-testid="text-team-heading"
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
+                      fontWeight: 400,
+                    }}
+                  >
+                    The 3{" "}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
+                      fontWeight: 300,
+                      fontStyle: "italic",
+                      opacity: 0.6,
+                    }}
+                  >
+                    Marketeers
+                  </span>
+                </h2>
+                <div className="space-y-4">
+                  <p
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
+                      color: "rgba(253, 232, 233, 0.6)",
+                      lineHeight: 1.8,
+                    }}
+                    data-testid="text-team-intro-1"
+                  >
+                    The Story Shapers is built around complementary ways of thinking that every growing brand eventually needs in the room. It's not here to just generate more ideas, but to generate better decisions. When you work with us, this is the leadership layer you are actually buying into.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
+                      color: "rgba(253, 232, 233, 0.45)",
+                      lineHeight: 1.8,
+                    }}
+                    data-testid="text-team-intro-2"
+                  >
+                    We didn't build The Story Shapers around personalities or job titles. It's a deliberately assembled group of senior marketing and brand leaders who have owned real decisions across brands, stages, and moments of change. We've sat inside early-stage uncertainty. We've navigated scale-up complexity. We've led brand resets, growth inflection points, and narrative reinventions.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(0.8rem, 1.1vw, 0.9rem)",
+                      color: "rgba(253, 232, 233, 0.4)",
+                      lineHeight: 1.7,
+                    }}
+                    data-testid="text-team-intro-3"
+                  >
+                    We know what it feels like when the right decision is obvious — and when it isn't. And we know how expensive the wrong one can be.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(0.8rem, 1.1vw, 0.9rem)",
+                      color: "rgba(253, 232, 233, 0.35)",
+                      lineHeight: 1.7,
+                    }}
+                    data-testid="text-team-intro-4"
+                  >
+                    The people you meet are the people who do the thinking. And the people who do the thinking are the people who stay accountable for it.
+                  </p>
+                </div>
+              </div>
+              <MobileCards onCardClick={handleCardClick} />
+            </>
           ) : (
-            <DesktopFanCards
-              fanProgress={fanProgress}
-              desktopFanConfigs={desktopFanConfigs}
-              tabletFanConfigs={tabletFanConfigs}
-              onCardClick={handleCardClick}
-            />
+            <div className="flex items-start gap-8 lg:gap-12" style={{ minHeight: "80vh" }}>
+              <div className="w-[42%] shrink-0 sticky" style={{ top: "clamp(2rem, 4vw, 4rem)" }}>
+                <span
+                  className="block mb-3 tracking-[0.3em] uppercase"
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.7rem",
+                    color: "#7B1E7A",
+                    letterSpacing: "0.3em",
+                  }}
+                  data-testid="text-team-label"
+                >003 / Team</span>
+                <h2
+                  className="mb-5"
+                  style={{
+                    color: "#FDE8E9",
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.03em",
+                  }}
+                  data-testid="text-team-heading"
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
+                      fontWeight: 400,
+                    }}
+                  >
+                    The 3{" "}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
+                      fontWeight: 300,
+                      fontStyle: "italic",
+                      opacity: 0.6,
+                    }}
+                  >
+                    Marketeers
+                  </span>
+                </h2>
+                <div className="space-y-4">
+                  <p
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
+                      color: "rgba(253, 232, 233, 0.6)",
+                      lineHeight: 1.8,
+                    }}
+                    data-testid="text-team-intro-1"
+                  >
+                    The Story Shapers is built around complementary ways of thinking that every growing brand eventually needs in the room. It's not here to just generate more ideas, but to generate better decisions. When you work with us, this is the leadership layer you are actually buying into.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(0.78rem, 1vw, 0.9rem)",
+                      color: "rgba(253, 232, 233, 0.45)",
+                      lineHeight: 1.8,
+                    }}
+                    data-testid="text-team-intro-2"
+                  >
+                    We didn't build The Story Shapers around personalities or job titles. It's a deliberately assembled group of senior marketing and brand leaders who have owned real decisions across brands, stages, and moments of change. We've sat inside early-stage uncertainty. We've navigated scale-up complexity. We've led brand resets, growth inflection points, and narrative reinventions.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
+                      color: "rgba(253, 232, 233, 0.4)",
+                      lineHeight: 1.7,
+                    }}
+                    data-testid="text-team-intro-3"
+                  >
+                    We know what it feels like when the right decision is obvious — and when it isn't. And we know how expensive the wrong one can be.
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
+                      color: "rgba(253, 232, 233, 0.35)",
+                      lineHeight: 1.7,
+                    }}
+                    data-testid="text-team-intro-4"
+                  >
+                    The people you meet are the people who do the thinking. And the people who do the thinking are the people who stay accountable for it.
+                  </p>
+                </div>
+                <div className="mt-6">
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: "0.55rem",
+                      color: "rgba(253, 232, 233, 0.25)",
+                      letterSpacing: "0.15em",
+                    }}
+                  >
+                    CLICK A CARD TO READ MORE
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex-1 flex items-center justify-center">
+                <DesktopFanCards
+                  fanProgress={fanProgress}
+                  desktopFanConfigs={desktopFanConfigs}
+                  tabletFanConfigs={tabletFanConfigs}
+                  onCardClick={handleCardClick}
+                />
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -500,7 +593,7 @@ function DesktopFanCards({
   return (
     <div
       className="relative flex items-center justify-center"
-      style={{ height: "80vh", perspective: "1200px" }}
+      style={{ height: "70vh", perspective: "1200px" }}
     >
       {team.map((member, i) => {
         const config = configs[i];
@@ -558,8 +651,8 @@ function FanCard({
     [index === 0 ? 1 : 0.3, index === 0 ? 1 : 0.8, 1]
   );
 
-  const cardW = "clamp(280px, 24vw, 340px)";
-  const cardH = "clamp(400px, 48vh, 480px)";
+  const cardW = "clamp(220px, 18vw, 280px)";
+  const cardH = "clamp(320px, 42vh, 400px)";
 
   const overlayGradient = colors.overlayDark
     ? `linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.85) 100%)`
