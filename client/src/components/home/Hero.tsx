@@ -1,10 +1,52 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 
-function GoldenRatioParticles() {
+interface Ellipse {
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  rotation: number;
+  driftX: number;
+  driftY: number;
+  driftRot: number;
+  alpha: number;
+  color: [number, number, number];
+}
+
+function DriftingEllipses() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tickRef = useRef(0);
   const animFrameRef = useRef<number>(0);
+  const ellipsesRef = useRef<Ellipse[]>([]);
+  const initedRef = useRef(false);
+
+  const initEllipses = useCallback((w: number, h: number) => {
+    const colors: [number, number, number][] = [
+      [123, 30, 122],
+      [253, 232, 233],
+      [160, 60, 160],
+      [200, 140, 200],
+      [80, 20, 80],
+    ];
+
+    const ellipses: Ellipse[] = [];
+    for (let i = 0; i < 7; i++) {
+      ellipses.push({
+        cx: w * (0.1 + Math.random() * 0.8),
+        cy: h * (0.1 + Math.random() * 0.8),
+        rx: w * (0.25 + Math.random() * 0.5),
+        ry: h * (0.03 + Math.random() * 0.06),
+        rotation: Math.random() * Math.PI,
+        driftX: (Math.random() - 0.5) * 0.15,
+        driftY: (Math.random() - 0.5) * 0.08,
+        driftRot: (Math.random() - 0.5) * 0.0003,
+        alpha: 0.04 + Math.random() * 0.06,
+        color: colors[i % colors.length],
+      });
+    }
+    ellipsesRef.current = ellipses;
+  }, []);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -21,58 +63,38 @@ function GoldenRatioParticles() {
       canvas.height = h * dpr;
     }
 
+    if (!initedRef.current || ellipsesRef.current.length === 0) {
+      initEllipses(w, h);
+      initedRef.current = true;
+    }
+
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
 
-    const cx = w / 2;
-    const cy = h / 2;
-    const tick = tickRef.current;
-    const count = 350;
-    const spread = 10;
+    for (const e of ellipsesRef.current) {
+      e.cx += e.driftX;
+      e.cy += e.driftY;
+      e.rotation += e.driftRot;
 
-    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.35);
-    grad.addColorStop(0, "rgba(123, 30, 122, 0.06)");
-    grad.addColorStop(1, "rgba(12, 10, 62, 0)");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, w, h);
+      if (e.cx - e.rx > w + 100) e.cx = -e.rx;
+      if (e.cx + e.rx < -100) e.cx = w + e.rx;
+      if (e.cy - e.ry > h + 100) e.cy = -e.ry;
+      if (e.cy + e.ry < -100) e.cy = h + e.ry;
 
-    for (let i = 0; i < count; i++) {
-      const angle = i * 137.5 * (Math.PI / 180);
-      const radius = spread * Math.sqrt(i);
-
-      const x = cx + radius * Math.cos(angle + tick * 0.0004);
-      const y = cy + radius * Math.sin(angle + tick * 0.0004);
-
-      const breath = Math.sin(tick * 0.008) * 0.15 + 1;
-      const size = (1.2 + (i / count) * 1.8) * breath;
-
-      const distRatio = radius / (Math.min(w, h) * 0.55);
-      const alpha = Math.max(0.02, (1 - distRatio) * 0.2);
-
-      if (alpha < 0.01) continue;
-
-      const pinkMix = (Math.sin(tick * 0.003 + i * 0.02) + 1) / 2;
-      const r = Math.round(123 + pinkMix * (253 - 123));
-      const g = Math.round(30 + pinkMix * (232 - 30));
-      const b = Math.round(122 + pinkMix * (233 - 122));
-
+      ctx.save();
+      ctx.translate(e.cx, e.cy);
+      ctx.rotate(e.rotation);
       ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-
-      if (i % 25 === 0) {
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.5})`;
-      } else {
-        ctx.shadowBlur = 0;
-      }
-
-      ctx.fill();
+      ctx.ellipse(0, 0, e.rx, e.ry, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${e.color[0]}, ${e.color[1]}, ${e.color[2]}, ${e.alpha})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+      ctx.restore();
     }
 
     tickRef.current += 1;
     animFrameRef.current = requestAnimationFrame(draw);
-  }, []);
+  }, [initEllipses]);
 
   useEffect(() => {
     animFrameRef.current = requestAnimationFrame(draw);
@@ -191,7 +213,7 @@ export function Hero() {
       style={{ backgroundColor: "#0C0A3E" }}
       data-testid="hero-section"
     >
-      <GoldenRatioParticles />
+      <DriftingEllipses />
 
       <div className="h-full w-full overflow-hidden flex flex-col relative z-[1]">
 
