@@ -342,28 +342,35 @@ export function Services() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-            {services.map((service, idx) => (
+            {services.map((service, idx) => {
+              const isExpanded = expandedService === service.id;
+              return (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: idx * 0.06, duration: 0.4 }}
+                className={`group ${service.id === "ai" ? "md:col-span-2" : ""}`}
                 style={{
-                  border: `1px solid ${expandedService === service.id ? "rgba(123, 30, 122, 0.5)" : "rgba(253, 232, 233, 0.06)"}`,
-                  borderRadius: "12px",
+                  border: `1px solid ${isExpanded ? "rgba(123, 30, 122, 0.6)" : "rgba(253, 232, 233, 0.1)"}`,
+                  borderRadius: "14px",
                   overflow: "hidden",
-                  transition: "border-color 0.3s",
-                  backgroundColor: expandedService === service.id ? "rgba(123, 30, 122, 0.08)" : "rgba(253, 232, 233, 0.02)",
+                  transition: "all 0.3s ease",
+                  backgroundColor: isExpanded ? "rgba(123, 30, 122, 0.12)" : "rgba(253, 232, 233, 0.04)",
+                  cursor: "pointer",
                 }}
-                className={service.id === "ai" ? "md:col-span-2" : ""}
+                whileHover={{
+                  borderColor: isExpanded ? "rgba(123, 30, 122, 0.7)" : "rgba(123, 30, 122, 0.35)",
+                  backgroundColor: isExpanded ? "rgba(123, 30, 122, 0.14)" : "rgba(253, 232, 233, 0.06)",
+                }}
                 data-testid={`card-service-${service.id}`}
               >
                 <button
                   onClick={() => toggleService(service.id)}
                   className="w-full text-left"
                   style={{
-                    padding: "1.25rem 1.5rem",
+                    padding: "1.5rem 1.75rem",
                     cursor: "pointer",
                     background: "none",
                     border: "none",
@@ -373,14 +380,13 @@ export function Services() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center gap-3 mb-3">
                         <span
                           style={{
                             fontFamily: "'JetBrains Mono', monospace",
-                            fontSize: "0.5rem",
+                            fontSize: "0.55rem",
                             color: "#7B1E7A",
                             letterSpacing: "0.15em",
-                            opacity: 0.6,
                           }}
                         >
                           0{idx + 1}
@@ -388,8 +394,8 @@ export function Services() {
                         <span
                           style={{
                             fontFamily: "'Inter', sans-serif",
-                            fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                            fontWeight: 500,
+                            fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+                            fontWeight: 600,
                             color: "#FDE8E9",
                           }}
                         >
@@ -399,33 +405,60 @@ export function Services() {
                       <p
                         style={{
                           fontFamily: "'Libre Baskerville', serif",
-                          fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
-                          color: "rgba(253, 232, 233, 0.4)",
-                          lineHeight: 1.7,
+                          fontSize: "clamp(0.78rem, 0.95vw, 0.87rem)",
+                          color: "rgba(253, 232, 233, 0.65)",
+                          lineHeight: 1.75,
                         }}
                       >
                         {service.subtitle}
                       </p>
                     </div>
-                    <motion.span
-                      animate={{ rotate: expandedService === service.id ? 45 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: "1.2rem",
-                        color: "#7B1E7A",
-                        opacity: 0.6,
-                        lineHeight: 1,
-                        flexShrink: 0,
-                        marginTop: "0.25rem",
-                      }}
-                    >
-                      +
-                    </motion.span>
+                    <div className="flex flex-col items-center gap-1.5 shrink-0 mt-0.5">
+                      <motion.div
+                        animate={{ rotate: isExpanded ? 45 : 0 }}
+                        transition={{ duration: 0.25 }}
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                          borderRadius: "50%",
+                          border: `1.5px solid ${isExpanded ? "#7B1E7A" : "rgba(123, 30, 122, 0.4)"}`,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: isExpanded ? "rgba(123, 30, 122, 0.2)" : "transparent",
+                          transition: "all 0.25s ease",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "'Inter', sans-serif",
+                            fontSize: "1rem",
+                            color: isExpanded ? "#FDE8E9" : "#7B1E7A",
+                            lineHeight: 1,
+                            fontWeight: 300,
+                          }}
+                        >
+                          +
+                        </span>
+                      </motion.div>
+                      {!isExpanded && (
+                        <span
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.45rem",
+                            color: "rgba(123, 30, 122, 0.5)",
+                            letterSpacing: "0.05em",
+                            textTransform: "uppercase" as const,
+                          }}
+                        >
+                          Details
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </button>
                 <AnimatePresence>
-                  {expandedService === service.id && (
+                  {isExpanded && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
@@ -435,33 +468,32 @@ export function Services() {
                     >
                       <div
                         style={{
-                          padding: "0 1.5rem 1.25rem 1.5rem",
-                          borderTop: "1px solid rgba(123, 30, 122, 0.15)",
-                          marginTop: "0",
-                          paddingTop: "1rem",
+                          padding: "0 1.75rem 1.5rem 1.75rem",
+                          borderTop: "1px solid rgba(123, 30, 122, 0.2)",
+                          paddingTop: "1.25rem",
                         }}
                       >
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {service.items.map((item, itemIdx) => (
                             <div
                               key={itemIdx}
-                              className="flex items-start gap-2"
+                              className="flex items-start gap-2.5"
                             >
                               <span
                                 style={{
-                                  width: "4px",
-                                  height: "4px",
+                                  width: "5px",
+                                  height: "5px",
                                   borderRadius: "50%",
                                   backgroundColor: "#7B1E7A",
                                   flexShrink: 0,
-                                  marginTop: "0.5rem",
+                                  marginTop: "0.45rem",
                                 }}
                               />
                               <span
                                 style={{
                                   fontFamily: "'Inter', sans-serif",
-                                  fontSize: "0.8rem",
-                                  color: "rgba(253, 232, 233, 0.6)",
+                                  fontSize: "0.82rem",
+                                  color: "rgba(253, 232, 233, 0.75)",
                                   lineHeight: 1.6,
                                 }}
                               >
@@ -475,7 +507,8 @@ export function Services() {
                   )}
                 </AnimatePresence>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
 
           <div
