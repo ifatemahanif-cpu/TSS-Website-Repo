@@ -131,13 +131,33 @@ export function Team() {
             <h2
               className="mb-4"
               style={{
-                fontFamily: "'Press Start 2P', cursive",
-                fontSize: "clamp(0.9rem, 2.2vw, 1.4rem)",
                 color: "#FDE8E9",
-                lineHeight: 1.6,
+                lineHeight: 1.1,
+                letterSpacing: "-0.03em",
               }}
               data-testid="text-team-heading"
-            >The 3 Marketeers</h2>
+            >
+              <span
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
+                  fontWeight: 400,
+                }}
+              >
+                The 3{" "}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                  opacity: 0.6,
+                }}
+              >
+                Marketeers
+              </span>
+            </h2>
             <div className="max-w-5xl space-y-4">
               <p
                 style={{
