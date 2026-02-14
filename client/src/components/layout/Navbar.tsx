@@ -12,7 +12,7 @@ export function Navbar() {
   }, []);
 
   const links = [
-    { name: "Our Story", href: "#" },
+    { name: "Our Story", href: "/our-story" },
     { name: "The Collective Model", href: "#" },
     { name: "Join the collective", href: "#" },
   ];
@@ -22,27 +22,40 @@ export function Navbar() {
       "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-3 md:px-12 transition-all duration-300",
       scrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-2.5" : "bg-transparent border-b border-white/10"
     )}>
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         <span className={cn(
           "font-serif font-bold text-xl tracking-tight transition-colors",
           scrolled ? "text-foreground" : "text-white"
         )}>
           Story Shapers
         </span>
-      </div>
+      </Link>
 
       <div className="hidden md:flex items-center gap-8">
         {links.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            className={cn(
-              "text-sm font-medium transition-colors hover:opacity-100 opacity-80",
-              scrolled ? "text-foreground" : "text-white"
-            )}
-          >
-            {link.name}
-          </a>
+          link.href.startsWith("/") ? (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:opacity-100 opacity-80",
+                scrolled ? "text-foreground" : "text-white"
+              )}
+            >
+              {link.name}
+            </Link>
+          ) : (
+            <a
+              key={link.name}
+              href={link.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:opacity-100 opacity-80",
+                scrolled ? "text-foreground" : "text-white"
+              )}
+            >
+              {link.name}
+            </a>
+          )
         ))}
       </div>
 
