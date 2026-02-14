@@ -1,5 +1,93 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
+
+function GoldenRatioParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tickRef = useRef(0);
+  const animFrameRef = useRef<number>(0);
+
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+
+    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+    }
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2;
+    const cy = h / 2;
+    const tick = tickRef.current;
+    const count = 350;
+    const spread = 10;
+
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.35);
+    grad.addColorStop(0, "rgba(123, 30, 122, 0.06)");
+    grad.addColorStop(1, "rgba(12, 10, 62, 0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    for (let i = 0; i < count; i++) {
+      const angle = i * 137.5 * (Math.PI / 180);
+      const radius = spread * Math.sqrt(i);
+
+      const x = cx + radius * Math.cos(angle + tick * 0.0004);
+      const y = cy + radius * Math.sin(angle + tick * 0.0004);
+
+      const breath = Math.sin(tick * 0.008) * 0.15 + 1;
+      const size = (1.2 + (i / count) * 1.8) * breath;
+
+      const distRatio = radius / (Math.min(w, h) * 0.55);
+      const alpha = Math.max(0.02, (1 - distRatio) * 0.2);
+
+      if (alpha < 0.01) continue;
+
+      const pinkMix = (Math.sin(tick * 0.003 + i * 0.02) + 1) / 2;
+      const r = Math.round(123 + pinkMix * (253 - 123));
+      const g = Math.round(30 + pinkMix * (232 - 30));
+      const b = Math.round(122 + pinkMix * (233 - 122));
+
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
+      if (i % 25 === 0) {
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.5})`;
+      } else {
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.fill();
+    }
+
+    tickRef.current += 1;
+    animFrameRef.current = requestAnimationFrame(draw);
+  }, []);
+
+  useEffect(() => {
+    animFrameRef.current = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(animFrameRef.current);
+  }, [draw]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full"
+      style={{ pointerEvents: "none", zIndex: 0 }}
+      aria-hidden="true"
+    />
+  );
+}
 
 const caseStudies = [
   {
@@ -103,7 +191,9 @@ export function Hero() {
       style={{ backgroundColor: "#0C0A3E" }}
       data-testid="hero-section"
     >
-      <div className="h-full w-full overflow-hidden flex flex-col">
+      <GoldenRatioParticles />
+
+      <div className="h-full w-full overflow-hidden flex flex-col relative z-[1]">
 
         <div className="flex-1 flex flex-col lg:flex-row w-full relative gap-6 lg:gap-10 px-6 md:px-10 lg:px-16 items-center">
 
