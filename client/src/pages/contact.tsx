@@ -13,7 +13,7 @@ function SectionDivider() {
         gap: "1rem",
       }}
     >
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(240, 235, 216, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(13, 19, 33, 0.06)" }} />
       <span
         style={{
           fontFamily: "'JetBrains Mono', monospace",
@@ -25,7 +25,7 @@ function SectionDivider() {
       >
         &#9830;
       </span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(240, 235, 216, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(13, 19, 33, 0.06)" }} />
     </div>
   );
 }
@@ -33,8 +33,8 @@ function SectionDivider() {
 const inputStyle: React.CSSProperties = {
   fontFamily: "'Inter', sans-serif",
   fontSize: "0.9rem",
-  color: "#F0EBD8",
-  backgroundColor: "rgba(240, 235, 216, 0.04)",
+  color: "#0D1321",
+  backgroundColor: "rgba(13, 19, 33, 0.04)",
   border: "1px solid rgba(116, 140, 171, 0.3)",
   borderRadius: "8px",
   padding: "0.85rem 1rem",
@@ -46,7 +46,7 @@ const inputStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontFamily: "'JetBrains Mono', monospace",
   fontSize: "0.6rem",
-  color: "rgba(240, 235, 216, 0.5)",
+  color: "rgba(13, 19, 33, 0.5)",
   letterSpacing: "0.2em",
   textTransform: "uppercase" as const,
   display: "block",
@@ -78,11 +78,11 @@ function FormInput({ label, name, type = "text", placeholder, required = true, t
         style={inputStyle}
         onFocus={e => {
           e.currentTarget.style.borderColor = "rgba(116, 140, 171, 0.6)";
-          e.currentTarget.style.backgroundColor = "rgba(240, 235, 216, 0.06)";
+          e.currentTarget.style.backgroundColor = "rgba(13, 19, 33, 0.06)";
         }}
         onBlur={e => {
           e.currentTarget.style.borderColor = "rgba(116, 140, 171, 0.3)";
-          e.currentTarget.style.backgroundColor = "rgba(240, 235, 216, 0.04)";
+          e.currentTarget.style.backgroundColor = "rgba(13, 19, 33, 0.04)";
         }}
         data-testid={testId}
       />
@@ -107,11 +107,11 @@ function FormTextarea({ label, name, placeholder, required = true, testId }: {
         style={textareaStyle}
         onFocus={e => {
           e.currentTarget.style.borderColor = "rgba(116, 140, 171, 0.6)";
-          e.currentTarget.style.backgroundColor = "rgba(240, 235, 216, 0.06)";
+          e.currentTarget.style.backgroundColor = "rgba(13, 19, 33, 0.06)";
         }}
         onBlur={e => {
           e.currentTarget.style.borderColor = "rgba(116, 140, 171, 0.3)";
-          e.currentTarget.style.backgroundColor = "rgba(240, 235, 216, 0.04)";
+          e.currentTarget.style.backgroundColor = "rgba(13, 19, 33, 0.04)";
         }}
         data-testid={testId}
       />
@@ -143,16 +143,16 @@ export default function Contact() {
   };
 
   return (
-    <div style={{ backgroundColor: "#0D1321", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F0EBD8", minHeight: "100vh" }}>
       <Navbar />
 
       <div
         className="relative px-2 md:px-4 lg:px-6 pt-24 pb-4"
-        style={{ backgroundColor: "#0D1321" }}
+        style={{ backgroundColor: "#F0EBD8" }}
       >
         <div
           style={{
-            backgroundColor: "#1D2D44",
+            backgroundColor: "#F0EBD8",
             borderRadius: "20px",
             padding: "clamp(2rem, 5vw, 5rem)",
           }}
@@ -170,7 +170,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(240, 235, 216, 0.4)",
+                  color: "rgba(13, 19, 33, 0.4)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -217,7 +217,7 @@ export default function Contact() {
                 </div>
                 <h2
                   style={{
-                    color: "#F0EBD8",
+                    color: "#0D1321",
                     lineHeight: 1.15,
                     letterSpacing: "-0.03em",
                   }}
@@ -250,7 +250,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(240, 235, 216, 0.55)",
+                  color: "rgba(13, 19, 33, 0.55)",
                   lineHeight: 2,
                 }}
               >
@@ -274,7 +274,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "1.1rem",
-                      color: "#F0EBD8",
+                      color: "#0D1321",
                       marginBottom: "0.5rem",
                     }}
                   >
@@ -284,7 +284,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.85rem",
-                      color: "rgba(240, 235, 216, 0.5)",
+                      color: "rgba(13, 19, 33, 0.5)",
                     }}
                   >
                     We'll review your submission and get back to you shortly.
@@ -405,7 +405,7 @@ export default function Contact() {
                 </div>
                 <h2
                   style={{
-                    color: "#F0EBD8",
+                    color: "#0D1321",
                     lineHeight: 1.15,
                     letterSpacing: "-0.03em",
                   }}
@@ -438,7 +438,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(240, 235, 216, 0.55)",
+                  color: "rgba(13, 19, 33, 0.55)",
                   lineHeight: 2,
                 }}
               >
@@ -462,7 +462,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "1.1rem",
-                      color: "#F0EBD8",
+                      color: "#0D1321",
                       marginBottom: "0.5rem",
                     }}
                   >
@@ -472,7 +472,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.85rem",
-                      color: "rgba(240, 235, 216, 0.5)",
+                      color: "rgba(13, 19, 33, 0.5)",
                     }}
                   >
                     We'll be in touch soon to start the conversation.
@@ -482,8 +482,8 @@ export default function Contact() {
                 <form onSubmit={handleTalkSubmit} data-testid="form-talk">
                   <div
                     style={{
-                      backgroundColor: "rgba(240, 235, 216, 0.02)",
-                      border: "1px solid rgba(240, 235, 216, 0.08)",
+                      backgroundColor: "rgba(13, 19, 33, 0.02)",
+                      border: "1px solid rgba(13, 19, 33, 0.08)",
                       borderRadius: "14px",
                       padding: "1.75rem",
                     }}

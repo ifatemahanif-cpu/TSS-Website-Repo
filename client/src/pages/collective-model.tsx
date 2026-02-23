@@ -53,7 +53,7 @@ function SectionDivider() {
         gap: "1rem",
       }}
     >
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(240, 235, 216, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(13, 19, 33, 0.06)" }} />
       <span
         style={{
           fontFamily: "'JetBrains Mono', monospace",
@@ -65,7 +65,7 @@ function SectionDivider() {
       >
         &#9830;
       </span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(240, 235, 216, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(13, 19, 33, 0.06)" }} />
     </div>
   );
 }
@@ -92,7 +92,7 @@ function SectionHeading({ serif, italic }: { serif: string; italic: string }) {
     <h2
       className="mb-6"
       style={{
-        color: "#F0EBD8",
+        color: "#0D1321",
         lineHeight: 1.15,
         letterSpacing: "-0.03em",
       }}
@@ -128,7 +128,7 @@ function BodyText({ children }: { children: React.ReactNode }) {
       style={{
         fontFamily: "'Libre Baskerville', serif",
         fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-        color: "rgba(240, 235, 216, 0.65)",
+        color: "rgba(13, 19, 33, 0.65)",
         lineHeight: 2,
       }}
     >
@@ -144,7 +144,7 @@ function EmphasisText({ children }: { children: React.ReactNode }) {
       style={{
         fontFamily: "'Inter', sans-serif",
         fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-        color: "#F0EBD8",
+        color: "#0D1321",
         lineHeight: 1.8,
         fontWeight: 500,
         fontStyle: "italic",
@@ -157,16 +157,16 @@ function EmphasisText({ children }: { children: React.ReactNode }) {
 
 export default function CollectiveModel() {
   return (
-    <div style={{ backgroundColor: "#0D1321", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F0EBD8", minHeight: "100vh" }}>
       <Navbar />
 
       <div
         className="relative px-2 md:px-4 lg:px-6 pt-24 pb-4"
-        style={{ backgroundColor: "#0D1321" }}
+        style={{ backgroundColor: "#F0EBD8" }}
       >
         <div
           style={{
-            backgroundColor: "#1D2D44",
+            backgroundColor: "#F0EBD8",
             borderRadius: "20px",
             padding: "clamp(2rem, 5vw, 5rem)",
           }}
@@ -183,7 +183,7 @@ export default function CollectiveModel() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(240, 235, 216, 0.4)",
+                  color: "rgba(13, 19, 33, 0.4)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -207,7 +207,7 @@ export default function CollectiveModel() {
               <h1
                 className="mb-8"
                 style={{
-                  color: "#F0EBD8",
+                  color: "#0D1321",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -275,7 +275,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                    color: "rgba(240, 235, 216, 0.8)",
+                    color: "rgba(13, 19, 33, 0.8)",
                     lineHeight: 2,
                   }}
                 >
@@ -286,7 +286,7 @@ export default function CollectiveModel() {
               <div
                 className="mb-10"
                 style={{
-                  border: "1px solid rgba(240, 235, 216, 0.08)",
+                  border: "1px solid rgba(13, 19, 33, 0.08)",
                   borderRadius: "12px",
                   padding: "clamp(1.5rem, 3vw, 2.5rem)",
                 }}
@@ -296,7 +296,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.55rem",
-                    color: "rgba(240, 235, 216, 0.3)",
+                    color: "rgba(13, 19, 33, 0.3)",
                     letterSpacing: "0.2em",
                   }}
                 >
@@ -306,7 +306,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                    color: "rgba(240, 235, 216, 0.55)",
+                    color: "rgba(13, 19, 33, 0.55)",
                     lineHeight: 2,
                   }}
                 >
@@ -352,7 +352,7 @@ export default function CollectiveModel() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(240, 235, 216, 0.7)",
+                      color: "rgba(13, 19, 33, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -362,7 +362,7 @@ export default function CollectiveModel() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(240, 235, 216, 0.7)",
+                      color: "rgba(13, 19, 33, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -389,7 +389,7 @@ export default function CollectiveModel() {
                     viewport={{ once: true, margin: "-30px" }}
                     transition={{ delay: idx * 0.07, duration: 0.4 }}
                     style={{
-                      border: "1px solid rgba(240, 235, 216, 0.08)",
+                      border: "1px solid rgba(13, 19, 33, 0.08)",
                       borderRadius: "12px",
                       padding: "1.25rem 1.5rem",
                       transition: "border-color 0.3s",
@@ -401,7 +401,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Inter', sans-serif",
                         fontSize: "clamp(0.9rem, 1.2vw, 1rem)",
-                        color: "#F0EBD8",
+                        color: "#0D1321",
                         fontWeight: 600,
                         lineHeight: 1.5,
                       }}
@@ -412,7 +412,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Libre Baskerville', serif",
                         fontSize: "clamp(0.82rem, 1.05vw, 0.9rem)",
-                        color: "rgba(240, 235, 216, 0.55)",
+                        color: "rgba(13, 19, 33, 0.55)",
                         lineHeight: 1.85,
                       }}
                     >
@@ -453,7 +453,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
-                    color: "#F0EBD8",
+                    color: "#0D1321",
                     lineHeight: 1.8,
                     fontStyle: "italic",
                   }}
@@ -499,7 +499,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Inter', sans-serif",
                         fontSize: "clamp(0.95rem, 1.3vw, 1.05rem)",
-                        color: "#F0EBD8",
+                        color: "#0D1321",
                         fontWeight: 600,
                         lineHeight: 1.5,
                       }}
@@ -510,7 +510,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Libre Baskerville', serif",
                         fontSize: "clamp(0.85rem, 1.1vw, 0.93rem)",
-                        color: "rgba(240, 235, 216, 0.6)",
+                        color: "rgba(13, 19, 33, 0.6)",
                         lineHeight: 1.9,
                       }}
                     >

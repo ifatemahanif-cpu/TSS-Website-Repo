@@ -17,7 +17,7 @@ export function ProblemFraming() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#0D1321" }}
+      style={{ backgroundColor: "#F0EBD8" }}
       data-testid="problem-framing-section"
     >
       <div

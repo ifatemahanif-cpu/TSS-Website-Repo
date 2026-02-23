@@ -6,7 +6,7 @@ export function Hero() {
     <section
       className="relative flex items-center justify-center"
       style={{
-        backgroundColor: "#1D2D44",
+        backgroundColor: "#F0EBD8",
         minHeight: "100vh",
         padding: "clamp(2rem, 5vw, 6rem)",
       }}
@@ -25,7 +25,7 @@ export function Hero() {
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               fontWeight: 400,
-              color: "#F0EBD8",
+              color: "#0D1321",
               marginBottom: "1.5rem",
             }}
             data-testid="text-hero-heading"
@@ -43,7 +43,7 @@ export function Hero() {
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
-            color: "rgba(240, 235, 216, 0.55)",
+            color: "rgba(13, 19, 33, 0.55)",
             maxWidth: "680px",
             margin: "0 auto",
             marginBottom: "2.5rem",
@@ -71,10 +71,12 @@ export function Hero() {
             }}
             data-testid="button-lets-talk"
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.backgroundColor = "#3E5C76";
+              e.currentTarget.style.borderColor = "#3E5C76";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = "#1D2D44";
+              e.currentTarget.style.borderColor = "#1D2D44";
             }}
           >
             Let's talk &rarr;
@@ -91,7 +93,7 @@ export function Hero() {
       >
         <span
           className="font-mono text-[10px] uppercase tracking-[0.3em]"
-          style={{ color: "rgba(240,235,216,0.3)" }}
+          style={{ color: "rgba(13,19,33,0.3)" }}
         >
           Scroll
         </span>
@@ -99,7 +101,7 @@ export function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           className="font-mono text-sm"
-          style={{ color: "rgba(240,235,216,0.3)" }}
+          style={{ color: "rgba(13,19,33,0.3)" }}
         >
           &darr;
         </motion.div>
