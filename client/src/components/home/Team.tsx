@@ -110,7 +110,7 @@ export function Team() {
       <div
         className="relative overflow-hidden"
         style={{
-          backgroundColor: "#F0EBD8",
+          backgroundColor: "#1D2D44",
           borderRadius: "20px",
           minHeight: isMobile ? "auto" : "100vh",
           padding: "clamp(2rem, 4vw, 4rem)",
@@ -133,7 +133,7 @@ export function Team() {
                 <h2
                   className="mb-4"
                   style={{
-                    color: "#0D1321",
+                    color: "#F0EBD8",
                     lineHeight: 1.1,
                     letterSpacing: "-0.03em",
                   }}
@@ -165,7 +165,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                      color: "rgba(13, 19, 33, 0.6)",
+                      color: "rgba(240, 235, 216, 0.6)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -176,7 +176,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-                      color: "rgba(13, 19, 33, 0.45)",
+                      color: "rgba(240, 235, 216, 0.45)",
                       lineHeight: 1.8,
                       fontStyle: "italic",
                     }}
@@ -204,7 +204,7 @@ export function Team() {
                 <h2
                   className="mb-5"
                   style={{
-                    color: "#0D1321",
+                    color: "#F0EBD8",
                     lineHeight: 1.1,
                     letterSpacing: "-0.03em",
                   }}
@@ -236,7 +236,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                      color: "rgba(13, 19, 33, 0.6)",
+                      color: "rgba(240, 235, 216, 0.6)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -247,7 +247,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.78rem, 1vw, 0.9rem)",
-                      color: "rgba(13, 19, 33, 0.45)",
+                      color: "rgba(240, 235, 216, 0.45)",
                       lineHeight: 1.8,
                       fontStyle: "italic",
                     }}
@@ -261,7 +261,7 @@ export function Team() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.55rem",
-                      color: "rgba(13, 19, 33, 0.25)",
+                      color: "rgba(240, 235, 216, 0.25)",
                       letterSpacing: "0.15em",
                     }}
                   >
