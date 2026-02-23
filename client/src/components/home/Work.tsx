@@ -32,13 +32,13 @@ export function Work() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#000" }}
+      style={{ backgroundColor: "#0D1321" }}
       data-testid="work-section"
     >
       <div
         style={{
-          backgroundColor: "#0C0A3E",
-          color: "#FDE8E9",
+          backgroundColor: "#1D2D44",
+          color: "#F0EBD8",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
@@ -56,7 +56,7 @@ export function Work() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#7B1E7A",
+                color: "#748CAB",
               }}
             >
               Our Work
@@ -105,8 +105,8 @@ export function Work() {
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                   padding: "2rem 0",
-                  borderTop: i === 0 ? "1px solid rgba(253, 232, 233, 0.1)" : "none",
-                  borderBottom: "1px solid rgba(253, 232, 233, 0.1)",
+                  borderTop: i === 0 ? "1px solid rgba(240, 235, 216, 0.1)" : "none",
+                  borderBottom: "1px solid rgba(240, 235, 216, 0.1)",
                 }}
                 data-testid={`card-work-${i}`}
               >
@@ -117,7 +117,7 @@ export function Work() {
                       fontSize: "0.55rem",
                       letterSpacing: "0.15em",
                       textTransform: "uppercase",
-                      color: "#7B1E7A",
+                      color: "#748CAB",
                       opacity: 0.7,
                       flexShrink: 0,
                     }}
@@ -175,8 +175,8 @@ export function Work() {
                 flex: 1,
                 padding: "1.5rem",
                 borderRadius: "12px",
-                backgroundColor: "rgba(123, 30, 122, 0.12)",
-                border: "1px solid rgba(123, 30, 122, 0.2)",
+                backgroundColor: "rgba(116, 140, 171, 0.12)",
+                border: "1px solid rgba(116, 140, 171, 0.2)",
               }}
               data-testid="card-people-you-meet"
             >
@@ -208,8 +208,8 @@ export function Work() {
                 flex: 1,
                 padding: "1.5rem",
                 borderRadius: "12px",
-                backgroundColor: "rgba(123, 30, 122, 0.12)",
-                border: "1px solid rgba(123, 30, 122, 0.2)",
+                backgroundColor: "rgba(116, 140, 171, 0.12)",
+                border: "1px solid rgba(116, 140, 171, 0.2)",
               }}
               data-testid="card-leave-scaffolding"
             >

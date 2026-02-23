@@ -6,7 +6,7 @@ export function Hero() {
     <section
       className="relative flex items-center justify-center"
       style={{
-        backgroundColor: "#0C0A3E",
+        backgroundColor: "#1D2D44",
         minHeight: "100vh",
         padding: "clamp(2rem, 5vw, 6rem)",
       }}
@@ -25,7 +25,7 @@ export function Hero() {
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               fontWeight: 400,
-              color: "#FDE8E9",
+              color: "#F0EBD8",
               marginBottom: "1.5rem",
             }}
             data-testid="text-hero-heading"
@@ -43,7 +43,7 @@ export function Hero() {
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
-            color: "rgba(253, 232, 233, 0.55)",
+            color: "rgba(240, 235, 216, 0.55)",
             maxWidth: "680px",
             margin: "0 auto",
             marginBottom: "2.5rem",
@@ -62,10 +62,10 @@ export function Hero() {
             href="/contact#talk"
             className="inline-block font-medium text-sm transition-all duration-200"
             style={{
-              backgroundColor: "#7B1E7A",
-              color: "#FDE8E9",
+              backgroundColor: "#748CAB",
+              color: "#F0EBD8",
               padding: "0.85rem 2.5rem",
-              border: "1px solid #7B1E7A",
+              border: "1px solid #748CAB",
               fontFamily: "'Inter', sans-serif",
               letterSpacing: "0.02em",
             }}
@@ -74,7 +74,7 @@ export function Hero() {
               e.currentTarget.style.backgroundColor = "transparent";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#7B1E7A";
+              e.currentTarget.style.backgroundColor = "#748CAB";
             }}
           >
             Let's talk &rarr;
@@ -91,7 +91,7 @@ export function Hero() {
       >
         <span
           className="font-mono text-[10px] uppercase tracking-[0.3em]"
-          style={{ color: "rgba(253,232,233,0.3)" }}
+          style={{ color: "rgba(240,235,216,0.3)" }}
         >
           Scroll
         </span>
@@ -99,7 +99,7 @@ export function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           className="font-mono text-sm"
-          style={{ color: "rgba(253,232,233,0.3)" }}
+          style={{ color: "rgba(240,235,216,0.3)" }}
         >
           &darr;
         </motion.div>

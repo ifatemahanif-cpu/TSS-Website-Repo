@@ -8,30 +8,30 @@
   --font-serif: 'Libre Baskerville', serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* PAGE BACKGROUND - Accent (Light Pink/White) */
-  --color-background: #FDE8E9; 
-  --color-foreground: #0C0A3E; /* Primary text */
+  /* PAGE BACKGROUND - Warm Cream */
+  --color-background: #F0EBD8; 
+  --color-foreground: #1D2D44; /* Dark navy text */
 
-  /* PRIMARY - Deep Purple/Blue */
-  --color-primary: #0C0A3E; 
-  --color-primary-foreground: #FDE8E9; /* Accent text on primary */
+  /* PRIMARY - Dark Navy */
+  --color-primary: #1D2D44; 
+  --color-primary-foreground: #F0EBD8;
 
-  /* SECONDARY - Purple/Magenta */
-  --color-secondary: #7B1E7A;
-  --color-secondary-foreground: #FDE8E9;
+  /* SECONDARY - Steel Blue */
+  --color-secondary: #748CAB;
+  --color-secondary-foreground: #F0EBD8;
 
-  /* ACCENT - Light Pink/White (Redundant but mapped for components) */
-  --color-accent: #FDE8E9;
-  --color-accent-foreground: #0C0A3E;
+  /* ACCENT - Warm Cream */
+  --color-accent: #F0EBD8;
+  --color-accent-foreground: #1D2D44;
 
-  --color-muted: #e6d0d1; /* Slightly darker accent */
-  --color-muted-foreground: #0C0A3E; 
+  --color-muted: #D8D3C3; /* Slightly darker cream */
+  --color-muted-foreground: #1D2D44; 
 
   --color-card: #ffffff;
-  --color-card-foreground: #0C0A3E;
+  --color-card-foreground: #1D2D44;
 
-  --color-border: #7B1E7A; /* Secondary borders */
-  --color-input: #e6d0d1;
+  --color-border: #3E5C76; /* Medium blue borders */
+  --color-input: #D8D3C3;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;

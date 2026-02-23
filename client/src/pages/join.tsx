@@ -72,35 +72,35 @@ function SectionDivider() {
         gap: "1rem",
       }}
     >
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(253, 232, 233, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(240, 235, 216, 0.06)" }} />
       <span
         style={{
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: "0.5rem",
-          color: "#7B1E7A",
+          color: "#748CAB",
           letterSpacing: "0.3em",
           opacity: 0.5,
         }}
       >
         &#9830;
       </span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(253, 232, 233, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(240, 235, 216, 0.06)" }} />
     </div>
   );
 }
 
 export default function Join() {
   return (
-    <div style={{ backgroundColor: "#000", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#0D1321", minHeight: "100vh" }}>
       <Navbar />
 
       <div
         className="relative px-2 md:px-4 lg:px-6 pt-24 pb-4"
-        style={{ backgroundColor: "#000" }}
+        style={{ backgroundColor: "#0D1321" }}
       >
         <div
           style={{
-            backgroundColor: "#0C0A3E",
+            backgroundColor: "#1D2D44",
             borderRadius: "20px",
             padding: "clamp(2rem, 5vw, 5rem)",
           }}
@@ -118,7 +118,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(253, 232, 233, 0.4)",
+                  color: "rgba(240, 235, 216, 0.4)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -143,7 +143,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.7rem",
-                  color: "#7B1E7A",
+                  color: "#748CAB",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
                 }}
@@ -154,7 +154,7 @@ export default function Join() {
               <h1
                 className="mb-6"
                 style={{
-                  color: "#FDE8E9",
+                  color: "#F0EBD8",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -186,7 +186,7 @@ export default function Join() {
               <div
                 style={{
                   height: "2px",
-                  background: "linear-gradient(to right, #7B1E7A, transparent)",
+                  background: "linear-gradient(to right, #748CAB, transparent)",
                   marginBottom: "3rem",
                   borderRadius: "1px",
                 }}
@@ -204,7 +204,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(253, 232, 233, 0.75)",
+                  color: "rgba(240, 235, 216, 0.75)",
                   lineHeight: 2.1,
                 }}
               >
@@ -216,7 +216,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(253, 232, 233, 0.65)",
+                  color: "rgba(240, 235, 216, 0.65)",
                   lineHeight: 2.1,
                 }}
               >
@@ -228,7 +228,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(253, 232, 233, 0.65)",
+                  color: "rgba(240, 235, 216, 0.65)",
                   lineHeight: 2.1,
                 }}
               >
@@ -240,7 +240,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
-                  color: "#FDE8E9",
+                  color: "#F0EBD8",
                   lineHeight: 1.8,
                   fontWeight: 500,
                   fontStyle: "italic",
@@ -261,8 +261,8 @@ export default function Join() {
                     viewport={{ once: true, margin: "-30px" }}
                     transition={{ delay: idx * 0.07, duration: 0.4 }}
                     style={{
-                      backgroundColor: "rgba(123, 30, 122, 0.06)",
-                      border: "1px solid rgba(123, 30, 122, 0.2)",
+                      backgroundColor: "rgba(116, 140, 171, 0.06)",
+                      border: "1px solid rgba(116, 140, 171, 0.2)",
                       borderRadius: "12px",
                       padding: "1.5rem 1.75rem",
                     }}
@@ -274,7 +274,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.5rem",
-                          color: "#7B1E7A",
+                          color: "#748CAB",
                           letterSpacing: "0.1em",
                           opacity: 0.7,
                         }}
@@ -287,7 +287,7 @@ export default function Join() {
                           style={{
                             fontFamily: "'Inter', sans-serif",
                             fontSize: "clamp(0.92rem, 1.2vw, 1.02rem)",
-                            color: "#FDE8E9",
+                            color: "#F0EBD8",
                             fontWeight: 600,
                             lineHeight: 1.5,
                           }}
@@ -298,7 +298,7 @@ export default function Join() {
                           style={{
                             fontFamily: "'Libre Baskerville', serif",
                             fontSize: "clamp(0.83rem, 1.05vw, 0.92rem)",
-                            color: "rgba(253, 232, 233, 0.58)",
+                            color: "rgba(240, 235, 216, 0.58)",
                             lineHeight: 1.9,
                           }}
                         >
@@ -316,7 +316,7 @@ export default function Join() {
               <h2
                 className="mb-6"
                 style={{
-                  color: "#FDE8E9",
+                  color: "#F0EBD8",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -348,7 +348,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(253, 232, 233, 0.6)",
+                  color: "rgba(240, 235, 216, 0.6)",
                   lineHeight: 2,
                 }}
               >
@@ -364,7 +364,7 @@ export default function Join() {
                     viewport={{ once: true, margin: "-30px" }}
                     transition={{ delay: idx * 0.08, duration: 0.4 }}
                     style={{
-                      border: "1px solid rgba(253, 232, 233, 0.08)",
+                      border: "1px solid rgba(240, 235, 216, 0.08)",
                       borderRadius: "12px",
                       padding: "1.5rem",
                     }}
@@ -375,7 +375,7 @@ export default function Join() {
                       style={{
                         fontFamily: "'Inter', sans-serif",
                         fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
-                        color: "#FDE8E9",
+                        color: "#F0EBD8",
                         fontWeight: 600,
                         lineHeight: 1.5,
                       }}
@@ -386,7 +386,7 @@ export default function Join() {
                       style={{
                         fontFamily: "'Libre Baskerville', serif",
                         fontSize: "clamp(0.8rem, 1vw, 0.88rem)",
-                        color: "rgba(253, 232, 233, 0.55)",
+                        color: "rgba(240, 235, 216, 0.55)",
                         lineHeight: 1.85,
                       }}
                     >
@@ -402,7 +402,7 @@ export default function Join() {
               <h2
                 className="mb-6"
                 style={{
-                  color: "#FDE8E9",
+                  color: "#F0EBD8",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -434,7 +434,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.92rem, 1.2vw, 1.02rem)",
-                  color: "rgba(253, 232, 233, 0.65)",
+                  color: "rgba(240, 235, 216, 0.65)",
                   lineHeight: 1.8,
                 }}
               >
@@ -451,8 +451,8 @@ export default function Join() {
                     transition={{ delay: idx * 0.1, duration: 0.4 }}
                     className="flex items-start gap-5"
                     style={{
-                      backgroundColor: "rgba(123, 30, 122, 0.06)",
-                      border: "1px solid rgba(123, 30, 122, 0.25)",
+                      backgroundColor: "rgba(116, 140, 171, 0.06)",
+                      border: "1px solid rgba(116, 140, 171, 0.25)",
                       borderRadius: "14px",
                       padding: "1.5rem 1.75rem",
                     }}
@@ -464,15 +464,15 @@ export default function Join() {
                         width: "44px",
                         height: "44px",
                         borderRadius: "10px",
-                        border: "1px solid rgba(123, 30, 122, 0.4)",
-                        backgroundColor: "rgba(123, 30, 122, 0.12)",
+                        border: "1px solid rgba(116, 140, 171, 0.4)",
+                        backgroundColor: "rgba(116, 140, 171, 0.12)",
                       }}
                     >
                       <span
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.5rem",
-                          color: "#7B1E7A",
+                          color: "#748CAB",
                           letterSpacing: "0.05em",
                           fontWeight: 600,
                         }}
@@ -486,7 +486,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'Inter', sans-serif",
                           fontSize: "clamp(0.95rem, 1.2vw, 1.05rem)",
-                          color: "#FDE8E9",
+                          color: "#F0EBD8",
                           fontWeight: 600,
                           lineHeight: 1.4,
                         }}
@@ -497,7 +497,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'Libre Baskerville', serif",
                           fontSize: "clamp(0.83rem, 1.05vw, 0.92rem)",
-                          color: "rgba(253, 232, 233, 0.6)",
+                          color: "rgba(240, 235, 216, 0.6)",
                           lineHeight: 1.85,
                         }}
                       >
@@ -513,7 +513,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(253, 232, 233, 0.6)",
+                  color: "rgba(240, 235, 216, 0.6)",
                   lineHeight: 2,
                 }}
               >
@@ -526,7 +526,7 @@ export default function Join() {
               <h2
                 className="mb-8"
                 style={{
-                  color: "#FDE8E9",
+                  color: "#F0EBD8",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -564,12 +564,12 @@ export default function Join() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.82rem, 1vw, 0.9rem)",
-                      color: "#FDE8E9",
+                      color: "#F0EBD8",
                       fontWeight: 500,
-                      border: "1px solid rgba(123, 30, 122, 0.35)",
+                      border: "1px solid rgba(116, 140, 171, 0.35)",
                       borderRadius: "8px",
                       padding: "0.6rem 1.25rem",
-                      backgroundColor: "rgba(123, 30, 122, 0.08)",
+                      backgroundColor: "rgba(116, 140, 171, 0.08)",
                     }}
                     data-testid={`tag-principle-${idx}`}
                   >
@@ -584,7 +584,7 @@ export default function Join() {
               <h2
                 className="mb-6"
                 style={{
-                  color: "#FDE8E9",
+                  color: "#F0EBD8",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -616,7 +616,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(253, 232, 233, 0.65)",
+                  color: "rgba(240, 235, 216, 0.65)",
                   lineHeight: 2.1,
                 }}
               >
@@ -630,8 +630,8 @@ export default function Join() {
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
                     letterSpacing: "0.15em",
-                    color: "#FDE8E9",
-                    backgroundColor: "#7B1E7A",
+                    color: "#F0EBD8",
+                    backgroundColor: "#748CAB",
                     border: "none",
                     borderRadius: "8px",
                     padding: "1rem 2.5rem",
@@ -640,8 +640,8 @@ export default function Join() {
                     textDecoration: "none",
                     display: "inline-block",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B2E9A"; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#3E5C76"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#748CAB"; }}
                   data-testid="button-fill-form"
                 >
                   FILL THE FORM

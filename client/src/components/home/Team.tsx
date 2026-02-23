@@ -47,9 +47,9 @@ const team = [
 ];
 
 const cardColors = [
-  { bg: "#0C0A3E", text: "#FDE8E9", accent: "#7B1E7A", overlayDark: true },
-  { bg: "#7B1E7A", text: "#FDE8E9", accent: "#FDE8E9", overlayDark: true },
-  { bg: "#FDE8E9", text: "#0C0A3E", accent: "#7B1E7A", overlayDark: false },
+  { bg: "#1D2D44", text: "#F0EBD8", accent: "#748CAB", overlayDark: true },
+  { bg: "#748CAB", text: "#F0EBD8", accent: "#F0EBD8", overlayDark: true },
+  { bg: "#F0EBD8", text: "#1D2D44", accent: "#748CAB", overlayDark: false },
 ];
 
 export function Team() {
@@ -104,13 +104,13 @@ export function Team() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#000" }}
+      style={{ backgroundColor: "#0D1321" }}
       data-testid="team-section"
     >
       <div
         className="relative overflow-hidden"
         style={{
-          backgroundColor: "#0C0A3E",
+          backgroundColor: "#1D2D44",
           borderRadius: "20px",
           minHeight: isMobile ? "auto" : "100vh",
           padding: "clamp(2rem, 4vw, 4rem)",
@@ -125,7 +125,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#7B1E7A",
+                    color: "#748CAB",
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -133,7 +133,7 @@ export function Team() {
                 <h2
                   className="mb-4"
                   style={{
-                    color: "#FDE8E9",
+                    color: "#F0EBD8",
                     lineHeight: 1.1,
                     letterSpacing: "-0.03em",
                   }}
@@ -165,7 +165,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                      color: "rgba(253, 232, 233, 0.6)",
+                      color: "rgba(240, 235, 216, 0.6)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -176,7 +176,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-                      color: "rgba(253, 232, 233, 0.45)",
+                      color: "rgba(240, 235, 216, 0.45)",
                       lineHeight: 1.8,
                       fontStyle: "italic",
                     }}
@@ -196,7 +196,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#7B1E7A",
+                    color: "#748CAB",
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -204,7 +204,7 @@ export function Team() {
                 <h2
                   className="mb-5"
                   style={{
-                    color: "#FDE8E9",
+                    color: "#F0EBD8",
                     lineHeight: 1.1,
                     letterSpacing: "-0.03em",
                   }}
@@ -236,7 +236,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                      color: "rgba(253, 232, 233, 0.6)",
+                      color: "rgba(240, 235, 216, 0.6)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -247,7 +247,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.78rem, 1vw, 0.9rem)",
-                      color: "rgba(253, 232, 233, 0.45)",
+                      color: "rgba(240, 235, 216, 0.45)",
                       lineHeight: 1.8,
                       fontStyle: "italic",
                     }}
@@ -261,7 +261,7 @@ export function Team() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.55rem",
-                      color: "rgba(253, 232, 233, 0.25)",
+                      color: "rgba(240, 235, 216, 0.25)",
                       letterSpacing: "0.15em",
                     }}
                   >
@@ -315,9 +315,9 @@ function TeamModal({
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
-  const modalBg = "#0C0A3E";
-  const modalText = "#FDE8E9";
-  const modalAccent = "#7B1E7A";
+  const modalBg = "#1D2D44";
+  const modalText = "#F0EBD8";
+  const modalAccent = "#748CAB";
 
   return (
     <motion.div
@@ -329,7 +329,7 @@ function TeamModal({
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        backgroundColor: "rgba(0, 0, 0, 0.85)",
+        backgroundColor: "rgba(13, 19, 33, 0.85)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -353,7 +353,7 @@ function TeamModal({
           width: "100%",
           maxHeight: "90vh",
           overflowY: "auto",
-          boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
+          boxShadow: "0 40px 100px rgba(13,19,33,0.6)",
         }}
       >
         <div className="flex flex-col md:flex-row">
@@ -601,8 +601,8 @@ function FanCard({
   const cardH = "clamp(320px, 42vh, 400px)";
 
   const overlayGradient = colors.overlayDark
-    ? `linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.85) 100%)`
-    : `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
+    ? `linear-gradient(180deg, transparent 30%, rgba(13,19,33,0.6) 70%, rgba(13,19,33,0.85) 100%)`
+    : `linear-gradient(180deg, transparent 30%, rgba(29,45,68,0.5) 70%, rgba(29,45,68,0.85) 100%)`;
 
   return (
     <motion.div
@@ -621,7 +621,7 @@ function FanCard({
         borderRadius: "16px",
         overflow: "hidden",
         border: `1px solid ${colors.accent}33`,
-        boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+        boxShadow: "0 20px 60px rgba(13,19,33,0.4)",
       }}
       onClick={() => onCardClick(index)}
       onKeyDown={(e) => {
@@ -668,10 +668,10 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.6rem",
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             opacity: 0.8,
             letterSpacing: "0.15em",
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: "rgba(13,19,33,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -682,9 +682,9 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.5rem",
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             opacity: 0.6,
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: "rgba(13,19,33,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -706,7 +706,7 @@ function FanCard({
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
             fontWeight: 600,
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             lineHeight: 1.5,
             marginBottom: "0.5rem",
           }}
@@ -719,7 +719,7 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             opacity: 0.5,
             letterSpacing: "0.1em",
           }}
@@ -762,8 +762,8 @@ function MobileCard({
   onCardClick: (index: number) => void;
 }) {
   const overlayGradient = colors.overlayDark
-    ? `linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.85) 100%)`
-    : `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
+    ? `linear-gradient(180deg, transparent 30%, rgba(13,19,33,0.6) 70%, rgba(13,19,33,0.85) 100%)`
+    : `linear-gradient(180deg, transparent 30%, rgba(29,45,68,0.5) 70%, rgba(29,45,68,0.85) 100%)`;
 
   return (
     <motion.div
@@ -815,9 +815,9 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.65rem",
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             opacity: 0.8,
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: "rgba(13,19,33,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -828,9 +828,9 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             opacity: 0.6,
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: "rgba(13,19,33,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -852,7 +852,7 @@ function MobileCard({
             fontFamily: "'Inter', sans-serif",
             fontSize: "0.9rem",
             fontWeight: 600,
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             lineHeight: 1.5,
             marginBottom: "0.5rem",
           }}
@@ -864,7 +864,7 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "#FDE8E9",
+            color: "#F0EBD8",
             opacity: 0.5,
           }}
         >
