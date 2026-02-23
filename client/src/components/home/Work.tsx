@@ -1,26 +1,26 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const caseStudies = [
+const blocks = [
   {
     label: "Fix the thinking",
-    brand: "SOCIAL (Impressario Entertainment & Hospitality)",
-    text: "The brand had scaled to 55+ outlets but couldn't explain what held it together. We mapped 10 years of evolution to find what stayed true versus what drifted. That became the spine for every decision that followed.",
+    principle: "We fix the thinking before we fix the marketing. Most problems aren't execution problems. They're clarity problems.",
+    caseStudy: "At SOCIAL (Impressario Entertainment & Hospitality) \u2014 the brand had scaled to 55+ outlets but couldn\u2019t explain what held it together. We mapped 10 years of evolution to find what stayed true versus what drifted. That became the spine for every decision that followed.",
   },
   {
-    label: "No handoffs",
-    brand: "Art Fervour",
-    text: "We embedded as Fractional Head of Marketing for 90 days. Founder decision involvement reduced from 70% to 25%.",
+    label: "The people you meet",
+    principle: "The people you meet are the people doing the work. No handoffs. No juniors learning on your brief. Two to three brands each. That\u2019s it.",
+    caseStudy: "At Art Fervour \u2014 we embedded as Fractional Head of Marketing for 90 days. Founder decision involvement reduced from 70% to 25%.",
   },
   {
     label: "Leave scaffolding",
-    brand: "LBB",
-    text: "We built content infrastructure across multiple cities. Repeatable formats. Clear calendars. No heroics required.",
+    principle: "We leave scaffolding, not dependency. We build the systems that let your team keep running after we leave.",
+    caseStudy: "At LBB \u2014 we built content infrastructure across multiple cities. Repeatable formats. Clear calendars. No heroics required.",
   },
   {
     label: "Turn noise into signal",
-    brand: "Headout",
-    text: "We scaled creator collaborations from under 50 to 1,000+ per quarter. In three months. By designing smarter, not adding hands.",
+    principle: "We turn noise into signal. More content isn\u2019t the answer. Clearer content is.",
+    caseStudy: "At Headout \u2013 we scaled creator collaborations from under 50 to 1,000+ per quarter. In three months. By designing smarter, not adding hands.",
   },
 ];
 
@@ -70,7 +70,7 @@ export function Work() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
-                marginBottom: "1.5rem",
+                marginBottom: "2.5rem",
               }}
               data-testid="text-work-heading"
             >
@@ -81,24 +81,8 @@ export function Work() {
             </h2>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-              lineHeight: 1.85,
-              opacity: 0.55,
-              marginBottom: "3.5rem",
-            }}
-            data-testid="text-work-intro"
-          >
-            We fix the thinking before we fix the marketing. Most problems aren't execution problems. They're clarity problems.
-          </motion.p>
-
           <div className="space-y-0">
-            {caseStudies.map((cs, i) => (
+            {blocks.map((block, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -135,21 +119,21 @@ export function Work() {
                       opacity: 0.5,
                     }}
                   >
-                    {cs.label}
+                    {block.label}
                   </span>
                 </div>
 
-                <h3
+                <p
                   style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(0.85rem, 1.1vw, 1rem)",
-                    fontWeight: 600,
-                    marginBottom: "0.75rem",
-                    opacity: 0.9,
+                    fontFamily: "'Libre Baskerville', serif",
+                    fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+                    lineHeight: 1.85,
+                    opacity: 0.7,
+                    marginBottom: "1rem",
                   }}
                 >
-                  {cs.brand}
-                </h3>
+                  {block.principle}
+                </p>
 
                 <p
                   style={{
@@ -159,85 +143,11 @@ export function Work() {
                     opacity: 0.55,
                   }}
                 >
-                  {cs.text}
+                  {block.caseStudy}
                 </p>
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col md:flex-row gap-6 mt-8"
-          >
-            <div
-              style={{
-                flex: 1,
-                padding: "1.5rem",
-                borderRadius: "12px",
-                backgroundColor: "rgba(29, 45, 68, 0.06)",
-                border: "1px solid rgba(29, 45, 68, 0.12)",
-              }}
-              data-testid="card-people-you-meet"
-            >
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  opacity: 0.4,
-                }}
-                className="block mb-2"
-              >
-                The people you meet
-              </span>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "0.88rem",
-                  lineHeight: 1.7,
-                  opacity: 0.6,
-                }}
-              >
-                Are the people doing the work. No handoffs. No juniors learning on your brief. Two to three brands each. That's it.
-              </p>
-            </div>
-            <div
-              style={{
-                flex: 1,
-                padding: "1.5rem",
-                borderRadius: "12px",
-                backgroundColor: "rgba(29, 45, 68, 0.06)",
-                border: "1px solid rgba(29, 45, 68, 0.12)",
-              }}
-              data-testid="card-leave-scaffolding"
-            >
-              <span
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  opacity: 0.4,
-                }}
-                className="block mb-2"
-              >
-                We leave scaffolding
-              </span>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "0.88rem",
-                  lineHeight: 1.7,
-                  opacity: 0.6,
-                }}
-              >
-                Not dependency. We build the systems that let your team keep running after we leave.
-              </p>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>
