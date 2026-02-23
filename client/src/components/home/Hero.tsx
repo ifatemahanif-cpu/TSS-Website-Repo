@@ -62,10 +62,10 @@ export function Hero() {
             href="/contact#talk"
             className="inline-block font-medium text-sm transition-all duration-200"
             style={{
-              backgroundColor: "#748CAB",
+              backgroundColor: "#1D2D44",
               color: "#F0EBD8",
               padding: "0.85rem 2.5rem",
-              border: "1px solid #748CAB",
+              border: "1px solid #1D2D44",
               fontFamily: "'Inter', sans-serif",
               letterSpacing: "0.02em",
             }}
@@ -74,7 +74,7 @@ export function Hero() {
               e.currentTarget.style.backgroundColor = "transparent";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#748CAB";
+              e.currentTarget.style.backgroundColor = "#1D2D44";
             }}
           >
             Let's talk &rarr;

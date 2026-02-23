@@ -10,7 +10,7 @@
 
   /* PAGE BACKGROUND - Warm Cream */
   --color-background: #F0EBD8; 
-  --color-foreground: #1D2D44; /* Dark navy text */
+  --color-foreground: #0D1321; /* Deepest navy text */
 
   /* PRIMARY - Dark Navy */
   --color-primary: #1D2D44; 
@@ -22,13 +22,13 @@
 
   /* ACCENT - Warm Cream */
   --color-accent: #F0EBD8;
-  --color-accent-foreground: #1D2D44;
+  --color-accent-foreground: #0D1321;
 
   --color-muted: #D8D3C3; /* Slightly darker cream */
-  --color-muted-foreground: #1D2D44; 
+  --color-muted-foreground: #0D1321; 
 
   --color-card: #ffffff;
-  --color-card-foreground: #1D2D44;
+  --color-card-foreground: #0D1321;
 
   --color-border: #3E5C76; /* Medium blue borders */
   --color-input: #D8D3C3;

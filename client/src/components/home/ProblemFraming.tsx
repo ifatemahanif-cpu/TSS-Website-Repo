@@ -23,7 +23,7 @@ export function ProblemFraming() {
       <div
         style={{
           backgroundColor: "#F0EBD8",
-          color: "#1D2D44",
+          color: "#0D1321",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}

@@ -533,7 +533,7 @@ export default function CollectiveModel() {
                     fontSize: "0.7rem",
                     letterSpacing: "0.15em",
                     color: "#F0EBD8",
-                    backgroundColor: "#748CAB",
+                    backgroundColor: "#1D2D44",
                     border: "none",
                     borderRadius: "8px",
                     padding: "1rem 2.5rem",
@@ -543,7 +543,7 @@ export default function CollectiveModel() {
                     display: "inline-block",
                   }}
                   onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#3E5C76"; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#748CAB"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#1D2D44"; }}
                   data-testid="button-lets-talk"
                 >
                   LET'S TALK

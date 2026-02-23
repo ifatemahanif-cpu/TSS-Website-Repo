@@ -49,7 +49,7 @@ const team = [
 const cardColors = [
   { bg: "#1D2D44", text: "#F0EBD8", accent: "#748CAB", overlayDark: true },
   { bg: "#748CAB", text: "#F0EBD8", accent: "#F0EBD8", overlayDark: true },
-  { bg: "#F0EBD8", text: "#1D2D44", accent: "#748CAB", overlayDark: false },
+  { bg: "#F0EBD8", text: "#0D1321", accent: "#748CAB", overlayDark: false },
 ];
 
 export function Team() {

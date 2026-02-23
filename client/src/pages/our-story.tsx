@@ -609,7 +609,7 @@ export default function OurStory() {
                   style={{
                     width: "40px",
                     height: "2px",
-                    backgroundColor: "#748CAB",
+                    backgroundColor: "#1D2D44",
                     borderRadius: "1px",
                   }}
                 />

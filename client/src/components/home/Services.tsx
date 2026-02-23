@@ -98,7 +98,7 @@ export function Services() {
       <div
         style={{
           backgroundColor: "#F0EBD8",
-          color: "#1D2D44",
+          color: "#0D1321",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
@@ -163,7 +163,7 @@ export function Services() {
                       cursor: "pointer",
                       background: "none",
                       border: "none",
-                      color: "#1D2D44",
+                      color: "#0D1321",
                     }}
                     data-testid={`button-toggle-${service.id}`}
                   >
@@ -326,14 +326,14 @@ export function Services() {
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
                 color: "#F0EBD8",
-                backgroundColor: "#748CAB",
+                backgroundColor: "#1D2D44",
                 border: "none",
                 borderRadius: "8px",
                 padding: "0.9rem 2rem",
                 textDecoration: "none",
               }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#3E5C76"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#748CAB"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#1D2D44"; }}
               data-testid="button-get-recommendation"
             >
               Get Our Recommendation
