@@ -128,7 +128,7 @@ export function Work() {
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
                     lineHeight: 1.85,
-                    opacity: 0.7,
+                    opacity: 0.85,
                     marginBottom: "1rem",
                   }}
                 >
@@ -138,9 +138,9 @@ export function Work() {
                 <p
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
-                    fontSize: "clamp(0.88rem, 1.15vw, 1rem)",
+                    fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                     lineHeight: 1.8,
-                    opacity: 0.55,
+                    opacity: 0.7,
                   }}
                 >
                   {block.caseStudy}
