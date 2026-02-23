@@ -1,16 +1,18 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
+import { Work } from "@/components/home/Work";
 import { Team } from "@/components/home/Team";
 import { Services } from "@/components/home/Services";
 
 export default function Home() {
   return (
-    <div className="bg-background min-h-screen">
+    <div style={{ backgroundColor: "#000" }} className="min-h-screen">
       <Navbar />
       <main>
         <Hero />
         <ProblemFraming />
+        <Work />
         <Team />
         <Services />
         <footer className="bg-foreground text-background py-12 px-8 text-center">

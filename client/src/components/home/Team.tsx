@@ -8,40 +8,40 @@ const team = [
   {
     name: "Fatema Hanif",
     image: teamFatema,
-    decisionsLed: "Brand positioning, creator-program design, go-to-market strategy, multi-market expansion, content-systems architecture",
-    contextsNavigated: "Early-stage uncertainty, scale-up complexity, global expansion, marketplace dynamics",
-    brandsLabel: "Brands she has worked with",
-    brands: "Headout, Singapore Tourism Board, Mandai Wildlife, Disney Broadway, Coca-Cola India, ITC Classmate, Little Black Book, Penguin Publishing, Universal Studios Japan, Art Fervour, Socials",
+    decisionsLed: "Brand positioning & frameworks \u00b7 Creator-program design \u00b7 Go-to-market strategy \u00b7 Multi-market expansion \u00b7 Content systems",
+    contextsNavigated: "",
+    brandsLabel: "Brands",
+    brands: "Headout, Singapore Tourism Board, Mandai Wildlife, Coca-Cola India, ITC Classmate, Little Black Book, Penguin Publishing, Art Fervour, SOCIAL",
     whatSheBrings: [
-      "Fatema brings the rare combination of strategic vision and hands-on operational judgment.",
-      "She has built and scaled marketing functions across markets, led creator programs at scale, and driven brand storytelling transformations for both startups and global brands.",
-      "Her strength is alignment - making sure brand, growth, and execution pull in the same direction.",
+      "Fatema brings strategic vision and hands-on operational judgment in equal measure.",
+      "She has built and scaled marketing functions across markets, led creator programs at scale, and driven brand transformations for startups and global brands alike.",
+      "Her strength is alignment \u2014 making sure brand, growth, and execution pull in the same direction.",
     ],
   },
   {
     name: "Shaili Contractor",
     image: teamShaili,
-    decisionsLed: "Content strategy frameworks, brand narrative resets, editorial system design, founder thought-leadership strategy, long-form storytelling programs, content-led growth direction",
-    contextsNavigated: "Early-stage ambiguity, scale-up complexity, content-led growth phases, brand reinvention moments, leadership positioning for founders",
-    brandsLabel: "Brands shaped",
+    decisionsLed: "Content strategy \u00b7 Brand narrative \u00b7 Editorial systems \u00b7 Founder thought-leadership \u00b7 Long-form storytelling",
+    contextsNavigated: "",
+    brandsLabel: "Brands",
     brands: "Axis Bank, Heinz, Google Pixel, Tata Sampann, Bajaj Motors, General Mills, FirstCry India, Little Black Book, Headout, STEM Learning",
     whatSheBrings: [
-      "Shaili brings senior judgment to content and narrative; the kind that stops brands from saying clever things that don't actually matter.",
-      'She helps leadership teams move from scattered messaging and ad-hoc content to structured storytelling systems that build recall, credibility, and long-term brand equity.',
-      'Her work turns "more content" into "the right content," aligned to business direction.',
+      "Shaili brings the kind of senior judgment to content and narrative that stops brands from saying clever things that don't actually matter.",
+      'She moves teams from scattered messaging and ad-hoc content to structured storytelling systems that build recall, credibility, and long-term brand equity.',
+      'Her work turns \u201cmore content\u201d into \u201cthe right content.\u201d',
     ],
   },
   {
     name: "Aakanksha Singh Devi",
     image: teamAakanksha,
-    decisionsLed: "Brand narrative frameworks, voice definition, editorial positioning, storytelling systems, long-form narrative programs",
-    contextsNavigated: "Founder-led brands, early-to-scale transitions, repositioning moments, content-led growth phases",
-    brandsLabel: "Brands she worked with",
-    brands: "Little Black Book (LBB), Headout, Cadbury's, Singapore Tourism Board, Mantri, VR Bengaluru, Arbor Brewing Company, Arrow, Classmate, Columbia Asia",
+    decisionsLed: "Brand narrative frameworks \u00b7 Voice definition \u00b7 Editorial positioning \u00b7 Storytelling systems",
+    contextsNavigated: "",
+    brandsLabel: "Brands",
+    brands: "Little Black Book, Headout, Cadbury's, Singapore Tourism Board, Mantri, VR Bengaluru, Arbor Brewing Company, Arrow, Classmate, Columbia Asia",
     whatSheBrings: [
       "Aakanksha brings narrative discipline and strategic sensitivity to brand storytelling.",
-      "She helps teams move from inconsistent messaging to coherent brand voices that carry meaning across platforms and growth stages.",
-      "Her work ensures that brands sound like themselves - clearly, consistently, and with intent.",
+      "She moves teams from inconsistent messaging to coherent brand voices that carry meaning across platforms and growth stages.",
+      "Her work ensures brands sound like themselves \u2013 clearly, consistently, and with intent.",
     ],
   },
 ];
@@ -129,7 +129,7 @@ export function Team() {
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
-                >003 / Team</span>
+                >Who You'll Work With</span>
                 <h2
                   className="mb-4"
                   style={{
@@ -146,7 +146,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    The 3{" "}
+                    Three senior perspectives{" "}
                   </span>
                   <span
                     style={{
@@ -157,7 +157,7 @@ export function Team() {
                       opacity: 0.6,
                     }}
                   >
-                    Marketeers
+                    that growing brands need in the room.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -170,40 +170,19 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    The Story Shapers is built around complementary ways of thinking that every growing brand eventually needs in the room. It's not here to just generate more ideas, but to generate better decisions. When you work with us, this is the leadership layer you are actually buying into.
+                    We've led brand resets, growth inflection points, and narrative reinventions across categories and stages. We understand the weight of decisions — and the cost of getting them wrong.
                   </p>
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
                       color: "rgba(253, 232, 233, 0.45)",
                       lineHeight: 1.8,
+                      fontStyle: "italic",
                     }}
                     data-testid="text-team-intro-2"
                   >
-                    We didn't build The Story Shapers around personalities or job titles. It's a deliberately assembled group of senior marketing and brand leaders who have owned real decisions across brands, stages, and moments of change. We've sat inside early-stage uncertainty. We've navigated scale-up complexity. We've led brand resets, growth inflection points, and narrative reinventions.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.8rem, 1.1vw, 0.9rem)",
-                      color: "rgba(253, 232, 233, 0.4)",
-                      lineHeight: 1.7,
-                    }}
-                    data-testid="text-team-intro-3"
-                  >
-                    We know what it feels like when the right decision is obvious — and when it isn't. And we know how expensive the wrong one can be.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.8rem, 1.1vw, 0.9rem)",
-                      color: "rgba(253, 232, 233, 0.35)",
-                      lineHeight: 1.7,
-                    }}
-                    data-testid="text-team-intro-4"
-                  >
-                    The people you meet are the people who do the thinking. And the people who do the thinking are the people who stay accountable for it.
+                    The people you meet are the people who do the thinking.
                   </p>
                 </div>
               </div>
@@ -221,7 +200,7 @@ export function Team() {
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
-                >003 / Team</span>
+                >Who You'll Work With</span>
                 <h2
                   className="mb-5"
                   style={{
@@ -238,7 +217,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    The 3{" "}
+                    Three senior perspectives{" "}
                   </span>
                   <span
                     style={{
@@ -249,7 +228,7 @@ export function Team() {
                       opacity: 0.6,
                     }}
                   >
-                    Marketeers
+                    that growing brands need in the room.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -262,40 +241,19 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    The Story Shapers is built around complementary ways of thinking that every growing brand eventually needs in the room. It's not here to just generate more ideas, but to generate better decisions. When you work with us, this is the leadership layer you are actually buying into.
+                    We've led brand resets, growth inflection points, and narrative reinventions across categories and stages. We understand the weight of decisions — and the cost of getting them wrong.
                   </p>
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.78rem, 1vw, 0.9rem)",
                       color: "rgba(253, 232, 233, 0.45)",
                       lineHeight: 1.8,
+                      fontStyle: "italic",
                     }}
                     data-testid="text-team-intro-2"
                   >
-                    We didn't build The Story Shapers around personalities or job titles. It's a deliberately assembled group of senior marketing and brand leaders who have owned real decisions across brands, stages, and moments of change. We've sat inside early-stage uncertainty. We've navigated scale-up complexity. We've led brand resets, growth inflection points, and narrative reinventions.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
-                      color: "rgba(253, 232, 233, 0.4)",
-                      lineHeight: 1.7,
-                    }}
-                    data-testid="text-team-intro-3"
-                  >
-                    We know what it feels like when the right decision is obvious — and when it isn't. And we know how expensive the wrong one can be.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
-                      color: "rgba(253, 232, 233, 0.35)",
-                      lineHeight: 1.7,
-                    }}
-                    data-testid="text-team-intro-4"
-                  >
-                    The people you meet are the people who do the thinking. And the people who do the thinking are the people who stay accountable for it.
+                    The people you meet are the people who do the thinking.
                   </p>
                 </div>
                 <div className="mt-6">
@@ -446,9 +404,10 @@ function TeamModal({
                 <h3
                   className="mt-2"
                   style={{
-                    fontFamily: "'Press Start 2P', cursive",
-                    fontSize: "clamp(0.7rem, 1.2vw, 0.9rem)",
-                    lineHeight: 1.8,
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "clamp(0.85rem, 1.3vw, 1.05rem)",
+                    fontWeight: 600,
+                    lineHeight: 1.5,
                   }}
                   data-testid={`modal-team-name-${index}`}
                 >
@@ -502,19 +461,6 @@ function TeamModal({
                 }}
               >
                 {member.decisionsLed}
-              </p>
-            </ModalSection>
-
-            <ModalSection label="Contexts navigated" accent={modalAccent}>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "0.85rem",
-                  lineHeight: 1.7,
-                  opacity: 0.7,
-                }}
-              >
-                {member.contextsNavigated}
               </p>
             </ModalSection>
 
@@ -757,10 +703,11 @@ function FanCard({
       >
         <h3
           style={{
-            fontFamily: "'Press Start 2P', cursive",
-            fontSize: "clamp(0.55rem, 0.9vw, 0.7rem)",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
+            fontWeight: 600,
             color: "#FDE8E9",
-            lineHeight: 1.8,
+            lineHeight: 1.5,
             marginBottom: "0.5rem",
           }}
           data-testid={`text-team-name-${index}`}
@@ -902,10 +849,11 @@ function MobileCard({
       >
         <h3
           style={{
-            fontFamily: "'Press Start 2P', cursive",
-            fontSize: "0.7rem",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.9rem",
+            fontWeight: 600,
             color: "#FDE8E9",
-            lineHeight: 1.8,
+            lineHeight: 1.5,
             marginBottom: "0.5rem",
           }}
           data-testid={`text-team-name-mobile-${index}`}

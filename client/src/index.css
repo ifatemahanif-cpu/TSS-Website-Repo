@@ -7,7 +7,6 @@
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Libre Baskerville', serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-pixel: 'Press Start 2P', cursive;
 
   /* PAGE BACKGROUND - Accent (Light Pink/White) */
   --color-background: #FDE8E9; 
@@ -68,9 +67,6 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
-  .font-pixel {
-    font-family: 'Press Start 2P', cursive;
-  }
 }
 
 @keyframes blink {

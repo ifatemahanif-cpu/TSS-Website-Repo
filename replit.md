@@ -1,6 +1,6 @@
 # Overview
 
-The Story Shapers is a marketing agency website built as a full-stack TypeScript application. It's a single-page marketing site showcasing the agency's team, services, problem-framing narrative, and case studies. The site features a modern, design-forward aesthetic with animations (Framer Motion), custom typography (Libre Baskerville, Inter, JetBrains Mono, Press Start 2P), and a distinctive pink/purple/deep-blue color palette.
+The Story Shapers is a marketing agency website built as a full-stack TypeScript application. It's a multi-page marketing site showcasing the agency's team, services, problem-framing narrative, and case studies. The site features a clean editorial aesthetic with subtle animations (Framer Motion), custom typography (Libre Baskerville, Inter, JetBrains Mono), and a distinctive pink/purple/deep-blue color palette. The homepage tells a progressive story: Hero > Problem > Work > Team > Services.
 
 The project follows a monorepo structure with a React frontend (Vite), an Express backend, and a PostgreSQL database via Drizzle ORM — though the database is minimally used (only a users table exists, with in-memory storage as the current default).
 
@@ -14,7 +14,7 @@ Preferred communication style: Simple, everyday language.
 
 - `client/` — React frontend (Vite-based SPA)
   - `client/src/pages/` — Page components (Home, NotFound)
-  - `client/src/components/home/` — Homepage sections (Hero, ProblemFraming, Team, Services)
+  - `client/src/components/home/` — Homepage sections (Hero, ProblemFraming, Work, Team, Services)
   - `client/src/components/layout/` — Layout components (Navbar)
   - `client/src/components/ui/` — Shadcn/ui component library (extensive set)
   - `client/src/hooks/` — Custom React hooks
@@ -40,7 +40,7 @@ Preferred communication style: Simple, everyday language.
 - **UI Components**: Shadcn/ui (new-york style) with Radix UI primitives
 - **Styling**: Tailwind CSS v4 (via `@tailwindcss/vite` plugin) with CSS custom properties for theming
 - **Animations**: Framer Motion for scroll-based and entrance animations
-- **Fonts**: Google Fonts — Libre Baskerville (serif headings), Inter (sans body), JetBrains Mono (mono), Press Start 2P (pixel/retro)
+- **Fonts**: Google Fonts — Libre Baskerville (serif headings), Inter (sans body), JetBrains Mono (mono)
 - **Color Scheme**: Custom palette — light pink background (#FDE8E9), deep purple primary (#0C0A3E), magenta secondary (#7B1E7A)
 
 ## Backend Architecture
