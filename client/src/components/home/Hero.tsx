@@ -235,14 +235,21 @@ export function Hero() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1
+            className="hero-gradient-sweep"
             style={{
               fontFamily: "'Libre Baskerville', serif",
               fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               fontWeight: 400,
-              color: "#FFFFFF",
               marginBottom: "1.5rem",
+              background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.15) 25%, #FFFFFF 50%, rgba(255,255,255,0.15) 75%, rgba(255,255,255,0.15) 100%)",
+              backgroundSize: "300% 100%",
+              backgroundPosition: "100% 0",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              animation: "gradientSweep 2s ease-out 0.4s forwards",
             }}
             data-testid="text-hero-heading"
           >
@@ -337,6 +344,11 @@ export function Hero() {
       </motion.div>
 
       <style>{`
+        @keyframes gradientSweep {
+          0% { background-position: 100% 0; }
+          60% { background-position: 0% 0; }
+          100% { background-position: -100% 0; background-size: 100% 100%; }
+        }
         @keyframes tickerScroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
