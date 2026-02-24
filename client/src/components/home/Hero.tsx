@@ -1,9 +1,23 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const layer1Y = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const layer2Y = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const layer3Y = useTransform(scrollYProgress, [0, 1], [0, -180]);
+  const layer4Y = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const layer5Y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+
   return (
     <section
+      ref={sectionRef}
       className="relative flex items-center justify-center overflow-hidden"
       style={{
         backgroundColor: "#0C0A3E",
@@ -31,6 +45,153 @@ export function Hero() {
             radial-gradient(ellipse 110% 55% at 30% 30%, rgba(123, 30, 122, 0.18) 0%, transparent 50%)
           `,
           animation: "heroGradientShift2 16s ease-in-out infinite alternate",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer2Y,
+          width: "340px",
+          height: "340px",
+          top: "8%",
+          right: "-5%",
+          borderRadius: "50%",
+          border: "1px solid rgba(42, 40, 112, 0.25)",
+          opacity: 0.4,
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer3Y,
+          width: "200px",
+          height: "200px",
+          bottom: "15%",
+          left: "5%",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(123, 30, 122, 0.12) 0%, transparent 70%)",
+          opacity: 0.6,
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer1Y,
+          width: "1px",
+          height: "120px",
+          top: "20%",
+          left: "12%",
+          background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.06), transparent)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer4Y,
+          width: "1px",
+          height: "180px",
+          top: "35%",
+          right: "15%",
+          background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer5Y,
+          width: "500px",
+          height: "500px",
+          top: "-10%",
+          left: "-10%",
+          borderRadius: "50%",
+          border: "1px solid rgba(42, 40, 112, 0.12)",
+          opacity: 0.3,
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer2Y,
+          width: "6px",
+          height: "6px",
+          top: "25%",
+          left: "22%",
+          borderRadius: "50%",
+          backgroundColor: "rgba(123, 30, 122, 0.3)",
+          boxShadow: "0 0 12px rgba(123, 30, 122, 0.2)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer3Y,
+          width: "4px",
+          height: "4px",
+          top: "60%",
+          right: "20%",
+          borderRadius: "50%",
+          backgroundColor: "rgba(42, 40, 112, 0.4)",
+          boxShadow: "0 0 10px rgba(42, 40, 112, 0.25)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer1Y,
+          width: "3px",
+          height: "3px",
+          top: "40%",
+          right: "35%",
+          borderRadius: "50%",
+          backgroundColor: "rgba(255, 255, 255, 0.12)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer4Y,
+          width: "5px",
+          height: "5px",
+          bottom: "30%",
+          left: "30%",
+          borderRadius: "50%",
+          backgroundColor: "rgba(123, 30, 122, 0.25)",
+          boxShadow: "0 0 8px rgba(123, 30, 122, 0.15)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer5Y,
+          width: "80px",
+          height: "1px",
+          top: "70%",
+          left: "8%",
+          background: "linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06), transparent)",
+          transform: "rotate(-20deg)",
+        }}
+      />
+
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          y: layer3Y,
+          width: "60px",
+          height: "1px",
+          top: "30%",
+          right: "10%",
+          background: "linear-gradient(to right, transparent, rgba(42, 40, 112, 0.15), transparent)",
+          transform: "rotate(15deg)",
         }}
       />
 
