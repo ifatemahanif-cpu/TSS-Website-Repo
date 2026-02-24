@@ -41,7 +41,7 @@ Preferred communication style: Simple, everyday language.
 - **Styling**: Tailwind CSS v4 (via `@tailwindcss/vite` plugin) with CSS custom properties for theming
 - **Animations**: Framer Motion for scroll-based and entrance animations
 - **Fonts**: Google Fonts — Libre Baskerville (serif headings), Inter (sans body), JetBrains Mono (mono)
-- **Color Scheme**: Custom palette — warm cream background (#F0EBD8), steel blue (#748CAB), medium blue (#3E5C76), dark navy primary (#1D2D44), deepest navy (#0D1321)
+- **Color Scheme**: Dark theme — deep indigo background (#0C0A3E), white text (#FFFFFF), accent labels (#2A2870), buttons (#7B1E7A with #9B3E9A hover), muted (#1A1852), card (#151340), borders rgba(255,255,255,0.12)
 
 ## Backend Architecture
 
