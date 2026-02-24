@@ -1,23 +1,9 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-
-  const layer1Y = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const layer2Y = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const layer3Y = useTransform(scrollYProgress, [0, 1], [0, -180]);
-  const layer4Y = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const layer5Y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-
   return (
     <section
-      ref={sectionRef}
       className="relative flex items-center justify-center overflow-hidden"
       style={{
         backgroundColor: "#0C0A3E",
@@ -26,202 +12,173 @@ export function Hero() {
       }}
       data-testid="hero-section"
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 120% 60% at 20% 80%, rgba(123, 30, 122, 0.25) 0%, transparent 60%),
-            radial-gradient(ellipse 100% 50% at 80% 20%, rgba(42, 40, 112, 0.3) 0%, transparent 55%),
-            radial-gradient(ellipse 80% 40% at 50% 50%, rgba(123, 30, 122, 0.12) 0%, transparent 50%)
-          `,
-          animation: "heroGradientShift 12s ease-in-out infinite alternate",
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 90% 50% at 70% 70%, rgba(42, 40, 112, 0.2) 0%, transparent 55%),
-            radial-gradient(ellipse 110% 55% at 30% 30%, rgba(123, 30, 122, 0.18) 0%, transparent 50%)
-          `,
-          animation: "heroGradientShift2 16s ease-in-out infinite alternate",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer2Y,
-          width: "340px",
-          height: "340px",
-          top: "8%",
-          right: "-5%",
-          borderRadius: "50%",
-          border: "1px solid rgba(42, 40, 112, 0.25)",
-          opacity: 0.4,
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer3Y,
-          width: "200px",
-          height: "200px",
-          bottom: "15%",
-          left: "5%",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(123, 30, 122, 0.12) 0%, transparent 70%)",
-          opacity: 0.6,
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer1Y,
-          width: "1px",
-          height: "120px",
-          top: "20%",
-          left: "12%",
-          background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.06), transparent)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer4Y,
-          width: "1px",
-          height: "180px",
-          top: "35%",
-          right: "15%",
-          background: "linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer5Y,
-          width: "500px",
-          height: "500px",
-          top: "-10%",
-          left: "-10%",
-          borderRadius: "50%",
-          border: "1px solid rgba(42, 40, 112, 0.12)",
-          opacity: 0.3,
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer2Y,
-          width: "6px",
-          height: "6px",
-          top: "25%",
-          left: "22%",
-          borderRadius: "50%",
-          backgroundColor: "rgba(123, 30, 122, 0.3)",
-          boxShadow: "0 0 12px rgba(123, 30, 122, 0.2)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer3Y,
-          width: "4px",
-          height: "4px",
-          top: "60%",
-          right: "20%",
-          borderRadius: "50%",
-          backgroundColor: "rgba(42, 40, 112, 0.4)",
-          boxShadow: "0 0 10px rgba(42, 40, 112, 0.25)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer1Y,
-          width: "3px",
-          height: "3px",
-          top: "40%",
-          right: "35%",
-          borderRadius: "50%",
-          backgroundColor: "rgba(255, 255, 255, 0.12)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer4Y,
-          width: "5px",
-          height: "5px",
-          bottom: "30%",
-          left: "30%",
-          borderRadius: "50%",
-          backgroundColor: "rgba(123, 30, 122, 0.25)",
-          boxShadow: "0 0 8px rgba(123, 30, 122, 0.15)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer5Y,
-          width: "80px",
-          height: "1px",
-          top: "70%",
-          left: "8%",
-          background: "linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06), transparent)",
-          transform: "rotate(-20deg)",
-        }}
-      />
-
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{
-          y: layer3Y,
-          width: "60px",
-          height: "1px",
-          top: "30%",
-          right: "10%",
-          background: "linear-gradient(to right, transparent, rgba(42, 40, 112, 0.15), transparent)",
-          transform: "rotate(15deg)",
-        }}
-      />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute"
+          style={{
+            width: "60vw",
+            height: "60vw",
+            maxWidth: "700px",
+            maxHeight: "700px",
+            top: "-15%",
+            left: "-10%",
+            borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%",
+            background: "radial-gradient(circle at 30% 40%, rgba(123, 30, 122, 0.35), rgba(123, 30, 122, 0.05) 70%, transparent 100%)",
+            filter: "blur(60px)",
+            animation: "meshBlob1 18s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            width: "50vw",
+            height: "50vw",
+            maxWidth: "600px",
+            maxHeight: "600px",
+            top: "10%",
+            right: "-12%",
+            borderRadius: "55% 45% 40% 60% / 45% 55% 45% 55%",
+            background: "radial-gradient(circle at 60% 50%, rgba(42, 40, 112, 0.4), rgba(42, 40, 112, 0.08) 65%, transparent 100%)",
+            filter: "blur(50px)",
+            animation: "meshBlob2 22s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            width: "45vw",
+            height: "45vw",
+            maxWidth: "550px",
+            maxHeight: "550px",
+            bottom: "-10%",
+            left: "20%",
+            borderRadius: "50% 50% 45% 55% / 55% 45% 50% 50%",
+            background: "radial-gradient(circle at 50% 60%, rgba(123, 30, 122, 0.22), rgba(42, 40, 112, 0.1) 60%, transparent 100%)",
+            filter: "blur(55px)",
+            animation: "meshBlob3 20s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            width: "35vw",
+            height: "35vw",
+            maxWidth: "420px",
+            maxHeight: "420px",
+            top: "30%",
+            left: "40%",
+            borderRadius: "45% 55% 50% 50% / 50% 45% 55% 50%",
+            background: "radial-gradient(circle at 45% 45%, rgba(42, 40, 112, 0.25), rgba(123, 30, 122, 0.08) 65%, transparent 100%)",
+            filter: "blur(65px)",
+            animation: "meshBlob4 25s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            width: "30vw",
+            height: "30vw",
+            maxWidth: "350px",
+            maxHeight: "350px",
+            bottom: "5%",
+            right: "10%",
+            borderRadius: "60% 40% 50% 50% / 40% 60% 40% 60%",
+            background: "radial-gradient(circle at 55% 55%, rgba(123, 30, 122, 0.18), rgba(42, 40, 112, 0.12) 55%, transparent 100%)",
+            filter: "blur(50px)",
+            animation: "meshBlob5 15s ease-in-out infinite alternate",
+          }}
+        />
+      </div>
 
       <style>{`
-        @keyframes heroGradientShift {
+        @keyframes meshBlob1 {
           0% {
-            opacity: 0.6;
-            transform: scale(1) translateX(0%) translateY(0%);
+            border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+            transform: translate(0%, 0%) scale(1);
           }
-          50% {
-            opacity: 1;
-            transform: scale(1.08) translateX(3%) translateY(-2%);
+          33% {
+            border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
+            transform: translate(5%, 3%) scale(1.05);
+          }
+          66% {
+            border-radius: 45% 55% 60% 40% / 45% 55% 45% 55%;
+            transform: translate(-3%, 5%) scale(0.98);
           }
           100% {
-            opacity: 0.7;
-            transform: scale(1.02) translateX(-2%) translateY(1%);
+            border-radius: 55% 45% 50% 50% / 50% 50% 55% 45%;
+            transform: translate(2%, -2%) scale(1.03);
           }
         }
-        @keyframes heroGradientShift2 {
+        @keyframes meshBlob2 {
           0% {
-            opacity: 0.8;
-            transform: scale(1.05) translateX(2%) translateY(1%);
+            border-radius: 55% 45% 40% 60% / 45% 55% 45% 55%;
+            transform: translate(0%, 0%) scale(1);
           }
-          50% {
-            opacity: 0.5;
-            transform: scale(1) translateX(-3%) translateY(-1%);
+          33% {
+            border-radius: 45% 55% 55% 45% / 50% 50% 50% 50%;
+            transform: translate(-4%, 4%) scale(1.06);
+          }
+          66% {
+            border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
+            transform: translate(3%, -3%) scale(0.97);
           }
           100% {
-            opacity: 0.9;
-            transform: scale(1.1) translateX(1%) translateY(2%);
+            border-radius: 40% 60% 50% 50% / 45% 55% 50% 50%;
+            transform: translate(-2%, 2%) scale(1.04);
+          }
+        }
+        @keyframes meshBlob3 {
+          0% {
+            border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
+            transform: translate(0%, 0%) scale(1);
+          }
+          33% {
+            border-radius: 55% 45% 50% 50% / 45% 55% 55% 45%;
+            transform: translate(4%, -2%) scale(1.04);
+          }
+          66% {
+            border-radius: 40% 60% 55% 45% / 50% 50% 45% 55%;
+            transform: translate(-5%, 3%) scale(1.02);
+          }
+          100% {
+            border-radius: 45% 55% 45% 55% / 55% 45% 50% 50%;
+            transform: translate(3%, 4%) scale(0.96);
+          }
+        }
+        @keyframes meshBlob4 {
+          0% {
+            border-radius: 45% 55% 50% 50% / 50% 45% 55% 50%;
+            transform: translate(0%, 0%) scale(1);
+          }
+          33% {
+            border-radius: 50% 50% 55% 45% / 45% 55% 50% 50%;
+            transform: translate(-3%, -4%) scale(1.07);
+          }
+          66% {
+            border-radius: 55% 45% 45% 55% / 55% 45% 45% 55%;
+            transform: translate(4%, 2%) scale(0.95);
+          }
+          100% {
+            border-radius: 40% 60% 50% 50% / 50% 50% 55% 45%;
+            transform: translate(-2%, 5%) scale(1.02);
+          }
+        }
+        @keyframes meshBlob5 {
+          0% {
+            border-radius: 60% 40% 50% 50% / 40% 60% 40% 60%;
+            transform: translate(0%, 0%) scale(1);
+          }
+          33% {
+            border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%;
+            transform: translate(3%, -5%) scale(1.05);
+          }
+          66% {
+            border-radius: 45% 55% 45% 55% / 50% 50% 55% 45%;
+            transform: translate(-4%, 3%) scale(0.98);
+          }
+          100% {
+            border-radius: 55% 45% 50% 50% / 45% 55% 45% 55%;
+            transform: translate(2%, 4%) scale(1.03);
           }
         }
       `}</style>
