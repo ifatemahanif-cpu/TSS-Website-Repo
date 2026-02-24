@@ -249,7 +249,7 @@ export function Hero() {
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              animation: "gradientSweep 2s ease-out 0.4s forwards",
+              animation: "gradientSweep 4s ease-in-out infinite",
             }}
             data-testid="text-hero-heading"
           >
@@ -346,8 +346,7 @@ export function Hero() {
       <style>{`
         @keyframes gradientSweep {
           0% { background-position: 100% 0; }
-          60% { background-position: 0% 0; }
-          100% { background-position: -100% 0; background-size: 100% 100%; }
+          100% { background-position: -100% 0; }
         }
         @keyframes tickerScroll {
           0% { transform: translateX(0); }
