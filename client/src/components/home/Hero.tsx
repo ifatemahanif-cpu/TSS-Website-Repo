@@ -297,6 +297,7 @@ export function Hero() {
               backgroundColor: "#7B1E7A",
               color: "#FFFFFF",
               padding: "0.85rem 2.5rem",
+              borderRadius: "8px",
               border: "1px solid #7B1E7A",
               fontFamily: "'Inter', sans-serif",
               letterSpacing: "0.02em",
