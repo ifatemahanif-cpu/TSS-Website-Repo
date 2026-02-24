@@ -4,45 +4,15 @@ import { Link } from "wouter";
 export function Hero() {
   return (
     <section
-      className="relative flex items-center justify-center overflow-hidden"
+      className="relative flex items-center justify-center"
       style={{
+        backgroundColor: "#0C0A3E",
         minHeight: "100vh",
         padding: "clamp(2rem, 5vw, 6rem)",
       }}
       data-testid="hero-section"
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(-45deg, #0C0A3E, #1A1852, #2A2870, #7B1E7A, #2A2870, #0C0A3E)",
-          backgroundSize: "400% 400%",
-          animation: "heroGradient 15s ease infinite",
-        }}
-      />
-
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse at 30% 50%, rgba(123, 30, 122, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(42, 40, 112, 0.2) 0%, transparent 50%)",
-          animation: "heroGlow 8s ease-in-out infinite alternate",
-        }}
-      />
-
-      <style>{`
-        @keyframes heroGradient {
-          0% { background-position: 0% 50%; }
-          25% { background-position: 50% 100%; }
-          50% { background-position: 100% 50%; }
-          75% { background-position: 50% 0%; }
-          100% { background-position: 0% 50%; }
-        }
-        @keyframes heroGlow {
-          0% { opacity: 0.5; transform: scale(1); }
-          100% { opacity: 1; transform: scale(1.1); }
-        }
-      `}</style>
-
-      <div className="relative z-10 max-w-[900px] mx-auto text-center">
+      <div className="max-w-[900px] mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,7 +88,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         data-testid="scroll-indicator"
       >
         <span
