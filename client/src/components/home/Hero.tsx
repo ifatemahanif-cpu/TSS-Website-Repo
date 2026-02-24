@@ -303,6 +303,49 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        className="absolute bottom-20 left-0 right-0 overflow-hidden"
+        data-testid="ticker-companies"
+      >
+        <div
+          className="flex items-center whitespace-nowrap"
+          style={{ animation: "tickerScroll 20s linear infinite" }}
+        >
+          {[...Array(4)].map((_, setIndex) => (
+            <div key={setIndex} className="flex items-center shrink-0">
+              {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
+                <span key={i} className="flex items-center shrink-0">
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "0.8rem",
+                      letterSpacing: "0.15em",
+                      color: "rgba(255,255,255,0.25)",
+                      textTransform: "uppercase",
+                      padding: "0 2rem",
+                    }}
+                    data-testid={`text-ticker-company-${setIndex}-${i}`}
+                  >
+                    {company}
+                  </span>
+                  <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.5rem" }}>●</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      <style>{`
+        @keyframes tickerScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.6 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         data-testid="scroll-indicator"
