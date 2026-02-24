@@ -243,13 +243,13 @@ export function Hero() {
               letterSpacing: "-0.03em",
               fontWeight: 400,
               marginBottom: "1.5rem",
-              background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.15) 25%, #FFFFFF 50%, rgba(255,255,255,0.15) 75%, rgba(255,255,255,0.15) 100%)",
+              background: "linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.4) 30%, #FFFFFF 50%, rgba(255,255,255,0.4) 70%, rgba(255,255,255,0.4) 100%)",
               backgroundSize: "300% 100%",
               backgroundPosition: "100% 0",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              animation: "gradientSweep 4s ease-in-out infinite",
+              animation: "gradientSweep 8s ease-in-out infinite",
             }}
             data-testid="text-hero-heading"
           >
