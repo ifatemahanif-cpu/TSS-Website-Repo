@@ -25,7 +25,7 @@ export function Hero() {
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               fontWeight: 400,
-              color: "#0C0A3E",
+              color: "#7B1E7A",
               marginBottom: "1.5rem",
             }}
             data-testid="text-hero-heading"
@@ -43,7 +43,7 @@ export function Hero() {
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
-            color: "rgba(12, 10, 62, 0.55)",
+            color: "rgba(123, 30, 122, 0.55)",
             maxWidth: "680px",
             margin: "0 auto",
             marginBottom: "2.5rem",
@@ -62,21 +62,21 @@ export function Hero() {
             href="/contact#talk"
             className="inline-block font-medium text-sm transition-all duration-200"
             style={{
-              backgroundColor: "#7B1E7A",
+              backgroundColor: "#0C0A3E",
               color: "#FDE8E9",
               padding: "0.85rem 2.5rem",
-              border: "1px solid #7B1E7A",
+              border: "1px solid #0C0A3E",
               fontFamily: "'Inter', sans-serif",
               letterSpacing: "0.02em",
             }}
             data-testid="button-lets-talk"
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#9B3E9A";
-              e.currentTarget.style.borderColor = "#9B3E9A";
+              e.currentTarget.style.backgroundColor = "#2A2870";
+              e.currentTarget.style.borderColor = "#2A2870";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#7B1E7A";
-              e.currentTarget.style.borderColor = "#7B1E7A";
+              e.currentTarget.style.backgroundColor = "#0C0A3E";
+              e.currentTarget.style.borderColor = "#0C0A3E";
             }}
           >
             Let's talk &rarr;
@@ -93,7 +93,7 @@ export function Hero() {
       >
         <span
           className="font-mono text-[10px] uppercase tracking-[0.3em]"
-          style={{ color: "rgba(12,10,62,0.3)" }}
+          style={{ color: "rgba(123,30,122,0.3)" }}
         >
           Scroll
         </span>
@@ -101,7 +101,7 @@ export function Hero() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           className="font-mono text-sm"
-          style={{ color: "rgba(12,10,62,0.3)" }}
+          style={{ color: "rgba(123,30,122,0.3)" }}
         >
           &darr;
         </motion.div>

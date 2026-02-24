@@ -47,9 +47,9 @@ const team = [
 ];
 
 const cardColors = [
-  { bg: "#0C0A3E", text: "#FDE8E9", accent: "#7B1E7A", overlayDark: true },
-  { bg: "#7B1E7A", text: "#FDE8E9", accent: "#FDE8E9", overlayDark: true },
-  { bg: "#FDE8E9", text: "#0C0A3E", accent: "#7B1E7A", overlayDark: false },
+  { bg: "#7B1E7A", text: "#FDE8E9", accent: "#0C0A3E", overlayDark: true },
+  { bg: "#0C0A3E", text: "#FDE8E9", accent: "#FDE8E9", overlayDark: true },
+  { bg: "#FDE8E9", text: "#7B1E7A", accent: "#0C0A3E", overlayDark: false },
 ];
 
 export function Team() {
@@ -110,7 +110,7 @@ export function Team() {
       <div
         className="relative overflow-hidden"
         style={{
-          backgroundColor: "#0C0A3E",
+          backgroundColor: "#7B1E7A",
           borderRadius: "20px",
           minHeight: isMobile ? "auto" : "100vh",
           padding: "clamp(2rem, 4vw, 4rem)",
@@ -125,7 +125,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#7B1E7A",
+                    color: "#0C0A3E",
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -196,7 +196,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#7B1E7A",
+                    color: "#0C0A3E",
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -315,9 +315,9 @@ function TeamModal({
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
-  const modalBg = "#0C0A3E";
+  const modalBg = "#7B1E7A";
   const modalText = "#FDE8E9";
-  const modalAccent = "#7B1E7A";
+  const modalAccent = "#0C0A3E";
 
   return (
     <motion.div
@@ -329,7 +329,7 @@ function TeamModal({
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        backgroundColor: "rgba(12, 10, 62, 0.85)",
+        backgroundColor: "rgba(123, 30, 122, 0.85)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -353,7 +353,7 @@ function TeamModal({
           width: "100%",
           maxHeight: "90vh",
           overflowY: "auto",
-          boxShadow: "0 40px 100px rgba(12,10,62,0.6)",
+          boxShadow: "0 40px 100px rgba(123,30,122,0.6)",
         }}
       >
         <div className="flex flex-col md:flex-row">
@@ -601,8 +601,8 @@ function FanCard({
   const cardH = "clamp(320px, 42vh, 400px)";
 
   const overlayGradient = colors.overlayDark
-    ? `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.6) 70%, rgba(12,10,62,0.85) 100%)`
-    : `linear-gradient(180deg, transparent 30%, rgba(123,30,122,0.5) 70%, rgba(123,30,122,0.85) 100%)`;
+    ? `linear-gradient(180deg, transparent 30%, rgba(123,30,122,0.6) 70%, rgba(123,30,122,0.85) 100%)`
+    : `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
 
   return (
     <motion.div
@@ -621,7 +621,7 @@ function FanCard({
         borderRadius: "16px",
         overflow: "hidden",
         border: `1px solid ${colors.accent}33`,
-        boxShadow: "0 20px 60px rgba(12,10,62,0.4)",
+        boxShadow: "0 20px 60px rgba(123,30,122,0.4)",
       }}
       onClick={() => onCardClick(index)}
       onKeyDown={(e) => {
@@ -671,7 +671,7 @@ function FanCard({
             color: "#FDE8E9",
             opacity: 0.8,
             letterSpacing: "0.15em",
-            backgroundColor: "rgba(12,10,62,0.4)",
+            backgroundColor: "rgba(123,30,122,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -684,7 +684,7 @@ function FanCard({
             fontSize: "0.5rem",
             color: "#FDE8E9",
             opacity: 0.6,
-            backgroundColor: "rgba(12,10,62,0.4)",
+            backgroundColor: "rgba(123,30,122,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -762,8 +762,8 @@ function MobileCard({
   onCardClick: (index: number) => void;
 }) {
   const overlayGradient = colors.overlayDark
-    ? `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.6) 70%, rgba(12,10,62,0.85) 100%)`
-    : `linear-gradient(180deg, transparent 30%, rgba(123,30,122,0.5) 70%, rgba(123,30,122,0.85) 100%)`;
+    ? `linear-gradient(180deg, transparent 30%, rgba(123,30,122,0.6) 70%, rgba(123,30,122,0.85) 100%)`
+    : `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
 
   return (
     <motion.div
@@ -817,7 +817,7 @@ function MobileCard({
             fontSize: "0.65rem",
             color: "#FDE8E9",
             opacity: 0.8,
-            backgroundColor: "rgba(12,10,62,0.4)",
+            backgroundColor: "rgba(123,30,122,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -830,7 +830,7 @@ function MobileCard({
             fontSize: "0.55rem",
             color: "#FDE8E9",
             opacity: 0.6,
-            backgroundColor: "rgba(12,10,62,0.4)",
+            backgroundColor: "rgba(123,30,122,0.4)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}

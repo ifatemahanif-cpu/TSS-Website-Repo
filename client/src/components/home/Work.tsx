@@ -38,7 +38,7 @@ export function Work() {
       <div
         style={{
           backgroundColor: "#FDE8E9",
-          color: "#0C0A3E",
+          color: "#7B1E7A",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
@@ -56,7 +56,7 @@ export function Work() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#7B1E7A",
+                color: "#0C0A3E",
                 opacity: 0.5,
               }}
             >
@@ -90,8 +90,8 @@ export function Work() {
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                   padding: "2rem 0",
-                  borderTop: i === 0 ? "1px solid rgba(12, 10, 62, 0.1)" : "none",
-                  borderBottom: "1px solid rgba(12, 10, 62, 0.1)",
+                  borderTop: i === 0 ? "1px solid rgba(123, 30, 122, 0.1)" : "none",
+                  borderBottom: "1px solid rgba(123, 30, 122, 0.1)",
                 }}
                 data-testid={`card-work-${i}`}
               >
@@ -102,7 +102,7 @@ export function Work() {
                       fontSize: "0.55rem",
                       letterSpacing: "0.15em",
                       textTransform: "uppercase",
-                      color: "#7B1E7A",
+                      color: "#0C0A3E",
                       opacity: 0.5,
                       flexShrink: 0,
                     }}

@@ -10,27 +10,27 @@
 
   /* PAGE BACKGROUND - Soft Pink */
   --color-background: #FDE8E9; 
-  --color-foreground: #0C0A3E; /* Deep indigo text */
+  --color-foreground: #7B1E7A; /* Deep purple text */
 
-  /* PRIMARY - Deep Indigo */
-  --color-primary: #0C0A3E; 
+  /* PRIMARY - Deep Purple */
+  --color-primary: #7B1E7A; 
   --color-primary-foreground: #FDE8E9;
 
-  /* SECONDARY - Deep Purple */
-  --color-secondary: #7B1E7A;
+  /* SECONDARY - Deep Indigo */
+  --color-secondary: #0C0A3E;
   --color-secondary-foreground: #FDE8E9;
 
   /* ACCENT - Soft Pink */
   --color-accent: #FDE8E9;
-  --color-accent-foreground: #0C0A3E;
+  --color-accent-foreground: #7B1E7A;
 
   --color-muted: #F0D4D6;
-  --color-muted-foreground: #0C0A3E; 
+  --color-muted-foreground: #7B1E7A; 
 
   --color-card: #ffffff;
-  --color-card-foreground: #0C0A3E;
+  --color-card-foreground: #7B1E7A;
 
-  --color-border: rgba(12, 10, 62, 0.15);
+  --color-border: rgba(123, 30, 122, 0.15);
   --color-input: #F0D4D6;
 
   --radius-sm: 0.25rem;
