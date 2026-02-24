@@ -343,28 +343,6 @@ export function Hero() {
         }
       `}</style>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        data-testid="scroll-indicator"
-      >
-        <span
-          className="font-mono text-[10px] uppercase tracking-[0.3em]"
-          style={{ color: "rgba(255,255,255,0.3)" }}
-        >
-          Scroll
-        </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="font-mono text-sm"
-          style={{ color: "rgba(255,255,255,0.3)" }}
-        >
-          &darr;
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
