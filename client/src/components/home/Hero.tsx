@@ -25,7 +25,7 @@ export function Hero() {
             borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%",
             background: "radial-gradient(circle at 30% 40%, rgba(123, 30, 122, 0.35), rgba(123, 30, 122, 0.05) 70%, transparent 100%)",
             filter: "blur(60px)",
-            animation: "meshBlob1 10s ease-in-out infinite alternate",
+            animation: "meshBlob1 5s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -40,7 +40,7 @@ export function Hero() {
             borderRadius: "55% 45% 40% 60% / 45% 55% 45% 55%",
             background: "radial-gradient(circle at 60% 50%, rgba(42, 40, 112, 0.4), rgba(42, 40, 112, 0.08) 65%, transparent 100%)",
             filter: "blur(50px)",
-            animation: "meshBlob2 12s ease-in-out infinite alternate",
+            animation: "meshBlob2 6s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -55,7 +55,7 @@ export function Hero() {
             borderRadius: "50% 50% 45% 55% / 55% 45% 50% 50%",
             background: "radial-gradient(circle at 50% 60%, rgba(123, 30, 122, 0.22), rgba(42, 40, 112, 0.1) 60%, transparent 100%)",
             filter: "blur(55px)",
-            animation: "meshBlob3 14s ease-in-out infinite alternate",
+            animation: "meshBlob3 7s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -70,7 +70,7 @@ export function Hero() {
             borderRadius: "45% 55% 50% 50% / 50% 45% 55% 50%",
             background: "radial-gradient(circle at 45% 45%, rgba(42, 40, 112, 0.25), rgba(123, 30, 122, 0.08) 65%, transparent 100%)",
             filter: "blur(65px)",
-            animation: "meshBlob4 11s ease-in-out infinite alternate",
+            animation: "meshBlob4 5.5s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -85,7 +85,7 @@ export function Hero() {
             borderRadius: "60% 40% 50% 50% / 40% 60% 40% 60%",
             background: "radial-gradient(circle at 55% 55%, rgba(123, 30, 122, 0.18), rgba(42, 40, 112, 0.12) 55%, transparent 100%)",
             filter: "blur(50px)",
-            animation: "meshBlob5 8s ease-in-out infinite alternate",
+            animation: "meshBlob5 4s ease-in-out infinite alternate",
           }}
         />
       </div>
