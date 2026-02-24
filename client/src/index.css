@@ -8,30 +8,30 @@
   --font-serif: 'Libre Baskerville', serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* PAGE BACKGROUND - Warm Cream */
-  --color-background: #F0EBD8; 
-  --color-foreground: #0D1321; /* Deepest navy text */
+  /* PAGE BACKGROUND - Soft Pink */
+  --color-background: #FDE8E9; 
+  --color-foreground: #0C0A3E; /* Deep indigo text */
 
-  /* PRIMARY - Dark Navy */
-  --color-primary: #1D2D44; 
-  --color-primary-foreground: #F0EBD8;
+  /* PRIMARY - Deep Indigo */
+  --color-primary: #0C0A3E; 
+  --color-primary-foreground: #FDE8E9;
 
-  /* SECONDARY - Steel Blue */
-  --color-secondary: #748CAB;
-  --color-secondary-foreground: #F0EBD8;
+  /* SECONDARY - Deep Purple */
+  --color-secondary: #7B1E7A;
+  --color-secondary-foreground: #FDE8E9;
 
-  /* ACCENT - Warm Cream */
-  --color-accent: #F0EBD8;
-  --color-accent-foreground: #0D1321;
+  /* ACCENT - Soft Pink */
+  --color-accent: #FDE8E9;
+  --color-accent-foreground: #0C0A3E;
 
-  --color-muted: #D8D3C3; /* Slightly darker cream */
-  --color-muted-foreground: #0D1321; 
+  --color-muted: #F0D4D6;
+  --color-muted-foreground: #0C0A3E; 
 
   --color-card: #ffffff;
-  --color-card-foreground: #0D1321;
+  --color-card-foreground: #0C0A3E;
 
-  --color-border: #3E5C76; /* Medium blue borders */
-  --color-input: #D8D3C3;
+  --color-border: rgba(12, 10, 62, 0.15);
+  --color-input: #F0D4D6;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;

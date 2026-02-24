@@ -7,7 +7,7 @@ import { Services } from "@/components/home/Services";
 
 export default function Home() {
   return (
-    <div style={{ backgroundColor: "#F0EBD8" }} className="min-h-screen">
+    <div style={{ backgroundColor: "#FDE8E9" }} className="min-h-screen">
       <Navbar />
       <main>
         <Hero />

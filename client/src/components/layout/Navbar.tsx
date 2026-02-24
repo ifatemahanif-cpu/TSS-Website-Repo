@@ -54,7 +54,7 @@ export function Navbar() {
 
       <a
         href="#"
-        className="hidden md:flex items-center justify-center px-6 py-2.5 border rounded text-sm font-medium transition-colors border-foreground text-foreground hover:bg-foreground hover:text-background"
+        className="hidden md:flex items-center justify-center px-6 py-2.5 border rounded text-sm font-medium transition-colors border-secondary text-secondary hover:bg-secondary hover:text-white"
       
       >
         Let's Talk
