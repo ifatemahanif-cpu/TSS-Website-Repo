@@ -1,10 +1,61 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 
+const tickerItems = [
+  { text: "Brand Strategy", font: "'Libre Baskerville', serif", style: "italic" },
+  { text: "Northvolt", font: "'Inter', sans-serif", style: "normal" },
+  { text: "NARRATIVE", font: "'JetBrains Mono', monospace", style: "normal" },
+  { text: "Culture Shift", font: "'Libre Baskerville', serif", style: "italic" },
+  { text: "Meridian Health", font: "'Inter', sans-serif", style: "normal" },
+  { text: "CLARITY", font: "'JetBrains Mono', monospace", style: "normal" },
+  { text: "Visual Identity", font: "'Libre Baskerville', serif", style: "italic" },
+  { text: "Arcadia Labs", font: "'Inter', sans-serif", style: "normal" },
+  { text: "DIRECTION", font: "'JetBrains Mono', monospace", style: "normal" },
+  { text: "Go-to-Market", font: "'Libre Baskerville', serif", style: "italic" },
+  { text: "Solstice & Co.", font: "'Inter', sans-serif", style: "normal" },
+  { text: "IMPACT", font: "'JetBrains Mono', monospace", style: "normal" },
+  { text: "Positioning", font: "'Libre Baskerville', serif", style: "italic" },
+  { text: "Vantage Point", font: "'Inter', sans-serif", style: "normal" },
+  { text: "RESONANCE", font: "'JetBrains Mono', monospace", style: "normal" },
+  { text: "Creative Direction", font: "'Libre Baskerville', serif", style: "italic" },
+  { text: "Ember Collective", font: "'Inter', sans-serif", style: "normal" },
+  { text: "MOMENTUM", font: "'JetBrains Mono', monospace", style: "normal" },
+];
+
+const itemOpacities = [0.15, 0.3, 0.2, 0.4, 0.25, 0.35, 0.18, 0.3, 0.22, 0.4, 0.15, 0.35, 0.28, 0.2, 0.38, 0.22, 0.3, 0.18];
+const itemSizes = ["1.1rem", "1.6rem", "0.85rem", "1.3rem", "1.5rem", "0.9rem", "1.4rem", "1.2rem", "0.95rem", "1.7rem", "1.3rem", "0.85rem", "1.5rem", "1.1rem", "0.9rem", "1.4rem", "1.6rem", "1rem"];
+
+function TickerColumn() {
+  const doubled = [...tickerItems, ...tickerItems];
+  return (
+    <div className="flex flex-col items-end gap-4">
+      {doubled.map((item, i) => {
+        const idx = i % tickerItems.length;
+        return (
+          <span
+            key={i}
+            style={{
+              fontFamily: item.font,
+              fontStyle: item.style,
+              fontSize: itemSizes[idx],
+              color: `rgba(255, 255, 255, ${itemOpacities[idx]})`,
+              whiteSpace: "nowrap",
+              lineHeight: 1.4,
+              letterSpacing: item.font.includes("JetBrains") ? "0.15em" : item.font.includes("Libre") ? "-0.01em" : "0",
+            }}
+          >
+            {item.text}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 export function Hero() {
   return (
     <section
-      className="relative flex items-center justify-center overflow-hidden"
+      className="relative flex items-center overflow-hidden"
       style={{
         backgroundColor: "#0C0A3E",
         minHeight: "100vh",
@@ -226,77 +277,118 @@ export function Hero() {
             opacity: 0.85;
           }
         }
+        @keyframes tickerScroll {
+          0% {
+            transform: translateY(0);
+          }
+          100% {
+            transform: translateY(-50%);
+          }
+        }
       `}</style>
 
-      <div className="relative max-w-[900px] mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h1
-            style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.03em",
-              fontWeight: 400,
-              color: "#FFFFFF",
-              marginBottom: "1.5rem",
-            }}
-            data-testid="text-hero-heading"
+      <div className="relative w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center md:items-center gap-12 md:gap-8">
+        <div className="flex-1 md:max-w-[55%]">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            We're{" "}
-            <span className="italic">The Story Shapers.</span>
-          </h1>
-        </motion.div>
+            <h1
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(2.5rem, 6vw, 5rem)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.03em",
+                fontWeight: 400,
+                color: "#FFFFFF",
+                marginBottom: "1.5rem",
+              }}
+              data-testid="text-hero-heading"
+            >
+              We're{" "}
+              <span className="italic">The Story Shapers.</span>
+            </h1>
+          </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
-            lineHeight: 1.7,
-            color: "rgba(255, 255, 255, 0.55)",
-            maxWidth: "680px",
-            margin: "0 auto",
-            marginBottom: "2.5rem",
-          }}
-          data-testid="text-hero-subhead"
-        >
-          A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <Link
-            href="/contact#talk"
-            className="inline-block font-medium text-sm transition-all duration-200"
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              backgroundColor: "#7B1E7A",
-              color: "#FFFFFF",
-              padding: "0.85rem 2.5rem",
-              border: "1px solid #7B1E7A",
               fontFamily: "'Inter', sans-serif",
-              letterSpacing: "0.02em",
+              fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
+              lineHeight: 1.7,
+              color: "rgba(255, 255, 255, 0.55)",
+              maxWidth: "540px",
+              marginBottom: "2.5rem",
             }}
-            data-testid="button-lets-talk"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#9B3E9A";
-              e.currentTarget.style.borderColor = "#9B3E9A";
+            data-testid="text-hero-subhead"
+          >
+            A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Link
+              href="/contact#talk"
+              className="inline-block font-medium text-sm transition-all duration-200"
+              style={{
+                backgroundColor: "#7B1E7A",
+                color: "#FFFFFF",
+                padding: "0.85rem 2.5rem",
+                border: "1px solid #7B1E7A",
+                fontFamily: "'Inter', sans-serif",
+                letterSpacing: "0.02em",
+              }}
+              data-testid="button-lets-talk"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#9B3E9A";
+                e.currentTarget.style.borderColor = "#9B3E9A";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#7B1E7A";
+                e.currentTarget.style.borderColor = "#7B1E7A";
+              }}
+            >
+              Let's talk &rarr;
+            </Link>
+          </motion.div>
+        </div>
+
+        <motion.div
+          className="flex-1 md:max-w-[40%] relative overflow-hidden"
+          style={{ height: "clamp(300px, 50vh, 500px)" }}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          data-testid="hero-ticker"
+        >
+          <div
+            className="absolute inset-0 pointer-events-none z-10"
+            style={{
+              background: "linear-gradient(to bottom, #0C0A3E 0%, transparent 15%, transparent 85%, #0C0A3E 100%)",
             }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#7B1E7A";
-              e.currentTarget.style.borderColor = "#7B1E7A";
+          />
+          <div
+            style={{
+              transform: "rotate(-6deg)",
+              transformOrigin: "center center",
+              height: "120%",
+              marginTop: "-10%",
             }}
           >
-            Let's talk &rarr;
-          </Link>
+            <div
+              style={{
+                animation: "tickerScroll 25s linear infinite",
+              }}
+            >
+              <TickerColumn />
+            </div>
+          </div>
         </motion.div>
       </div>
 
