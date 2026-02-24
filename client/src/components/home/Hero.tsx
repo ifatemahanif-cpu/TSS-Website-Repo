@@ -25,7 +25,7 @@ export function Hero() {
             borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%",
             background: "radial-gradient(circle at 30% 40%, rgba(123, 30, 122, 0.35), rgba(123, 30, 122, 0.05) 70%, transparent 100%)",
             filter: "blur(60px)",
-            animation: "meshBlob1 18s ease-in-out infinite alternate",
+            animation: "meshBlob1 10s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -40,7 +40,7 @@ export function Hero() {
             borderRadius: "55% 45% 40% 60% / 45% 55% 45% 55%",
             background: "radial-gradient(circle at 60% 50%, rgba(42, 40, 112, 0.4), rgba(42, 40, 112, 0.08) 65%, transparent 100%)",
             filter: "blur(50px)",
-            animation: "meshBlob2 22s ease-in-out infinite alternate",
+            animation: "meshBlob2 12s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -55,7 +55,7 @@ export function Hero() {
             borderRadius: "50% 50% 45% 55% / 55% 45% 50% 50%",
             background: "radial-gradient(circle at 50% 60%, rgba(123, 30, 122, 0.22), rgba(42, 40, 112, 0.1) 60%, transparent 100%)",
             filter: "blur(55px)",
-            animation: "meshBlob3 20s ease-in-out infinite alternate",
+            animation: "meshBlob3 14s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -70,7 +70,7 @@ export function Hero() {
             borderRadius: "45% 55% 50% 50% / 50% 45% 55% 50%",
             background: "radial-gradient(circle at 45% 45%, rgba(42, 40, 112, 0.25), rgba(123, 30, 122, 0.08) 65%, transparent 100%)",
             filter: "blur(65px)",
-            animation: "meshBlob4 25s ease-in-out infinite alternate",
+            animation: "meshBlob4 11s ease-in-out infinite alternate",
           }}
         />
         <div
@@ -85,7 +85,7 @@ export function Hero() {
             borderRadius: "60% 40% 50% 50% / 40% 60% 40% 60%",
             background: "radial-gradient(circle at 55% 55%, rgba(123, 30, 122, 0.18), rgba(42, 40, 112, 0.12) 55%, transparent 100%)",
             filter: "blur(50px)",
-            animation: "meshBlob5 15s ease-in-out infinite alternate",
+            animation: "meshBlob5 8s ease-in-out infinite alternate",
           }}
         />
       </div>
@@ -95,90 +95,135 @@ export function Hero() {
           0% {
             border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
             transform: translate(0%, 0%) scale(1);
+            opacity: 0.7;
           }
-          33% {
-            border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
-            transform: translate(5%, 3%) scale(1.05);
+          25% {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            transform: translate(10%, 6%) scale(1.12);
+            opacity: 1;
           }
-          66% {
-            border-radius: 45% 55% 60% 40% / 45% 55% 45% 55%;
-            transform: translate(-3%, 5%) scale(0.98);
+          50% {
+            border-radius: 35% 65% 65% 35% / 40% 60% 40% 60%;
+            transform: translate(-6%, 12%) scale(0.92);
+            opacity: 0.6;
+          }
+          75% {
+            border-radius: 65% 35% 45% 55% / 55% 45% 35% 65%;
+            transform: translate(8%, -5%) scale(1.08);
+            opacity: 0.9;
           }
           100% {
-            border-radius: 55% 45% 50% 50% / 50% 50% 55% 45%;
-            transform: translate(2%, -2%) scale(1.03);
+            border-radius: 50% 50% 60% 40% / 35% 65% 50% 50%;
+            transform: translate(-4%, 8%) scale(1.05);
+            opacity: 0.75;
           }
         }
         @keyframes meshBlob2 {
           0% {
             border-radius: 55% 45% 40% 60% / 45% 55% 45% 55%;
             transform: translate(0%, 0%) scale(1);
+            opacity: 0.8;
           }
-          33% {
-            border-radius: 45% 55% 55% 45% / 50% 50% 50% 50%;
-            transform: translate(-4%, 4%) scale(1.06);
+          25% {
+            border-radius: 35% 65% 60% 40% / 60% 40% 55% 45%;
+            transform: translate(-8%, 10%) scale(1.15);
+            opacity: 0.6;
           }
-          66% {
-            border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
-            transform: translate(3%, -3%) scale(0.97);
+          50% {
+            border-radius: 60% 40% 35% 65% / 40% 60% 65% 35%;
+            transform: translate(7%, -8%) scale(0.9);
+            opacity: 1;
+          }
+          75% {
+            border-radius: 45% 55% 55% 45% / 65% 35% 40% 60%;
+            transform: translate(-5%, 5%) scale(1.1);
+            opacity: 0.7;
           }
           100% {
-            border-radius: 40% 60% 50% 50% / 45% 55% 50% 50%;
-            transform: translate(-2%, 2%) scale(1.04);
+            border-radius: 30% 70% 50% 50% / 50% 50% 60% 40%;
+            transform: translate(6%, -4%) scale(1.02);
+            opacity: 0.85;
           }
         }
         @keyframes meshBlob3 {
           0% {
             border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
             transform: translate(0%, 0%) scale(1);
+            opacity: 0.65;
           }
-          33% {
-            border-radius: 55% 45% 50% 50% / 45% 55% 55% 45%;
-            transform: translate(4%, -2%) scale(1.04);
+          25% {
+            border-radius: 65% 35% 55% 45% / 35% 65% 60% 40%;
+            transform: translate(9%, -7%) scale(1.1);
+            opacity: 0.9;
           }
-          66% {
-            border-radius: 40% 60% 55% 45% / 50% 50% 45% 55%;
-            transform: translate(-5%, 3%) scale(1.02);
+          50% {
+            border-radius: 40% 60% 65% 35% / 55% 45% 35% 65%;
+            transform: translate(-10%, 8%) scale(0.95);
+            opacity: 0.5;
+          }
+          75% {
+            border-radius: 55% 45% 35% 65% / 45% 55% 55% 45%;
+            transform: translate(5%, 10%) scale(1.08);
+            opacity: 0.8;
           }
           100% {
-            border-radius: 45% 55% 45% 55% / 55% 45% 50% 50%;
-            transform: translate(3%, 4%) scale(0.96);
+            border-radius: 35% 65% 50% 50% / 60% 40% 45% 55%;
+            transform: translate(-6%, -3%) scale(0.98);
+            opacity: 0.7;
           }
         }
         @keyframes meshBlob4 {
           0% {
             border-radius: 45% 55% 50% 50% / 50% 45% 55% 50%;
             transform: translate(0%, 0%) scale(1);
+            opacity: 0.6;
           }
-          33% {
-            border-radius: 50% 50% 55% 45% / 45% 55% 50% 50%;
-            transform: translate(-3%, -4%) scale(1.07);
+          25% {
+            border-radius: 30% 70% 65% 35% / 60% 40% 45% 55%;
+            transform: translate(-7%, -9%) scale(1.18);
+            opacity: 0.9;
           }
-          66% {
-            border-radius: 55% 45% 45% 55% / 55% 45% 45% 55%;
-            transform: translate(4%, 2%) scale(0.95);
+          50% {
+            border-radius: 60% 40% 40% 60% / 35% 65% 55% 45%;
+            transform: translate(10%, 6%) scale(0.88);
+            opacity: 0.55;
+          }
+          75% {
+            border-radius: 50% 50% 55% 45% / 55% 45% 35% 65%;
+            transform: translate(-4%, 10%) scale(1.12);
+            opacity: 1;
           }
           100% {
-            border-radius: 40% 60% 50% 50% / 50% 50% 55% 45%;
-            transform: translate(-2%, 5%) scale(1.02);
+            border-radius: 65% 35% 45% 55% / 45% 55% 60% 40%;
+            transform: translate(6%, -6%) scale(1.04);
+            opacity: 0.7;
           }
         }
         @keyframes meshBlob5 {
           0% {
             border-radius: 60% 40% 50% 50% / 40% 60% 40% 60%;
             transform: translate(0%, 0%) scale(1);
+            opacity: 0.75;
           }
-          33% {
-            border-radius: 50% 50% 55% 45% / 55% 45% 50% 50%;
-            transform: translate(3%, -5%) scale(1.05);
+          25% {
+            border-radius: 40% 60% 35% 65% / 65% 35% 55% 45%;
+            transform: translate(8%, -10%) scale(1.14);
+            opacity: 0.5;
           }
-          66% {
-            border-radius: 45% 55% 45% 55% / 50% 50% 55% 45%;
-            transform: translate(-4%, 3%) scale(0.98);
+          50% {
+            border-radius: 55% 45% 60% 40% / 40% 60% 35% 65%;
+            transform: translate(-9%, 7%) scale(0.92);
+            opacity: 1;
+          }
+          75% {
+            border-radius: 35% 65% 45% 55% / 55% 45% 60% 40%;
+            transform: translate(5%, 8%) scale(1.1);
+            opacity: 0.6;
           }
           100% {
-            border-radius: 55% 45% 50% 50% / 45% 55% 45% 55%;
-            transform: translate(2%, 4%) scale(1.03);
+            border-radius: 50% 50% 55% 45% / 45% 55% 45% 55%;
+            transform: translate(-6%, -5%) scale(1.06);
+            opacity: 0.85;
           }
         }
       `}</style>
