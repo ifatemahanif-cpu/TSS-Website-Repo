@@ -52,13 +52,12 @@ export function Navbar() {
         ))}
       </div>
 
-      <a
-        href="#"
-        className="hidden md:flex items-center justify-center px-6 py-2.5 border rounded text-sm font-medium transition-colors border-secondary text-secondary hover:bg-secondary hover:text-white"
-      
+      <Link
+        href="/contact#talk"
+        className="hidden md:flex items-center justify-center px-6 py-2.5 rounded text-sm font-medium transition-colors bg-secondary text-white border border-secondary hover:bg-[#9B3E9A] hover:border-[#9B3E9A]"
       >
         Let's Talk
-      </a>
+      </Link>
     </nav>
   );
 }

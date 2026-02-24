@@ -8,30 +8,26 @@
   --font-serif: 'Libre Baskerville', serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* PAGE BACKGROUND - Soft Pink */
-  --color-background: #FDE8E9; 
-  --color-foreground: #7B1E7A; /* Deep purple text */
+  --color-background: #0C0A3E; 
+  --color-foreground: #FFFFFF;
 
-  /* PRIMARY - Deep Purple */
   --color-primary: #7B1E7A; 
-  --color-primary-foreground: #FDE8E9;
+  --color-primary-foreground: #FFFFFF;
 
-  /* SECONDARY - Deep Indigo */
-  --color-secondary: #0C0A3E;
-  --color-secondary-foreground: #FDE8E9;
+  --color-secondary: #7B1E7A;
+  --color-secondary-foreground: #FFFFFF;
 
-  /* ACCENT - Soft Pink */
-  --color-accent: #FDE8E9;
-  --color-accent-foreground: #7B1E7A;
+  --color-accent: #2A2870;
+  --color-accent-foreground: #FFFFFF;
 
-  --color-muted: #F0D4D6;
-  --color-muted-foreground: #7B1E7A; 
+  --color-muted: #1A1852;
+  --color-muted-foreground: rgba(255,255,255,0.6);
 
-  --color-card: #ffffff;
-  --color-card-foreground: #7B1E7A;
+  --color-card: #151340;
+  --color-card-foreground: #FFFFFF;
 
-  --color-border: rgba(123, 30, 122, 0.15);
-  --color-input: #F0D4D6;
+  --color-border: rgba(255,255,255,0.12);
+  --color-input: #1A1852;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;

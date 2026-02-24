@@ -8,48 +8,48 @@ const team = [
   {
     name: "Fatema Hanif",
     image: teamFatema,
-    decisionsLed: "Brand positioning & frameworks \u00b7 Creator-program design \u00b7 Go-to-market strategy \u00b7 Multi-market expansion \u00b7 Content systems",
+    decisionsLed: "Brand positioning & frameworks · Creator-program design · Go-to-market strategy · Multi-market expansion · Content systems",
     contextsNavigated: "",
     brandsLabel: "Brands",
     brands: "Headout, Singapore Tourism Board, Mandai Wildlife, Coca-Cola India, ITC Classmate, Little Black Book, Penguin Publishing, Art Fervour, SOCIAL",
     whatSheBrings: [
       "Fatema brings strategic vision and hands-on operational judgment in equal measure.",
       "She has built and scaled marketing functions across markets, led creator programs at scale, and driven brand transformations for startups and global brands alike.",
-      "Her strength is alignment \u2014 making sure brand, growth, and execution pull in the same direction.",
+      "Her strength is alignment — making sure brand, growth, and execution pull in the same direction.",
     ],
   },
   {
     name: "Shaili Contractor",
     image: teamShaili,
-    decisionsLed: "Content strategy \u00b7 Brand narrative \u00b7 Editorial systems \u00b7 Founder thought-leadership \u00b7 Long-form storytelling",
+    decisionsLed: "Content strategy · Brand narrative · Editorial systems · Founder thought-leadership · Long-form storytelling",
     contextsNavigated: "",
     brandsLabel: "Brands",
     brands: "Axis Bank, Heinz, Google Pixel, Tata Sampann, Bajaj Motors, General Mills, FirstCry India, Little Black Book, Headout, STEM Learning",
     whatSheBrings: [
       "Shaili brings the kind of senior judgment to content and narrative that stops brands from saying clever things that don't actually matter.",
       'She moves teams from scattered messaging and ad-hoc content to structured storytelling systems that build recall, credibility, and long-term brand equity.',
-      'Her work turns \u201cmore content\u201d into \u201cthe right content.\u201d',
+      'Her work turns "more content" into "the right content."',
     ],
   },
   {
     name: "Aakanksha Singh Devi",
     image: teamAakanksha,
-    decisionsLed: "Brand narrative frameworks \u00b7 Voice definition \u00b7 Editorial positioning \u00b7 Storytelling systems",
+    decisionsLed: "Brand narrative frameworks · Voice definition · Editorial positioning · Storytelling systems",
     contextsNavigated: "",
     brandsLabel: "Brands",
     brands: "Little Black Book, Headout, Cadbury's, Singapore Tourism Board, Mantri, VR Bengaluru, Arbor Brewing Company, Arrow, Classmate, Columbia Asia",
     whatSheBrings: [
       "Aakanksha brings narrative discipline and strategic sensitivity to brand storytelling.",
       "She moves teams from inconsistent messaging to coherent brand voices that carry meaning across platforms and growth stages.",
-      "Her work ensures brands sound like themselves \u2013 clearly, consistently, and with intent.",
+      "Her work ensures brands sound like themselves – clearly, consistently, and with intent.",
     ],
   },
 ];
 
 const cardColors = [
-  { bg: "#7B1E7A", text: "#FDE8E9", accent: "#0C0A3E", overlayDark: true },
-  { bg: "#0C0A3E", text: "#FDE8E9", accent: "#FDE8E9", overlayDark: true },
-  { bg: "#FDE8E9", text: "#7B1E7A", accent: "#0C0A3E", overlayDark: false },
+  { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
+  { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
+  { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
 ];
 
 export function Team() {
@@ -104,13 +104,13 @@ export function Team() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#FDE8E9" }}
+      style={{ backgroundColor: "#0C0A3E" }}
       data-testid="team-section"
     >
       <div
         className="relative overflow-hidden"
         style={{
-          backgroundColor: "#7B1E7A",
+          backgroundColor: "#0C0A3E",
           borderRadius: "20px",
           minHeight: isMobile ? "auto" : "100vh",
           padding: "clamp(2rem, 4vw, 4rem)",
@@ -125,7 +125,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -133,7 +133,7 @@ export function Team() {
                 <h2
                   className="mb-4"
                   style={{
-                    color: "#FDE8E9",
+                    color: "#FFFFFF",
                     lineHeight: 1.1,
                     letterSpacing: "-0.03em",
                   }}
@@ -165,7 +165,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                      color: "rgba(253, 232, 233, 0.6)",
+                      color: "rgba(255, 255, 255, 0.6)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -176,7 +176,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-                      color: "rgba(253, 232, 233, 0.45)",
+                      color: "rgba(255, 255, 255, 0.45)",
                       lineHeight: 1.8,
                       fontStyle: "italic",
                     }}
@@ -196,7 +196,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -204,7 +204,7 @@ export function Team() {
                 <h2
                   className="mb-5"
                   style={{
-                    color: "#FDE8E9",
+                    color: "#FFFFFF",
                     lineHeight: 1.1,
                     letterSpacing: "-0.03em",
                   }}
@@ -236,7 +236,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                      color: "rgba(253, 232, 233, 0.6)",
+                      color: "rgba(255, 255, 255, 0.6)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -247,7 +247,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.78rem, 1vw, 0.9rem)",
-                      color: "rgba(253, 232, 233, 0.45)",
+                      color: "rgba(255, 255, 255, 0.45)",
                       lineHeight: 1.8,
                       fontStyle: "italic",
                     }}
@@ -261,7 +261,7 @@ export function Team() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.55rem",
-                      color: "rgba(253, 232, 233, 0.25)",
+                      color: "rgba(255, 255, 255, 0.25)",
                       letterSpacing: "0.15em",
                     }}
                   >
@@ -315,9 +315,9 @@ function TeamModal({
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
-  const modalBg = "#7B1E7A";
-  const modalText = "#FDE8E9";
-  const modalAccent = "#0C0A3E";
+  const modalBg = "#0C0A3E";
+  const modalText = "#FFFFFF";
+  const modalAccent = "#2A2870";
 
   return (
     <motion.div
@@ -329,7 +329,7 @@ function TeamModal({
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        backgroundColor: "rgba(123, 30, 122, 0.85)",
+        backgroundColor: "rgba(12, 10, 62, 0.85)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -348,12 +348,12 @@ function TeamModal({
           backgroundColor: modalBg,
           color: modalText,
           borderRadius: "20px",
-          border: `1px solid ${modalAccent}33`,
+          border: `1px solid rgba(255, 255, 255, 0.15)`,
           maxWidth: "900px",
           width: "100%",
           maxHeight: "90vh",
           overflowY: "auto",
-          boxShadow: "0 40px 100px rgba(123,30,122,0.6)",
+          boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
         }}
       >
         <div className="flex flex-col md:flex-row">
@@ -419,10 +419,10 @@ function TeamModal({
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: modalAccent,
+                  color: "rgba(255, 255, 255, 0.6)",
                   opacity: 0.6,
                   background: "none",
-                  border: `1px solid ${modalAccent}44`,
+                  border: `1px solid rgba(255, 255, 255, 0.2)`,
                   borderRadius: "6px",
                   padding: "0.4rem 0.75rem",
                   cursor: "pointer",
@@ -600,9 +600,7 @@ function FanCard({
   const cardW = "clamp(220px, 18vw, 280px)";
   const cardH = "clamp(320px, 42vh, 400px)";
 
-  const overlayGradient = colors.overlayDark
-    ? `linear-gradient(180deg, transparent 30%, rgba(123,30,122,0.6) 70%, rgba(123,30,122,0.85) 100%)`
-    : `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
+  const overlayGradient = `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
 
   return (
     <motion.div
@@ -620,8 +618,8 @@ function FanCard({
         cursor: "pointer",
         borderRadius: "16px",
         overflow: "hidden",
-        border: `1px solid ${colors.accent}33`,
-        boxShadow: "0 20px 60px rgba(123,30,122,0.4)",
+        border: `1px solid rgba(255, 255, 255, 0.15)`,
+        boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
       }}
       onClick={() => onCardClick(index)}
       onKeyDown={(e) => {
@@ -668,10 +666,10 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.6rem",
-            color: "#FDE8E9",
+            color: "#FFFFFF",
             opacity: 0.8,
             letterSpacing: "0.15em",
-            backgroundColor: "rgba(123,30,122,0.4)",
+            backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -682,9 +680,9 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.5rem",
-            color: "#FDE8E9",
+            color: "#FFFFFF",
             opacity: 0.6,
-            backgroundColor: "rgba(123,30,122,0.4)",
+            backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -706,7 +704,7 @@ function FanCard({
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
             fontWeight: 600,
-            color: "#FDE8E9",
+            color: "#FFFFFF",
             lineHeight: 1.5,
             marginBottom: "0.5rem",
           }}
@@ -719,7 +717,7 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "#FDE8E9",
+            color: "rgba(255, 255, 255, 0.5)",
             opacity: 0.5,
             letterSpacing: "0.1em",
           }}
@@ -761,9 +759,7 @@ function MobileCard({
   colors: (typeof cardColors)[0];
   onCardClick: (index: number) => void;
 }) {
-  const overlayGradient = colors.overlayDark
-    ? `linear-gradient(180deg, transparent 30%, rgba(123,30,122,0.6) 70%, rgba(123,30,122,0.85) 100%)`
-    : `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
+  const overlayGradient = `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
 
   return (
     <motion.div
@@ -776,7 +772,7 @@ function MobileCard({
         cursor: "pointer",
         borderRadius: "16px",
         overflow: "hidden",
-        border: `1px solid ${colors.accent}33`,
+        border: `1px solid rgba(255, 255, 255, 0.15)`,
         position: "relative",
       }}
       onClick={() => onCardClick(index)}
@@ -815,9 +811,9 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.65rem",
-            color: "#FDE8E9",
+            color: "#FFFFFF",
             opacity: 0.8,
-            backgroundColor: "rgba(123,30,122,0.4)",
+            backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -828,9 +824,9 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "#FDE8E9",
+            color: "#FFFFFF",
             opacity: 0.6,
-            backgroundColor: "rgba(123,30,122,0.4)",
+            backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
           }}
@@ -852,7 +848,7 @@ function MobileCard({
             fontFamily: "'Inter', sans-serif",
             fontSize: "0.9rem",
             fontWeight: 600,
-            color: "#FDE8E9",
+            color: "#FFFFFF",
             lineHeight: 1.5,
             marginBottom: "0.5rem",
           }}
@@ -864,7 +860,7 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "#FDE8E9",
+            color: "rgba(255, 255, 255, 0.5)",
             opacity: 0.5,
           }}
         >

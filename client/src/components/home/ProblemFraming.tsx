@@ -17,13 +17,13 @@ export function ProblemFraming() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#FDE8E9" }}
+      style={{ backgroundColor: "#0C0A3E" }}
       data-testid="problem-framing-section"
     >
       <div
         style={{
-          backgroundColor: "#7B1E7A",
-          color: "#FDE8E9",
+          backgroundColor: "#0C0A3E",
+          color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
@@ -101,7 +101,7 @@ export function ProblemFraming() {
 
             <div
               style={{
-                borderTop: "1px solid rgba(253, 232, 233, 0.12)",
+                borderTop: "1px solid rgba(255, 255, 255, 0.12)",
               }}
             >
               {patterns.map((pattern, i) => (
@@ -112,7 +112,7 @@ export function ProblemFraming() {
                   transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}
                   style={{
                     padding: "1.1rem 0",
-                    borderBottom: "1px solid rgba(253, 232, 233, 0.1)",
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
                     display: "flex",
                     alignItems: "baseline",
                     gap: "1rem",

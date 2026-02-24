@@ -5,22 +5,22 @@ const blocks = [
   {
     label: "Fix the thinking",
     principle: "We fix the thinking before we fix the marketing. Most problems aren't execution problems. They're clarity problems.",
-    caseStudy: "At SOCIAL (Impressario Entertainment & Hospitality) \u2014 the brand had scaled to 55+ outlets but couldn\u2019t explain what held it together. We mapped 10 years of evolution to find what stayed true versus what drifted. That became the spine for every decision that followed.",
+    caseStudy: "At SOCIAL (Impressario Entertainment & Hospitality) — the brand had scaled to 55+ outlets but couldn't explain what held it together. We mapped 10 years of evolution to find what stayed true versus what drifted. That became the spine for every decision that followed.",
   },
   {
     label: "The people you meet",
-    principle: "The people you meet are the people doing the work. No handoffs. No juniors learning on your brief. Two to three brands each. That\u2019s it.",
-    caseStudy: "At Art Fervour \u2014 we embedded as Fractional Head of Marketing for 90 days. Founder decision involvement reduced from 70% to 25%.",
+    principle: "The people you meet are the people doing the work. No handoffs. No juniors learning on your brief. Two to three brands each. That's it.",
+    caseStudy: "At Art Fervour — we embedded as Fractional Head of Marketing for 90 days. Founder decision involvement reduced from 70% to 25%.",
   },
   {
     label: "Leave scaffolding",
     principle: "We leave scaffolding, not dependency. We build the systems that let your team keep running after we leave.",
-    caseStudy: "At LBB \u2014 we built content infrastructure across multiple cities. Repeatable formats. Clear calendars. No heroics required.",
+    caseStudy: "At LBB — we built content infrastructure across multiple cities. Repeatable formats. Clear calendars. No heroics required.",
   },
   {
     label: "Turn noise into signal",
-    principle: "We turn noise into signal. More content isn\u2019t the answer. Clearer content is.",
-    caseStudy: "At Headout \u2013 we scaled creator collaborations from under 50 to 1,000+ per quarter. In three months. By designing smarter, not adding hands.",
+    principle: "We turn noise into signal. More content isn't the answer. Clearer content is.",
+    caseStudy: "At Headout – we scaled creator collaborations from under 50 to 1,000+ per quarter. In three months. By designing smarter, not adding hands.",
   },
 ];
 
@@ -32,13 +32,13 @@ export function Work() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#FDE8E9" }}
+      style={{ backgroundColor: "#0C0A3E" }}
       data-testid="work-section"
     >
       <div
         style={{
-          backgroundColor: "#FDE8E9",
-          color: "#7B1E7A",
+          backgroundColor: "#0C0A3E",
+          color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
@@ -56,7 +56,7 @@ export function Work() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#0C0A3E",
+                color: "#2A2870",
                 opacity: 0.5,
               }}
             >
@@ -90,8 +90,8 @@ export function Work() {
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                   padding: "2rem 0",
-                  borderTop: i === 0 ? "1px solid rgba(123, 30, 122, 0.1)" : "none",
-                  borderBottom: "1px solid rgba(123, 30, 122, 0.1)",
+                  borderTop: i === 0 ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
+                  borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
                 }}
                 data-testid={`card-work-${i}`}
               >
@@ -102,7 +102,7 @@ export function Work() {
                       fontSize: "0.55rem",
                       letterSpacing: "0.15em",
                       textTransform: "uppercase",
-                      color: "#0C0A3E",
+                      color: "#2A2870",
                       opacity: 0.5,
                       flexShrink: 0,
                     }}

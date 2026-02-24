@@ -4,16 +4,16 @@ import { Navbar } from "@/components/layout/Navbar";
 
 export default function OurStory() {
   return (
-    <div style={{ backgroundColor: "#FDE8E9", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
       <Navbar />
 
       <div
         className="relative px-2 md:px-4 lg:px-6 pt-24 pb-4"
-        style={{ backgroundColor: "#FDE8E9" }}
+        style={{ backgroundColor: "#0C0A3E" }}
       >
         <div
           style={{
-            backgroundColor: "#FDE8E9",
+            backgroundColor: "#0C0A3E",
             borderRadius: "20px",
             padding: "clamp(2rem, 5vw, 5rem)",
           }}
@@ -30,7 +30,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(123, 30, 122, 0.4)",
+                  color: "rgba(255, 255, 255, 0.4)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -54,7 +54,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.7rem",
-                  color: "#0C0A3E",
+                  color: "#2A2870",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
                 }}
@@ -66,7 +66,7 @@ export default function OurStory() {
               <h1
                 className="mb-8"
                 style={{
-                  color: "#7B1E7A",
+                  color: "#FFFFFF",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -97,7 +97,7 @@ export default function OurStory() {
               <div
                 style={{
                   height: "2px",
-                  background: "linear-gradient(to right, #0C0A3E, transparent)",
+                  background: "linear-gradient(to right, #2A2870, transparent)",
                   marginBottom: "3rem",
                   borderRadius: "1px",
                 }}
@@ -115,7 +115,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(1.05rem, 1.5vw, 1.2rem)",
-                  color: "rgba(123, 30, 122, 0.85)",
+                  color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 2,
                   fontStyle: "italic",
                 }}
@@ -129,7 +129,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -139,7 +139,7 @@ export default function OurStory() {
               <div
                 className="my-12 pl-8"
                 style={{
-                  borderLeft: "2px solid rgba(12, 10, 62, 0.4)",
+                  borderLeft: "2px solid rgba(255, 255, 255, 0.2)",
                 }}
               >
                 <div className="space-y-6">
@@ -147,7 +147,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -157,7 +157,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -167,7 +167,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -177,7 +177,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -194,19 +194,19 @@ export default function OurStory() {
                   gap: "1rem",
                 }}
               >
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                     opacity: 0.5,
                   }}
                 >
                   &#9830;
                 </span>
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
               </div>
 
               <p
@@ -214,7 +214,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -226,7 +226,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -238,7 +238,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                  color: "#7B1E7A",
+                  color: "#FFFFFF",
                   lineHeight: 1.8,
                   fontWeight: 500,
                   fontStyle: "italic",
@@ -255,19 +255,19 @@ export default function OurStory() {
                   gap: "1rem",
                 }}
               >
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                     opacity: 0.5,
                   }}
                 >
                   &#9830;
                 </span>
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
               </div>
 
               <p
@@ -275,7 +275,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -285,7 +285,7 @@ export default function OurStory() {
               <div
                 className="my-10 pl-8"
                 style={{
-                  borderLeft: "2px solid rgba(12, 10, 62, 0.4)",
+                  borderLeft: "2px solid rgba(255, 255, 255, 0.2)",
                 }}
               >
                 <div className="space-y-5">
@@ -293,7 +293,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -303,7 +303,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -313,7 +313,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -327,7 +327,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                  color: "#7B1E7A",
+                  color: "#FFFFFF",
                   lineHeight: 1.8,
                   fontWeight: 500,
                   fontStyle: "italic",
@@ -344,19 +344,19 @@ export default function OurStory() {
                   gap: "1rem",
                 }}
               >
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                     opacity: 0.5,
                   }}
                 >
                   &#9830;
                 </span>
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
               </div>
 
               <p
@@ -364,7 +364,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -376,7 +376,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -388,7 +388,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -398,8 +398,8 @@ export default function OurStory() {
               <div
                 className="my-12"
                 style={{
-                  backgroundColor: "rgba(12, 10, 62, 0.08)",
-                  border: "1px solid rgba(12, 10, 62, 0.25)",
+                  backgroundColor: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.12)",
                   borderRadius: "12px",
                   padding: "clamp(1.5rem, 3vw, 2.5rem)",
                   textAlign: "center",
@@ -409,7 +409,7 @@ export default function OurStory() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(1.05rem, 1.5vw, 1.2rem)",
-                    color: "#7B1E7A",
+                    color: "#FFFFFF",
                     lineHeight: 1.8,
                     fontStyle: "italic",
                   }}
@@ -426,19 +426,19 @@ export default function OurStory() {
                   gap: "1rem",
                 }}
               >
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                     opacity: 0.5,
                   }}
                 >
                   &#9830;
                 </span>
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
               </div>
 
               <p
@@ -446,7 +446,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -456,7 +456,7 @@ export default function OurStory() {
               <div
                 className="my-10 pl-8"
                 style={{
-                  borderLeft: "2px solid rgba(12, 10, 62, 0.4)",
+                  borderLeft: "2px solid rgba(255, 255, 255, 0.2)",
                 }}
               >
                 <div className="space-y-5">
@@ -464,7 +464,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -474,7 +474,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -484,7 +484,7 @@ export default function OurStory() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -501,19 +501,19 @@ export default function OurStory() {
                   gap: "1rem",
                 }}
               >
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.3em",
                     opacity: 0.5,
                   }}
                 >
                   &#9830;
                 </span>
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
               </div>
 
               <p
@@ -521,7 +521,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                  color: "#7B1E7A",
+                  color: "#FFFFFF",
                   lineHeight: 1.8,
                   fontWeight: 500,
                 }}
@@ -534,7 +534,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -546,7 +546,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -558,7 +558,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -570,7 +570,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -582,7 +582,7 @@ export default function OurStory() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(123, 30, 122, 0.65)",
+                  color: "rgba(255, 255, 255, 0.65)",
                   lineHeight: 2,
                 }}
               >
@@ -596,7 +596,7 @@ export default function OurStory() {
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: "clamp(1.1rem, 1.6vw, 1.35rem)",
-                    color: "#7B1E7A",
+                    color: "#FFFFFF",
                     fontWeight: 600,
                     letterSpacing: "-0.02em",
                   }}
@@ -609,7 +609,7 @@ export default function OurStory() {
                   style={{
                     width: "40px",
                     height: "2px",
-                    backgroundColor: "#0C0A3E",
+                    backgroundColor: "#2A2870",
                     borderRadius: "1px",
                   }}
                 />

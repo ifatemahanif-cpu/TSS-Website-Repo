@@ -92,13 +92,13 @@ export function Services() {
   return (
     <section
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#FDE8E9" }}
+      style={{ backgroundColor: "#0C0A3E" }}
       data-testid="services-section"
     >
       <div
         style={{
-          backgroundColor: "#FDE8E9",
-          color: "#7B1E7A",
+          backgroundColor: "#0C0A3E",
+          color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
@@ -147,11 +147,11 @@ export function Services() {
                   viewport={{ once: true, margin: "-30px" }}
                   transition={{ delay: idx * 0.04, duration: 0.4 }}
                   style={{
-                    border: `1px solid ${isExpanded ? "rgba(12, 10, 62, 0.4)" : "rgba(12, 10, 62, 0.12)"}`,
+                    border: `1px solid ${isExpanded ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.12)"}`,
                     borderRadius: "12px",
                     overflow: "hidden",
                     transition: "all 0.3s ease",
-                    backgroundColor: isExpanded ? "rgba(12, 10, 62, 0.06)" : "transparent",
+                    backgroundColor: isExpanded ? "rgba(255, 255, 255, 0.06)" : "transparent",
                   }}
                   data-testid={`card-service-${service.id}`}
                 >
@@ -163,7 +163,7 @@ export function Services() {
                       cursor: "pointer",
                       background: "none",
                       border: "none",
-                      color: "#7B1E7A",
+                      color: "#FFFFFF",
                     }}
                     data-testid={`button-toggle-${service.id}`}
                   >
@@ -208,7 +208,7 @@ export function Services() {
                           width: "24px",
                           height: "24px",
                           borderRadius: "50%",
-                          border: `1.5px solid ${isExpanded ? "#0C0A3E" : "rgba(12, 10, 62, 0.2)"}`,
+                          border: `1.5px solid ${isExpanded ? "#2A2870" : "rgba(255, 255, 255, 0.2)"}`,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -219,7 +219,7 @@ export function Services() {
                         <span
                           style={{
                             fontSize: "0.9rem",
-                            color: isExpanded ? "#0C0A3E" : "rgba(12, 10, 62, 0.4)",
+                            color: isExpanded ? "#FFFFFF" : "rgba(255, 255, 255, 0.4)",
                             lineHeight: 1,
                             fontWeight: 300,
                           }}
@@ -241,7 +241,7 @@ export function Services() {
                         <div
                           style={{
                             padding: "0 1.5rem 1.25rem 1.5rem",
-                            borderTop: "1px solid rgba(12, 10, 62, 0.15)",
+                            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
                             paddingTop: "1rem",
                           }}
                         >
@@ -256,7 +256,7 @@ export function Services() {
                                     width: "4px",
                                     height: "4px",
                                     borderRadius: "50%",
-                                    backgroundColor: "#0C0A3E",
+                                    backgroundColor: "#2A2870",
                                     flexShrink: 0,
                                     marginTop: "0.5rem",
                                   }}
@@ -289,7 +289,7 @@ export function Services() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             style={{
-              borderTop: "1px solid rgba(12, 10, 62, 0.1)",
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
               paddingTop: "2.5rem",
               textAlign: "center",
             }}
@@ -325,15 +325,15 @@ export function Services() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
-                color: "#FDE8E9",
-                backgroundColor: "#0C0A3E",
+                color: "#FFFFFF",
+                backgroundColor: "#7B1E7A",
                 border: "none",
                 borderRadius: "8px",
                 padding: "0.9rem 2rem",
                 textDecoration: "none",
               }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#2A2870"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#0C0A3E"; }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
               data-testid="button-get-recommendation"
             >
               Get Our Recommendation

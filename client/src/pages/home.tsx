@@ -7,7 +7,7 @@ import { Services } from "@/components/home/Services";
 
 export default function Home() {
   return (
-    <div style={{ backgroundColor: "#FDE8E9" }} className="min-h-screen">
+    <div style={{ backgroundColor: "#0C0A3E" }} className="min-h-screen">
       <Navbar />
       <main>
         <Hero />
@@ -15,7 +15,7 @@ export default function Home() {
         <Work />
         <Team />
         <Services />
-        <footer className="bg-foreground text-background py-12 px-8 text-center">
+        <footer className="bg-background text-foreground py-12 px-8 text-center" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
            <h2 className="font-serif text-2xl mb-4">The Story Shapers</h2>
            <p className="opacity-50 text-sm">© 2026 The Story Shapers. All rights reserved.</p>
         </footer>

@@ -53,19 +53,19 @@ function SectionDivider() {
         gap: "1rem",
       }}
     >
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
       <span
         style={{
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: "0.5rem",
-          color: "#0C0A3E",
+          color: "#2A2870",
           letterSpacing: "0.3em",
           opacity: 0.5,
         }}
       >
         &#9830;
       </span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(123, 30, 122, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
     </div>
   );
 }
@@ -77,7 +77,7 @@ function SectionLabel({ children }: { children: string }) {
       style={{
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: "0.65rem",
-        color: "#0C0A3E",
+        color: "#2A2870",
         letterSpacing: "0.3em",
         textTransform: "uppercase",
       }}
@@ -92,7 +92,7 @@ function SectionHeading({ serif, italic }: { serif: string; italic: string }) {
     <h2
       className="mb-6"
       style={{
-        color: "#7B1E7A",
+        color: "#FFFFFF",
         lineHeight: 1.15,
         letterSpacing: "-0.03em",
       }}
@@ -128,7 +128,7 @@ function BodyText({ children }: { children: React.ReactNode }) {
       style={{
         fontFamily: "'Libre Baskerville', serif",
         fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-        color: "rgba(123, 30, 122, 0.65)",
+        color: "rgba(255, 255, 255, 0.65)",
         lineHeight: 2,
       }}
     >
@@ -144,7 +144,7 @@ function EmphasisText({ children }: { children: React.ReactNode }) {
       style={{
         fontFamily: "'Inter', sans-serif",
         fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-        color: "#7B1E7A",
+        color: "#FFFFFF",
         lineHeight: 1.8,
         fontWeight: 500,
         fontStyle: "italic",
@@ -157,16 +157,16 @@ function EmphasisText({ children }: { children: React.ReactNode }) {
 
 export default function CollectiveModel() {
   return (
-    <div style={{ backgroundColor: "#FDE8E9", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
       <Navbar />
 
       <div
         className="relative px-2 md:px-4 lg:px-6 pt-24 pb-4"
-        style={{ backgroundColor: "#FDE8E9" }}
+        style={{ backgroundColor: "#0C0A3E" }}
       >
         <div
           style={{
-            backgroundColor: "#FDE8E9",
+            backgroundColor: "#0C0A3E",
             borderRadius: "20px",
             padding: "clamp(2rem, 5vw, 5rem)",
           }}
@@ -183,7 +183,7 @@ export default function CollectiveModel() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(123, 30, 122, 0.4)",
+                  color: "rgba(255, 255, 255, 0.4)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -207,7 +207,7 @@ export default function CollectiveModel() {
               <h1
                 className="mb-8"
                 style={{
-                  color: "#7B1E7A",
+                  color: "#FFFFFF",
                   lineHeight: 1.15,
                   letterSpacing: "-0.03em",
                 }}
@@ -238,7 +238,7 @@ export default function CollectiveModel() {
               <div
                 style={{
                   height: "2px",
-                  background: "linear-gradient(to right, #0C0A3E, transparent)",
+                  background: "linear-gradient(to right, #2A2870, transparent)",
                   marginBottom: "3rem",
                   borderRadius: "1px",
                 }}
@@ -250,12 +250,11 @@ export default function CollectiveModel() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              {/* What We Are */}
               <div
                 className="mb-10"
                 style={{
-                  backgroundColor: "rgba(12, 10, 62, 0.08)",
-                  border: "1px solid rgba(12, 10, 62, 0.25)",
+                  backgroundColor: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.12)",
                   borderRadius: "12px",
                   padding: "clamp(1.5rem, 3vw, 2.5rem)",
                 }}
@@ -265,7 +264,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.55rem",
-                    color: "#0C0A3E",
+                    color: "#2A2870",
                     letterSpacing: "0.2em",
                   }}
                 >
@@ -275,7 +274,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                    color: "rgba(123, 30, 122, 0.8)",
+                    color: "rgba(255, 255, 255, 0.8)",
                     lineHeight: 2,
                   }}
                 >
@@ -286,7 +285,7 @@ export default function CollectiveModel() {
               <div
                 className="mb-10"
                 style={{
-                  border: "1px solid rgba(123, 30, 122, 0.08)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
                   borderRadius: "12px",
                   padding: "clamp(1.5rem, 3vw, 2.5rem)",
                 }}
@@ -296,7 +295,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.55rem",
-                    color: "rgba(123, 30, 122, 0.3)",
+                    color: "rgba(255, 255, 255, 0.3)",
                     letterSpacing: "0.2em",
                   }}
                 >
@@ -306,7 +305,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                    color: "rgba(123, 30, 122, 0.55)",
+                    color: "rgba(255, 255, 255, 0.55)",
                     lineHeight: 2,
                   }}
                 >
@@ -316,7 +315,6 @@ export default function CollectiveModel() {
 
               <SectionDivider />
 
-              {/* Why We Exist */}
               <SectionHeading serif="Why We" italic="Exist" />
 
               <EmphasisText>
@@ -345,14 +343,14 @@ export default function CollectiveModel() {
 
               <div
                 className="my-10 pl-8"
-                style={{ borderLeft: "2px solid rgba(12, 10, 62, 0.4)" }}
+                style={{ borderLeft: "2px solid rgba(255, 255, 255, 0.2)" }}
               >
                 <div className="space-y-5">
                   <p
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -362,7 +360,7 @@ export default function CollectiveModel() {
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(123, 30, 122, 0.7)",
+                      color: "rgba(255, 255, 255, 0.7)",
                       lineHeight: 1.9,
                     }}
                   >
@@ -377,7 +375,6 @@ export default function CollectiveModel() {
 
               <SectionDivider />
 
-              {/* What We Believe */}
               <SectionHeading serif="What We" italic="Believe" />
 
               <div className="space-y-5 mb-8">
@@ -389,7 +386,7 @@ export default function CollectiveModel() {
                     viewport={{ once: true, margin: "-30px" }}
                     transition={{ delay: idx * 0.07, duration: 0.4 }}
                     style={{
-                      border: "1px solid rgba(123, 30, 122, 0.08)",
+                      border: "1px solid rgba(255, 255, 255, 0.08)",
                       borderRadius: "12px",
                       padding: "1.25rem 1.5rem",
                       transition: "border-color 0.3s",
@@ -401,7 +398,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Inter', sans-serif",
                         fontSize: "clamp(0.9rem, 1.2vw, 1rem)",
-                        color: "#7B1E7A",
+                        color: "#FFFFFF",
                         fontWeight: 600,
                         lineHeight: 1.5,
                       }}
@@ -412,7 +409,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Libre Baskerville', serif",
                         fontSize: "clamp(0.82rem, 1.05vw, 0.9rem)",
-                        color: "rgba(123, 30, 122, 0.55)",
+                        color: "rgba(255, 255, 255, 0.55)",
                         lineHeight: 1.85,
                       }}
                     >
@@ -424,7 +421,6 @@ export default function CollectiveModel() {
 
               <SectionDivider />
 
-              {/* How We Work */}
               <SectionHeading serif="How We" italic="Work" />
 
               <EmphasisText>
@@ -442,8 +438,8 @@ export default function CollectiveModel() {
               <div
                 className="my-10"
                 style={{
-                  backgroundColor: "rgba(12, 10, 62, 0.08)",
-                  border: "1px solid rgba(12, 10, 62, 0.25)",
+                  backgroundColor: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.12)",
                   borderRadius: "12px",
                   padding: "clamp(1.5rem, 3vw, 2rem)",
                   textAlign: "center",
@@ -453,7 +449,7 @@ export default function CollectiveModel() {
                   style={{
                     fontFamily: "'Libre Baskerville', serif",
                     fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
-                    color: "#7B1E7A",
+                    color: "#FFFFFF",
                     lineHeight: 1.8,
                     fontStyle: "italic",
                   }}
@@ -464,7 +460,6 @@ export default function CollectiveModel() {
 
               <SectionDivider />
 
-              {/* The Model */}
               <SectionHeading serif="The" italic="Model" />
 
               <div className="grid grid-cols-1 gap-5 mb-10">
@@ -476,10 +471,10 @@ export default function CollectiveModel() {
                     viewport={{ once: true, margin: "-30px" }}
                     transition={{ delay: idx * 0.1, duration: 0.4 }}
                     style={{
-                      border: "1px solid rgba(12, 10, 62, 0.3)",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
                       borderRadius: "14px",
                       padding: "clamp(1.5rem, 3vw, 2rem)",
-                      backgroundColor: "rgba(12, 10, 62, 0.06)",
+                      backgroundColor: "rgba(255, 255, 255, 0.03)",
                     }}
                     data-testid={`card-model-${idx}`}
                   >
@@ -488,7 +483,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
                         fontSize: "0.55rem",
-                        color: "#0C0A3E",
+                        color: "#2A2870",
                         letterSpacing: "0.2em",
                       }}
                     >
@@ -499,7 +494,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Inter', sans-serif",
                         fontSize: "clamp(0.95rem, 1.3vw, 1.05rem)",
-                        color: "#7B1E7A",
+                        color: "#FFFFFF",
                         fontWeight: 600,
                         lineHeight: 1.5,
                       }}
@@ -510,7 +505,7 @@ export default function CollectiveModel() {
                       style={{
                         fontFamily: "'Libre Baskerville', serif",
                         fontSize: "clamp(0.85rem, 1.1vw, 0.93rem)",
-                        color: "rgba(123, 30, 122, 0.6)",
+                        color: "rgba(255, 255, 255, 0.6)",
                         lineHeight: 1.9,
                       }}
                     >
@@ -524,7 +519,6 @@ export default function CollectiveModel() {
                 We shape the engagement to what you need. Not what's easiest to package.
               </BodyText>
 
-              {/* CTA */}
               <div className="mt-14 text-center">
                 <Link
                   href="/contact#talk"
@@ -532,8 +526,8 @@ export default function CollectiveModel() {
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
                     letterSpacing: "0.15em",
-                    color: "#FDE8E9",
-                    backgroundColor: "#0C0A3E",
+                    color: "#FFFFFF",
+                    backgroundColor: "#7B1E7A",
                     border: "none",
                     borderRadius: "8px",
                     padding: "1rem 2.5rem",
@@ -542,8 +536,8 @@ export default function CollectiveModel() {
                     textDecoration: "none",
                     display: "inline-block",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#2A2870"; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#0C0A3E"; }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
                   data-testid="button-lets-talk"
                 >
                   LET'S TALK
