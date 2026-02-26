@@ -103,7 +103,7 @@ export function Services() {
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
       >
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-[900px] mx-auto">
           <div className="mb-10 md:mb-14">
             <span
               className="block mb-6"
@@ -167,53 +167,39 @@ export function Services() {
                     }}
                     data-testid={`button-toggle-${service.id}`}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span
-                            style={{
-                              fontFamily: "'JetBrains Mono', monospace",
-                              fontSize: "0.55rem",
-                              opacity: 0.3,
-                              letterSpacing: "0.1em",
-                            }}
-                          >
-                            0{idx + 1}
-                          </span>
-                          <span
-                            style={{
-                              fontFamily: "'Inter', sans-serif",
-                              fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                              fontWeight: 600,
-                            }}
-                          >
-                            {service.title}
-                          </span>
-                        </div>
-                        <p
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <span
                           style={{
-                            fontFamily: "'Libre Baskerville', serif",
-                            fontSize: "clamp(0.8rem, 0.95vw, 0.88rem)",
-                            opacity: 0.55,
-                            lineHeight: 1.75,
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.55rem",
+                            opacity: 0.3,
+                            letterSpacing: "0.1em",
                           }}
                         >
-                          {service.subtitle}
-                        </p>
+                          0{idx + 1}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: "'Inter', sans-serif",
+                            fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {service.title}
+                        </span>
                       </div>
-                      <motion.div
-                        animate={{ rotate: isExpanded ? 45 : 0 }}
-                        transition={{ duration: 0.25 }}
+                      <div
                         style={{
                           width: "24px",
                           height: "24px",
                           borderRadius: "50%",
-                          border: `1.5px solid ${isExpanded ? "#2A2870" : "rgba(255, 255, 255, 0.2)"}`,
+                          border: `1.5px solid ${isExpanded ? "rgba(255, 255, 255, 0.4)" : "rgba(255, 255, 255, 0.2)"}`,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           flexShrink: 0,
-                          marginTop: "0.25rem",
+                          transition: "border-color 0.25s ease",
                         }}
                       >
                         <span
@@ -222,11 +208,12 @@ export function Services() {
                             color: isExpanded ? "#FFFFFF" : "rgba(255, 255, 255, 0.4)",
                             lineHeight: 1,
                             fontWeight: 300,
+                            transition: "color 0.25s ease",
                           }}
                         >
-                          +
+                          {isExpanded ? "−" : "+"}
                         </span>
-                      </motion.div>
+                      </div>
                     </div>
                   </button>
                   <AnimatePresence>
@@ -245,6 +232,17 @@ export function Services() {
                             paddingTop: "1rem",
                           }}
                         >
+                          <p
+                            style={{
+                              fontFamily: "'Libre Baskerville', serif",
+                              fontSize: "clamp(0.8rem, 0.95vw, 0.88rem)",
+                              opacity: 0.55,
+                              lineHeight: 1.75,
+                              marginBottom: "1rem",
+                            }}
+                          >
+                            {service.subtitle}
+                          </p>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             {service.items.map((item, itemIdx) => (
                               <div
@@ -256,7 +254,7 @@ export function Services() {
                                     width: "4px",
                                     height: "4px",
                                     borderRadius: "50%",
-                                    backgroundColor: "#2A2870",
+                                    backgroundColor: "rgba(255, 255, 255, 0.25)",
                                     flexShrink: 0,
                                     marginTop: "0.5rem",
                                   }}

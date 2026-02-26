@@ -1,5 +1,5 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
 
 const blocks = [
   {
@@ -23,6 +23,89 @@ const blocks = [
     caseStudy: "At Headout – we scaled creator collaborations from under 50 to 1,000+ per quarter. In three months. By designing smarter, not adding hands.",
   },
 ];
+
+function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index: number; isInView: boolean }) {
+  const [expanded, setExpanded] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const show = expanded || hovered;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.2 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        padding: "2rem 0",
+        borderTop: index === 0 ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        cursor: "pointer",
+      }}
+      data-testid={`card-work-${index}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => setExpanded((prev) => !prev)}
+    >
+      <div className="flex items-baseline gap-3 mb-3">
+        <span
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.55rem",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "rgba(255, 255, 255, 0.25)",
+            flexShrink: 0,
+          }}
+        >
+          0{index + 1}
+        </span>
+        <span
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.75rem",
+            fontWeight: 500,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            opacity: 0.5,
+          }}
+        >
+          {block.label}
+        </span>
+      </div>
+
+      <p
+        style={{
+          fontFamily: "'Libre Baskerville', serif",
+          fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+          lineHeight: 1.85,
+          opacity: 0.85,
+          marginBottom: show ? "1rem" : 0,
+        }}
+      >
+        {block.principle}
+      </p>
+
+      <AnimatePresence>
+        {show && (
+          <motion.p
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 0.7, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              fontFamily: "'Libre Baskerville', serif",
+              fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+              lineHeight: 1.8,
+              fontStyle: "italic",
+              overflow: "hidden",
+            }}
+          >
+            {block.caseStudy}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
 
 export function Work() {
   const sectionRef = useRef(null);
@@ -56,8 +139,7 @@ export function Work() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#2A2870",
-                opacity: 0.5,
+                opacity: 0.4,
               }}
             >
               Our Work
@@ -83,69 +165,7 @@ export function Work() {
 
           <div className="space-y-0">
             {blocks.map((block, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  padding: "2rem 0",
-                  borderTop: i === 0 ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-                }}
-                data-testid={`card-work-${i}`}
-              >
-                <div className="flex items-baseline gap-3 mb-3">
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      color: "#2A2870",
-                      opacity: 0.5,
-                      flexShrink: 0,
-                    }}
-                  >
-                    0{i + 1}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "0.75rem",
-                      fontWeight: 500,
-                      letterSpacing: "0.05em",
-                      textTransform: "uppercase",
-                      opacity: 0.5,
-                    }}
-                  >
-                    {block.label}
-                  </span>
-                </div>
-
-                <p
-                  style={{
-                    fontFamily: "'Libre Baskerville', serif",
-                    fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                    lineHeight: 1.85,
-                    opacity: 0.85,
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {block.principle}
-                </p>
-
-                <p
-                  style={{
-                    fontFamily: "'Libre Baskerville', serif",
-                    fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                    lineHeight: 1.8,
-                    opacity: 0.7,
-                  }}
-                >
-                  {block.caseStudy}
-                </p>
-              </motion.div>
+              <WorkBlock key={i} block={block} index={i} isInView={isInView} />
             ))}
           </div>
         </div>

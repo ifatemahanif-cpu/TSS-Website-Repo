@@ -4,7 +4,7 @@ import { Link } from "wouter";
 export function Hero() {
   return (
     <section
-      className="relative flex items-center justify-center overflow-hidden"
+      className="relative flex items-center overflow-hidden"
       style={{
         backgroundColor: "#0C0A3E",
         minHeight: "100vh",
@@ -228,18 +228,32 @@ export function Hero() {
         }
       `}</style>
 
-      <div className="relative max-w-[900px] mx-auto text-center">
+      <div className="relative w-full" style={{ maxWidth: "1200px" }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
+          <span
+            className="block mb-6"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "0.65rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              opacity: 0.4,
+              color: "#FFFFFF",
+            }}
+            data-testid="text-hero-label"
+          >
+            The Story Shapers
+          </span>
           <h1
             className="hero-gradient-sweep"
             style={{
               fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
-              lineHeight: 1.05,
+              fontSize: "clamp(3.5rem, 10vw, 8rem)",
+              lineHeight: 1,
               letterSpacing: "-0.03em",
               fontWeight: 400,
               marginBottom: "1.5rem",
@@ -267,9 +281,8 @@ export function Hero() {
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
             color: "rgba(255, 255, 255, 0.55)",
-            maxWidth: "680px",
-            margin: "0 auto",
-            marginBottom: "2.5rem",
+            maxWidth: "580px",
+            marginBottom: "1.5rem",
           }}
           data-testid="text-hero-subhead"
         >
@@ -286,72 +299,65 @@ export function Hero() {
         </motion.p>
 
         <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="flex items-center gap-6 flex-wrap"
+          style={{ marginBottom: "2.5rem" }}
+          data-testid="ticker-companies"
+        >
+          {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
+            <span key={i} className="flex items-center gap-6">
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.15em",
+                  color: "rgba(255,255,255,0.25)",
+                  textTransform: "uppercase",
+                }}
+                data-testid={`text-ticker-company-${i}`}
+              >
+                {company}
+              </span>
+              {i < 3 && (
+                <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.4rem" }}>●</span>
+              )}
+            </span>
+          ))}
+        </motion.div>
+
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
         >
           <Link
             href="/contact#talk"
-            className="inline-block font-medium text-sm transition-all duration-200"
+            className="inline-flex items-center gap-2 transition-all duration-200 group"
             style={{
-              backgroundColor: "#7B1E7A",
-              color: "#FFFFFF",
-              padding: "0.85rem 2.5rem",
-              borderRadius: "8px",
-              border: "1px solid #7B1E7A",
               fontFamily: "'Inter', sans-serif",
-              letterSpacing: "0.02em",
+              fontSize: "1rem",
+              color: "rgba(255, 255, 255, 0.7)",
+              letterSpacing: "0.01em",
+              textDecoration: "none",
+              borderBottom: "1px solid transparent",
             }}
             data-testid="button-lets-talk"
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#9B3E9A";
-              e.currentTarget.style.borderColor = "#9B3E9A";
+              e.currentTarget.style.color = "#FFFFFF";
+              e.currentTarget.style.borderBottomColor = "rgba(255,255,255,0.4)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#7B1E7A";
-              e.currentTarget.style.borderColor = "#7B1E7A";
+              e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
+              e.currentTarget.style.borderBottomColor = "transparent";
             }}
           >
-            Let's talk &rarr;
+            Let's talk
+            <span style={{ fontSize: "1.1rem", transition: "transform 0.2s ease" }} className="group-hover:translate-x-1 inline-block">→</span>
           </Link>
         </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.5 }}
-        className="absolute bottom-20 left-0 right-0 overflow-hidden"
-        data-testid="ticker-companies"
-      >
-        <div
-          className="flex items-center whitespace-nowrap"
-          style={{ animation: "tickerScroll 20s linear infinite" }}
-        >
-          {[...Array(4)].map((_, setIndex) => (
-            <div key={setIndex} className="flex items-center shrink-0">
-              {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
-                <span key={i} className="flex items-center shrink-0">
-                  <span
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "0.8rem",
-                      letterSpacing: "0.15em",
-                      color: "rgba(255,255,255,0.25)",
-                      textTransform: "uppercase",
-                      padding: "0 2rem",
-                    }}
-                    data-testid={`text-ticker-company-${setIndex}-${i}`}
-                  >
-                    {company}
-                  </span>
-                  <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.5rem" }}>●</span>
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </motion.div>
 
       <style>{`
         @keyframes cursorBlink {
@@ -361,10 +367,6 @@ export function Hero() {
         @keyframes gradientSweep {
           0% { background-position: 100% 0; }
           100% { background-position: -100% 0; }
-        }
-        @keyframes tickerScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
         }
       `}</style>
 

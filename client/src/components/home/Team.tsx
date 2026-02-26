@@ -56,6 +56,7 @@ export function Team() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [frontCardIndex, setFrontCardIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -125,7 +126,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#2A2870",
+                    opacity: 0.4,
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -196,7 +197,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    color: "#2A2870",
+                    opacity: 0.4,
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -265,7 +266,7 @@ export function Team() {
                       letterSpacing: "0.15em",
                     }}
                   >
-                    CLICK A CARD TO READ MORE
+                    DRAG OR CLICK A CARD
                   </span>
                 </div>
               </div>
@@ -276,6 +277,8 @@ export function Team() {
                   desktopFanConfigs={desktopFanConfigs}
                   tabletFanConfigs={tabletFanConfigs}
                   onCardClick={handleCardClick}
+                  frontCardIndex={frontCardIndex}
+                  setFrontCardIndex={setFrontCardIndex}
                 />
               </div>
             </div>
@@ -519,13 +522,18 @@ function DesktopFanCards({
   desktopFanConfigs,
   tabletFanConfigs,
   onCardClick,
+  frontCardIndex,
+  setFrontCardIndex,
 }: {
   fanProgress: any;
   desktopFanConfigs: { rotate: number; x: number; y: number }[];
   tabletFanConfigs: { rotate: number; x: number; y: number }[];
   onCardClick: (index: number) => void;
+  frontCardIndex: number | null;
+  setFrontCardIndex: (index: number | null) => void;
 }) {
   const [isTablet, setIsTablet] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const check = () => setIsTablet(window.innerWidth < 1024);
@@ -538,12 +546,15 @@ function DesktopFanCards({
 
   return (
     <div
+      ref={containerRef}
       className="relative flex items-center justify-center"
       style={{ height: "70vh", perspective: "1200px" }}
     >
       {team.map((member, i) => {
         const config = configs[i];
         const stackOffset = (i - 1) * 6;
+        const baseZ = team.length - i;
+        const zIndex = frontCardIndex === i ? 10 : baseZ;
 
         return (
           <FanCard
@@ -555,8 +566,11 @@ function DesktopFanCards({
             targetX={config.x}
             targetY={config.y}
             stackOffset={stackOffset}
-            zIndex={team.length - i}
+            zIndex={zIndex}
             onCardClick={onCardClick}
+            isFront={frontCardIndex === i}
+            onBringToFront={() => setFrontCardIndex(i)}
+            containerRef={containerRef}
           />
         );
       })}
@@ -574,6 +588,9 @@ function FanCard({
   stackOffset,
   zIndex,
   onCardClick,
+  isFront,
+  onBringToFront,
+  containerRef,
 }: {
   member: (typeof team)[0];
   index: number;
@@ -584,8 +601,13 @@ function FanCard({
   stackOffset: number;
   zIndex: number;
   onCardClick: (index: number) => void;
+  isFront: boolean;
+  onBringToFront: () => void;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const colors = cardColors[index];
+  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
+  const wasDraggedRef = useRef(false);
 
   const rotateZ = useTransform(fanProgress, [0, 1], [0, targetRotate]);
   const x = useTransform(fanProgress, [0, 1], [0, targetX]);
@@ -615,13 +637,39 @@ function FanCard({
         width: cardW,
         height: cardH,
         transformOrigin: "center bottom",
-        cursor: "pointer",
+        cursor: "grab",
         borderRadius: "16px",
         overflow: "hidden",
-        border: `1px solid rgba(255, 255, 255, 0.15)`,
-        boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+        border: isFront ? `2px solid rgba(255, 255, 255, 0.35)` : `1px solid rgba(255, 255, 255, 0.15)`,
+        boxShadow: isFront ? "0 30px 80px rgba(0,0,0,0.6)" : "0 20px 60px rgba(0,0,0,0.4)",
       }}
-      onClick={() => onCardClick(index)}
+      drag
+      dragConstraints={containerRef}
+      dragElastic={0.15}
+      dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
+      onDragStart={(_, info) => {
+        dragStartRef.current = { x: info.point.x, y: info.point.y };
+        wasDraggedRef.current = false;
+        onBringToFront();
+      }}
+      onDrag={(_, info) => {
+        if (dragStartRef.current) {
+          const dx = Math.abs(info.point.x - dragStartRef.current.x);
+          const dy = Math.abs(info.point.y - dragStartRef.current.y);
+          if (dx > 5 || dy > 5) {
+            wasDraggedRef.current = true;
+          }
+        }
+      }}
+      onDragEnd={() => {
+        dragStartRef.current = null;
+      }}
+      onClick={() => {
+        if (!wasDraggedRef.current) {
+          onCardClick(index);
+        }
+        wasDraggedRef.current = false;
+      }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -630,9 +678,10 @@ function FanCard({
       }}
       tabIndex={0}
       role="button"
-      aria-label={`Read more about ${member.name}`}
+      aria-label={`Drag or click to read more about ${member.name}`}
       data-testid={`card-team-${index}`}
       whileHover={{ scale: 1.03 }}
+      whileDrag={{ scale: 1.08, cursor: "grabbing" }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <img

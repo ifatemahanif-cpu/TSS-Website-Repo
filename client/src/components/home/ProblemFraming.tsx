@@ -71,10 +71,11 @@ export function ProblemFraming() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{
               fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-              lineHeight: 1.85,
+              fontSize: "clamp(1.35rem, 2.2vw, 1.75rem)",
+              lineHeight: 1.65,
               opacity: 0.7,
               marginBottom: "3rem",
+              maxWidth: "550px",
             }}
             data-testid="text-problem-intro"
           >
