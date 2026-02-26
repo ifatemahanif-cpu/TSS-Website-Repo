@@ -1,4 +1,4 @@
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useInView, useMotionValue } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 const patterns = [
@@ -29,7 +29,6 @@ export function ProblemFraming() {
   }, []);
 
   const x = useMotionValue(0);
-  const progressRaw = useTransform(x, [0, dragConstraint || -1], [0, 1]);
 
   return (
     <section
