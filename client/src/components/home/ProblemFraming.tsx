@@ -1,5 +1,5 @@
-import { motion, useInView, useMotionValue } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const patterns = [
   "Marketing is busy, yet direction is unclear.",
@@ -12,23 +12,6 @@ const patterns = [
 export function ProblemFraming() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [dragConstraint, setDragConstraint] = useState(0);
-
-  useEffect(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const calc = () => {
-      const scrollWidth = el.scrollWidth;
-      const clientWidth = el.clientWidth;
-      setDragConstraint(-(scrollWidth - clientWidth));
-    };
-    calc();
-    window.addEventListener("resize", calc);
-    return () => window.removeEventListener("resize", calc);
-  }, []);
-
-  const x = useMotionValue(0);
 
   return (
     <section
@@ -71,7 +54,7 @@ export function ProblemFraming() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
-                marginBottom: "2rem",
+                marginBottom: "1.5rem",
               }}
               data-testid="text-problem-heading"
             >
@@ -88,11 +71,11 @@ export function ProblemFraming() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{
               fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(1.35rem, 2.2vw, 1.75rem)",
-              lineHeight: 1.65,
-              opacity: 0.7,
+              fontSize: "clamp(0.95rem, 1.3vw, 1.15rem)",
+              lineHeight: 1.75,
+              opacity: 0.6,
               marginBottom: "3rem",
-              maxWidth: "550px",
+              maxWidth: "650px",
             }}
             data-testid="text-problem-intro"
           >
@@ -120,14 +103,14 @@ export function ProblemFraming() {
             </span>
           </div>
 
-          <div className="relative">
+          <div className="relative" style={{ overflow: "hidden" }}>
             <div
               style={{
                 position: "absolute",
                 top: 0,
                 left: 0,
                 bottom: 0,
-                width: "60px",
+                width: "80px",
                 background: "linear-gradient(90deg, #0C0A3E, transparent)",
                 zIndex: 2,
                 pointerEvents: "none",
@@ -139,71 +122,63 @@ export function ProblemFraming() {
                 top: 0,
                 right: 0,
                 bottom: 0,
-                width: "60px",
+                width: "80px",
                 background: "linear-gradient(270deg, #0C0A3E, transparent)",
                 zIndex: 2,
                 pointerEvents: "none",
               }}
             />
 
-            <div style={{ overflow: "hidden", cursor: "grab" }}>
-              <motion.div
-                ref={carouselRef}
-                drag="x"
-                dragConstraints={{ left: dragConstraint, right: 0 }}
-                dragElastic={0.12}
-                dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  x,
-                  paddingLeft: "max(2rem, calc((100% - 800px) / 2))",
-                  paddingRight: "2rem",
-                }}
-                whileDrag={{ cursor: "grabbing" }}
-              >
-                {patterns.map((pattern, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}
-                    style={{
-                      minWidth: "300px",
-                      maxWidth: "340px",
-                      padding: "1.75rem",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      borderRadius: "12px",
-                      flexShrink: 0,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1rem",
-                      backgroundColor: "rgba(255, 255, 255, 0.03)",
-                    }}
-                    data-testid={`text-pattern-${i + 1}`}
-                  >
-                    <span
+            <div
+              className="flex"
+              style={{
+                animation: "patternScroll 35s linear infinite",
+                width: "fit-content",
+              }}
+            >
+              {[...Array(3)].map((_, setIdx) => (
+                <div key={setIdx} className="flex shrink-0" style={{ gap: "1.25rem", paddingRight: "1.25rem" }}>
+                  {patterns.map((pattern, i) => (
+                    <div
+                      key={i}
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.6rem",
-                        opacity: 0.25,
+                        minWidth: "340px",
+                        maxWidth: "380px",
+                        padding: "2rem",
+                        border: "1px solid rgba(255, 255, 255, 0.12)",
+                        borderRadius: "14px",
+                        flexShrink: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                        backgroundColor: "rgba(255, 255, 255, 0.04)",
                       }}
+                      data-testid={`text-pattern-${setIdx}-${i + 1}`}
                     >
-                      0{i + 1}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: "clamp(0.95rem, 1.2vw, 1.1rem)",
-                        lineHeight: 1.65,
-                        opacity: 0.75,
-                      }}
-                    >
-                      {pattern}
-                    </span>
-                  </motion.div>
-                ))}
-              </motion.div>
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.65rem",
+                          opacity: 0.3,
+                          letterSpacing: "0.1em",
+                        }}
+                      >
+                        0{i + 1}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
+                          lineHeight: 1.6,
+                          opacity: 0.85,
+                        }}
+                      >
+                        {pattern}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </motion.div>
@@ -227,6 +202,13 @@ export function ProblemFraming() {
           </motion.p>
         </div>
       </div>
+
+      <style>{`
+        @keyframes patternScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+      `}</style>
     </section>
   );
 }
