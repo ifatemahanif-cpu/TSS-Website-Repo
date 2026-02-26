@@ -1,0 +1,41 @@
+Now I can see exactly what you're working with. The bones are good — the typography system, the dark navy, the serif/italic contrast, the purple accent — that's all worth keeping. But you're right, it reads like a beautifully styled blog rather than a studio. Here's what I'd change section by section while staying completely within this design language:
+
+---
+
+**Hero**
+
+The centered layout with a CTA button is the most "template-y" thing on the page. Keep the headline treatment (that serif italic contrast is great) but push it left-aligned and let it run larger — almost uncomfortably large, breaking the comfortable center margin. Move the scrolling logo ticker from the bottom to just *below* the subhead, treating it as social proof that's part of the hero rather than a footer-like afterthought. Remove the rounded pill CTA button or at minimum make it a text link with an arrow — the big rounded button is what ages it.
+
+---
+
+**Problem Section**
+
+This is actually the closest to where you want to be. The numbered list with hairline dividers is strong. The one thing killing it is that the body copy paragraph above the list is too wide and too "paragraph-like." Make that opening text significantly larger — almost pull-quote scale — and reduce the column width so it feels intentional, not like body copy that wandered in. The section label "THE PROBLEM" in spaced caps is a keeper; use that system consistently throughout.
+
+---
+
+**POV / "Our work begins where most marketing breaks"**
+
+This is the most blog-like section right now. The four principles are stacked with full copy visible, which makes it feel like an article. The fix: collapse the case study text by default. Show just the label (FIX THE THINKING) and the principle statement, separated by that hairline rule. The italic case study text reveals on hover or click — either a smooth height expand or a subtle fade-in. This creates rhythm and rewards engagement rather than frontloading everything.
+
+---
+
+**Team Section**
+
+The fanned card stack is the most visually ambitious thing on the page and it's the right instinct. The problem is the cards look like they're floating in too much empty space, and clicking feels unclear. Two directions here: either lean into the physicality of it — make the cards draggable/peekable, so visitors can physically pull a card forward — or abandon the stack entirely and go full-bleed horizontal panels, one per person, that you scroll through. The current in-between state isn't committing to either. The photography treatment is excellent though; keep the warm-toned editorial lighting.
+
+---
+
+**Services / "What this looks like IRL"**
+
+The accordion is the right structure and it's mostly working. What makes it feel like a blog is that the items all show their description text by default — they're already "open." Make the default state show *only* the numbered title, collapsed. When you click the + (which should become a −), it expands to reveal the description and sub-services. This alone will transform the section from a listicle into something interactive and designed. Also consider giving the currently-expanded item a subtle background shift — not a box, but a very slight tonal change — to indicate active state.
+
+---
+
+**Systemic things to address across the whole page:**
+
+The section labels in spaced caps ("THE PROBLEM", "WHO YOU'LL WORK WITH") are one of the best things in this design — use them on every section, consistently positioned, and they'll create a navigational cadence that feels very studio-like. Right now they appear on some sections and not others.
+
+The purple is being used too liberally — it appears on the nav CTA, the hero CTA button, and accent text. Pick one primary job for it (the CTA button in the nav, and italic emphasis text in headlines) and remove it from everywhere else. Right now it's competing with itself.
+
+The content width is too uniform throughout. Vary it deliberately — some sections full-bleed to edge, some constrained to a narrow column, some asymmetric. That contrast of scale is what makes studio sites feel considered rather than templated.
