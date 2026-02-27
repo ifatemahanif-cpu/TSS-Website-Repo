@@ -1,9 +1,12 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
+import { Origin } from "@/components/home/Origin";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
 import { Work } from "@/components/home/Work";
+import { WhatChanges } from "@/components/home/WhatChanges";
 import { Team } from "@/components/home/Team";
 import { Services } from "@/components/home/Services";
+import { CTA } from "@/components/home/CTA";
 
 export default function Home() {
   return (
@@ -11,13 +14,56 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <Origin />
         <ProblemFraming />
         <Work />
+        <WhatChanges />
         <Team />
         <Services />
-        <footer className="bg-background text-foreground py-12 px-8 text-center" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-           <h2 className="font-serif text-2xl mb-4">The Story Shapers</h2>
-           <p className="opacity-50 text-sm">© 2026 The Story Shapers. All rights reserved.</p>
+        <CTA />
+        <footer
+          style={{
+            backgroundColor: "#0C0A3E",
+            borderTop: "1px solid rgba(255,255,255,0.1)",
+            padding: "3rem 2rem",
+            textAlign: "center",
+            color: "#FFFFFF",
+          }}
+          data-testid="footer"
+        >
+          <h2
+            style={{
+              fontFamily: "'Libre Baskerville', serif",
+              fontSize: "1.25rem",
+              fontWeight: 400,
+              marginBottom: "1rem",
+            }}
+          >
+            The Story Shapers
+          </h2>
+          <a
+            href="mailto:hello@storyshaperscollective.com"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.85rem",
+              color: "rgba(255,255,255,0.5)",
+              textDecoration: "none",
+              display: "block",
+              marginBottom: "1.5rem",
+            }}
+            data-testid="link-footer-email"
+          >
+            hello@storyshaperscollective.com
+          </a>
+          <p
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.75rem",
+              opacity: 0.3,
+            }}
+          >
+            © 2026 The Story Shapers. All rights reserved.
+          </p>
         </footer>
       </main>
     </div>

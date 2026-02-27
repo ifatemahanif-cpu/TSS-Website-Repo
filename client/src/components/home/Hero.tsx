@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 
+const brands = ["Art Fervour", "LBB", "Headout", "SOCIAL", "Singapore Tourism Board", "Coca-Cola", "Cadbury's", "Heinz", "Google Pixel"];
+
 export function Hero() {
   return (
     <section
@@ -92,139 +94,39 @@ export function Hero() {
 
       <style>{`
         @keyframes meshBlob1 {
-          0% {
-            border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
-            transform: translate(0%, 0%) scale(1);
-            opacity: 0.7;
-          }
-          25% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-            transform: translate(10%, 6%) scale(1.12);
-            opacity: 1;
-          }
-          50% {
-            border-radius: 35% 65% 65% 35% / 40% 60% 40% 60%;
-            transform: translate(-6%, 12%) scale(0.92);
-            opacity: 0.6;
-          }
-          75% {
-            border-radius: 65% 35% 45% 55% / 55% 45% 35% 65%;
-            transform: translate(8%, -5%) scale(1.08);
-            opacity: 0.9;
-          }
-          100% {
-            border-radius: 50% 50% 60% 40% / 35% 65% 50% 50%;
-            transform: translate(-4%, 8%) scale(1.05);
-            opacity: 0.75;
-          }
+          0% { border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%; transform: translate(0%, 0%) scale(1); opacity: 0.7; }
+          25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(10%, 6%) scale(1.12); opacity: 1; }
+          50% { border-radius: 35% 65% 65% 35% / 40% 60% 40% 60%; transform: translate(-6%, 12%) scale(0.92); opacity: 0.6; }
+          75% { border-radius: 65% 35% 45% 55% / 55% 45% 35% 65%; transform: translate(8%, -5%) scale(1.08); opacity: 0.9; }
+          100% { border-radius: 50% 50% 60% 40% / 35% 65% 50% 50%; transform: translate(-4%, 8%) scale(1.05); opacity: 0.75; }
         }
         @keyframes meshBlob2 {
-          0% {
-            border-radius: 55% 45% 40% 60% / 45% 55% 45% 55%;
-            transform: translate(0%, 0%) scale(1);
-            opacity: 0.8;
-          }
-          25% {
-            border-radius: 35% 65% 60% 40% / 60% 40% 55% 45%;
-            transform: translate(-8%, 10%) scale(1.15);
-            opacity: 0.6;
-          }
-          50% {
-            border-radius: 60% 40% 35% 65% / 40% 60% 65% 35%;
-            transform: translate(7%, -8%) scale(0.9);
-            opacity: 1;
-          }
-          75% {
-            border-radius: 45% 55% 55% 45% / 65% 35% 40% 60%;
-            transform: translate(-5%, 5%) scale(1.1);
-            opacity: 0.7;
-          }
-          100% {
-            border-radius: 30% 70% 50% 50% / 50% 50% 60% 40%;
-            transform: translate(6%, -4%) scale(1.02);
-            opacity: 0.85;
-          }
+          0% { border-radius: 55% 45% 40% 60% / 45% 55% 45% 55%; transform: translate(0%, 0%) scale(1); opacity: 0.8; }
+          25% { border-radius: 35% 65% 60% 40% / 60% 40% 55% 45%; transform: translate(-8%, 10%) scale(1.15); opacity: 0.6; }
+          50% { border-radius: 60% 40% 35% 65% / 40% 60% 65% 35%; transform: translate(7%, -8%) scale(0.9); opacity: 1; }
+          75% { border-radius: 45% 55% 55% 45% / 65% 35% 40% 60%; transform: translate(-5%, 5%) scale(1.1); opacity: 0.7; }
+          100% { border-radius: 30% 70% 50% 50% / 50% 50% 60% 40%; transform: translate(6%, -4%) scale(1.02); opacity: 0.85; }
         }
         @keyframes meshBlob3 {
-          0% {
-            border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
-            transform: translate(0%, 0%) scale(1);
-            opacity: 0.65;
-          }
-          25% {
-            border-radius: 65% 35% 55% 45% / 35% 65% 60% 40%;
-            transform: translate(9%, -7%) scale(1.1);
-            opacity: 0.9;
-          }
-          50% {
-            border-radius: 40% 60% 65% 35% / 55% 45% 35% 65%;
-            transform: translate(-10%, 8%) scale(0.95);
-            opacity: 0.5;
-          }
-          75% {
-            border-radius: 55% 45% 35% 65% / 45% 55% 55% 45%;
-            transform: translate(5%, 10%) scale(1.08);
-            opacity: 0.8;
-          }
-          100% {
-            border-radius: 35% 65% 50% 50% / 60% 40% 45% 55%;
-            transform: translate(-6%, -3%) scale(0.98);
-            opacity: 0.7;
-          }
+          0% { border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%; transform: translate(0%, 0%) scale(1); opacity: 0.65; }
+          25% { border-radius: 65% 35% 55% 45% / 35% 65% 60% 40%; transform: translate(9%, -7%) scale(1.1); opacity: 0.9; }
+          50% { border-radius: 40% 60% 65% 35% / 55% 45% 35% 65%; transform: translate(-10%, 8%) scale(0.95); opacity: 0.5; }
+          75% { border-radius: 55% 45% 35% 65% / 45% 55% 55% 45%; transform: translate(5%, 10%) scale(1.08); opacity: 0.8; }
+          100% { border-radius: 35% 65% 50% 50% / 60% 40% 45% 55%; transform: translate(-6%, -3%) scale(0.98); opacity: 0.7; }
         }
         @keyframes meshBlob4 {
-          0% {
-            border-radius: 45% 55% 50% 50% / 50% 45% 55% 50%;
-            transform: translate(0%, 0%) scale(1);
-            opacity: 0.6;
-          }
-          25% {
-            border-radius: 30% 70% 65% 35% / 60% 40% 45% 55%;
-            transform: translate(-7%, -9%) scale(1.18);
-            opacity: 0.9;
-          }
-          50% {
-            border-radius: 60% 40% 40% 60% / 35% 65% 55% 45%;
-            transform: translate(10%, 6%) scale(0.88);
-            opacity: 0.55;
-          }
-          75% {
-            border-radius: 50% 50% 55% 45% / 55% 45% 35% 65%;
-            transform: translate(-4%, 10%) scale(1.12);
-            opacity: 1;
-          }
-          100% {
-            border-radius: 65% 35% 45% 55% / 45% 55% 60% 40%;
-            transform: translate(6%, -6%) scale(1.04);
-            opacity: 0.7;
-          }
+          0% { border-radius: 45% 55% 50% 50% / 50% 45% 55% 50%; transform: translate(0%, 0%) scale(1); opacity: 0.6; }
+          25% { border-radius: 30% 70% 65% 35% / 60% 40% 45% 55%; transform: translate(-7%, -9%) scale(1.18); opacity: 0.9; }
+          50% { border-radius: 60% 40% 40% 60% / 35% 65% 55% 45%; transform: translate(10%, 6%) scale(0.88); opacity: 0.55; }
+          75% { border-radius: 50% 50% 55% 45% / 55% 45% 35% 65%; transform: translate(-4%, 10%) scale(1.12); opacity: 1; }
+          100% { border-radius: 65% 35% 45% 55% / 45% 55% 60% 40%; transform: translate(6%, -6%) scale(1.04); opacity: 0.7; }
         }
         @keyframes meshBlob5 {
-          0% {
-            border-radius: 60% 40% 50% 50% / 40% 60% 40% 60%;
-            transform: translate(0%, 0%) scale(1);
-            opacity: 0.75;
-          }
-          25% {
-            border-radius: 40% 60% 35% 65% / 65% 35% 55% 45%;
-            transform: translate(8%, -10%) scale(1.14);
-            opacity: 0.5;
-          }
-          50% {
-            border-radius: 55% 45% 60% 40% / 40% 60% 35% 65%;
-            transform: translate(-9%, 7%) scale(0.92);
-            opacity: 1;
-          }
-          75% {
-            border-radius: 35% 65% 45% 55% / 55% 45% 60% 40%;
-            transform: translate(5%, 8%) scale(1.1);
-            opacity: 0.6;
-          }
-          100% {
-            border-radius: 50% 50% 55% 45% / 45% 55% 45% 55%;
-            transform: translate(-6%, -5%) scale(1.06);
-            opacity: 0.85;
-          }
+          0% { border-radius: 60% 40% 50% 50% / 40% 60% 40% 60%; transform: translate(0%, 0%) scale(1); opacity: 0.75; }
+          25% { border-radius: 40% 60% 35% 65% / 65% 35% 55% 45%; transform: translate(8%, -10%) scale(1.14); opacity: 0.5; }
+          50% { border-radius: 55% 45% 60% 40% / 40% 60% 35% 65%; transform: translate(-9%, 7%) scale(0.92); opacity: 1; }
+          75% { border-radius: 35% 65% 45% 55% / 55% 45% 60% 40%; transform: translate(5%, 8%) scale(1.1); opacity: 0.6; }
+          100% { border-radius: 50% 50% 55% 45% / 45% 55% 45% 55%; transform: translate(-6%, -5%) scale(1.06); opacity: 0.85; }
         }
       `}</style>
 
@@ -267,8 +169,8 @@ export function Hero() {
             }}
             data-testid="text-hero-heading"
           >
-            We're{" "}
-            <span className="italic">The Story Shapers.</span>
+            Every brand has a story.{" "}
+            <span className="italic">Most have lost the thread.</span>
           </h1>
         </motion.div>
 
@@ -283,11 +185,11 @@ export function Hero() {
             color: "rgba(255, 255, 255, 0.55)",
             maxWidth: "680px",
             margin: "0 auto",
-            marginBottom: "1.5rem",
+            marginBottom: "2rem",
           }}
           data-testid="text-hero-subhead"
         >
-          A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.
+          We're a collective of senior marketers who've been inside the rooms where growth stalls and story drifts. We help you find the thread — and build everything else from there.
           <span
             style={{
               fontFamily: "'JetBrains Mono', monospace",
@@ -366,13 +268,13 @@ export function Hero() {
         <div
           className="flex"
           style={{
-            animation: "tickerScroll 22s linear infinite",
+            animation: "tickerScroll 30s linear infinite",
             width: "fit-content",
           }}
         >
           {[...Array(3)].map((_, setIdx) => (
             <div key={setIdx} className="flex items-center shrink-0" style={{ gap: "2.5rem", paddingRight: "2.5rem" }}>
-              {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
+              {brands.map((company, i) => (
                 <span key={i} className="flex items-center" style={{ gap: "2.5rem" }}>
                   <span
                     style={{

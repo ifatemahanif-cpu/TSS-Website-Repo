@@ -24,7 +24,7 @@ const team = [
     decisionsLed: "Content strategy · Brand narrative · Editorial systems · Founder thought-leadership · Long-form storytelling",
     contextsNavigated: "",
     brandsLabel: "Brands",
-    brands: "Axis Bank, Heinz, Google Pixel, Tata Sampann, Bajaj Motors, General Mills, FirstCry India, Little Black Book, Headout, STEM Learning",
+    brands: "Axis Bank, Heinz, Google Pixel, Tata Sampann, Bajaj Motors, General Mills, FirstCry India, Little Black Book, Headout, STEM Learning, IndiaPodcasts",
     whatSheBrings: [
       "Shaili brings the kind of senior judgment to content and narrative that stops brands from saying clever things that don't actually matter.",
       'She moves teams from scattered messaging and ad-hoc content to structured storytelling systems that build recall, credibility, and long-term brand equity.',
@@ -130,7 +130,7 @@ export function Team() {
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
-                >Who You'll Work With</span>
+                >The Shapers</span>
                 <h2
                   className="mb-4"
                   style={{
@@ -147,7 +147,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    Three senior perspectives{" "}
+                    The people you meet are the people{" "}
                   </span>
                   <span
                     style={{
@@ -158,7 +158,7 @@ export function Team() {
                       opacity: 0.6,
                     }}
                   >
-                    that growing brands need in the room.
+                    who do the thinking.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -171,19 +171,7 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    We've led brand resets, growth inflection points, and narrative reinventions across categories and stages. We understand the weight of decisions — and the cost of getting them wrong.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-                      color: "rgba(255, 255, 255, 0.45)",
-                      lineHeight: 1.8,
-                      fontStyle: "italic",
-                    }}
-                    data-testid="text-team-intro-2"
-                  >
-                    The people you meet are the people who do the thinking.
+                    The Story Shapers is built around three complementary ways of thinking that growing brands eventually need in the room. Between us, 45+ years of making marketing decisions that actually stuck — and learning from the ones that didn't.
                   </p>
                 </div>
               </div>
@@ -201,7 +189,7 @@ export function Team() {
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
-                >Who You'll Work With</span>
+                >The Shapers</span>
                 <h2
                   className="mb-5"
                   style={{
@@ -218,7 +206,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    Three senior perspectives{" "}
+                    The people you meet are the people{" "}
                   </span>
                   <span
                     style={{
@@ -229,7 +217,7 @@ export function Team() {
                       opacity: 0.6,
                     }}
                   >
-                    that growing brands need in the room.
+                    who do the thinking.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -242,19 +230,7 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    We've led brand resets, growth inflection points, and narrative reinventions across categories and stages. We understand the weight of decisions — and the cost of getting them wrong.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.78rem, 1vw, 0.9rem)",
-                      color: "rgba(255, 255, 255, 0.45)",
-                      lineHeight: 1.8,
-                      fontStyle: "italic",
-                    }}
-                    data-testid="text-team-intro-2"
-                  >
-                    The people you meet are the people who do the thinking.
+                    The Story Shapers is built around three complementary ways of thinking that growing brands eventually need in the room. Between us, 45+ years of making marketing decisions that actually stuck — and learning from the ones that didn't.
                   </p>
                 </div>
                 <div className="mt-6">

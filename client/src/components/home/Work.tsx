@@ -29,24 +29,24 @@ function highlightBrands(text: string): ReactNode {
 
 const blocks = [
   {
-    label: "Fix the thinking",
-    principle: "We fix the thinking before we fix the marketing. Most problems aren't execution problems. They're clarity problems.",
+    label: "We start with clarity, not campaigns",
+    principle: "Most marketing problems aren't execution problems. They're story problems. The brand doesn't know what it stands for — so everything downstream is guesswork. We fix that first.",
     caseStudy: "At SOCIAL (Impressario Entertainment & Hospitality) — the brand had scaled to 55+ outlets but couldn't explain what held it together. We mapped 10 years of evolution to find what stayed true versus what drifted. That became the spine for every decision that followed.",
   },
   {
-    label: "The people you meet",
-    principle: "The people you meet are the people doing the work. No handoffs. No juniors learning on your brief. Two to three brands each. That's it.",
-    caseStudy: "At Art Fervour — we embedded as Fractional Head of Marketing for 90 days. Founder decision involvement reduced from 70% to 25%.",
+    label: "The people you meet do the work",
+    principle: "No handoffs. No juniors learning on your brief. Each of us works with two to three brands at a time. You get senior thinking applied directly to your business. That's it.",
+    caseStudy: "At Art Fervour, we didn't advise from the sidelines. We embedded 20–25 hours a week for 90 days. Restructured the team. Rebuilt social strategy. The founder's decision load dropped from 70% to 25%. The story got structure, so it could unfold without constant authorship.",
   },
   {
-    label: "Leave scaffolding",
-    principle: "We leave scaffolding, not dependency. We build the systems that let your team keep running after we leave.",
-    caseStudy: "At LBB — we built content infrastructure across multiple cities. Repeatable formats. Clear calendars. No heroics required.",
+    label: "We leave scaffolding, not dependency",
+    principle: "Strategy that lives in a deck is decoration. We build systems — the workflows, the playbooks, the editorial rhythms — that your team keeps running long after we step back.",
+    caseStudy: "At LBB, we built content infrastructure for lean editorial teams across multiple cities. Repeatable formats. Clear calendars. An editorial backbone that didn't collapse after two busy weeks.",
   },
   {
-    label: "Turn noise into signal",
-    principle: "We turn noise into signal. More content isn't the answer. Clearer content is.",
-    caseStudy: "At Headout – we scaled creator collaborations from under 50 to 1,000+ per quarter. In three months. By designing smarter, not adding hands.",
+    label: "We turn noise into signal",
+    principle: "More content isn't the answer. The right content is. We cut what's not working, sharpen what is, and design systems that make less do more.",
+    caseStudy: "At Headout, we scaled the creator program from under 50 to 1,000+ collaborations per quarter. In three months. Not by adding more people — by designing a smarter narrative system.",
   },
 ];
 
@@ -86,7 +86,7 @@ export function Work() {
                 opacity: 0.4,
               }}
             >
-              Our Work
+              How We're Different
             </span>
 
             <h2
@@ -96,15 +96,29 @@ export function Work() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
-                marginBottom: "3rem",
+                marginBottom: "1.5rem",
               }}
               data-testid="text-work-heading"
             >
-              Our work begins where most marketing{" "}
+              We are marketing's{" "}
               <span className="italic" style={{ opacity: 0.5 }}>
-                breaks.
+                missing middle.
               </span>
             </h2>
+
+            <p
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.6,
+                marginBottom: "3rem",
+                maxWidth: "700px",
+              }}
+              data-testid="text-work-intro"
+            >
+              We're not an agency. We're not consultants. We're senior leaders who embed with your team, find the thread that holds your brand together, and build the systems that keep it running.
+            </p>
           </motion.div>
 
           <div className="hidden md:grid" style={{ gridTemplateColumns: "1fr 450px", gap: "3.5rem", alignItems: "start" }}>

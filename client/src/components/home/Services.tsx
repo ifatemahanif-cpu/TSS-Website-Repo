@@ -1,82 +1,81 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
 
 const services = [
   {
     id: "clarity",
     title: "Clarity & Direction",
-    subtitle: "If your team debates positioning every few months, that's not a healthy iteration. That's a signal. When positioning is unstable, everything downstream fragments. We help you define what your brand stands for, how it differentiates, and where it should move.",
+    subtitle: "Your team debates positioning every few months. Investors want a story. Your team wants a plan. You want both. We define what your brand stands for, how it's different, and where it should go next.",
     items: [
       "Brand & narrative audits",
       "Positioning & differentiation",
-      "Messaging architecture & value propositions",
-      "Go-to-market direction & decision frameworks",
+      "Messaging architecture",
+      "Go-to-market direction",
     ],
   },
   {
     id: "website",
     title: "Website & Messaging",
-    subtitle: "A website is rarely just a design problem. It is often a clarity problem. We reshape how your brand presents itself — so what visitors see makes sense instantly.",
+    subtitle: "Traffic is fine. Conversions aren't. People land, scroll, and leave. Something's off — you just can't name it. We reshape how your brand presents itself so what visitors see makes sense instantly.",
     items: [
       "Information architecture & structure",
-      "Homepage & core messaging systems",
-      "Conversion-led copy & interaction logic",
-      "Landing page optimisation",
+      "Homepage & core messaging",
+      "Conversion-led copy",
+      "Landing page optimization",
     ],
   },
   {
     id: "content",
     title: "Content Systems",
-    subtitle: "We design content ecosystems teams can sustain and audiences can recognise. And which doesn't collapse after two busy weeks.",
+    subtitle: "Your founder posts when they remember. Social feels random. You know consistency matters — but you can't maintain it. We design content systems teams can actually sustain. Without burning out.",
     items: [
       "Content strategy & narrative pillars",
-      "Editorial systems & calendars",
-      "Storytelling & format frameworks",
-      "Repurposing systems (AI-assisted where useful)",
+      "Editorial calendars & distribution",
+      "Storytelling frameworks",
+      "Repurposing systems",
     ],
   },
   {
     id: "discovery",
     title: "Discoverability",
-    subtitle: "You're doing good work. But when someone searches for you, your competitors show up first. Visibility is rarely solved by publishing more. It's solved by aligning search behaviour, intent, and narrative.",
+    subtitle: "You're doing good work. But when someone searches for what you do, your competitors show up first. We fix how you show up — not by publishing more, but by aligning what you write with what people actually search for.",
     items: [
       "SEO & content opportunity mapping",
-      "On-page optimisation & structuring",
-      "Intent & answer-driven architecture",
+      "On-page optimization",
+      "Intent-driven structuring",
       "Authority & credibility systems",
     ],
   },
   {
     id: "campaigns",
     title: "Brand & Campaign Strategy",
-    subtitle: "One-off campaigns are exciting. Compounding brand momentum is more useful. We help you build marketing that strengthens over time rather than constantly restarting with every launch.",
+    subtitle: "You've done one-off launches. They spike and fade. What you need is marketing that compounds — campaigns that build on each other over time.",
     items: [
       "Brand strategy & campaign architecture",
-      "Integrated planning & narrative alignment",
-      "Launch & messaging direction",
+      "Integrated planning",
+      "Launch messaging",
       "Always-on storytelling systems",
     ],
   },
   {
-    id: "fractional",
-    title: "Fractional Leadership",
-    subtitle: "Not ready for a full-time CMO? Understandable. Few companies are. We embed as strategic partners, helping leadership teams prioritise, align, and make clearer decisions.",
+    id: "leadership",
+    title: "Senior Marketing Leadership",
+    subtitle: "You need a senior mind in the room. Not another agency. Not a full-time hire you're not ready for. Just experienced judgment, applied to your business, for as long as you need it.",
     items: [
-      "Fractional marketing & brand leadership",
-      "Quarterly planning & prioritisation",
-      "Strategic oversight & reviews",
-      "Team enablement & operating playbooks",
+      "Monthly strategic planning",
+      "Quarterly priorities & reviews",
+      "Campaign direction & decision support",
+      "Team enablement & playbooks",
     ],
   },
   {
     id: "ai",
-    title: "AI-Powered Systems",
-    subtitle: "AI is an extraordinary amplifier. It is also exceptionally good at accelerating confusion when foundations are weak. We design AI-assisted workflows that enhance thinking, speed, and consistency without diluting brand voice.",
+    title: "AI-Assisted Systems",
+    subtitle: "AI is an extraordinary amplifier. It's also very good at accelerating confusion when the foundation is shaky. We build AI workflows that help your team move faster without diluting your voice.",
     items: [
-      "AI-assisted content & research systems",
-      "Reporting & insight workflows",
-      "Monitoring & intelligence structures",
+      "AI content & research workflows",
+      "Reporting & insight automation",
+      "Monitoring & intelligence systems",
       "Operational automation for lean teams",
     ],
   },
@@ -153,7 +152,7 @@ export function Services() {
               }}
               data-testid="text-services-label"
             >
-              What This Looks Like IRL
+              Services
             </span>
             <h2
               style={{
@@ -162,14 +161,26 @@ export function Services() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
+                marginBottom: "1rem",
               }}
               data-testid="text-services-heading"
             >
-              What this looks like{" "}
+              How we shape{" "}
               <span className="italic" style={{ opacity: 0.45 }}>
-                IRL
+                your story.
               </span>
             </h2>
+            <p
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.5,
+                fontStyle: "italic",
+              }}
+            >
+              Every brand arrives with different questions. The patterns underneath are usually familiar.
+            </p>
           </div>
 
           <div style={{ minHeight: "340px", position: "relative", overflow: "hidden" }}>
@@ -322,64 +333,6 @@ export function Services() {
               0{activeIndex + 1} / 0{services.length}
             </span>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            style={{
-              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-              paddingTop: "2.5rem",
-              marginTop: "2.5rem",
-              textAlign: "center",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "clamp(1.1rem, 1.6vw, 1.3rem)",
-                lineHeight: 1.4,
-                marginBottom: "0.75rem",
-              }}
-            >
-              Not sure what needs fixing?
-            </h3>
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "0.88rem",
-                opacity: 0.5,
-                lineHeight: 1.7,
-                marginBottom: "1.5rem",
-                maxWidth: "500px",
-                margin: "0 auto 1.5rem",
-              }}
-            >
-              Tell us where things feel unclear, inconsistent, or misaligned. We'll help you identify the highest-leverage starting point.
-            </p>
-            <Link
-              href="/contact#talk"
-              className="inline-block transition-all duration-200"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "#FFFFFF",
-                backgroundColor: "#7B1E7A",
-                border: "none",
-                borderRadius: "8px",
-                padding: "0.9rem 2rem",
-                textDecoration: "none",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
-              data-testid="button-get-recommendation"
-            >
-              Get Our Recommendation
-            </Link>
-          </motion.div>
         </div>
       </div>
     </section>

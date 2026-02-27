@@ -54,23 +54,69 @@ export function ProblemFraming() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
-                marginBottom: "1.5rem",
+                marginBottom: "2rem",
               }}
               data-testid="text-problem-heading"
             >
-              The problem isn't effort.{" "}
+              Every brand has a story.{" "}
               <span className="italic" style={{ opacity: 0.45 }}>
-                It's clarity.
+                The hard part is knowing how to tell it right.
               </span>
             </h2>
           </motion.div>
 
+          <div className="space-y-5 mb-8">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.6,
+              }}
+              data-testid="text-problem-p1"
+            >
+              Marketing today operates in a vacuum. On one side, you have ambition: growth targets, brand vision, market expansion. On the other, execution: content calendars, social posts, performance dashboards.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.6,
+              }}
+              data-testid="text-problem-p2"
+            >
+              But between them? A vast, expensive gap where strategy should live.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.6,
+              }}
+              data-testid="text-problem-p3"
+            >
+              Founders could explain the company beautifully in conversation. The website felt generic. The sales deck felt entirely different. Marketing looked fully disconnected from the product. Nothing was broken enough to cause panic. But nothing was aligned enough to create momentum.
+            </motion.p>
+          </div>
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="max-w-[800px] mx-auto">
             <span
@@ -166,25 +212,6 @@ export function ProblemFraming() {
             </div>
           </div>
         </motion.div>
-
-        <div className="max-w-[800px] mx-auto">
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
-              lineHeight: 1.7,
-              marginTop: "2.5rem",
-              fontStyle: "italic",
-              opacity: 0.55,
-            }}
-            data-testid="text-problem-closing"
-          >
-            We understand the absurdities of marketing because we've lived them.
-          </motion.p>
-        </div>
       </div>
 
       <style>{`
