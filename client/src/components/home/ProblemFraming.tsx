@@ -65,22 +65,6 @@ export function ProblemFraming() {
             </h2>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(0.95rem, 1.3vw, 1.15rem)",
-              lineHeight: 1.75,
-              opacity: 0.6,
-              marginBottom: "3rem",
-              maxWidth: "650px",
-            }}
-            data-testid="text-problem-intro"
-          >
-            Well, marketing has never been louder. More tools. More dashboards. More content. More channels. And yet, the brands we meet aren't struggling because they're doing too little. They're doing too much without knowing why.
-          </motion.p>
         </div>
 
         <motion.div
