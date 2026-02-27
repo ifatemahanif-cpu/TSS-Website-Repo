@@ -105,7 +105,7 @@ export default function Join() {
             padding: "clamp(2rem, 5vw, 5rem)",
           }}
         >
-          <div className="max-w-[800px] mx-auto">
+          <div className="max-w-[1000px] mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(255, 255, 255, 0.4)",
+                  color: "rgba(255, 255, 255, 0.5)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -199,10 +199,10 @@ export default function Join() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                   color: "rgba(255, 255, 255, 0.75)",
-                  lineHeight: 2.1,
+                  lineHeight: 1.8,
                 }}
               >
                 The Story Shapers is a collective — a small, intentional group of senior strategists who've chosen to work together instead of alone.
@@ -211,10 +211,10 @@ export default function Join() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2.1,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                  color: "rgba(255, 255, 255, 0.75)",
+                  lineHeight: 1.8,
                 }}
               >
                 We built this because we were tired of the two options the industry offers: agencies that drown good work in process, or solo freelancing that trades depth for freedom.
@@ -223,10 +223,10 @@ export default function Join() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2.1,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                  color: "rgba(255, 255, 255, 0.75)",
+                  lineHeight: 1.8,
                 }}
               >
                 We wanted both. Autonomy and collaboration. Independence and support. Big thinking and small teams.
@@ -245,6 +245,63 @@ export default function Join() {
               >
                 So we created a third space.
               </p>
+
+              <SectionDivider />
+
+              <h2
+                className="mb-8"
+                style={{
+                  color: "#FFFFFF",
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Libre Baskerville', serif",
+                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+                    fontWeight: 400,
+                  }}
+                >
+                  Operating{" "}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+                    fontWeight: 300,
+                    fontStyle: "italic",
+                    opacity: 0.6,
+                  }}
+                >
+                  Principles
+                </span>
+              </h2>
+
+              <div className="flex flex-wrap gap-3 mb-4">
+                {["Clarity", "Integrity", "Collaboration", "Creativity", "Impact"].map((principle, idx) => (
+                  <motion.span
+                    key={principle}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.08, duration: 0.3 }}
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(0.85rem, 1vw, 0.92rem)",
+                      color: "#FFFFFF",
+                      fontWeight: 500,
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
+                      borderRadius: "8px",
+                      padding: "0.6rem 1.25rem",
+                      backgroundColor: "rgba(255, 255, 255, 0.04)",
+                    }}
+                    data-testid={`tag-principle-${idx}`}
+                  >
+                    {principle}
+                  </motion.span>
+                ))}
+              </div>
 
               <SectionDivider />
 
@@ -269,10 +326,9 @@ export default function Join() {
                         className="shrink-0 mt-1"
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "0.5rem",
-                          color: "#2A2870",
+                          fontSize: "0.55rem",
+                          color: "rgba(255, 255, 255, 0.35)",
                           letterSpacing: "0.1em",
-                          opacity: 0.7,
                         }}
                       >
                         0{idx + 1}
@@ -292,10 +348,10 @@ export default function Join() {
                         </p>
                         <p
                           style={{
-                            fontFamily: "'Libre Baskerville', serif",
-                            fontSize: "clamp(0.83rem, 1.05vw, 0.92rem)",
-                            color: "rgba(255, 255, 255, 0.58)",
-                            lineHeight: 1.9,
+                            fontFamily: "'Inter', sans-serif",
+                            fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
+                            color: "rgba(255, 255, 255, 0.7)",
+                            lineHeight: 1.8,
                           }}
                         >
                           {item.body}
@@ -341,10 +397,10 @@ export default function Join() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.6)",
-                  lineHeight: 2,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
+                  color: "rgba(255, 255, 255, 0.7)",
+                  lineHeight: 1.8,
                 }}
               >
                 Being a Story Shapers collaborator comes with tangible benefits, beyond what solo consulting or a traditional job can offer:
@@ -379,10 +435,10 @@ export default function Join() {
                     </p>
                     <p
                       style={{
-                        fontFamily: "'Libre Baskerville', serif",
-                        fontSize: "clamp(0.8rem, 1vw, 0.88rem)",
-                        color: "rgba(255, 255, 255, 0.55)",
-                        lineHeight: 1.85,
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: "clamp(0.82rem, 1vw, 0.9rem)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        lineHeight: 1.8,
                       }}
                     >
                       {benefit.body}
@@ -428,7 +484,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.92rem, 1.2vw, 1.02rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
+                  color: "rgba(255, 255, 255, 0.75)",
                   lineHeight: 1.8,
                 }}
               >
@@ -466,7 +522,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.5rem",
-                          color: "#2A2870",
+                          color: "rgba(255, 255, 255, 0.5)",
                           letterSpacing: "0.05em",
                           fontWeight: 600,
                         }}
@@ -489,10 +545,10 @@ export default function Join() {
                       </p>
                       <p
                         style={{
-                          fontFamily: "'Libre Baskerville', serif",
-                          fontSize: "clamp(0.83rem, 1.05vw, 0.92rem)",
-                          color: "rgba(255, 255, 255, 0.6)",
-                          lineHeight: 1.85,
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
+                          color: "rgba(255, 255, 255, 0.7)",
+                          lineHeight: 1.8,
                         }}
                       >
                         {level.body}
@@ -505,71 +561,14 @@ export default function Join() {
               <p
                 className="mb-4"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.6)",
-                  lineHeight: 2,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
+                  color: "rgba(255, 255, 255, 0.7)",
+                  lineHeight: 1.8,
                 }}
               >
                 You can move between levels as your life changes. The only ask: communicate clearly so we can plan accordingly.
               </p>
-
-              <SectionDivider />
-
-              <h2
-                className="mb-8"
-                style={{
-                  color: "#FFFFFF",
-                  lineHeight: 1.15,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Libre Baskerville', serif",
-                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
-                    fontWeight: 400,
-                  }}
-                >
-                  Operating{" "}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
-                    fontWeight: 300,
-                    fontStyle: "italic",
-                    opacity: 0.6,
-                  }}
-                >
-                  Principles
-                </span>
-              </h2>
-
-              <div className="flex flex-wrap gap-3 mb-4">
-                {["Clarity", "Integrity", "Collaboration", "Creativity", "Impact"].map((principle, idx) => (
-                  <motion.span
-                    key={principle}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.08, duration: 0.3 }}
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.82rem, 1vw, 0.9rem)",
-                      color: "#FFFFFF",
-                      fontWeight: 500,
-                      border: "1px solid rgba(255, 255, 255, 0.15)",
-                      borderRadius: "8px",
-                      padding: "0.6rem 1.25rem",
-                      backgroundColor: "rgba(255, 255, 255, 0.04)",
-                    }}
-                    data-testid={`tag-principle-${idx}`}
-                  >
-                    {principle}
-                  </motion.span>
-                ))}
-              </div>
 
               <SectionDivider />
 
@@ -606,10 +605,10 @@ export default function Join() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.02rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2.1,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                  color: "rgba(255, 255, 255, 0.75)",
+                  lineHeight: 1.8,
                 }}
               >
                 Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work.
