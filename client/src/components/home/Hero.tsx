@@ -300,35 +300,6 @@ export function Hero() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="flex items-center justify-center gap-6 flex-wrap"
-          style={{ marginBottom: "2.5rem" }}
-          data-testid="ticker-companies"
-        >
-          {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
-            <span key={i} className="flex items-center gap-6">
-              <span
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.15em",
-                  color: "rgba(255,255,255,0.25)",
-                  textTransform: "uppercase",
-                }}
-                data-testid={`text-ticker-company-${i}`}
-              >
-                {company}
-              </span>
-              {i < 3 && (
-                <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.4rem" }}>●</span>
-              )}
-            </span>
-          ))}
-        </motion.div>
-
-        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -359,6 +330,35 @@ export function Hero() {
           </Link>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        className="absolute left-0 right-0 flex items-center justify-center gap-6 flex-wrap"
+        style={{ bottom: "2.5rem" }}
+        data-testid="ticker-companies"
+      >
+        {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
+          <span key={i} className="flex items-center gap-6">
+            <span
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.75rem",
+                letterSpacing: "0.15em",
+                color: "rgba(255,255,255,0.25)",
+                textTransform: "uppercase",
+              }}
+              data-testid={`text-ticker-company-${i}`}
+            >
+              {company}
+            </span>
+            {i < 3 && (
+              <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.4rem" }}>●</span>
+            )}
+          </span>
+        ))}
+      </motion.div>
 
       <style>{`
         @keyframes cursorBlink {
