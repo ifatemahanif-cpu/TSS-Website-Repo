@@ -143,7 +143,7 @@ export function Hero() {
               fontSize: "0.65rem",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              opacity: 0.4,
+              opacity: 0.5,
               color: "#FFFFFF",
             }}
             data-testid="text-hero-label"
@@ -182,7 +182,7 @@ export function Hero() {
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
-            color: "rgba(255, 255, 255, 0.55)",
+            color: "rgba(255, 255, 255, 0.7)",
             maxWidth: "680px",
             margin: "0 auto",
             marginBottom: "2rem",

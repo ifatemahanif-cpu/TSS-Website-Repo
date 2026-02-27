@@ -126,7 +126,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    opacity: 0.4,
+                    opacity: 0.5,
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -164,9 +164,9 @@ export function Team() {
                 <div className="space-y-4">
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                      color: "rgba(255, 255, 255, 0.6)",
+                      color: "rgba(255, 255, 255, 0.75)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -185,7 +185,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    opacity: 0.4,
+                    opacity: 0.5,
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -223,9 +223,9 @@ export function Team() {
                 <div className="space-y-4">
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                      color: "rgba(255, 255, 255, 0.6)",
+                      color: "rgba(255, 255, 255, 0.75)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -238,7 +238,7 @@ export function Team() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.55rem",
-                      color: "rgba(255, 255, 255, 0.25)",
+                      color: "rgba(255, 255, 255, 0.4)",
                       letterSpacing: "0.15em",
                     }}
                   >
@@ -418,7 +418,7 @@ function TeamModal({
                 <p
                   key={idx}
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: "clamp(0.85rem, 1vw, 0.95rem)",
                     lineHeight: 1.8,
                     opacity: 0.85,
@@ -449,7 +449,7 @@ function TeamModal({
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "0.8rem",
                   lineHeight: 1.6,
-                  opacity: 0.5,
+                  opacity: 0.6,
                 }}
               >
                 {member.brands}
@@ -483,7 +483,7 @@ function ModalSection({
           letterSpacing: "0.2em",
           textTransform: "uppercase",
           color: accent,
-          opacity: 0.5,
+          opacity: 0.6,
         }}
       >
         {label}

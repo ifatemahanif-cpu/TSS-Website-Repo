@@ -34,7 +34,7 @@ export function CTA() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.4,
+                opacity: 0.5,
               }}
               data-testid="text-cta-label"
             >
@@ -61,10 +61,10 @@ export function CTA() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              fontFamily: "'Libre Baskerville', serif",
+              fontFamily: "'Inter', sans-serif",
               fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
               lineHeight: 1.8,
-              opacity: 0.6,
+              opacity: 0.75,
               marginBottom: "1.5rem",
             }}
             data-testid="text-cta-p1"
@@ -80,7 +80,7 @@ export function CTA() {
               fontFamily: "'Inter', sans-serif",
               fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
               lineHeight: 1.8,
-              opacity: 0.45,
+              opacity: 0.6,
               fontStyle: "italic",
               marginBottom: "2.5rem",
             }}

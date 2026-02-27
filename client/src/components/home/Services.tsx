@@ -148,7 +148,7 @@ export function Services() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.4,
+                opacity: 0.5,
               }}
               data-testid="text-services-label"
             >
@@ -166,16 +166,16 @@ export function Services() {
               data-testid="text-services-heading"
             >
               How we shape{" "}
-              <span className="italic" style={{ opacity: 0.45 }}>
+              <span className="italic" style={{ opacity: 0.6 }}>
                 your story.
               </span>
             </h2>
             <p
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.5,
+                opacity: 0.65,
                 fontStyle: "italic",
               }}
             >
@@ -202,7 +202,7 @@ export function Services() {
                       fontSize: "clamp(3.5rem, 8vw, 6rem)",
                       lineHeight: 1,
                       fontWeight: 400,
-                      opacity: 0.15,
+                      opacity: 0.2,
                       letterSpacing: "-0.03em",
                       flexShrink: 0,
                     }}
@@ -225,9 +225,9 @@ export function Services() {
 
                 <p
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
-                    opacity: 0.55,
+                    opacity: 0.7,
                     lineHeight: 1.8,
                     fontStyle: "italic",
                     marginBottom: "1.75rem",
@@ -257,7 +257,7 @@ export function Services() {
                         style={{
                           fontFamily: "'Inter', sans-serif",
                           fontSize: "0.88rem",
-                          opacity: 0.65,
+                          opacity: 0.75,
                           lineHeight: 1.6,
                         }}
                       >
@@ -327,7 +327,7 @@ export function Services() {
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: "0.6rem",
                 letterSpacing: "0.15em",
-                opacity: 0.3,
+                opacity: 0.4,
               }}
             >
               0{activeIndex + 1} / 0{services.length}

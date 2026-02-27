@@ -41,7 +41,7 @@ export function ProblemFraming() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.4,
+                opacity: 0.5,
               }}
             >
               The Problem
@@ -59,7 +59,7 @@ export function ProblemFraming() {
               data-testid="text-problem-heading"
             >
               Every brand has a story.{" "}
-              <span className="italic" style={{ opacity: 0.45 }}>
+              <span className="italic" style={{ opacity: 0.6 }}>
                 The hard part is knowing how to tell it right.
               </span>
             </h2>
@@ -71,10 +71,10 @@ export function ProblemFraming() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
               data-testid="text-problem-p1"
             >
@@ -86,10 +86,10 @@ export function ProblemFraming() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
               data-testid="text-problem-p2"
             >
@@ -101,10 +101,10 @@ export function ProblemFraming() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
               data-testid="text-problem-p3"
             >
@@ -126,7 +126,7 @@ export function ProblemFraming() {
                 fontSize: "0.6rem",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
-                opacity: 0.35,
+                opacity: 0.45,
               }}
             >
               The patterns we keep seeing
@@ -189,7 +189,7 @@ export function ProblemFraming() {
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.65rem",
-                          opacity: 0.3,
+                          opacity: 0.4,
                           letterSpacing: "0.1em",
                         }}
                       >
@@ -200,7 +200,7 @@ export function ProblemFraming() {
                           fontFamily: "'Inter', sans-serif",
                           fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
                           lineHeight: 1.6,
-                          opacity: 0.85,
+                          opacity: 0.9,
                         }}
                       >
                         {pattern}

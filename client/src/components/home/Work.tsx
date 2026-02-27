@@ -83,7 +83,7 @@ export function Work() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.4,
+                opacity: 0.5,
               }}
             >
               How We're Different
@@ -101,17 +101,17 @@ export function Work() {
               data-testid="text-work-heading"
             >
               We are marketing's{" "}
-              <span className="italic" style={{ opacity: 0.5 }}>
+              <span className="italic" style={{ opacity: 0.6 }}>
                 missing middle.
               </span>
             </h2>
 
             <p
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
                 marginBottom: "3rem",
                 maxWidth: "700px",
               }}
@@ -135,7 +135,7 @@ export function Work() {
                     borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
                     cursor: "pointer",
                     transition: "opacity 0.25s ease",
-                    opacity: activeIndex === i ? 1 : 0.45,
+                    opacity: activeIndex === i ? 1 : 0.55,
                   }}
                   data-testid={`card-work-${i}`}
                   onMouseEnter={() => setActiveIndex(i)}
@@ -160,7 +160,7 @@ export function Work() {
                         fontWeight: 500,
                         letterSpacing: "0.05em",
                         textTransform: "uppercase",
-                        opacity: 0.5,
+                        opacity: 0.6,
                       }}
                     >
                       {block.label}
@@ -205,7 +205,7 @@ export function Work() {
                     fontSize: "0.55rem",
                     letterSpacing: "0.15em",
                     textTransform: "uppercase",
-                    opacity: 0.3,
+                    opacity: 0.4,
                   }}
                 >
                   Case Study — 0{activeIndex + 1}
@@ -215,7 +215,7 @@ export function Work() {
                   <motion.p
                     key={activeIndex}
                     initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 0.7, y: 0 }}
+                    animate={{ opacity: 0.8, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     style={{
@@ -281,7 +281,7 @@ function MobileWorkBlock({ block, index, isInView }: { block: typeof blocks[0]; 
             fontWeight: 500,
             letterSpacing: "0.05em",
             textTransform: "uppercase",
-            opacity: 0.5,
+            opacity: 0.6,
           }}
         >
           {block.label}
@@ -293,7 +293,7 @@ function MobileWorkBlock({ block, index, isInView }: { block: typeof blocks[0]; 
           fontFamily: "'Libre Baskerville', serif",
           fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
           lineHeight: 1.85,
-          opacity: 0.85,
+          opacity: 0.9,
           marginBottom: expanded ? "1rem" : 0,
         }}
       >
@@ -325,7 +325,7 @@ function MobileWorkBlock({ block, index, isInView }: { block: typeof blocks[0]; 
                   fontSize: "0.5rem",
                   letterSpacing: "0.15em",
                   textTransform: "uppercase",
-                  opacity: 0.3,
+                  opacity: 0.4,
                 }}
               >
                 Case Study
@@ -336,7 +336,7 @@ function MobileWorkBlock({ block, index, isInView }: { block: typeof blocks[0]; 
                   fontSize: "0.95rem",
                   lineHeight: 1.8,
                   fontStyle: "italic",
-                  opacity: 0.7,
+                  opacity: 0.8,
                 }}
               >
                 {highlightBrands(block.caseStudy)}

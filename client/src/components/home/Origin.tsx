@@ -33,7 +33,7 @@ export function Origin() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.4,
+                opacity: 0.5,
               }}
               data-testid="text-origin-label"
             >
@@ -52,7 +52,7 @@ export function Origin() {
               data-testid="text-origin-heading"
             >
               We didn't start in a boardroom.{" "}
-              <span className="italic" style={{ opacity: 0.5 }}>
+              <span className="italic" style={{ opacity: 0.6 }}>
                 We started in living rooms. Cafes. At the dinner table.
               </span>
             </h2>
@@ -64,10 +64,10 @@ export function Origin() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
               data-testid="text-origin-p1"
             >
@@ -79,10 +79,10 @@ export function Origin() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
               data-testid="text-origin-p2"
             >
@@ -94,10 +94,10 @@ export function Origin() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
               data-testid="text-origin-p3"
             >
@@ -113,7 +113,7 @@ export function Origin() {
                 fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
                 lineHeight: 1.7,
                 fontStyle: "italic",
-                opacity: 0.55,
+                opacity: 0.65,
                 marginTop: "1rem",
               }}
               data-testid="text-origin-closing"
