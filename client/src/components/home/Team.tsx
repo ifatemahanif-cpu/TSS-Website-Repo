@@ -113,7 +113,7 @@ export function Team() {
         style={{
           backgroundColor: "#0C0A3E",
           borderRadius: "20px",
-          minHeight: isMobile ? "auto" : "100vh",
+          minHeight: "auto",
           padding: "clamp(2rem, 4vw, 4rem)",
         }}
       >
@@ -190,7 +190,7 @@ export function Team() {
               <MobileCards onCardClick={handleCardClick} />
             </>
           ) : (
-            <div className="flex items-start gap-8 lg:gap-12" style={{ minHeight: "80vh" }}>
+            <div className="flex items-start gap-8 lg:gap-12">
               <div className="w-[42%] shrink-0 sticky" style={{ top: "clamp(2rem, 4vw, 4rem)" }}>
                 <span
                   className="block mb-3 tracking-[0.3em] uppercase"
@@ -548,7 +548,7 @@ function DesktopFanCards({
     <div
       ref={containerRef}
       className="relative flex items-center justify-center"
-      style={{ height: "70vh", perspective: "1200px" }}
+      style={{ height: "500px", perspective: "1200px" }}
     >
       {team.map((member, i) => {
         const config = configs[i];
