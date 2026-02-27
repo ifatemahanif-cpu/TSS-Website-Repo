@@ -120,94 +120,127 @@ export function Work() {
             </p>
           </motion.div>
 
-          <div className="space-y-0">
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
             {blocks.map((block, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="group"
                 style={{
-                  padding: "2.5rem 0",
-                  borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderBottom: i === blocks.length - 1 ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
+                  position: "relative",
+                  backgroundColor: "rgba(255, 255, 255, 0.02)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  borderRadius: "16px",
+                  padding: "clamp(2rem, 3vw, 3rem)",
+                  overflow: "hidden",
+                  transition: "border-color 0.3s ease, background-color 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.02)";
                 }}
                 data-testid={`card-work-${i}`}
               >
-                <div className="flex items-baseline gap-4 mb-4">
-                  <span
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(2rem, 4vw, 3rem)",
-                      fontWeight: 400,
-                      opacity: 0.15,
-                      lineHeight: 1,
-                      letterSpacing: "-0.03em",
-                      flexShrink: 0,
-                    }}
-                  >
-                    0{i + 1}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.7rem, 1vw, 0.8rem)",
-                      fontWeight: 600,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      opacity: 0.6,
-                    }}
-                  >
-                    {block.label}
-                  </span>
-                </div>
-
-                <p
+                <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                    lineHeight: 1.8,
-                    opacity: 0.85,
-                    marginBottom: "1.5rem",
-                    maxWidth: "900px",
+                    position: "absolute",
+                    top: "-0.3rem",
+                    right: "clamp(1rem, 3vw, 2.5rem)",
+                    fontFamily: "'Libre Baskerville', serif",
+                    fontSize: "clamp(5rem, 10vw, 8rem)",
+                    fontWeight: 400,
+                    opacity: 0.04,
+                    lineHeight: 1,
+                    letterSpacing: "-0.05em",
+                    pointerEvents: "none",
+                    userSelect: "none",
                   }}
                 >
-                  {block.principle}
-                </p>
+                  0{i + 1}
+                </span>
 
                 <div
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
-                    borderRadius: "12px",
-                    padding: "1.5rem 2rem",
-                    maxWidth: "900px",
-                  }}
+                  className="grid grid-cols-1 md:grid-cols-2"
+                  style={{ gap: "clamp(1.5rem, 3vw, 2.5rem)" }}
                 >
-                  <span
-                    className="block mb-3"
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.6rem",
+                          letterSpacing: "0.15em",
+                          color: "rgba(255, 255, 255, 0.35)",
+                          flexShrink: 0,
+                        }}
+                      >
+                        0{i + 1}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: "clamp(0.7rem, 0.9vw, 0.78rem)",
+                          fontWeight: 600,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          opacity: 0.65,
+                        }}
+                      >
+                        {block.label}
+                      </span>
+                    </div>
+
+                    <p
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: "clamp(0.95rem, 1.2vw, 1.08rem)",
+                        lineHeight: 1.8,
+                        opacity: 0.85,
+                      }}
+                    >
+                      {block.principle}
+                    </p>
+                  </div>
+
+                  <div
+                    className="work-case-study"
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      opacity: 0.4,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
                     }}
                   >
-                    Case Study
-                  </span>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
-                      lineHeight: 1.8,
-                      fontStyle: "italic",
-                      opacity: 0.7,
-                    }}
-                    data-testid={`text-case-study-${i}`}
-                  >
-                    {highlightBrands(block.caseStudy)}
-                  </p>
+                    <span
+                      className="block mb-2"
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "0.5rem",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        opacity: 0.4,
+                      }}
+                    >
+                      Case Study
+                    </span>
+                    <p
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
+                        lineHeight: 1.8,
+                        fontStyle: "italic",
+                        opacity: 0.7,
+                      }}
+                      data-testid={`text-case-study-${i}`}
+                    >
+                      {highlightBrands(block.caseStudy)}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}

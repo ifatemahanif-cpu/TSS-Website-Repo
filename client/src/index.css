@@ -78,3 +78,15 @@
 .animate-drift-slow {
   animation: drift-slow 25s linear infinite alternate;
 }
+
+.work-case-study {
+  border-left: none;
+  padding-left: 0;
+}
+
+@media (min-width: 768px) {
+  .work-case-study {
+    border-left: 2px solid rgba(123, 30, 122, 0.35);
+    padding-left: 1.5rem;
+  }
+}
