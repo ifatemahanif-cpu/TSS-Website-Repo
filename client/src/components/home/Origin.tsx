@@ -14,13 +14,13 @@ export function Origin() {
     >
       <div
         style={{
-          backgroundColor: "#0C0A3E",
+          backgroundColor: "#0E0C45",
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
       >
-        <div className="max-w-[750px] mx-auto">
+        <div className="max-w-[1000px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}

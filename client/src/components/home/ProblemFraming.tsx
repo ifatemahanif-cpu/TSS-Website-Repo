@@ -20,7 +20,7 @@ export function ProblemFraming() {
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
       >
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-[1000px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}

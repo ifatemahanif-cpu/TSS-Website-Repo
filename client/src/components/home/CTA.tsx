@@ -15,13 +15,13 @@ export function CTA() {
     >
       <div
         style={{
-          backgroundColor: "#0C0A3E",
+          backgroundColor: "#0E0C45",
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
       >
-        <div className="max-w-[700px] mx-auto text-center">
+        <div className="max-w-[900px] mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}

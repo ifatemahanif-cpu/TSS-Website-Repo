@@ -111,7 +111,7 @@ export function Team() {
       <div
         className="relative overflow-hidden"
         style={{
-          backgroundColor: "#0C0A3E",
+          backgroundColor: "#0E0C45",
           borderRadius: "20px",
           minHeight: "auto",
           padding: "clamp(2rem, 4vw, 4rem)",

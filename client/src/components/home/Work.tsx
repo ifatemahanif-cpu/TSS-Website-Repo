@@ -64,7 +64,7 @@ export function Work() {
     >
       <div
         style={{
-          backgroundColor: "#0C0A3E",
+          backgroundColor: "#0E0C45",
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
