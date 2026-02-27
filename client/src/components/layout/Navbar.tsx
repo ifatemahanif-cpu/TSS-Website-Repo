@@ -13,7 +13,6 @@ export function Navbar() {
 
   const links = [
     { name: "Our Story", href: "/our-story" },
-    { name: "The Collective Model", href: "/collective-model" },
     { name: "Join the collective", href: "/join" },
   ];
 
