@@ -57,7 +57,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.15 + index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        paddingTop: index === 0 ? 0 : "clamp(2.5rem, 4vw, 3.5rem)",
+        paddingTop: "clamp(2.5rem, 4vw, 3.5rem)",
         paddingBottom: "clamp(2.5rem, 4vw, 3.5rem)",
         borderBottom: index < blocks.length - 1 ? "1px solid rgba(255, 255, 255, 0.08)" : "none",
         position: "relative",
@@ -67,7 +67,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
       <span
         style={{
           position: "absolute",
-          top: index === 0 ? "-1rem" : "clamp(1.5rem, 3vw, 2.5rem)",
+          top: "clamp(1.5rem, 3vw, 2.5rem)",
           right: 0,
           fontFamily: "'Libre Baskerville', serif",
           fontSize: "clamp(5rem, 10vw, 9rem)",
