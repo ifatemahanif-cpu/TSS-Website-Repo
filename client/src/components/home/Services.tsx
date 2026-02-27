@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 
@@ -83,11 +83,48 @@ const services = [
 ];
 
 export function Services() {
-  const [expandedService, setExpandedService] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  const toggleService = useCallback((id: string) => {
-    setExpandedService(prev => prev === id ? null : id);
-  }, []);
+  const goTo = useCallback((index: number) => {
+    if (index < 0 || index >= services.length) return;
+    setDirection(index > activeIndex ? 1 : -1);
+    setActiveIndex(index);
+  }, [activeIndex]);
+
+  const goPrev = useCallback(() => {
+    if (activeIndex > 0) goTo(activeIndex - 1);
+  }, [activeIndex, goTo]);
+
+  const goNext = useCallback(() => {
+    if (activeIndex < services.length - 1) goTo(activeIndex + 1);
+  }, [activeIndex, goTo]);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [goPrev, goNext]);
+
+  const service = services[activeIndex];
+
+  const variants = {
+    enter: (dir: number) => ({
+      opacity: 0,
+      x: dir > 0 ? 60 : -60,
+    }),
+    center: {
+      opacity: 1,
+      x: 0,
+    },
+    exit: (dir: number) => ({
+      opacity: 0,
+      x: dir > 0 ? -60 : 60,
+    }),
+  };
 
   return (
     <section
@@ -119,7 +156,6 @@ export function Services() {
               What This Looks Like IRL
             </span>
             <h2
-              className="mb-5"
               style={{
                 fontFamily: "'Libre Baskerville', serif",
                 fontSize: "clamp(2rem, 5vw, 3.5rem)",
@@ -136,149 +172,155 @@ export function Services() {
             </h2>
           </div>
 
-          <div className="space-y-3 mb-12">
-            {services.map((service, idx) => {
-              const isExpanded = expandedService === service.id;
-              return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-30px" }}
-                  transition={{ delay: idx * 0.04, duration: 0.4 }}
-                  style={{
-                    border: `1px solid ${isExpanded ? "rgba(255, 255, 255, 0.3)" : "rgba(255, 255, 255, 0.12)"}`,
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                    transition: "all 0.3s ease",
-                    backgroundColor: isExpanded ? "rgba(255, 255, 255, 0.06)" : "transparent",
-                  }}
-                  data-testid={`card-service-${service.id}`}
-                >
-                  <button
-                    onClick={() => toggleService(service.id)}
-                    className="w-full text-left"
+          <div style={{ minHeight: "340px", position: "relative", overflow: "hidden" }}>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={activeIndex}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                data-testid={`card-service-${service.id}`}
+              >
+                <div className="flex items-baseline gap-4 md:gap-6 mb-6">
+                  <span
                     style={{
-                      padding: "1.25rem 1.5rem",
-                      cursor: "pointer",
-                      background: "none",
-                      border: "none",
-                      color: "#FFFFFF",
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(3.5rem, 8vw, 6rem)",
+                      lineHeight: 1,
+                      fontWeight: 400,
+                      opacity: 0.15,
+                      letterSpacing: "-0.03em",
+                      flexShrink: 0,
                     }}
-                    data-testid={`button-toggle-${service.id}`}
                   >
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <span
-                          style={{
-                            fontFamily: "'JetBrains Mono', monospace",
-                            fontSize: "0.55rem",
-                            opacity: 0.3,
-                            letterSpacing: "0.1em",
-                          }}
-                        >
-                          0{idx + 1}
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: "'Inter', sans-serif",
-                            fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                            fontWeight: 600,
-                          }}
-                        >
-                          {service.title}
-                        </span>
-                      </div>
-                      <div
+                    0{activeIndex + 1}
+                  </span>
+                  <h3
+                    style={{
+                      fontFamily: "'Libre Baskerville', serif",
+                      fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)",
+                      lineHeight: 1.15,
+                      fontWeight: 400,
+                      letterSpacing: "-0.02em",
+                    }}
+                    data-testid={`text-service-title-${activeIndex}`}
+                  >
+                    {service.title}
+                  </h3>
+                </div>
+
+                <p
+                  style={{
+                    fontFamily: "'Libre Baskerville', serif",
+                    fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
+                    opacity: 0.55,
+                    lineHeight: 1.8,
+                    fontStyle: "italic",
+                    marginBottom: "1.75rem",
+                    maxWidth: "700px",
+                  }}
+                >
+                  {service.subtitle}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {service.items.map((item, itemIdx) => (
+                    <div
+                      key={itemIdx}
+                      className="flex items-start gap-2.5"
+                    >
+                      <span
                         style={{
-                          width: "24px",
-                          height: "24px",
+                          width: "4px",
+                          height: "4px",
                           borderRadius: "50%",
-                          border: `1.5px solid ${isExpanded ? "rgba(255, 255, 255, 0.4)" : "rgba(255, 255, 255, 0.2)"}`,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
+                          backgroundColor: "rgba(255, 255, 255, 0.25)",
                           flexShrink: 0,
-                          transition: "border-color 0.25s ease",
+                          marginTop: "0.55rem",
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: "0.88rem",
+                          opacity: 0.65,
+                          lineHeight: 1.6,
                         }}
                       >
-                        <span
-                          style={{
-                            fontSize: "0.9rem",
-                            color: isExpanded ? "#FFFFFF" : "rgba(255, 255, 255, 0.4)",
-                            lineHeight: 1,
-                            fontWeight: 300,
-                            transition: "color 0.25s ease",
-                          }}
-                        >
-                          {isExpanded ? "−" : "+"}
-                        </span>
-                      </div>
+                        {item}
+                      </span>
                     </div>
-                  </button>
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        <div
-                          style={{
-                            padding: "0 1.5rem 1.25rem 1.5rem",
-                            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-                            paddingTop: "1rem",
-                          }}
-                        >
-                          <p
-                            style={{
-                              fontFamily: "'Libre Baskerville', serif",
-                              fontSize: "clamp(0.8rem, 0.95vw, 0.88rem)",
-                              opacity: 0.55,
-                              lineHeight: 1.75,
-                              marginBottom: "1rem",
-                            }}
-                          >
-                            {service.subtitle}
-                          </p>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            {service.items.map((item, itemIdx) => (
-                              <div
-                                key={itemIdx}
-                                className="flex items-start gap-2.5"
-                              >
-                                <span
-                                  style={{
-                                    width: "4px",
-                                    height: "4px",
-                                    borderRadius: "50%",
-                                    backgroundColor: "rgba(255, 255, 255, 0.25)",
-                                    flexShrink: 0,
-                                    marginTop: "0.5rem",
-                                  }}
-                                />
-                                <span
-                                  style={{
-                                    fontFamily: "'Inter', sans-serif",
-                                    fontSize: "0.85rem",
-                                    opacity: 0.65,
-                                    lineHeight: 1.6,
-                                  }}
-                                >
-                                  {item}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div
+            className="flex items-center justify-between mt-10"
+            style={{
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+              paddingTop: "1.5rem",
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <button
+                onClick={goPrev}
+                disabled={activeIndex === 0}
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  border: `1px solid ${activeIndex === 0 ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.2)"}`,
+                  background: "none",
+                  color: activeIndex === 0 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.6)",
+                  cursor: activeIndex === 0 ? "default" : "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.1rem",
+                  transition: "all 0.2s ease",
+                }}
+                data-testid="button-prev-service"
+              >
+                ←
+              </button>
+              <button
+                onClick={goNext}
+                disabled={activeIndex === services.length - 1}
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  border: `1px solid ${activeIndex === services.length - 1 ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.2)"}`,
+                  background: "none",
+                  color: activeIndex === services.length - 1 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.6)",
+                  cursor: activeIndex === services.length - 1 ? "default" : "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.1rem",
+                  transition: "all 0.2s ease",
+                }}
+                data-testid="button-next-service"
+              >
+                →
+              </button>
+            </div>
+
+            <span
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.6rem",
+                letterSpacing: "0.15em",
+                opacity: 0.3,
+              }}
+            >
+              0{activeIndex + 1} / 0{services.length}
+            </span>
           </div>
 
           <motion.div
@@ -289,6 +331,7 @@ export function Services() {
             style={{
               borderTop: "1px solid rgba(255, 255, 255, 0.1)",
               paddingTop: "2.5rem",
+              marginTop: "2.5rem",
               textAlign: "center",
             }}
           >
