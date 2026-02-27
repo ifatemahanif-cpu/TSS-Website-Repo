@@ -5,6 +5,14 @@ export function Origin() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
+  const capabilities = [
+    "Clarifying positioning.",
+    "Shaping a founder narrative.",
+    "Reworking website messaging.",
+    "Aligning brand voice across channels.",
+    "Building content systems that compound instead of scatter.",
+  ];
+
   return (
     <section
       ref={sectionRef}
@@ -37,7 +45,7 @@ export function Origin() {
               }}
               data-testid="text-origin-label"
             >
-              Where It All Began
+              What We Actually Do
             </span>
 
             <h2
@@ -51,9 +59,9 @@ export function Origin() {
               }}
               data-testid="text-origin-heading"
             >
-              We didn't start in a boardroom.{" "}
+              We don't think content strategy is a subset of marketing strategy.{" "}
               <span className="italic" style={{ opacity: 0.6 }}>
-                We started in living rooms. Cafes. At the dinner table.
+                We think it's the other way around.
               </span>
             </h2>
           </motion.div>
@@ -71,7 +79,7 @@ export function Origin() {
               }}
               data-testid="text-origin-p1"
             >
-              We had built content and brand systems inside companies that were scaling fast. We managed teams across markets. We owned traffic targets and revenue numbers. We fixed websites that no longer reflected the business. We sat in rooms where growth was expected but messaging was unclear.
+              Most agencies will give you a content calendar and call it strategy. We do the opposite. We go slower at the start to go faster forever.
             </motion.p>
 
             <motion.p
@@ -86,23 +94,41 @@ export function Origin() {
               }}
               data-testid="text-origin-p2"
             >
-              Over time, we saw the same pattern repeat. The business moved forward. The story lagged behind.
+              We help you define what your brand stands for and express it consistently.
             </motion.p>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.75,
-              }}
-              data-testid="text-origin-p3"
             >
-              We built The Story Shapers to sit in that gap. Not as an agency that hands over a presentation. Not as a writing service that produces assets without context. But as partners who understand what happens after strategy — because we've been responsible for execution.
-            </motion.p>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                  lineHeight: 1.8,
+                  opacity: 0.75,
+                  marginBottom: "0.25rem",
+                }}
+              >
+                That can mean:
+              </p>
+              {capabilities.map((item, idx) => (
+                <p
+                  key={idx}
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                    lineHeight: 1.8,
+                    opacity: 0.75,
+                    paddingLeft: "1rem",
+                  }}
+                  data-testid={`text-origin-capability-${idx}`}
+                >
+                  {item}
+                </p>
+              ))}
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -118,7 +144,7 @@ export function Origin() {
               }}
               data-testid="text-origin-closing"
             >
-              Positioning must hold across teams. Messaging must survive scale.
+              We start with "what is this brand actually trying to say?" And we don't stop until you have a system that can answer that question every single time you hit publish.
             </motion.p>
           </div>
         </div>
