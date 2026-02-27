@@ -1,5 +1,31 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
+
+const brandNames = ["SOCIAL", "Art Fervour", "LBB", "Headout"];
+
+function highlightBrands(text: string): ReactNode {
+  const regex = new RegExp(`(${brandNames.join("|")})`, "g");
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    brandNames.includes(part) ? (
+      <span
+        key={i}
+        style={{
+          fontStyle: "normal",
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 600,
+          letterSpacing: "0.02em",
+          opacity: 1,
+          color: "#FFFFFF",
+        }}
+      >
+        {part}
+      </span>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
 
 const blocks = [
   {
@@ -81,7 +107,7 @@ export function Work() {
             </h2>
           </motion.div>
 
-          <div className="hidden md:grid" style={{ gridTemplateColumns: "1fr 380px", gap: "3rem", alignItems: "start" }}>
+          <div className="hidden md:grid" style={{ gridTemplateColumns: "1fr 450px", gap: "3.5rem", alignItems: "start" }}>
             <div>
               {blocks.map((block, i) => (
                 <motion.div
@@ -151,15 +177,15 @@ export function Work() {
                   backgroundColor: "rgba(255, 255, 255, 0.04)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   borderRadius: "14px",
-                  padding: "2rem",
-                  minHeight: "220px",
+                  padding: "2.5rem",
+                  minHeight: "280px",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                 }}
               >
                 <span
-                  className="block mb-4"
+                  className="block mb-5"
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.55rem",
@@ -180,13 +206,13 @@ export function Work() {
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     style={{
                       fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "0.95rem",
+                      fontSize: "1.05rem",
                       lineHeight: 1.85,
                       fontStyle: "italic",
                     }}
                     data-testid={`text-case-study-${activeIndex}`}
                   >
-                    {blocks[activeIndex].caseStudy}
+                    {highlightBrands(blocks[activeIndex].caseStudy)}
                   </motion.p>
                 </AnimatePresence>
               </div>
@@ -274,7 +300,7 @@ function MobileWorkBlock({ block, index, isInView }: { block: typeof blocks[0]; 
                 backgroundColor: "rgba(255, 255, 255, 0.04)",
                 border: "1px solid rgba(255, 255, 255, 0.1)",
                 borderRadius: "10px",
-                padding: "1.25rem",
+                padding: "1.5rem",
                 marginTop: "0.5rem",
               }}
             >
@@ -293,13 +319,13 @@ function MobileWorkBlock({ block, index, isInView }: { block: typeof blocks[0]; 
               <p
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "0.9rem",
+                  fontSize: "0.95rem",
                   lineHeight: 1.8,
                   fontStyle: "italic",
                   opacity: 0.7,
                 }}
               >
-                {block.caseStudy}
+                {highlightBrands(block.caseStudy)}
               </p>
             </div>
           </motion.div>
