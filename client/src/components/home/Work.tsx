@@ -122,12 +122,20 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
         {block.principle}
       </p>
 
-      <div
+      <motion.div
+        whileHover={{
+          y: -3,
+          backgroundColor: "rgba(255, 255, 255, 0.05)",
+          borderColor: "rgba(255, 255, 255, 0.15)",
+          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
+        }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.025)",
           border: "1px solid rgba(255, 255, 255, 0.07)",
           borderRadius: "12px",
           padding: "clamp(1.25rem, 2vw, 1.75rem)",
+          cursor: "default",
         }}
       >
         <span
@@ -154,7 +162,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
         >
           {highlightBrands(block.caseStudy)}
         </p>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
