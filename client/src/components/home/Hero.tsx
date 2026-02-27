@@ -335,29 +335,64 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="absolute left-0 right-0 flex items-center justify-center gap-6 flex-wrap"
-        style={{ bottom: "2.5rem" }}
+        className="absolute left-0 right-0"
+        style={{ bottom: "2.5rem", overflow: "hidden" }}
         data-testid="ticker-companies"
       >
-        {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
-          <span key={i} className="flex items-center gap-6">
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "0.75rem",
-                letterSpacing: "0.15em",
-                color: "rgba(255,255,255,0.25)",
-                textTransform: "uppercase",
-              }}
-              data-testid={`text-ticker-company-${i}`}
-            >
-              {company}
-            </span>
-            {i < 3 && (
-              <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.4rem" }}>●</span>
-            )}
-          </span>
-        ))}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            width: "80px",
+            background: "linear-gradient(90deg, #0C0A3E, transparent)",
+            zIndex: 2,
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: "80px",
+            background: "linear-gradient(270deg, #0C0A3E, transparent)",
+            zIndex: 2,
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          className="flex"
+          style={{
+            animation: "tickerScroll 22s linear infinite",
+            width: "fit-content",
+          }}
+        >
+          {[...Array(3)].map((_, setIdx) => (
+            <div key={setIdx} className="flex items-center shrink-0" style={{ gap: "2.5rem", paddingRight: "2.5rem" }}>
+              {["Social", "Art Fervour", "LBB", "Headout"].map((company, i) => (
+                <span key={i} className="flex items-center" style={{ gap: "2.5rem" }}>
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.15em",
+                      color: "rgba(255,255,255,0.25)",
+                      textTransform: "uppercase",
+                      whiteSpace: "nowrap",
+                    }}
+                    data-testid={`text-ticker-company-${setIdx}-${i}`}
+                  >
+                    {company}
+                  </span>
+                  <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "0.4rem" }}>●</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </motion.div>
 
       <style>{`
@@ -368,6 +403,10 @@ export function Hero() {
         @keyframes gradientSweep {
           0% { background-position: 100% 0; }
           100% { background-position: -100% 0; }
+        }
+        @keyframes tickerScroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
         }
       `}</style>
 
