@@ -4,7 +4,7 @@ import { Link } from "wouter";
 export function Hero() {
   return (
     <section
-      className="relative flex items-center overflow-hidden"
+      className="relative flex items-center justify-center overflow-hidden"
       style={{
         backgroundColor: "#0C0A3E",
         minHeight: "100vh",
@@ -228,7 +228,7 @@ export function Hero() {
         }
       `}</style>
 
-      <div className="relative w-full" style={{ maxWidth: "1200px" }}>
+      <div className="relative max-w-[900px] mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -252,8 +252,8 @@ export function Hero() {
             className="hero-gradient-sweep"
             style={{
               fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(3.5rem, 10vw, 8rem)",
-              lineHeight: 1,
+              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
+              lineHeight: 1.05,
               letterSpacing: "-0.03em",
               fontWeight: 400,
               marginBottom: "1.5rem",
@@ -281,7 +281,8 @@ export function Hero() {
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
             color: "rgba(255, 255, 255, 0.55)",
-            maxWidth: "580px",
+            maxWidth: "680px",
+            margin: "0 auto",
             marginBottom: "1.5rem",
           }}
           data-testid="text-hero-subhead"
@@ -302,7 +303,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="flex items-center gap-6 flex-wrap"
+          className="flex items-center justify-center gap-6 flex-wrap"
           style={{ marginBottom: "2.5rem" }}
           data-testid="ticker-companies"
         >
@@ -334,27 +335,27 @@ export function Hero() {
         >
           <Link
             href="/contact#talk"
-            className="inline-flex items-center gap-2 transition-all duration-200 group"
+            className="inline-block font-medium text-sm transition-all duration-200"
             style={{
+              backgroundColor: "#7B1E7A",
+              color: "#FFFFFF",
+              padding: "0.85rem 2.5rem",
+              borderRadius: "8px",
+              border: "1px solid #7B1E7A",
               fontFamily: "'Inter', sans-serif",
-              fontSize: "1rem",
-              color: "rgba(255, 255, 255, 0.7)",
-              letterSpacing: "0.01em",
-              textDecoration: "none",
-              borderBottom: "1px solid transparent",
+              letterSpacing: "0.02em",
             }}
             data-testid="button-lets-talk"
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#FFFFFF";
-              e.currentTarget.style.borderBottomColor = "rgba(255,255,255,0.4)";
+              e.currentTarget.style.backgroundColor = "#9B3E9A";
+              e.currentTarget.style.borderColor = "#9B3E9A";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
-              e.currentTarget.style.borderBottomColor = "transparent";
+              e.currentTarget.style.backgroundColor = "#7B1E7A";
+              e.currentTarget.style.borderColor = "#7B1E7A";
             }}
           >
-            Let's talk
-            <span style={{ fontSize: "1.1rem", transition: "transform 0.2s ease" }} className="group-hover:translate-x-1 inline-block">→</span>
+            Let's talk &rarr;
           </Link>
         </motion.div>
       </div>
