@@ -107,7 +107,7 @@ function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; in
             fontFamily: "'Inter', sans-serif",
             fontSize: "0.95rem",
             lineHeight: 1.6,
-            color: "rgba(255, 255, 255, 0.6)",
+            color: "rgba(255, 255, 255, 0.8)",
             marginBottom: "2rem",
           }}
           data-testid={`text-whatwedo-desc-${index}`}
@@ -129,7 +129,7 @@ function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; in
               fontSize: "0.9rem",
               lineHeight: 1.7,
               fontStyle: "italic",
-              color: "rgba(255, 255, 255, 0.45)",
+              color: "rgba(255, 255, 255, 0.7)",
               marginBottom: "1rem",
             }}
           >
@@ -216,7 +216,7 @@ export function Origin() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.5,
+                opacity: 0.6,
               }}
               data-testid="text-origin-label"
             >

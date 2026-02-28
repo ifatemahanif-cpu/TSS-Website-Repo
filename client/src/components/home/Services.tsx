@@ -114,7 +114,7 @@ export function Services() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.5,
+                opacity: 0.6,
               }}
               data-testid="text-services-label"
             >
@@ -138,7 +138,7 @@ export function Services() {
                 fontFamily: "'Inter', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
-                opacity: 0.65,
+                opacity: 0.8,
                 fontStyle: "italic",
               }}
             >
@@ -181,7 +181,7 @@ export function Services() {
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.6rem",
                       letterSpacing: "0.1em",
-                      color: "rgba(255, 255, 255, 0.3)",
+                      color: "rgba(255, 255, 255, 0.45)",
                       flexShrink: 0,
                     }}
                   >
@@ -232,7 +232,7 @@ export function Services() {
                         borderRadius: "6px",
                         backgroundColor: "rgba(255, 255, 255, 0.03)",
                         border: "1px solid rgba(255, 255, 255, 0.08)",
-                        color: "rgba(255, 255, 255, 0.5)",
+                        color: "rgba(255, 255, 255, 0.7)",
                         lineHeight: 1,
                       }}
                       data-testid={`badge-service-item-${i}-${itemIdx}`}

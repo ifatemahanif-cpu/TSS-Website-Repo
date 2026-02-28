@@ -33,7 +33,7 @@ export function ProblemFraming() {
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                opacity: 0.5,
+                opacity: 0.6,
               }}
             >
               THE PROBLEM
@@ -78,7 +78,7 @@ export function ProblemFraming() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.8rem",
-                    opacity: 0.4,
+                    opacity: 0.5,
                   }}
                   data-testid={`text-problem-number-${item.id}`}
                 >

@@ -143,7 +143,7 @@ export function Hero() {
               fontSize: "0.65rem",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              opacity: 0.5,
+              opacity: 0.6,
               color: "#FFFFFF",
             }}
             data-testid="text-hero-label"
@@ -181,7 +181,7 @@ export function Hero() {
             fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
             lineHeight: 1.7,
-            color: "rgba(255, 255, 255, 0.7)",
+            color: "rgba(255, 255, 255, 0.8)",
             maxWidth: "680px",
             margin: "0 auto",
             marginBottom: "2rem",
@@ -192,7 +192,7 @@ export function Hero() {
           <span
             style={{
               fontFamily: "'JetBrains Mono', monospace",
-              color: "rgba(255, 255, 255, 0.55)",
+              color: "rgba(255, 255, 255, 0.65)",
               marginLeft: "2px",
               animation: "cursorBlink 1s step-end infinite",
             }}
@@ -280,7 +280,7 @@ export function Hero() {
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.75rem",
                       letterSpacing: "0.15em",
-                      color: "rgba(255,255,255,0.25)",
+                      color: "rgba(255,255,255,0.35)",
                       textTransform: "uppercase",
                       whiteSpace: "nowrap",
                     }}

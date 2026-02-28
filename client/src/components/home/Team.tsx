@@ -120,7 +120,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    opacity: 0.5,
+                    opacity: 0.6,
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -149,7 +149,7 @@ export function Team() {
                       fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
-                      opacity: 0.6,
+                      opacity: 0.75,
                     }}
                   >
                     45+ years combined.
@@ -160,7 +160,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                      color: "rgba(255, 255, 255, 0.75)",
+                      color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -179,7 +179,7 @@ export function Team() {
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.7rem",
-                    opacity: 0.5,
+                    opacity: 0.6,
                     letterSpacing: "0.3em",
                   }}
                   data-testid="text-team-label"
@@ -208,7 +208,7 @@ export function Team() {
                       fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
-                      opacity: 0.6,
+                      opacity: 0.75,
                     }}
                   >
                     45+ years combined.
@@ -219,7 +219,7 @@ export function Team() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                      color: "rgba(255, 255, 255, 0.75)",
+                      color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.8,
                     }}
                     data-testid="text-team-intro-1"
@@ -232,7 +232,7 @@ export function Team() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.55rem",
-                      color: "rgba(255, 255, 255, 0.4)",
+                      color: "rgba(255, 255, 255, 0.5)",
                       letterSpacing: "0.15em",
                     }}
                   >
@@ -368,7 +368,7 @@ function TeamModal({
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.6rem",
                     color: modalAccent,
-                    opacity: 0.6,
+                    opacity: 0.7,
                     letterSpacing: "0.2em",
                   }}
                 >
@@ -392,8 +392,8 @@ function TeamModal({
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(255, 255, 255, 0.6)",
-                  opacity: 0.6,
+                  color: "rgba(255, 255, 255, 0.7)",
+                  opacity: 0.7,
                   background: "none",
                   border: `1px solid rgba(255, 255, 255, 0.2)`,
                   borderRadius: "6px",
@@ -430,7 +430,7 @@ function TeamModal({
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "0.85rem",
                   lineHeight: 1.7,
-                  opacity: 0.7,
+                  opacity: 0.85,
                 }}
               >
                 {member.decisionsLed}
@@ -443,7 +443,7 @@ function TeamModal({
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "0.8rem",
                   lineHeight: 1.6,
-                  opacity: 0.6,
+                  opacity: 0.8,
                 }}
               >
                 {member.brands}
@@ -477,7 +477,7 @@ function ModalSection({
           letterSpacing: "0.2em",
           textTransform: "uppercase",
           color: accent,
-          opacity: 0.6,
+          opacity: 0.7,
         }}
       >
         {label}
@@ -700,7 +700,7 @@ function FanCard({
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.5rem",
             color: "#FFFFFF",
-            opacity: 0.6,
+            opacity: 0.7,
             backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
@@ -736,8 +736,8 @@ function FanCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "rgba(255, 255, 255, 0.5)",
-            opacity: 0.5,
+            color: "rgba(255, 255, 255, 0.6)",
+            opacity: 0.7,
             letterSpacing: "0.1em",
           }}
         >
@@ -844,7 +844,7 @@ function MobileCard({
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
             color: "#FFFFFF",
-            opacity: 0.6,
+            opacity: 0.7,
             backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
@@ -879,8 +879,8 @@ function MobileCard({
           style={{
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
-            color: "rgba(255, 255, 255, 0.5)",
-            opacity: 0.5,
+            color: "rgba(255, 255, 255, 0.6)",
+            opacity: 0.7,
           }}
         >
           READ MORE →
