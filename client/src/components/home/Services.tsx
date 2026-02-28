@@ -17,13 +17,17 @@ const services = [
   },
   {
     id: "website",
-    title: "Website & Messaging",
-    subtitle: "When the product has evolved but the website hasn't.",
+    title: "Website, Messaging & Discoverability",
+    subtitle: "When the product has evolved but the website hasn't — and good work isn't showing up where it should.",
     items: [
       "Information architecture",
       "Core messaging",
       "Conversion copy",
       "Landing pages",
+      "SEO mapping",
+      "On-page optimisation",
+      "Intent structuring",
+      "Authority building",
     ],
   },
   {
@@ -35,17 +39,6 @@ const services = [
       "Editorial calendars",
       "Storytelling frameworks",
       "Repurposing systems",
-    ],
-  },
-  {
-    id: "discovery",
-    title: "Discoverability",
-    subtitle: "When good work isn't showing up where it should.",
-    items: [
-      "SEO mapping",
-      "On-page optimisation",
-      "Intent structuring",
-      "Authority building",
     ],
   },
   {
@@ -146,7 +139,7 @@ export function Services() {
                 initial={{ opacity: 0, y: 25 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.15 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-                className={i === services.length - 1 ? "md:col-span-2 lg:col-span-1 md:max-w-[calc(50%-0.75rem)] lg:max-w-none md:mx-auto lg:mx-0" : ""}
+                className=""
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.04)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
