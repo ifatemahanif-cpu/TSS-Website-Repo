@@ -121,7 +121,21 @@ export default function OurStory() {
                 }}
                 data-testid="text-story-opening"
               >
-                Once upon a time — which is how all good stories begin — there were three marketers who had forgotten how to tell theirs.
+                Once upon a time, which is how all good stories begin, there were three marketers. Not musketeers, though they'd later discover they shared the same battle scars.
+              </p>
+
+              <p
+                className="mb-10"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+                  color: "#FFFFFF",
+                  lineHeight: 1.8,
+                  fontWeight: 500,
+                  fontStyle: "italic",
+                }}
+              >
+                They'd built careers helping others find their voice. And somewhere along the way, they'd misplaced their own.
               </p>
 
               <p
@@ -133,7 +147,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                They worked in different corners of the industry. Agencies. Corporates. Startups. Consulting rooms with too much air conditioning and not enough oxygen. They were good at what they did. Sometimes great. But somewhere along the way, the work had started to feel like a photocopy of a photocopy — each version a little more faded than the last.
+                They worked in different corners of the industry. Agencies. Corporates. Startups. Strategy rooms with too much air conditioning and not enough oxygen. They were good at what they did. Sometimes great. But the work had started to feel like a photocopy of a photocopy, each version a little more faded than the last.
               </p>
 
               <div
@@ -151,7 +165,7 @@ export default function OurStory() {
                       lineHeight: 1.9,
                     }}
                   >
-                    One had spent years building brands for others while her own ideas collected dust in notebooks no one would ever read.
+                    One had spent years writing for others. Brand voices. Campaign manifestos. Thought pieces with neat conclusions. Her own words lived elsewhere, half-formed, sitting in drafts she never sent.
                   </p>
                   <p
                     style={{
@@ -161,7 +175,7 @@ export default function OurStory() {
                       lineHeight: 1.9,
                     }}
                   >
-                    Another had mastered the art of the perfect pitch deck — and lost count of how many times she'd presented someone else's vision as if it were her own.
+                    Another had mastered the art of the perfect pitch deck. She could sell a vision in her sleep, and had long stopped counting how many times she'd stood in a room presenting someone else's thinking as if it were her own.
                   </p>
                   <p
                     style={{
@@ -171,17 +185,7 @@ export default function OurStory() {
                       lineHeight: 1.9,
                     }}
                   >
-                    A third had watched "strategy" become a word people used to make PowerPoints feel important.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    And the fourth had simply grown tired of being the smartest person in rooms that didn't want to listen.
+                    And the third had simply grown tired of being the smartest person in rooms that didn't want to listen.
                   </p>
                 </div>
               </div>
@@ -230,7 +234,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                They met the way most meaningful things happen — slowly, then all at once. A conversation here. A shared frustration there. A late-night message that said: "Is it just me, or does this feel broken?"
+                They met the way most meaningful things happen, slowly, then all at once. A late-night message that said: "Is it just me, or does this feel broken?"
               </p>
 
               <p
@@ -279,96 +283,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                What they discovered, in those early conversations, was that they'd all been carrying the same quiet weight.
-              </p>
-
-              <div
-                className="my-10 pl-8"
-                style={{
-                  borderLeft: "2px solid rgba(255, 255, 255, 0.2)",
-                }}
-              >
-                <div className="space-y-5">
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    The weight of ideas that never made it past the approval chain.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    The weight of knowing exactly what a brand needed — and watching it do the opposite.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    The weight of being senior enough to see the problem, but not free enough to fix it.
-                  </p>
-                </div>
-              </div>
-
-              <p
-                className="mb-10"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                  color: "#FFFFFF",
-                  lineHeight: 1.8,
-                  fontWeight: 500,
-                  fontStyle: "italic",
-                }}
-              >
-                They'd spent years shaping stories for others. But somewhere along the way, they'd stopped believing they could shape their own.
-              </p>
-
-              <div
-                className="my-14"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1rem",
-                }}
-              >
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.5rem",
-                    color: "#2A2870",
-                    letterSpacing: "0.3em",
-                    opacity: 0.5,
-                  }}
-                >
-                  &#9830;
-                </span>
-                <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
-              </div>
-
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2,
-                }}
-              >
-                And then one day — because this is the part of the story where something shifts — they decided to stop waiting for permission.
+                What they discovered was that they'd all been carrying the same quiet weight: knowing exactly what a brand needed, and watching it do the opposite. Being senior enough to see the problem, but not free enough to fix it.
               </p>
 
               <p
@@ -380,7 +295,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                No agency. No corporate ladder. No one else's rules about what marketing should look like or who gets to make the decisions.
+                And then one day, they stopped waiting for permission.
               </p>
 
               <p
@@ -392,7 +307,19 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                Just four people who knew how to build brands, sitting in a room (a virtual one, but still), asking a dangerous question:
+                No agency. No corporate ladder. No one else's rules about what work should look like or who gets to shape it.
+              </p>
+
+              <p
+                className="mb-8"
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
+                  color: "rgba(255, 255, 255, 0.65)",
+                  lineHeight: 2,
+                }}
+              >
+                Just three humans, a writer, a thinker, a doer (all three of each, really), asking a precarious question:
               </p>
 
               <div
@@ -450,48 +377,34 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                The Story Shapers wasn't born from a business plan. It was born from a collective exhale.
+                The Story Shapers wasn't born from any grand business idea.
               </p>
 
-              <div
-                className="my-10 pl-8"
+              <p
+                className="mb-10"
                 style={{
-                  borderLeft: "2px solid rgba(255, 255, 255, 0.2)",
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+                  color: "#FFFFFF",
+                  lineHeight: 1.8,
+                  fontWeight: 500,
+                  fontStyle: "italic",
                 }}
               >
-                <div className="space-y-5">
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    From the freedom of finally working with people who didn't need convincing.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    From the joy of building something where the best idea wins — not the loudest voice or the longest title.
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Libre Baskerville', serif",
-                      fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.9,
-                    }}
-                  >
-                    From the quiet rebellion of saying: We've spent twenty years shaping stories for brands. Maybe it's time we shaped one for ourselves.
-                  </p>
-                </div>
-              </div>
+                It was born from a collective exhale.
+              </p>
+
+              <p
+                className="mb-8"
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
+                  color: "rgba(255, 255, 255, 0.65)",
+                  lineHeight: 2,
+                }}
+              >
+                Interdisciplinary by design. Flexible by intention. Built on the radical idea that the best work doesn't ask you to shrink — into a role, a title, a lane, a niche. It asks you to show up whole.
+              </p>
 
               <div
                 className="my-14"
@@ -517,19 +430,6 @@ export default function OurStory() {
               </div>
 
               <p
-                className="mb-6"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                  color: "#FFFFFF",
-                  lineHeight: 1.8,
-                  fontWeight: 500,
-                }}
-              >
-                And now?
-              </p>
-
-              <p
                 className="mb-8"
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
@@ -538,43 +438,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                Now they do for others what they finally did for themselves.
-              </p>
-
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2,
-                }}
-              >
-                They help founders find the story that's been there all along — buried under decks and campaigns and "we've always done it this way."
-              </p>
-
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2,
-                }}
-              >
-                They bring clarity to brands that have outgrown guesswork but haven't yet found their footing.
-              </p>
-
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.65)",
-                  lineHeight: 2,
-                }}
-              >
-                They sit in the rooms where decisions get stuck, and they unstick them.
+                Now they do for others what they finally did for themselves. They help businesses find the story that's been there all along, buried under decks and campaigns and "we've always done it this way."
               </p>
 
               <p
@@ -586,7 +450,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                Not because they have all the answers. But because they've learned — the hard way, the only way — that the story you're afraid to tell is usually the one that matters most.
+                They don't claim to have all the answers. But they've learned, the hard way, the only way, that the story you're afraid to tell is usually the one that matters most.
               </p>
 
               <div
@@ -602,7 +466,7 @@ export default function OurStory() {
                   }}
                   data-testid="text-story-closing"
                 >
-                  We are The Story Shapers.
+                  This is us. The Story Shapers.
                 </p>
                 <div
                   className="mt-4 mx-auto"
