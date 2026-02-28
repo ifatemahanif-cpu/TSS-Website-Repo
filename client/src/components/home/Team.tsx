@@ -321,6 +321,8 @@ function TeamModal({
             className="md:w-2/5 relative"
             style={{
               minHeight: "300px",
+              maxHeight: "500px",
+              overflow: "hidden",
             }}
           >
             <img
@@ -330,6 +332,7 @@ function TeamModal({
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
+                objectPosition: "top center",
                 borderRadius: "20px 20px 0 0",
               }}
               className="md:!rounded-l-[20px] md:!rounded-r-none"
