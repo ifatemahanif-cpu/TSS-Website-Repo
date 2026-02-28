@@ -1,25 +1,38 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 export function ProblemFraming() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const contentY = useTransform(scrollYProgress, [0.3, 1], [0, -120]);
+  const contentOpacity = useTransform(scrollYProgress, [0.6, 0.95], [1, 0]);
+
   return (
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6"
-      style={{ backgroundColor: "#0C0A3E", marginBottom: "-4rem" }}
+      style={{
+        backgroundColor: "#0C0A3E",
+        paddingBottom: "0",
+        paddingTop: "1rem",
+      }}
       data-testid="problem-framing-section"
     >
       <div
-        className="relative"
+        className="relative overflow-hidden"
         style={{
           backgroundColor: "#0C0A3E",
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
-          paddingBottom: "clamp(6rem, 10vw, 10rem)",
+          paddingBottom: "clamp(8rem, 14vw, 14rem)",
+          marginBottom: "-6rem",
         }}
       >
         <div
@@ -40,7 +53,10 @@ export function ProblemFraming() {
             background: "radial-gradient(ellipse at center, rgba(42,40,112,0.22) 0%, transparent 70%)",
           }}
         />
-        <div className="max-w-[1000px] mx-auto relative z-[1]">
+        <motion.div
+          className="max-w-[1000px] mx-auto relative z-[1]"
+          style={{ y: contentY, opacity: contentOpacity }}
+        >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -134,7 +150,7 @@ export function ProblemFraming() {
               </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
