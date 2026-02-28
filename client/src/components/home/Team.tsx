@@ -359,7 +359,7 @@ function TeamModal({
                     letterSpacing: "0.2em",
                   }}
                 >
-                  0{index + 1} / SHAPER
+                  SHAPER
                 </span>
                 <h3
                   className="mt-2"
@@ -671,26 +671,13 @@ function FanCard({
         <span
           style={{
             fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.6rem",
-            color: "#FFFFFF",
-            opacity: 0.8,
-            letterSpacing: "0.15em",
-            backgroundColor: "rgba(42,40,112,0.6)",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-          }}
-        >
-          0{index + 1}
-        </span>
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.5rem",
             color: "#FFFFFF",
             opacity: 0.7,
             backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
+            marginLeft: "auto",
           }}
         >
           SHAPER
@@ -816,25 +803,13 @@ function MobileCard({
         <span
           style={{
             fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.65rem",
-            color: "#FFFFFF",
-            opacity: 0.8,
-            backgroundColor: "rgba(42,40,112,0.6)",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-          }}
-        >
-          0{index + 1}
-        </span>
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
             fontSize: "0.55rem",
             color: "#FFFFFF",
             opacity: 0.7,
             backgroundColor: "rgba(42,40,112,0.6)",
             padding: "0.25rem 0.5rem",
             borderRadius: "4px",
+            marginLeft: "auto",
           }}
         >
           SHAPER
