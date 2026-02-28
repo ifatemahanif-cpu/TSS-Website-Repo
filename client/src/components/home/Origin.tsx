@@ -287,7 +287,7 @@ export function Origin() {
               }}
               data-testid="text-origin-subtitle"
             >
-              We fix positioning, messaging, content, and campaigns — and build the systems to keep them running.
+              We fix positioning, messaging, content, and campaigns. And build the systems to keep them running.
             </p>
           </motion.div>
 
