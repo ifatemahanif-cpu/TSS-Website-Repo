@@ -91,11 +91,20 @@ export function ProblemFraming() {
                   damping: 25,
                   delay: 0.2 + index * 0.1,
                 }}
-                className="flex gap-4 items-center rounded-full border"
+                whileHover={{
+                  scale: 1.03,
+                  backgroundColor: "rgba(255, 255, 255, 0.06)",
+                  borderColor: "rgba(255, 255, 255, 0.2)",
+                  boxShadow: "0 4px 20px rgba(123, 30, 122, 0.15)",
+                  y: -2,
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="flex gap-4 items-center rounded-full border cursor-default"
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.03)",
                   borderColor: "rgba(255, 255, 255, 0.1)",
                   padding: "1rem 2rem",
+                  transition: "background-color 0.2s, border-color 0.2s, box-shadow 0.2s",
                 }}
                 data-testid={`problem-item-${item.id}`}
               >
