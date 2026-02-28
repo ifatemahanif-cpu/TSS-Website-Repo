@@ -13,19 +13,18 @@ function SectionDivider() {
         gap: "1rem",
       }}
     >
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
       <span
         style={{
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: "0.5rem",
-          color: "#2A2870",
+          color: "rgba(255, 255, 255, 0.25)",
           letterSpacing: "0.3em",
-          opacity: 0.5,
         }}
       >
         &#9830;
       </span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
     </div>
   );
 }
@@ -35,7 +34,7 @@ const inputStyle: React.CSSProperties = {
   fontSize: "0.9rem",
   color: "#FFFFFF",
   backgroundColor: "rgba(255, 255, 255, 0.04)",
-  border: "1px solid rgba(255, 255, 255, 0.15)",
+  border: "1px solid rgba(255, 255, 255, 0.2)",
   borderRadius: "8px",
   padding: "0.85rem 1rem",
   width: "100%",
@@ -46,7 +45,7 @@ const inputStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontFamily: "'JetBrains Mono', monospace",
   fontSize: "0.6rem",
-  color: "rgba(255, 255, 255, 0.5)",
+  color: "rgba(255, 255, 255, 0.65)",
   letterSpacing: "0.2em",
   textTransform: "uppercase" as const,
   display: "block",
@@ -81,7 +80,7 @@ function FormInput({ label, name, type = "text", placeholder, required = true, t
           e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.06)";
         }}
         onBlur={e => {
-          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
           e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
         }}
         data-testid={testId}
@@ -110,7 +109,7 @@ function FormTextarea({ label, name, placeholder, required = true, testId }: {
           e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.06)";
         }}
         onBlur={e => {
-          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
           e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
         }}
         data-testid={testId}
@@ -169,7 +168,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(255, 255, 255, 0.4)",
+                  color: "rgba(255, 255, 255, 0.6)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -206,7 +205,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.5rem",
-                      color: "#2A2870",
+                      color: "rgba(255, 255, 255, 0.5)",
                       fontWeight: 600,
                     }}
                   >
@@ -235,7 +234,7 @@ export default function Contact() {
                       fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
-                      opacity: 0.6,
+                      opacity: 0.8,
                     }}
                   >
                     Collective
@@ -248,7 +247,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.55)",
+                  color: "rgba(255, 255, 255, 0.7)",
                   lineHeight: 2,
                 }}
               >
@@ -282,7 +281,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.85rem",
-                      color: "rgba(255, 255, 255, 0.5)",
+                      color: "rgba(255, 255, 255, 0.7)",
                     }}
                   >
                     We'll review your submission and get back to you shortly.
@@ -292,8 +291,8 @@ export default function Contact() {
                 <form onSubmit={handleJoinSubmit} data-testid="form-join">
                   <div
                     style={{
-                      backgroundColor: "rgba(255, 255, 255, 0.02)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
                       borderRadius: "14px",
                       padding: "1.75rem",
                     }}
@@ -393,7 +392,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.5rem",
-                      color: "#2A2870",
+                      color: "rgba(255, 255, 255, 0.5)",
                       fontWeight: 600,
                     }}
                   >
@@ -422,7 +421,7 @@ export default function Contact() {
                       fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
-                      opacity: 0.6,
+                      opacity: 0.8,
                     }}
                   >
                     Talk
@@ -435,7 +434,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
-                  color: "rgba(255, 255, 255, 0.55)",
+                  color: "rgba(255, 255, 255, 0.7)",
                   lineHeight: 2,
                 }}
               >
@@ -469,7 +468,7 @@ export default function Contact() {
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.85rem",
-                      color: "rgba(255, 255, 255, 0.5)",
+                      color: "rgba(255, 255, 255, 0.7)",
                     }}
                   >
                     We'll be in touch soon to start the conversation.
@@ -479,8 +478,8 @@ export default function Contact() {
                 <form onSubmit={handleTalkSubmit} data-testid="form-talk">
                   <div
                     style={{
-                      backgroundColor: "rgba(255, 255, 255, 0.02)",
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
+                      backgroundColor: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid rgba(255, 255, 255, 0.15)",
                       borderRadius: "14px",
                       padding: "1.75rem",
                     }}

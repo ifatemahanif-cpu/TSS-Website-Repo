@@ -72,19 +72,18 @@ function SectionDivider() {
         gap: "1rem",
       }}
     >
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
       <span
         style={{
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: "0.5rem",
-          color: "#2A2870",
+          color: "rgba(255, 255, 255, 0.25)",
           letterSpacing: "0.3em",
-          opacity: 0.5,
         }}
       >
         &#9830;
       </span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.06)" }} />
+      <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
     </div>
   );
 }
@@ -117,7 +116,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.65rem",
-                  color: "rgba(255, 255, 255, 0.5)",
+                  color: "rgba(255, 255, 255, 0.6)",
                   letterSpacing: "0.15em",
                   textDecoration: "none",
                   transition: "color 0.2s",
@@ -141,7 +140,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.7rem",
-                  color: "#2A2870",
+                  color: "rgba(255, 255, 255, 0.5)",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
                 }}
@@ -174,7 +173,7 @@ export default function Join() {
                     fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
-                    opacity: 0.6,
+                    opacity: 0.8,
                   }}
                 >
                   It's not a gig platform either.
@@ -201,7 +200,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.75)",
+                  color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
                 }}
               >
@@ -213,7 +212,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.75)",
+                  color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
                 }}
               >
@@ -225,7 +224,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.75)",
+                  color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
                 }}
               >
@@ -271,7 +270,7 @@ export default function Join() {
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
-                    opacity: 0.6,
+                    opacity: 0.8,
                   }}
                 >
                   Principles
@@ -327,7 +326,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.55rem",
-                          color: "rgba(255, 255, 255, 0.35)",
+                          color: "rgba(255, 255, 255, 0.5)",
                           letterSpacing: "0.1em",
                         }}
                       >
@@ -350,7 +349,7 @@ export default function Join() {
                           style={{
                             fontFamily: "'Inter', sans-serif",
                             fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
-                            color: "rgba(255, 255, 255, 0.7)",
+                            color: "rgba(255, 255, 255, 0.8)",
                             lineHeight: 1.8,
                           }}
                         >
@@ -387,7 +386,7 @@ export default function Join() {
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
-                    opacity: 0.6,
+                    opacity: 0.8,
                   }}
                 >
                   Collective Members
@@ -399,7 +398,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
-                  color: "rgba(255, 255, 255, 0.7)",
+                  color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 1.8,
                 }}
               >
@@ -415,7 +414,7 @@ export default function Join() {
                     viewport={{ once: true, margin: "-30px" }}
                     transition={{ delay: idx * 0.08, duration: 0.4 }}
                     style={{
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255, 255, 255, 0.12)",
                       borderRadius: "12px",
                       padding: "1.5rem",
                     }}
@@ -437,7 +436,7 @@ export default function Join() {
                       style={{
                         fontFamily: "'Inter', sans-serif",
                         fontSize: "clamp(0.82rem, 1vw, 0.9rem)",
-                        color: "rgba(255, 255, 255, 0.7)",
+                        color: "rgba(255, 255, 255, 0.8)",
                         lineHeight: 1.8,
                       }}
                     >
@@ -472,7 +471,7 @@ export default function Join() {
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
-                    opacity: 0.6,
+                    opacity: 0.8,
                   }}
                 >
                   Levels
@@ -484,7 +483,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.92rem, 1.2vw, 1.02rem)",
-                  color: "rgba(255, 255, 255, 0.75)",
+                  color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
                 }}
               >
@@ -522,7 +521,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "0.5rem",
-                          color: "rgba(255, 255, 255, 0.5)",
+                          color: "rgba(255, 255, 255, 0.6)",
                           letterSpacing: "0.05em",
                           fontWeight: 600,
                         }}
@@ -547,7 +546,7 @@ export default function Join() {
                         style={{
                           fontFamily: "'Inter', sans-serif",
                           fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
-                          color: "rgba(255, 255, 255, 0.7)",
+                          color: "rgba(255, 255, 255, 0.8)",
                           lineHeight: 1.8,
                         }}
                       >
@@ -563,7 +562,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
-                  color: "rgba(255, 255, 255, 0.7)",
+                  color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 1.8,
                 }}
               >
@@ -595,7 +594,7 @@ export default function Join() {
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
-                    opacity: 0.6,
+                    opacity: 0.8,
                   }}
                 >
                   Join
@@ -607,7 +606,7 @@ export default function Join() {
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.75)",
+                  color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
                 }}
               >
