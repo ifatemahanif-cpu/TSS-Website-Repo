@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "wouter";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
+import { GradientBlobs, ctaBlobs } from "./GradientBlobs";
 
 export function CTA() {
   const sectionRef = useRef(null);
@@ -24,13 +25,7 @@ export function CTA() {
           overflow: "hidden"
         }}
       >
-        {/* Subtle radial glow background */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "radial-gradient(circle at 50% 50%, rgba(123, 30, 122, 0.15) 0%, transparent 70%)",
-          }}
-        />
+        <GradientBlobs blobs={ctaBlobs} />
 
         <div className="max-w-[900px] mx-auto text-center relative z-10">
           <motion.div

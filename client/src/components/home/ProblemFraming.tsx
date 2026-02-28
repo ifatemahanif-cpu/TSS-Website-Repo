@@ -1,6 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
+import { GradientBlobs, problemBlobs } from "./GradientBlobs";
 
 const problems = [
   { id: "01", text: "Marketing is active. Direction is unclear." },
@@ -48,17 +49,7 @@ export function ProblemFraming() {
           marginBottom: "-6rem",
         }}
       >
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            top: "-80px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "80%",
-            height: "250px",
-            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.22) 0%, transparent 70%)",
-          }}
-        />
+        <GradientBlobs blobs={problemBlobs} />
         <motion.div
           className="max-w-[1100px] mx-auto relative z-[1]"
           style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}

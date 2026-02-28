@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
 import { SectionLabel } from "./SectionAnimations";
+import { GradientBlobs, teamBlobs } from "./GradientBlobs";
 import teamFatema from "@/assets/images/team-fatema.png";
 import teamShaili from "@/assets/images/team-shaili.png";
 import teamAakanksha from "@/assets/images/team-aakanksha.png";
@@ -114,7 +115,8 @@ export function Team() {
           padding: "clamp(2rem, 4vw, 4rem)",
         }}
       >
-        <div className="max-w-[1400px] mx-auto">
+        <GradientBlobs blobs={teamBlobs} />
+        <div className="max-w-[1400px] mx-auto relative z-[1]">
           {isMobile ? (
             <>
               <div className="mb-6">

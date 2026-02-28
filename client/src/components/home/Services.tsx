@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
+import { GradientBlobs, servicesBlobs } from "./GradientBlobs";
 
 const services = [
   {
@@ -109,17 +110,7 @@ export function Services() {
             backgroundSize: "28px 28px",
           }}
         />
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            top: "-60px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "60%",
-            height: "220px",
-            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.2) 0%, transparent 70%)",
-          }}
-        />
+        <GradientBlobs blobs={servicesBlobs} />
         <div className="max-w-[1100px] mx-auto relative z-[1]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

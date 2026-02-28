@@ -1,6 +1,7 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useCallback, type ReactNode, type MouseEvent } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
+import { GradientBlobs, originBlobs } from "./GradientBlobs";
 
 const brandNames = ["SOCIAL", "Art Fervour", "LBB", "Headout"];
 
@@ -261,17 +262,7 @@ export function Origin() {
           boxShadow: "0 -40px 100px rgba(12, 10, 62, 1), 0 -15px 40px rgba(14, 12, 69, 0.95), 0 -5px 15px rgba(14, 12, 69, 0.9)",
         }}
       >
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            bottom: "-60px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "70%",
-            height: "220px",
-            background: "radial-gradient(ellipse at center, rgba(123,30,122,0.2) 0%, transparent 70%)",
-          }}
-        />
+        <GradientBlobs blobs={originBlobs} />
         <div className="max-w-[1100px] mx-auto relative z-[1]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
