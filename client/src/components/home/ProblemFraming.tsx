@@ -65,12 +65,26 @@ export function ProblemFraming() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
-                marginBottom: "3.5rem",
+                marginBottom: "1.5rem",
               }}
               data-testid="text-problem-heading"
             >
               Your brand has grown. Your marketing hasn't kept up.
             </h2>
+
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.8,
+                fontStyle: "italic",
+                marginBottom: "2.5rem",
+              }}
+              data-testid="text-problem-subheading"
+            >
+              These are the patterns we see again and again — the things founders tell us when they know something's off but can't quite name it.
+            </p>
           </motion.div>
 
           <div className="flex flex-wrap gap-4">
