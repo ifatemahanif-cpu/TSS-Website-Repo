@@ -70,7 +70,11 @@ export function Navbar() {
         href="/contact#talk"
         onClick={(e) => {
           e.preventDefault();
-          window.location.href = "/contact#talk";
+          setLocation("/contact");
+          setTimeout(() => {
+            const el = document.getElementById("talk");
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
         }}
         className="hidden md:flex items-center justify-center px-6 py-2.5 rounded text-sm font-medium transition-colors bg-secondary text-white border border-secondary hover:bg-[#9B3E9A] hover:border-[#9B3E9A]"
       >
