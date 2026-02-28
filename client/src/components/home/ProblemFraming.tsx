@@ -54,7 +54,7 @@ export function ProblemFraming() {
             </h2>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="flex flex-wrap gap-4">
             {[
               { id: "01", text: "Marketing is active. Direction is unclear." },
               { id: "02", text: "The website, pitch, and product all say different things." },
@@ -67,15 +67,18 @@ export function ProblemFraming() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.7, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex gap-6 items-start"
+                className="flex gap-4 items-center px-6 py-3 rounded-full border"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  borderColor: "rgba(255, 255, 255, 0.1)",
+                }}
                 data-testid={`problem-item-${item.id}`}
               >
                 <span
                   style={{
                     fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.9rem",
+                    fontSize: "0.8rem",
                     opacity: 0.4,
-                    marginTop: "0.3rem",
                   }}
                   data-testid={`text-problem-number-${item.id}`}
                 >
@@ -84,10 +87,11 @@ export function ProblemFraming() {
                 <p
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
-                    lineHeight: 1.4,
+                    fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)",
+                    lineHeight: 1.2,
                     opacity: 0.9,
                     fontWeight: 400,
+                    whiteSpace: "nowrap",
                   }}
                   data-testid={`text-problem-content-${item.id}`}
                 >

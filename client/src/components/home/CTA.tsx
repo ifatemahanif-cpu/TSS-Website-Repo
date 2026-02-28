@@ -9,19 +9,29 @@ export function CTA() {
   return (
     <section
       ref={sectionRef}
-      className="relative px-2 md:px-4 lg:px-6 py-4"
+      className="relative px-2 md:px-4 lg:px-6 py-4 overflow-hidden"
       style={{ backgroundColor: "#0C0A3E" }}
       data-testid="cta-section"
     >
       <div
+        className="relative"
         style={{
           backgroundColor: "#0E0C45",
           color: "#FFFFFF",
           borderRadius: "20px",
-          padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
+          padding: "clamp(3rem, 5vw, 5rem) clamp(2rem, 5vw, 5rem)",
+          overflow: "hidden"
         }}
       >
-        <div className="max-w-[900px] mx-auto text-center">
+        {/* Subtle radial glow background */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(123, 30, 122, 0.15) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="max-w-[900px] mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -41,19 +51,29 @@ export function CTA() {
               Let's Talk
             </span>
 
-            <h2
-              style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "clamp(1.8rem, 4vw, 3rem)",
-                lineHeight: 1.15,
-                letterSpacing: "-0.03em",
-                fontWeight: 400,
-                marginBottom: "1.5rem",
-              }}
-              data-testid="text-cta-heading"
-            >
-              Not sure where to start?
-            </h2>
+            <div className="flex flex-col items-center mb-6">
+              <div 
+                className="w-12 h-[1px] mb-6 opacity-30" 
+                style={{ backgroundColor: "#FFFFFF" }}
+              />
+              <h2
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  fontSize: "clamp(1.8rem, 4vw, 3rem)",
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.03em",
+                  fontWeight: 400,
+                  marginBottom: "0",
+                }}
+                data-testid="text-cta-heading"
+              >
+                Not sure where to start?
+              </h2>
+              <div 
+                className="w-12 h-[1px] mt-6 opacity-30" 
+                style={{ backgroundColor: "#FFFFFF" }}
+              />
+            </div>
           </motion.div>
 
           <motion.p

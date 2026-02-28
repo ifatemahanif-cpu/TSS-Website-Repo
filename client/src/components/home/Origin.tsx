@@ -63,17 +63,35 @@ function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; in
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.15 + index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        paddingTop: "clamp(2.5rem, 4vw, 3.5rem)",
-        paddingBottom: "clamp(2.5rem, 4vw, 3.5rem)",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        backgroundColor: "rgba(255, 255, 255, 0.025)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+        borderRadius: "16px",
+        padding: "2rem",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
       data-testid={`card-whatwedo-${index}`}
     >
-      <div className="max-w-[800px]">
+      <div className="flex-grow">
+        <div
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "2.5rem",
+            fontWeight: 700,
+            lineHeight: 1,
+            color: "rgba(255, 255, 255, 0.05)",
+            marginBottom: "1rem",
+          }}
+          aria-hidden="true"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </div>
+
         <h3
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
+            fontSize: "1.25rem",
             fontWeight: 600,
             color: "#FFFFFF",
             marginBottom: "0.75rem",
@@ -87,10 +105,10 @@ function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; in
         <p
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+            fontSize: "0.95rem",
             lineHeight: 1.6,
             color: "rgba(255, 255, 255, 0.6)",
-            marginBottom: "1.5rem",
+            marginBottom: "2rem",
           }}
           data-testid={`text-whatwedo-desc-${index}`}
         >
@@ -99,59 +117,68 @@ function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; in
 
         <div
           style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
-            lineHeight: 1.7,
-            fontStyle: "italic",
-            color: "rgba(255, 255, 255, 0.45)",
-            marginBottom: "1rem",
+            backgroundColor: "rgba(255, 255, 255, 0.03)",
+            borderRadius: "12px",
+            padding: "1.25rem",
+            border: "1px solid rgba(255, 255, 255, 0.05)",
           }}
         >
-          <AnimatePresence mode="wait">
-            {!isExpanded ? (
-              <motion.p
-                key="teaser"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                data-testid={`text-whatwedo-teaser-${index}`}
-              >
-                {highlightBrands(block.teaser)}
-              </motion.p>
-            ) : (
-              <motion.p
-                key="expanded"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                data-testid={`text-whatwedo-expanded-${index}`}
-              >
-                {highlightBrands(block.expanded)}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
+          <div
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.9rem",
+              lineHeight: 1.7,
+              fontStyle: "italic",
+              color: "rgba(255, 255, 255, 0.45)",
+              marginBottom: "1rem",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              {!isExpanded ? (
+                <motion.p
+                  key="teaser"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  data-testid={`text-whatwedo-teaser-${index}`}
+                >
+                  {highlightBrands(block.teaser)}
+                </motion.p>
+              ) : (
+                <motion.p
+                  key="expanded"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  data-testid={`text-whatwedo-expanded-${index}`}
+                >
+                  {highlightBrands(block.expanded)}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
 
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.7rem",
-            letterSpacing: "0.05em",
-            color: "#FFFFFF",
-            opacity: 0.8,
-            background: "none",
-            border: "none",
-            padding: 0,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-          data-testid={`button-read-story-${index}`}
-        >
-          {isExpanded ? "Close story ↑" : "Read the full story →"}
-        </button>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "0.7rem",
+              letterSpacing: "0.05em",
+              color: "#FFFFFF",
+              opacity: 0.8,
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+            data-testid={`button-read-story-${index}`}
+          >
+            {isExpanded ? "Close story ↑" : "Read the full story →"}
+          </button>
+        </div>
       </div>
     </motion.div>
   );
@@ -212,11 +239,7 @@ export function Origin() {
             </h2>
           </motion.div>
 
-          <div
-            style={{
-              borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-            }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {blocks.map((block, i) => (
               <WhatWeDoBlock key={i} block={block} index={i} isInView={isInView} />
             ))}

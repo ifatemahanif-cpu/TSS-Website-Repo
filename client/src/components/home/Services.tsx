@@ -175,7 +175,7 @@ export function Services() {
                 }}
                 data-testid={`card-service-${service.id}`}
               >
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3 mb-2">
                   <span
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
@@ -190,7 +190,7 @@ export function Services() {
                   <h3
                     style={{
                       fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
+                      fontSize: "clamp(0.8rem, 1vw, 0.85rem)",
                       fontWeight: 600,
                       letterSpacing: "0.04em",
                     }}
@@ -203,51 +203,42 @@ export function Services() {
                 <p
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(0.8rem, 0.95vw, 0.88rem)",
-                    lineHeight: 1.7,
-                    opacity: 0.85,
+                    fontSize: "clamp(0.75rem, 0.85vw, 0.82rem)",
+                    lineHeight: 1.6,
+                    opacity: 0.8,
                     fontStyle: "italic",
-                    marginBottom: "1rem",
+                    marginBottom: "0.75rem",
                   }}
                 >
                   {service.subtitle}
                 </p>
 
                 <div
+                  className="flex flex-wrap gap-2"
                   style={{
                     marginTop: "auto",
-                    paddingTop: "0.75rem",
+                    paddingTop: "1rem",
                     borderTop: "1px solid rgba(255, 255, 255, 0.06)",
                   }}
                 >
                   {service.items.map((item, itemIdx) => (
-                    <div
+                    <span
                       key={itemIdx}
-                      className="flex items-start gap-2"
-                      style={{ marginBottom: itemIdx < service.items.length - 1 ? "0.35rem" : 0 }}
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "0.6rem",
+                        letterSpacing: "0.05em",
+                        padding: "0.25rem 0.6rem",
+                        borderRadius: "6px",
+                        backgroundColor: "rgba(255, 255, 255, 0.03)",
+                        border: "1px solid rgba(255, 255, 255, 0.08)",
+                        color: "rgba(255, 255, 255, 0.5)",
+                        lineHeight: 1,
+                      }}
+                      data-testid={`badge-service-item-${i}-${itemIdx}`}
                     >
-                      <span
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "0.55rem",
-                          color: "rgba(255, 255, 255, 0.25)",
-                          flexShrink: 0,
-                          marginTop: "0.35rem",
-                        }}
-                      >
-                        —
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "'Inter', sans-serif",
-                          fontSize: "clamp(0.75rem, 0.85vw, 0.82rem)",
-                          opacity: 0.6,
-                          lineHeight: 1.5,
-                        }}
-                      >
-                        {item}
-                      </span>
-                    </div>
+                      {item}
+                    </span>
                   ))}
                 </div>
               </motion.div>
