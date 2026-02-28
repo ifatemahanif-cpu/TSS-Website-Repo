@@ -24,7 +24,7 @@ export function ProblemFraming() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
             backgroundSize: "28px 28px",
           }}
         />
@@ -35,8 +35,8 @@ export function ProblemFraming() {
             left: "50%",
             transform: "translateX(-50%)",
             width: "80%",
-            height: "200px",
-            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.12) 0%, transparent 70%)",
+            height: "250px",
+            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.22) 0%, transparent 70%)",
           }}
         />
         <div className="max-w-[1000px] mx-auto relative z-[1]">

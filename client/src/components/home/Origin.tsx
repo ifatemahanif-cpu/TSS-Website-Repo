@@ -211,8 +211,8 @@ export function Origin() {
             left: "50%",
             transform: "translateX(-50%)",
             width: "70%",
-            height: "180px",
-            background: "radial-gradient(ellipse at center, rgba(123,30,122,0.1) 0%, transparent 70%)",
+            height: "220px",
+            background: "radial-gradient(ellipse at center, rgba(123,30,122,0.2) 0%, transparent 70%)",
           }}
         />
         <div className="max-w-[1100px] mx-auto relative z-[1]">

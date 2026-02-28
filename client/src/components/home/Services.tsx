@@ -104,7 +104,7 @@ export function Services() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
             backgroundSize: "28px 28px",
           }}
         />
@@ -115,8 +115,8 @@ export function Services() {
             left: "50%",
             transform: "translateX(-50%)",
             width: "60%",
-            height: "180px",
-            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.1) 0%, transparent 70%)",
+            height: "220px",
+            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.2) 0%, transparent 70%)",
           }}
         />
         <div className="max-w-[1100px] mx-auto relative z-[1]">

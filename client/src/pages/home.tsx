@@ -31,7 +31,7 @@ export default function Home() {
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
               backgroundSize: "28px 28px",
             }}
           />
