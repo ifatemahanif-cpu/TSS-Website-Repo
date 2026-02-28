@@ -67,78 +67,77 @@ export function ProblemFraming() {
           className="max-w-[1100px] mx-auto relative z-[1]"
           style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
         >
-          <div className="flex flex-col md:flex-row md:gap-12 lg:gap-16">
-            <motion.div
-              className="md:w-[42%] md:shrink-0 mb-8 md:mb-0"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <SectionLabel isInView={isInView}>THE PROBLEM</SectionLabel>
+
+            <SectionHeading isInView={isInView} testId="text-problem-heading">
+              Your brand has grown. Your marketing hasn't kept up.
+            </SectionHeading>
+
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                lineHeight: 1.8,
+                opacity: 0.8,
+                fontStyle: "italic",
+                marginBottom: "2.5rem",
+              }}
+              data-testid="text-problem-subheading"
             >
-              <SectionLabel isInView={isInView}>THE PROBLEM</SectionLabel>
+              These are the patterns we see again and again — the things founders tell us when they know something's off but can't quite name it.
+            </p>
+          </motion.div>
 
-              <SectionHeading isInView={isInView} testId="text-problem-heading">
-                Your brand has grown. Your marketing hasn't kept up.
-              </SectionHeading>
-
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  lineHeight: 1.8,
-                  opacity: 0.8,
-                  fontStyle: "italic",
+          <div className="flex flex-wrap gap-4">
+            {problems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 25,
+                  delay: 0.2 + index * 0.1,
                 }}
-                data-testid="text-problem-subheading"
+                className="flex gap-4 items-center rounded-full border"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  borderColor: "rgba(255, 255, 255, 0.1)",
+                  padding: "1rem 2rem",
+                }}
+                data-testid={`problem-item-${item.id}`}
               >
-                These are the patterns we see again and again — the things founders tell us when they know something's off but can't quite name it.
-              </p>
-            </motion.div>
-
-            <div className="md:flex-1">
-              {problems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 25,
-                    delay: 0.2 + index * 0.1,
-                  }}
-                  className="flex items-start gap-5 py-5"
+                <span
                   style={{
-                    borderBottom: index < problems.length - 1 ? "1px solid rgba(255, 255, 255, 0.08)" : "none",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.85rem",
+                    opacity: 0.5,
+                    flexShrink: 0,
                   }}
-                  data-testid={`problem-item-${item.id}`}
+                  data-testid={`text-problem-number-${item.id}`}
                 >
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.75rem",
-                      opacity: 0.4,
-                      flexShrink: 0,
-                      paddingTop: "0.15rem",
-                    }}
-                    data-testid={`text-problem-number-${item.id}`}
-                  >
-                    {item.id}
-                  </span>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
-                      lineHeight: 1.6,
-                      opacity: 0.9,
-                      fontWeight: 400,
-                    }}
-                    data-testid={`text-problem-content-${item.id}`}
-                  >
-                    {item.text}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+                  {item.id}
+                </span>
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
+                    lineHeight: 1.4,
+                    opacity: 0.9,
+                    fontWeight: 400,
+                  }}
+                  data-testid={`text-problem-content-${item.id}`}
+                >
+                  {item.text}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>
