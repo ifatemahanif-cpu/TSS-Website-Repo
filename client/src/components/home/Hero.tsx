@@ -242,6 +242,25 @@ export function Hero() {
       >
         <div
           style={{
+            textAlign: "center",
+            marginBottom: "0.75rem",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "0.55rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.3)",
+            }}
+            data-testid="text-ticker-label"
+          >
+            Brands we've worked with
+          </span>
+        </div>
+        <div
+          style={{
             position: "absolute",
             top: 0,
             left: 0,
