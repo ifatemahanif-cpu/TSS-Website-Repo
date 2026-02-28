@@ -2,6 +2,14 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
 
+const problems = [
+  { id: "01", text: "Marketing is active. Direction is unclear." },
+  { id: "02", text: "The website, pitch, and product all say different things." },
+  { id: "03", text: "Content goes out. Nothing compounds." },
+  { id: "04", text: "Strategy exists on paper. Nowhere else." },
+  { id: "05", text: "Everyone's working. Nobody's aligned." },
+];
+
 export function ProblemFraming() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
@@ -59,77 +67,78 @@ export function ProblemFraming() {
           className="max-w-[1100px] mx-auto relative z-[1]"
           style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <SectionLabel isInView={isInView}>THE PROBLEM</SectionLabel>
-
-            <SectionHeading isInView={isInView} testId="text-problem-heading">
-              Your brand has grown. Your marketing hasn't kept up.
-            </SectionHeading>
-
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.8,
-                fontStyle: "italic",
-                marginBottom: "2.5rem",
-              }}
-              data-testid="text-problem-subheading"
+          <div className="flex flex-col md:flex-row md:gap-12 lg:gap-16">
+            <motion.div
+              className="md:w-[42%] md:shrink-0 mb-8 md:mb-0"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              These are the patterns we see again and again — the things founders tell us when they know something's off but can't quite name it.
-            </p>
-          </motion.div>
+              <SectionLabel isInView={isInView}>THE PROBLEM</SectionLabel>
 
-          <div className="flex flex-wrap gap-4">
-            {[
-              { id: "01", text: "Marketing is active. Direction is unclear." },
-              { id: "02", text: "The website, pitch, and product all say different things." },
-              { id: "03", text: "Content goes out. Nothing compounds." },
-              { id: "04", text: "Strategy exists on paper. Nowhere else." },
-              { id: "05", text: "Everyone's working. Nobody's aligned." },
-            ].map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex gap-4 items-center px-6 py-3 rounded-full border"
+              <SectionHeading isInView={isInView} testId="text-problem-heading">
+                Your brand has grown. Your marketing hasn't kept up.
+              </SectionHeading>
+
+              <p
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.03)",
-                  borderColor: "rgba(255, 255, 255, 0.1)",
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                  lineHeight: 1.8,
+                  opacity: 0.8,
+                  fontStyle: "italic",
                 }}
-                data-testid={`problem-item-${item.id}`}
+                data-testid="text-problem-subheading"
               >
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.8rem",
-                    opacity: 0.5,
+                These are the patterns we see again and again — the things founders tell us when they know something's off but can't quite name it.
+              </p>
+            </motion.div>
+
+            <div className="md:flex-1">
+              {problems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 25,
+                    delay: 0.2 + index * 0.1,
                   }}
-                  data-testid={`text-problem-number-${item.id}`}
-                >
-                  {item.id}
-                </span>
-                <p
+                  className="flex items-start gap-5 py-5"
                   style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)",
-                    lineHeight: 1.2,
-                    opacity: 0.9,
-                    fontWeight: 400,
-                    whiteSpace: "nowrap",
+                    borderBottom: index < problems.length - 1 ? "1px solid rgba(255, 255, 255, 0.08)" : "none",
                   }}
-                  data-testid={`text-problem-content-${item.id}`}
+                  data-testid={`problem-item-${item.id}`}
                 >
-                  {item.text}
-                </p>
-              </motion.div>
-            ))}
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: "0.75rem",
+                      opacity: 0.4,
+                      flexShrink: 0,
+                      paddingTop: "0.15rem",
+                    }}
+                    data-testid={`text-problem-number-${item.id}`}
+                  >
+                    {item.id}
+                  </span>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
+                      lineHeight: 1.6,
+                      opacity: 0.9,
+                      fontWeight: 400,
+                    }}
+                    data-testid={`text-problem-content-${item.id}`}
+                  >
+                    {item.text}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
