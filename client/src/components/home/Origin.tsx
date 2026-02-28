@@ -192,7 +192,7 @@ export function Origin() {
     <section
       ref={sectionRef}
       className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#0C0A3E" }}
+      style={{ backgroundColor: "transparent", position: "relative", zIndex: 2 }}
       data-testid="origin-section"
     >
       <div
@@ -202,6 +202,7 @@ export function Origin() {
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
+          boxShadow: "0 -20px 60px rgba(12, 10, 62, 0.9)",
         }}
       >
         <div

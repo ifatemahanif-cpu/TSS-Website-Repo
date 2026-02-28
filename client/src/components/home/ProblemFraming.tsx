@@ -8,17 +8,18 @@ export function ProblemFraming() {
   return (
     <section
       ref={sectionRef}
-      className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#0C0A3E" }}
+      className="relative px-2 md:px-4 lg:px-6"
+      style={{ backgroundColor: "#0C0A3E", marginBottom: "-4rem" }}
       data-testid="problem-framing-section"
     >
       <div
-        className="relative overflow-hidden"
+        className="relative"
         style={{
           backgroundColor: "#0C0A3E",
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
+          paddingBottom: "clamp(6rem, 10vw, 10rem)",
         }}
       >
         <div
