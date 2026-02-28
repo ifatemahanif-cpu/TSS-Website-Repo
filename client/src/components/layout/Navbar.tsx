@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
 
 export function Navbar() {
+  const [, setLocation] = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -26,8 +27,8 @@ export function Navbar() {
         href="/"
         onClick={(e) => {
           e.preventDefault();
+          setLocation("/");
           window.scrollTo(0, 0);
-          window.location.href = "/";
         }}
         className="flex items-center gap-2"
       >
