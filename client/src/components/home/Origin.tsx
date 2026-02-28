@@ -1,5 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useCallback, type ReactNode, type MouseEvent } from "react";
+import { SectionLabel, SectionHeading } from "./SectionAnimations";
 
 const brandNames = ["SOCIAL", "Art Fervour", "LBB", "Headout"];
 
@@ -277,34 +278,11 @@ export function Origin() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span
-              className="block mb-6"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                opacity: 0.6,
-              }}
-              data-testid="text-origin-label"
-            >
-              WHAT WE DO
-            </span>
+            <SectionLabel isInView={isInView} testId="text-origin-label">WHAT WE DO</SectionLabel>
 
-            <h2
-              style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.03em",
-                fontWeight: 400,
-                marginBottom: "1.5rem",
-                maxWidth: "900px",
-              }}
-              data-testid="text-origin-heading"
-            >
+            <SectionHeading isInView={isInView} testId="text-origin-heading" style={{ maxWidth: "900px" }}>
               Here's how we solve it.
-            </h2>
+            </SectionHeading>
 
             <p
               style={{

@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
+import { SectionLabel } from "./SectionAnimations";
 import teamFatema from "@/assets/images/team-fatema.png";
 import teamShaili from "@/assets/images/team-shaili.png";
 import teamAakanksha from "@/assets/images/team-aakanksha.png";
@@ -68,6 +69,8 @@ export function Team() {
     return () => { document.body.style.overflow = ""; };
   }, [expandedIndex]);
 
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -115,16 +118,7 @@ export function Team() {
           {isMobile ? (
             <>
               <div className="mb-6">
-                <span
-                  className="block mb-3 tracking-[0.3em] uppercase"
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.7rem",
-                    opacity: 0.6,
-                    letterSpacing: "0.3em",
-                  }}
-                  data-testid="text-team-label"
-                >The Shapers</span>
+                <SectionLabel isInView={isInView} testId="text-team-label">The Shapers</SectionLabel>
                 <h2
                   className="mb-4"
                   style={{
@@ -174,16 +168,7 @@ export function Team() {
           ) : (
             <div className="flex items-start gap-8 lg:gap-12">
               <div className="w-[42%] shrink-0 sticky" style={{ top: "clamp(2rem, 4vw, 4rem)" }}>
-                <span
-                  className="block mb-3 tracking-[0.3em] uppercase"
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.7rem",
-                    opacity: 0.6,
-                    letterSpacing: "0.3em",
-                  }}
-                  data-testid="text-team-label"
-                >The Shapers</span>
+                <SectionLabel isInView={isInView} testId="text-team-label">The Shapers</SectionLabel>
                 <h2
                   className="mb-5"
                   style={{

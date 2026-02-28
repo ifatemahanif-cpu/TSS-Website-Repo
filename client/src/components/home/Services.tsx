@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { SectionLabel, SectionHeading } from "./SectionAnimations";
 
 const services = [
   {
@@ -126,32 +127,11 @@ export function Services() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="mb-10 md:mb-14"
           >
-            <span
-              className="block mb-6"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                opacity: 0.6,
-              }}
-              data-testid="text-services-label"
-            >
-              Services
-            </span>
-            <h2
-              style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.03em",
-                fontWeight: 400,
-                marginBottom: "1rem",
-              }}
-              data-testid="text-services-heading"
-            >
+            <SectionLabel isInView={isInView} testId="text-services-label">Services</SectionLabel>
+
+            <SectionHeading isInView={isInView} testId="text-services-heading">
               How we work with you.
-            </h2>
+            </SectionHeading>
             <p
               style={{
                 fontFamily: "'Inter', sans-serif",

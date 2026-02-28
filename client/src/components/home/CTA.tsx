@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "wouter";
+import { SectionLabel, SectionHeading } from "./SectionAnimations";
 
 export function CTA() {
   const sectionRef = useRef(null);
@@ -37,38 +38,24 @@ export function CTA() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span
-              className="block mb-6"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                opacity: 0.6,
-              }}
-              data-testid="text-cta-label"
-            >
-              Let's Talk
-            </span>
+            <SectionLabel isInView={isInView} testId="text-cta-label">Let's Talk</SectionLabel>
 
             <div className="flex flex-col items-center mb-6">
               <div 
                 className="w-12 h-[1px] mb-6 opacity-30" 
                 style={{ backgroundColor: "#FFFFFF" }}
               />
-              <h2
+              <SectionHeading
+                isInView={isInView}
+                testId="text-cta-heading"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
                   fontSize: "clamp(1.8rem, 4vw, 3rem)",
                   lineHeight: 1.15,
-                  letterSpacing: "-0.03em",
-                  fontWeight: 400,
                   marginBottom: "0",
                 }}
-                data-testid="text-cta-heading"
               >
                 Not sure where to start?
-              </h2>
+              </SectionHeading>
               <div 
                 className="w-12 h-[1px] mt-6 opacity-30" 
                 style={{ backgroundColor: "#FFFFFF" }}

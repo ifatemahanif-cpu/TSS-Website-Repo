@@ -91,3 +91,8 @@
   animation: drift-slow 25s linear infinite alternate;
 }
 
+@keyframes shimmerSweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
