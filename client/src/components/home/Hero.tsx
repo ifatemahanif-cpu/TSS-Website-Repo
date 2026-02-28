@@ -169,7 +169,7 @@ export function Hero() {
             }}
             data-testid="text-hero-heading"
           >
-            We're The Story Shapers.
+            We're <em>The Story Shapers.</em>
           </h1>
         </motion.div>
 
