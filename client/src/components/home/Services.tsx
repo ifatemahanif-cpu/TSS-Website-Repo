@@ -212,7 +212,7 @@ export function Services() {
                 </p>
 
                 <div
-                  className="flex flex-wrap gap-2"
+                  className="flex flex-col gap-2"
                   style={{
                     marginTop: "auto",
                     paddingTop: "1rem",
@@ -232,6 +232,7 @@ export function Services() {
                         border: "1px solid rgba(255, 255, 255, 0.12)",
                         color: "rgba(255, 255, 255, 0.85)",
                         lineHeight: 1.2,
+                        alignSelf: "flex-start",
                         transition: "border-color 0.2s ease, background-color 0.2s ease",
                       }}
                       onMouseEnter={(e) => {
