@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
 import { SectionLabel } from "./SectionAnimations";
 import { GradientBlobs, teamBlobs } from "./GradientBlobs";
-import teamFatema from "@/assets/images/team-fatema.png";
+import teamFatema from "@assets/54b8c761-3071-4f74-8057-1840518e15a6_1772266999973.jpg";
 import teamShaili from "@/assets/images/team-shaili.png";
 import teamAakanksha from "@/assets/images/team-aakanksha.png";
 
