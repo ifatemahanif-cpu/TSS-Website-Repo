@@ -75,7 +75,7 @@ export function ProblemFraming() {
             <SectionLabel isInView={isInView}>THE PROBLEM</SectionLabel>
 
             <SectionHeading isInView={isInView} testId="text-problem-heading">
-              Your brand has grown. Your marketing hasn't kept up.
+              Your product is clear. Your marketing isn't.
             </SectionHeading>
 
             <p
