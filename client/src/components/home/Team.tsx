@@ -277,7 +277,7 @@ function TeamModal({
 
   const modalBg = "#0C0A3E";
   const modalText = "#FFFFFF";
-  const modalAccent = "#2A2870";
+  const modalAccent = "rgba(255, 255, 255, 0.5)";
 
   return (
     <motion.div
