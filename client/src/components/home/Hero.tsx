@@ -189,15 +189,6 @@ export function Hero() {
           data-testid="text-hero-subhead"
         >
           Not an agency. Not a roster of freelancers. A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.
-          <span
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              color: "rgba(255, 255, 255, 0.65)",
-              marginLeft: "2px",
-              animation: "cursorBlink 1s step-end infinite",
-            }}
-            data-testid="cursor-blink"
-          >|</span>
         </motion.p>
 
         <motion.div
@@ -330,10 +321,6 @@ export function Hero() {
       </motion.div>
 
       <style>{`
-        @keyframes cursorBlink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
         @keyframes gradientSweep {
           0% { background-position: 100% 0; }
           100% { background-position: -100% 0; }
