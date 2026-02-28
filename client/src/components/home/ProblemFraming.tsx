@@ -44,7 +44,7 @@ export function ProblemFraming() {
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
           paddingBottom: "clamp(6rem, 10vw, 10rem)",
-          marginTop: "-3rem",
+          marginTop: "0",
           marginBottom: "-6rem",
         }}
       >
