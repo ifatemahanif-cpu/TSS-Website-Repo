@@ -75,7 +75,7 @@ export function ProblemFraming() {
               }}
               data-testid="text-problem-subheading"
             >
-              These are the patterns we see again and again — the things founders tell us when they know something's off but can't quite name it.
+              These are the patterns we see again and again. The things founders tell us when they know something's off but can't quite name it.
             </p>
           </motion.div>
 
