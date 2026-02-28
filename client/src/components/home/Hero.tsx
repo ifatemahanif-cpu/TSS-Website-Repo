@@ -188,7 +188,7 @@ export function Hero() {
           }}
           data-testid="text-hero-subhead"
         >
-          The senior marketing team your brand actually needs.
+          We come in, fix what's broken, and build what lasts.
           <span
             style={{
               fontFamily: "'JetBrains Mono', monospace",
