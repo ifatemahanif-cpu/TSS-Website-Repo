@@ -579,7 +579,7 @@ function FanCard({
   const cardW = "clamp(220px, 18vw, 280px)";
   const cardH = "clamp(320px, 42vh, 400px)";
 
-  const overlayGradient = `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
+  const overlayGradient = `linear-gradient(180deg, transparent 20%, rgba(12,10,62,0.6) 60%, rgba(12,10,62,0.92) 100%)`;
 
   return (
     <motion.div
@@ -765,7 +765,7 @@ function MobileCard({
   colors: (typeof cardColors)[0];
   onCardClick: (index: number) => void;
 }) {
-  const overlayGradient = `linear-gradient(180deg, transparent 30%, rgba(12,10,62,0.5) 70%, rgba(12,10,62,0.85) 100%)`;
+  const overlayGradient = `linear-gradient(180deg, transparent 20%, rgba(12,10,62,0.6) 60%, rgba(12,10,62,0.92) 100%)`;
 
   return (
     <motion.div
