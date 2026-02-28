@@ -30,7 +30,7 @@ export function ProblemFraming() {
       style={{
         backgroundColor: "#0C0A3E",
         paddingBottom: "0",
-        paddingTop: "1rem",
+        paddingTop: "clamp(3rem, 6vw, 6rem)",
       }}
       data-testid="problem-framing-section"
     >
