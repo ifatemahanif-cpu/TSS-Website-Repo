@@ -283,7 +283,7 @@ export function Origin() {
                 opacity: 0.8,
                 fontStyle: "italic",
                 marginBottom: "3rem",
-                maxWidth: "750px",
+                maxWidth: "850px",
               }}
               data-testid="text-origin-subtitle"
             >
