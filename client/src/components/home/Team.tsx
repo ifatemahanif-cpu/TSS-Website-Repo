@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence, useInView } from "fra
 import { SectionLabel } from "./SectionAnimations";
 import { GradientBlobs, teamBlobs } from "./GradientBlobs";
 import teamFatema from "@assets/54b8c761-3071-4f74-8057-1840518e15a6_1772266999973.jpg";
-import teamShaili from "@/assets/images/team-shaili.png";
+import teamShaili from "@assets/Shaili-brand-deck_1772267064740.jpeg";
 import teamAakanksha from "@/assets/images/team-aakanksha.png";
 
 const team = [
