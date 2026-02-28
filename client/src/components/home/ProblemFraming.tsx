@@ -10,8 +10,9 @@ export function ProblemFraming() {
     offset: ["start end", "end start"],
   });
 
-  const contentY = useTransform(scrollYProgress, [0.3, 1], [0, -120]);
-  const contentOpacity = useTransform(scrollYProgress, [0.6, 0.95], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0.2, 0.85], [0, -300]);
+  const contentScale = useTransform(scrollYProgress, [0.3, 0.85], [1, 0.92]);
+  const contentOpacity = useTransform(scrollYProgress, [0.4, 0.75], [1, 0]);
 
   return (
     <section
@@ -31,8 +32,8 @@ export function ProblemFraming() {
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
-          paddingBottom: "clamp(8rem, 14vw, 14rem)",
-          marginBottom: "-6rem",
+          paddingBottom: "clamp(12rem, 20vw, 20rem)",
+          marginBottom: "-10rem",
         }}
       >
         <div
@@ -55,7 +56,7 @@ export function ProblemFraming() {
         />
         <motion.div
           className="max-w-[1000px] mx-auto relative z-[1]"
-          style={{ y: contentY, opacity: contentOpacity }}
+          style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
         >
           <motion.div
             initial={{ opacity: 0, y: 30 }}

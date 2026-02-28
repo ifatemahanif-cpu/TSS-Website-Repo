@@ -202,7 +202,7 @@ export function Origin() {
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
-          boxShadow: "0 -30px 80px rgba(12, 10, 62, 1), 0 -10px 30px rgba(14, 12, 69, 0.8)",
+          boxShadow: "0 -40px 100px rgba(12, 10, 62, 1), 0 -15px 40px rgba(14, 12, 69, 0.95), 0 -5px 15px rgba(14, 12, 69, 0.9)",
         }}
       >
         <div
