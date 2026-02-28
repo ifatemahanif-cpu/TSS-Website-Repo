@@ -72,15 +72,7 @@ export function SectionHeading({
         letterSpacing: "-0.03em",
         fontWeight: 400,
         marginBottom: "1.5rem",
-        backgroundImage: isInView
-          ? "linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, rgba(200,180,255,0.7) 45%, rgba(255,255,255,1) 50%, rgba(200,180,255,0.7) 55%, #FFFFFF 70%, #FFFFFF 100%)"
-          : "none",
-        backgroundSize: "300% 100%",
-        backgroundClip: "text",
-        WebkitBackgroundClip: "text",
-        color: isInView ? "transparent" : "#FFFFFF",
-        animation: isInView ? "shimmerSweep 2s ease-in-out forwards" : "none",
-        animationDelay: isInView ? "0.2s" : "0s",
+        color: "#FFFFFF",
         ...style,
       }}
       data-testid={testId}
