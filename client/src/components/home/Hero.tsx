@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "wouter";
 
 const brands = ["Art Fervour", "LBB", "Headout", "SOCIAL", "Singapore Tourism Board", "Coca-Cola", "Cadbury's", "Heinz", "Google Pixel"];
 
@@ -169,7 +168,7 @@ export function Hero() {
             }}
             data-testid="text-hero-heading"
           >
-            We're <em>The Story Shapers.</em>
+            Finally. Marketing people who <em>get it.</em>
           </h1>
         </motion.div>
 
@@ -188,7 +187,7 @@ export function Hero() {
           }}
           data-testid="text-hero-subhead"
         >
-          We come in, fix what's broken, and build what lasts.
+          Not an agency. Not a roster of freelancers. A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.
           <span
             style={{
               fontFamily: "'JetBrains Mono', monospace",
@@ -205,9 +204,12 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Link
-            href="/contact#talk"
-            className="inline-block font-medium text-sm transition-all duration-200"
+          <button
+            onClick={() => {
+              const el = document.querySelector('[data-testid="origin-section"]');
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="inline-block font-medium text-sm transition-all duration-200 cursor-pointer"
             style={{
               backgroundColor: "#7B1E7A",
               color: "#FFFFFF",
@@ -217,7 +219,7 @@ export function Hero() {
               fontFamily: "'Inter', sans-serif",
               letterSpacing: "0.02em",
             }}
-            data-testid="button-lets-talk"
+            data-testid="button-how-we-work"
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#9B3E9A";
               e.currentTarget.style.borderColor = "#9B3E9A";
@@ -227,8 +229,8 @@ export function Hero() {
               e.currentTarget.style.borderColor = "#7B1E7A";
             }}
           >
-            Let's talk &rarr;
-          </Link>
+            How we work &rarr;
+          </button>
         </motion.div>
       </div>
 
