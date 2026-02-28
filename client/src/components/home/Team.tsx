@@ -148,7 +148,7 @@ export function Team() {
                       opacity: 0.75,
                     }}
                   >
-                    45+ years combined.
+                    45+ years of combined experience.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -198,7 +198,7 @@ export function Team() {
                       opacity: 0.75,
                     }}
                   >
-                    45+ years combined.
+                    45+ years of combined experience.
                   </span>
                 </h2>
                 <div className="space-y-4">
