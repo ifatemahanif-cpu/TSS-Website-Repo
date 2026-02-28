@@ -242,7 +242,9 @@ export function Hero() {
       >
         <div
           style={{
-            textAlign: "left",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
             marginBottom: "1rem",
             padding: "0 clamp(2rem, 5vw, 5rem)",
           }}
@@ -253,11 +255,20 @@ export function Hero() {
               fontSize: "0.7rem",
               fontStyle: "italic",
               color: "rgba(255,255,255,0.4)",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
             data-testid="text-ticker-label"
           >
-            Brands we've worked with
+            Brands we've worked with →
           </span>
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              backgroundColor: "rgba(255,255,255,0.12)",
+            }}
+          />
         </div>
         <div
           style={{
