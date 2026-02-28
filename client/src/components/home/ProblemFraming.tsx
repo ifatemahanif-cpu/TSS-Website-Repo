@@ -49,14 +49,6 @@ export function ProblemFraming() {
         }}
       >
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
-            backgroundSize: "28px 28px",
-            borderRadius: "20px",
-          }}
-        />
-        <div
           className="absolute pointer-events-none"
           style={{
             top: "-80px",
