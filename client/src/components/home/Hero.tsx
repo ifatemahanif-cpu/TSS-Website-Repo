@@ -242,17 +242,17 @@ export function Hero() {
       >
         <div
           style={{
-            textAlign: "center",
-            marginBottom: "0.75rem",
+            textAlign: "left",
+            marginBottom: "1rem",
+            padding: "0 clamp(2rem, 5vw, 5rem)",
           }}
         >
           <span
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "0.55rem",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.3)",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.7rem",
+              fontStyle: "italic",
+              color: "rgba(255,255,255,0.4)",
             }}
             data-testid="text-ticker-label"
           >
