@@ -41,26 +41,26 @@ export function GradientBlobs({ blobs }: { blobs: BlobConfig[] }) {
 }
 
 export const problemBlobs: BlobConfig[] = [
-  { width: "40vw", maxWidth: "500px", top: "-5%", right: "-8%", purple: true, blur: "50px", animation: "sectionBlob1", duration: "6s", opacity: 0.15 },
-  { width: "35vw", maxWidth: "420px", bottom: "5%", left: "-5%", purple: false, blur: "55px", animation: "sectionBlob2", duration: "7s", opacity: 0.18 },
+  { width: "50vw", maxWidth: "650px", top: "5%", right: "5%", purple: true, blur: "60px", animation: "sectionBlob1", duration: "6s", opacity: 0.3 },
+  { width: "45vw", maxWidth: "550px", bottom: "10%", left: "5%", purple: false, blur: "55px", animation: "sectionBlob2", duration: "7s", opacity: 0.35 },
 ];
 
 export const originBlobs: BlobConfig[] = [
-  { width: "35vw", maxWidth: "450px", top: "5%", left: "-8%", purple: false, blur: "50px", animation: "sectionBlob2", duration: "7s", opacity: 0.15 },
-  { width: "30vw", maxWidth: "380px", bottom: "-5%", right: "-5%", purple: true, blur: "55px", animation: "sectionBlob3", duration: "6.5s", opacity: 0.14 },
+  { width: "45vw", maxWidth: "600px", top: "10%", left: "5%", purple: false, blur: "55px", animation: "sectionBlob2", duration: "7s", opacity: 0.3 },
+  { width: "40vw", maxWidth: "500px", bottom: "5%", right: "5%", purple: true, blur: "60px", animation: "sectionBlob3", duration: "6.5s", opacity: 0.28 },
 ];
 
 export const teamBlobs: BlobConfig[] = [
-  { width: "35vw", maxWidth: "420px", top: "10%", left: "-5%", purple: true, blur: "50px", animation: "sectionBlob3", duration: "6s", opacity: 0.12 },
-  { width: "30vw", maxWidth: "360px", bottom: "5%", right: "-8%", purple: false, blur: "55px", animation: "sectionBlob1", duration: "7.5s", opacity: 0.16 },
+  { width: "45vw", maxWidth: "550px", top: "10%", left: "5%", purple: true, blur: "55px", animation: "sectionBlob3", duration: "6s", opacity: 0.25 },
+  { width: "40vw", maxWidth: "500px", bottom: "10%", right: "5%", purple: false, blur: "60px", animation: "sectionBlob1", duration: "7.5s", opacity: 0.3 },
 ];
 
 export const servicesBlobs: BlobConfig[] = [
-  { width: "35vw", maxWidth: "450px", top: "-5%", right: "-5%", purple: false, blur: "50px", animation: "sectionBlob1", duration: "7s", opacity: 0.15 },
-  { width: "30vw", maxWidth: "380px", bottom: "10%", left: "-8%", purple: true, blur: "55px", animation: "sectionBlob2", duration: "6s", opacity: 0.14 },
+  { width: "45vw", maxWidth: "600px", top: "5%", right: "5%", purple: false, blur: "55px", animation: "sectionBlob1", duration: "7s", opacity: 0.3 },
+  { width: "40vw", maxWidth: "500px", bottom: "10%", left: "5%", purple: true, blur: "60px", animation: "sectionBlob2", duration: "6s", opacity: 0.28 },
 ];
 
 export const ctaBlobs: BlobConfig[] = [
-  { width: "40vw", maxWidth: "500px", top: "10%", left: "20%", purple: true, blur: "55px", animation: "sectionBlob1", duration: "6s", opacity: 0.2 },
-  { width: "30vw", maxWidth: "380px", top: "-10%", right: "-5%", purple: false, blur: "50px", animation: "sectionBlob3", duration: "7s", opacity: 0.18 },
+  { width: "50vw", maxWidth: "650px", top: "10%", left: "15%", purple: true, blur: "60px", animation: "sectionBlob1", duration: "6s", opacity: 0.35 },
+  { width: "40vw", maxWidth: "500px", top: "5%", right: "5%", purple: false, blur: "55px", animation: "sectionBlob3", duration: "7s", opacity: 0.32 },
 ];
