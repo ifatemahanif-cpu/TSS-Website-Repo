@@ -154,10 +154,11 @@ export function Hero() {
             style={{
               fontFamily: "'Libre Baskerville', serif",
               fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
-              lineHeight: 1.05,
+              lineHeight: 1.15,
               letterSpacing: "-0.03em",
               fontWeight: 400,
               marginBottom: "1.5rem",
+              paddingBottom: "0.1em",
               background: "linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.4) 30%, #FFFFFF 50%, rgba(255,255,255,0.4) 70%, rgba(255,255,255,0.4) 100%)",
               backgroundSize: "300% 100%",
               backgroundPosition: "100% 0",
