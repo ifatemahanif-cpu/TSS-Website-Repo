@@ -80,15 +80,15 @@ export function Team() {
   const fanProgress = useTransform(scrollYProgress, [0.15, 0.55], [0, 1]);
 
   const desktopFanConfigs = [
-    { rotate: -10, x: -180, y: 20 },
+    { rotate: -10, x: -240, y: 20 },
     { rotate: 0, x: 0, y: -10 },
-    { rotate: 10, x: 180, y: 20 },
+    { rotate: 10, x: 240, y: 20 },
   ];
 
   const tabletFanConfigs = [
-    { rotate: -8, x: -140, y: 15 },
+    { rotate: -8, x: -190, y: 15 },
     { rotate: 0, x: 0, y: -8 },
-    { rotate: 8, x: 140, y: 15 },
+    { rotate: 8, x: 190, y: 15 },
   ];
 
   const handleCardClick = useCallback((index: number) => {
