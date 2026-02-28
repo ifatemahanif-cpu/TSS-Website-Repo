@@ -22,7 +22,15 @@ export function Navbar() {
       "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-3 md:px-12 transition-all duration-300",
       scrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-2.5" : "bg-transparent border-b border-foreground/10"
     )}>
-      <Link href="/" className="flex items-center gap-2">
+      <a
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          window.scrollTo(0, 0);
+          window.location.href = "/";
+        }}
+        className="flex items-center gap-2"
+      >
         <img
           src={logoImg}
           alt="Story Shapers"
@@ -33,7 +41,7 @@ export function Navbar() {
           }}
           data-testid="img-logo"
         />
-      </Link>
+      </a>
 
       <div className="hidden md:flex items-center gap-8">
         {links.map((link) => (
