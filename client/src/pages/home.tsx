@@ -5,6 +5,7 @@ import { Origin } from "@/components/home/Origin";
 import { Team } from "@/components/home/Team";
 import { Services } from "@/components/home/Services";
 import { CTA } from "@/components/home/CTA";
+import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
 
 export default function Home() {
   return (
@@ -36,16 +37,18 @@ export default function Home() {
             }}
           />
           <div className="relative z-[1]">
-            <h2
+            <img
+              src={logoImg}
+              alt="The Story Shapers"
               style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "1.25rem",
-                fontWeight: 400,
+                height: "32px",
+                width: "auto",
+                filter: "invert(1) brightness(2)",
                 marginBottom: "1rem",
+                display: "inline-block",
               }}
-            >
-              The Story Shapers
-            </h2>
+              data-testid="img-footer-logo"
+            />
             <a
               href="mailto:hello@storyshaperscollective.com"
               style={{

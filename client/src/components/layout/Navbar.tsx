@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,11 +23,16 @@ export function Navbar() {
       scrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-2.5" : "bg-transparent border-b border-foreground/10"
     )}>
       <Link href="/" className="flex items-center gap-2">
-        <span className={cn(
-          "font-serif font-bold text-xl tracking-tight transition-colors text-foreground"
-        )}>
-          Story Shapers
-        </span>
+        <img
+          src={logoImg}
+          alt="Story Shapers"
+          style={{
+            height: "28px",
+            width: "auto",
+            filter: "invert(1) brightness(2)",
+          }}
+          data-testid="img-logo"
+        />
       </Link>
 
       <div className="hidden md:flex items-center gap-8">
