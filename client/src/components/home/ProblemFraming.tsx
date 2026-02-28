@@ -19,9 +19,9 @@ export function ProblemFraming() {
     offset: ["start end", "end start"],
   });
 
-  const contentY = useTransform(scrollYProgress, [0.2, 0.85], [0, -200]);
-  const contentScale = useTransform(scrollYProgress, [0.3, 0.85], [1, 0.92]);
-  const contentOpacity = useTransform(scrollYProgress, [0.4, 0.75], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0.2, 0.85], [0, -80]);
+  const contentScale = useTransform(scrollYProgress, [0.3, 0.85], [1, 0.96]);
+  const contentOpacity = useTransform(scrollYProgress, [0.5, 0.85], [1, 0]);
 
   return (
     <section
@@ -30,10 +30,17 @@ export function ProblemFraming() {
       style={{
         backgroundColor: "#0C0A3E",
         paddingBottom: "0",
-        paddingTop: "clamp(3rem, 6vw, 6rem)",
+        paddingTop: "1rem",
       }}
       data-testid="problem-framing-section"
     >
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
       <div
         className="relative overflow-hidden"
         style={{
@@ -45,13 +52,6 @@ export function ProblemFraming() {
           marginBottom: "-6rem",
         }}
       >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
         <div
           className="absolute pointer-events-none"
           style={{
