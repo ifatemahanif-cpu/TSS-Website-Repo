@@ -20,14 +20,10 @@ const services = [
     title: "Website, Messaging & Discoverability",
     subtitle: "When the product has evolved but the website hasn't — and good work isn't showing up where it should.",
     items: [
-      "Information architecture",
       "Core messaging",
       "Conversion copy",
       "Landing pages",
-      "SEO mapping",
-      "On-page optimisation",
-      "Intent structuring",
-      "Authority building",
+      "SEO",
     ],
   },
   {
