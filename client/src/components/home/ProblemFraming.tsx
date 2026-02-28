@@ -30,17 +30,12 @@ export function ProblemFraming() {
       style={{
         backgroundColor: "#0C0A3E",
         paddingBottom: "0",
-        paddingTop: "1rem",
+        paddingTop: "0",
+        position: "relative",
+        zIndex: 1,
       }}
       data-testid="problem-framing-section"
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
       <div
         className="relative overflow-hidden"
         style={{
@@ -49,9 +44,18 @@ export function ProblemFraming() {
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
           paddingBottom: "clamp(6rem, 10vw, 10rem)",
+          marginTop: "-3rem",
           marginBottom: "-6rem",
         }}
       >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
+            backgroundSize: "28px 28px",
+            borderRadius: "20px",
+          }}
+        />
         <div
           className="absolute pointer-events-none"
           style={{
