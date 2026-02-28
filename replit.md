@@ -1,6 +1,6 @@
 # Overview
 
-The Story Shapers is a marketing agency website built as a full-stack TypeScript application. It's a multi-page marketing site showcasing the agency's team, services, problem-framing narrative, and case studies. The site features a clean editorial aesthetic with subtle animations (Framer Motion), custom typography (Libre Baskerville, Inter, JetBrains Mono), and a distinctive pink/purple/deep-blue color palette. The homepage tells a progressive story: Hero (with scrolling brand marquee) > Origin > Problem > How We're Different > What Changes > Team > Services > CTA > Footer.
+The Story Shapers is a marketing agency website built as a full-stack TypeScript application. It's a multi-page marketing site showcasing the agency's team, services, problem-framing narrative, and case studies. The site features a clean editorial aesthetic with subtle animations (Framer Motion), custom typography (Libre Baskerville, Inter, JetBrains Mono), and a distinctive pink/purple/deep-blue color palette. The homepage tells a progressive story: Hero (with scrolling brand marquee) > The Problem > What We Do (with expandable case studies) > Team > Services > CTA > Footer.
 
 The project follows a monorepo structure with a React frontend (Vite), an Express backend, and a PostgreSQL database via Drizzle ORM — though the database is minimally used (only a users table exists, with in-memory storage as the current default).
 
@@ -14,7 +14,7 @@ Preferred communication style: Simple, everyday language.
 
 - `client/` — React frontend (Vite-based SPA)
   - `client/src/pages/` — Page components (Home, NotFound)
-  - `client/src/components/home/` — Homepage sections (Hero, Origin, ProblemFraming, Work, WhatChanges, Team, Services, CTA)
+  - `client/src/components/home/` — Homepage sections (Hero, Origin/WhatWeDo, ProblemFraming, Team, Services, CTA)
   - `client/src/components/layout/` — Layout components (Navbar)
   - `client/src/components/ui/` — Shadcn/ui component library (extensive set)
   - `client/src/hooks/` — Custom React hooks

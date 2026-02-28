@@ -36,7 +36,7 @@ export function ProblemFraming() {
                 opacity: 0.5,
               }}
             >
-              The Problem
+              THE PROBLEM
             </span>
 
             <h2
@@ -46,62 +46,55 @@ export function ProblemFraming() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
                 fontWeight: 400,
-                marginBottom: "2rem",
+                marginBottom: "3.5rem",
               }}
               data-testid="text-problem-heading"
             >
-              Every brand has a story.{" "}
-              <span className="italic" style={{ opacity: 0.6 }}>
-                The hard part is knowing how to tell it right.
-              </span>
+              Your brand has grown. Your marketing hasn't kept up.
             </h2>
           </motion.div>
 
-          <div className="space-y-5">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.75,
-              }}
-              data-testid="text-problem-p1"
-            >
-              Marketing today operates in a vacuum. On one side, you have ambition: growth targets, brand vision, market expansion. On the other, execution: content calendars, social posts, performance dashboards.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.75,
-              }}
-              data-testid="text-problem-p2"
-            >
-              But between them? A vast, expensive gap where strategy should live.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.75,
-              }}
-              data-testid="text-problem-p3"
-            >
-              Founders could explain the company beautifully in conversation. The website felt generic. The sales deck felt entirely different. Marketing looked fully disconnected from the product. Nothing was broken enough to cause panic. But nothing was aligned enough to create momentum.
-            </motion.p>
+          <div className="space-y-6">
+            {[
+              { id: "01", text: "Marketing is active. Direction is unclear." },
+              { id: "02", text: "The website, pitch, and product all say different things." },
+              { id: "03", text: "Content goes out. Nothing compounds." },
+              { id: "04", text: "Strategy exists on paper. Nowhere else." },
+              { id: "05", text: "Everyone's working. Nobody's aligned." },
+            ].map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="flex gap-6 items-start"
+                data-testid={`problem-item-${item.id}`}
+              >
+                <span
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.9rem",
+                    opacity: 0.4,
+                    marginTop: "0.3rem",
+                  }}
+                  data-testid={`text-problem-number-${item.id}`}
+                >
+                  {item.id}
+                </span>
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
+                    lineHeight: 1.4,
+                    opacity: 0.9,
+                    fontWeight: 400,
+                  }}
+                  data-testid={`text-problem-content-${item.id}`}
+                >
+                  {item.text}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

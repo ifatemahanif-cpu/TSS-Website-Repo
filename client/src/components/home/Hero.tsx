@@ -169,8 +169,7 @@ export function Hero() {
             }}
             data-testid="text-hero-heading"
           >
-            Every brand has a story.{" "}
-            <span className="italic">Most have lost the thread.</span>
+            We're The Story Shapers.
           </h1>
         </motion.div>
 
@@ -189,7 +188,7 @@ export function Hero() {
           }}
           data-testid="text-hero-subhead"
         >
-          We're a collective of senior marketers who've been inside the rooms where growth stalls and story drifts. We help you find the thread — and build everything else from there.
+          The senior marketing team your brand actually needs.
           <span
             style={{
               fontFamily: "'JetBrains Mono', monospace",

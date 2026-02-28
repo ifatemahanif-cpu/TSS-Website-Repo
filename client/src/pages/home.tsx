@@ -1,9 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
-import { Origin } from "@/components/home/Origin";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
-import { Work } from "@/components/home/Work";
-import { WhatChanges } from "@/components/home/WhatChanges";
+import { Origin } from "@/components/home/Origin";
 import { Team } from "@/components/home/Team";
 import { Services } from "@/components/home/Services";
 import { CTA } from "@/components/home/CTA";
@@ -14,10 +12,8 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <Origin />
         <ProblemFraming />
-        <Work />
-        <WhatChanges />
+        <Origin />
         <Team />
         <Services />
         <CTA />

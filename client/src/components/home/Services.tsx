@@ -5,35 +5,32 @@ const services = [
   {
     id: "clarity",
     title: "Clarity & Direction",
-    pain: "Your team debates positioning every few months. Investors want a story. Your team wants a plan. You want both.",
-    solution: "We define what your brand stands for, how it's different, and where it should go next.",
+    subtitle: "When your team can't agree on what the brand stands for.",
     items: [
-      "Brand & narrative audits",
-      "Positioning & differentiation",
+      "Brand audits",
+      "Positioning",
       "Messaging architecture",
-      "Go-to-market direction",
+      "Go-to-market frameworks",
     ],
   },
   {
     id: "website",
     title: "Website & Messaging",
-    pain: "Traffic is fine. Conversions aren't. People land, scroll, and leave. Something's off — you just can't name it.",
-    solution: "We reshape how your brand presents itself so what visitors see makes sense instantly.",
+    subtitle: "When the product has evolved but the website hasn't.",
     items: [
-      "Information architecture & structure",
-      "Homepage & core messaging",
-      "Conversion-led copy",
-      "Landing page optimization",
+      "Information architecture",
+      "Core messaging",
+      "Conversion copy",
+      "Landing pages",
     ],
   },
   {
     id: "content",
     title: "Content Systems",
-    pain: "Your founder posts when they remember. Social feels random. You know consistency matters — but you can't maintain it.",
-    solution: "We design content systems teams can actually sustain. Without burning out.",
+    subtitle: "When content exists but nothing compounds.",
     items: [
-      "Content strategy & narrative pillars",
-      "Editorial calendars & distribution",
+      "Content strategy",
+      "Editorial calendars",
       "Storytelling frameworks",
       "Repurposing systems",
     ],
@@ -41,49 +38,45 @@ const services = [
   {
     id: "discovery",
     title: "Discoverability",
-    pain: "You're doing good work. But when someone searches for what you do, your competitors show up first.",
-    solution: "We fix how you show up — not by publishing more, but by aligning what you write with what people search for.",
+    subtitle: "When good work isn't showing up where it should.",
     items: [
-      "SEO & content opportunity mapping",
-      "On-page optimization",
-      "Intent-driven structuring",
-      "Authority & credibility systems",
+      "SEO mapping",
+      "On-page optimisation",
+      "Intent structuring",
+      "Authority building",
     ],
   },
   {
     id: "campaigns",
     title: "Brand & Campaign Strategy",
-    pain: "You've done one-off launches. They spike and fade. What you need is marketing that compounds — campaigns that build on each other over time.",
-    solution: "",
+    subtitle: "When launches spike and fade instead of building on each other.",
     items: [
-      "Brand strategy & campaign architecture",
+      "Campaign architecture",
       "Integrated planning",
       "Launch messaging",
-      "Always-on storytelling systems",
+      "Always-on systems",
     ],
   },
   {
     id: "leadership",
     title: "Senior Marketing Leadership",
-    pain: "You need a senior mind in the room. Not another agency. Not a full-time hire you're not ready for. Just experienced judgment, applied to your business, for as long as you need it.",
-    solution: "",
+    subtitle: "When you need experienced judgment without a full-time hire.",
     items: [
-      "Monthly strategic planning",
-      "Quarterly priorities & reviews",
-      "Campaign direction & decision support",
-      "Team enablement & playbooks",
+      "Strategic planning",
+      "Quarterly reviews",
+      "Decision support",
+      "Team playbooks",
     ],
   },
   {
     id: "ai",
     title: "AI-Assisted Systems",
-    pain: "AI is an extraordinary amplifier. It's also very good at accelerating confusion when the foundation is shaky. We build AI workflows that help your team move faster without diluting your voice.",
-    solution: "",
+    subtitle: "When AI is making you faster at producing the wrong things.",
     items: [
-      "AI content & research workflows",
-      "Reporting & insight automation",
-      "Monitoring & intelligence systems",
-      "Operational automation for lean teams",
+      "Content workflows",
+      "Insight automation",
+      "Monitoring systems",
+      "Operational efficiency",
     ],
   },
 ];
@@ -138,10 +131,7 @@ export function Services() {
               }}
               data-testid="text-services-heading"
             >
-              How we shape{" "}
-              <span className="italic" style={{ opacity: 0.6 }}>
-                your story.
-              </span>
+              How we work with you.
             </h2>
             <p
               style={{
@@ -152,7 +142,7 @@ export function Services() {
                 fontStyle: "italic",
               }}
             >
-              Every brand arrives with different questions. The patterns underneath are usually familiar.
+              Every brand arrives with different questions. The starting point is always the same.
             </p>
           </motion.div>
 
@@ -215,27 +205,13 @@ export function Services() {
                     fontFamily: "'Inter', sans-serif",
                     fontSize: "clamp(0.8rem, 0.95vw, 0.88rem)",
                     lineHeight: 1.7,
-                    opacity: 0.7,
-                    marginBottom: service.solution ? "0.75rem" : "1rem",
+                    opacity: 0.85,
+                    fontStyle: "italic",
+                    marginBottom: "1rem",
                   }}
                 >
-                  {service.pain}
+                  {service.subtitle}
                 </p>
-
-                {service.solution && (
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.8rem, 0.95vw, 0.88rem)",
-                      lineHeight: 1.7,
-                      opacity: 0.85,
-                      fontStyle: "italic",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    {service.solution}
-                  </p>
-                )}
 
                 <div
                   style={{

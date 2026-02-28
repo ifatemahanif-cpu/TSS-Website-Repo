@@ -8,40 +8,34 @@ const team = [
   {
     name: "Fatema Hanif",
     image: teamFatema,
-    decisionsLed: "Brand positioning & frameworks · Creator-program design · Go-to-market strategy · Multi-market expansion · Content systems",
+    decisionsLed: "Positioning · Go-to-market · Creator programs · Multi-market expansion",
     contextsNavigated: "",
     brandsLabel: "Brands",
-    brands: "Headout, Singapore Tourism Board, Mandai Wildlife, Coca-Cola India, ITC Classmate, Little Black Book, Penguin Publishing, Art Fervour, SOCIAL",
+    brands: "Headout · Singapore Tourism Board · Coca-Cola · LBB · Art Fervour · SOCIAL",
     whatSheBrings: [
-      "Fatema brings strategic vision and hands-on operational judgment in equal measure.",
-      "She has built and scaled marketing functions across markets, led creator programs at scale, and driven brand transformations for startups and global brands alike.",
-      "Her strength is alignment — making sure brand, growth, and execution pull in the same direction.",
+      "Specialises in making sure brand strategy and business reality point in the same direction. She has built marketing functions from scratch, scaled creator programs across markets, and driven brand transformations for startups and global companies.",
     ],
   },
   {
     name: "Shaili Contractor",
     image: teamShaili,
-    decisionsLed: "Content strategy · Brand narrative · Editorial systems · Founder thought-leadership · Long-form storytelling",
+    decisionsLed: "Content strategy · Brand narrative · Editorial systems",
     contextsNavigated: "",
     brandsLabel: "Brands",
-    brands: "Axis Bank, Heinz, Google Pixel, Tata Sampann, Bajaj Motors, General Mills, FirstCry India, Little Black Book, Headout, STEM Learning, IndiaPodcasts",
+    brands: "Heinz · Google Pixel · Bajaj · General Mills · LBB · Headout",
     whatSheBrings: [
-      "Shaili brings the kind of senior judgment to content and narrative that stops brands from saying clever things that don't actually matter.",
-      'She moves teams from scattered messaging and ad-hoc content to structured storytelling systems that build recall, credibility, and long-term brand equity.',
-      'Her work turns "more content" into "the right content."',
+      "Builds content systems that create compounding brand equity — not just output. She moves teams from scattered, ad-hoc content to structured storytelling that builds recall and credibility over time.",
     ],
   },
   {
     name: "Aakanksha Singh Devi",
     image: teamAakanksha,
-    decisionsLed: "Brand narrative frameworks · Voice definition · Editorial positioning · Storytelling systems",
+    decisionsLed: "Brand narrative · Voice · Editorial positioning",
     contextsNavigated: "",
     brandsLabel: "Brands",
-    brands: "Little Black Book, Headout, Cadbury's, Singapore Tourism Board, Mantri, VR Bengaluru, Arbor Brewing Company, Arrow, Classmate, Columbia Asia",
+    brands: "LBB · Headout · Cadbury's · Singapore Tourism Board · Columbia Asia",
     whatSheBrings: [
-      "Aakanksha brings narrative discipline and strategic sensitivity to brand storytelling.",
-      "She moves teams from inconsistent messaging to coherent brand voices that carry meaning across platforms and growth stages.",
-      "Her work ensures brands sound like themselves – clearly, consistently, and with intent.",
+      "Makes brands sound like themselves — clearly, consistently, at every stage of growth. She moves teams from inconsistent messaging to a coherent voice that holds across every channel.",
     ],
   },
 ];
@@ -147,7 +141,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    The people you meet are the people{" "}
+                    Three senior marketers.{" "}
                   </span>
                   <span
                     style={{
@@ -158,7 +152,7 @@ export function Team() {
                       opacity: 0.6,
                     }}
                   >
-                    who do the thinking.
+                    45+ years combined.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -171,7 +165,7 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    The Story Shapers is built around three complementary ways of thinking that growing brands eventually need in the room. Between us, 45+ years of making marketing decisions that actually stuck — and learning from the ones that didn't.
+                    We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise.
                   </p>
                 </div>
               </div>
@@ -206,7 +200,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    The people you meet are the people{" "}
+                    Three senior marketers.{" "}
                   </span>
                   <span
                     style={{
@@ -217,7 +211,7 @@ export function Team() {
                       opacity: 0.6,
                     }}
                   >
-                    who do the thinking.
+                    45+ years combined.
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -230,7 +224,7 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    The Story Shapers is built around three complementary ways of thinking that growing brands eventually need in the room. Between us, 45+ years of making marketing decisions that actually stuck — and learning from the ones that didn't.
+                    We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise.
                   </p>
                 </div>
                 <div className="mt-6">

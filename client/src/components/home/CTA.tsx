@@ -65,28 +65,11 @@ export function CTA() {
               fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
               lineHeight: 1.8,
               opacity: 0.75,
-              marginBottom: "1.5rem",
+              marginBottom: "2.5rem",
             }}
             data-testid="text-cta-p1"
           >
-            Tell us where things feel unclear, inconsistent, or stuck. We'll tell you what we see — and what the highest-leverage starting point is.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
-              lineHeight: 1.8,
-              opacity: 0.6,
-              fontStyle: "italic",
-              marginBottom: "2.5rem",
-            }}
-            data-testid="text-cta-p2"
-          >
-            We work with two to three brands at a time. If what you read above sounds like your situation, a 30-minute conversation will tell us both whether this is the right fit.
+            Tell us where things feel off. We'll tell you what we see and where to begin.
           </motion.p>
 
           <motion.div
