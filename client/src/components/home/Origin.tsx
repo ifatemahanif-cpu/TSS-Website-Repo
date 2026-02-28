@@ -196,6 +196,7 @@ export function Origin() {
       data-testid="origin-section"
     >
       <div
+        className="relative overflow-hidden"
         style={{
           backgroundColor: "#0E0C45",
           color: "#FFFFFF",
@@ -203,7 +204,18 @@ export function Origin() {
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
       >
-        <div className="max-w-[1100px] mx-auto">
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            bottom: "-60px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "70%",
+            height: "180px",
+            background: "radial-gradient(ellipse at center, rgba(123,30,122,0.1) 0%, transparent 70%)",
+          }}
+        />
+        <div className="max-w-[1100px] mx-auto relative z-[1]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}

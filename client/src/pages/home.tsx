@@ -18,6 +18,7 @@ export default function Home() {
         <Services />
         <CTA />
         <footer
+          className="relative overflow-hidden"
           style={{
             backgroundColor: "#0C0A3E",
             borderTop: "1px solid rgba(255,255,255,0.1)",
@@ -27,39 +28,48 @@ export default function Home() {
           }}
           data-testid="footer"
         >
-          <h2
+          <div
+            className="absolute inset-0 pointer-events-none"
             style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "1.25rem",
-              fontWeight: 400,
-              marginBottom: "1rem",
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
             }}
-          >
-            The Story Shapers
-          </h2>
-          <a
-            href="mailto:hello@storyshaperscollective.com"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "0.85rem",
-              color: "rgba(255,255,255,0.5)",
-              textDecoration: "none",
-              display: "block",
-              marginBottom: "1.5rem",
-            }}
-            data-testid="link-footer-email"
-          >
-            hello@storyshaperscollective.com
-          </a>
-          <p
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "0.75rem",
-              opacity: 0.3,
-            }}
-          >
-            © 2026 The Story Shapers. All rights reserved.
-          </p>
+          />
+          <div className="relative z-[1]">
+            <h2
+              style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "1.25rem",
+                fontWeight: 400,
+                marginBottom: "1rem",
+              }}
+            >
+              The Story Shapers
+            </h2>
+            <a
+              href="mailto:hello@storyshaperscollective.com"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.85rem",
+                color: "rgba(255,255,255,0.6)",
+                textDecoration: "none",
+                display: "block",
+                marginBottom: "1.5rem",
+              }}
+              data-testid="link-footer-email"
+            >
+              hello@storyshaperscollective.com
+            </a>
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.75rem",
+                opacity: 0.4,
+              }}
+            >
+              © 2026 The Story Shapers. All rights reserved.
+            </p>
+          </div>
         </footer>
       </main>
     </div>

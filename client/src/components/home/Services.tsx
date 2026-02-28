@@ -93,6 +93,7 @@ export function Services() {
       data-testid="services-section"
     >
       <div
+        className="relative overflow-hidden"
         style={{
           backgroundColor: "#0C0A3E",
           color: "#FFFFFF",
@@ -100,7 +101,25 @@ export function Services() {
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
         }}
       >
-        <div className="max-w-[1100px] mx-auto">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            top: "-60px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "60%",
+            height: "180px",
+            background: "radial-gradient(ellipse at center, rgba(42,40,112,0.1) 0%, transparent 70%)",
+          }}
+        />
+        <div className="max-w-[1100px] mx-auto relative z-[1]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
