@@ -131,7 +131,7 @@ export function Services() {
 
           <div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            style={{ gap: "1.5rem" }}
+            style={{ gap: "1.5rem", alignItems: "start" }}
           >
             {services.map((service, i) => (
               <motion.div
