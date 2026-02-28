@@ -19,7 +19,7 @@ export function ProblemFraming() {
     offset: ["start end", "end start"],
   });
 
-  const contentY = useTransform(scrollYProgress, [0.2, 0.85], [0, -300]);
+  const contentY = useTransform(scrollYProgress, [0.2, 0.85], [0, -200]);
   const contentScale = useTransform(scrollYProgress, [0.3, 0.85], [1, 0.92]);
   const contentOpacity = useTransform(scrollYProgress, [0.4, 0.75], [1, 0]);
 
@@ -41,8 +41,8 @@ export function ProblemFraming() {
           color: "#FFFFFF",
           borderRadius: "20px",
           padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
-          paddingBottom: "clamp(12rem, 20vw, 20rem)",
-          marginBottom: "-10rem",
+          paddingBottom: "clamp(6rem, 10vw, 10rem)",
+          marginBottom: "-6rem",
         }}
       >
         <div
