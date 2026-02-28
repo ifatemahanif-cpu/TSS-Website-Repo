@@ -138,7 +138,7 @@ export function Services() {
 
           <div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            style={{ gap: "1.25rem" }}
+            style={{ gap: "1.5rem" }}
           >
             {services.map((service, i) => (
               <motion.div
@@ -146,33 +146,51 @@ export function Services() {
                 initial={{ opacity: 0, y: 25 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.15 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className={i === services.length - 1 ? "md:col-span-2 lg:col-span-1 md:max-w-[calc(50%-0.75rem)] lg:max-w-none md:mx-auto lg:mx-0" : ""}
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.02)",
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
-                  borderRadius: "14px",
-                  padding: "clamp(1.25rem, 2vw, 1.75rem)",
+                  backgroundColor: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "16px",
+                  padding: "clamp(1.5rem, 2.5vw, 2rem)",
                   display: "flex",
                   flexDirection: "column",
-                  transition: "border-color 0.3s ease, background-color 0.3s ease",
+                  transition: "border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
+                  e.currentTarget.style.borderColor = "rgba(123, 30, 122, 0.35)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.07)";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 8px 32px rgba(123, 30, 122, 0.15), 0 2px 8px rgba(0,0,0,0.2)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.02)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
                 data-testid={`card-service-${service.id}`}
               >
-                <div className="flex items-center gap-3 mb-2">
+                <div
+                  className="absolute top-0 left-0 right-0"
+                  style={{
+                    height: "2px",
+                    background: "linear-gradient(90deg, transparent, rgba(123, 30, 122, 0.5), rgba(42, 40, 112, 0.4), transparent)",
+                  }}
+                />
+
+                <div className="flex items-start gap-4 mb-3">
                   <span
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.6rem",
-                      letterSpacing: "0.1em",
-                      color: "rgba(255, 255, 255, 0.45)",
+                      fontSize: "1.4rem",
+                      fontWeight: 700,
+                      letterSpacing: "-0.02em",
+                      color: "rgba(123, 30, 122, 0.5)",
                       flexShrink: 0,
+                      lineHeight: 1,
+                      marginTop: "2px",
                     }}
                   >
                     0{i + 1}
@@ -180,9 +198,10 @@ export function Services() {
                   <h3
                     style={{
                       fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.8rem, 1vw, 0.85rem)",
+                      fontSize: "clamp(0.95rem, 1.1vw, 1.05rem)",
                       fontWeight: 600,
-                      letterSpacing: "0.04em",
+                      letterSpacing: "0.02em",
+                      lineHeight: 1.3,
                     }}
                     data-testid={`text-service-title-${i}`}
                   >
@@ -193,11 +212,11 @@ export function Services() {
                 <p
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(0.75rem, 0.85vw, 0.82rem)",
-                    lineHeight: 1.6,
-                    opacity: 0.8,
+                    fontSize: "clamp(0.82rem, 0.95vw, 0.9rem)",
+                    lineHeight: 1.65,
+                    opacity: 0.7,
                     fontStyle: "italic",
-                    marginBottom: "0.75rem",
+                    marginBottom: "1rem",
                   }}
                 >
                   {service.subtitle}
@@ -208,7 +227,7 @@ export function Services() {
                   style={{
                     marginTop: "auto",
                     paddingTop: "1rem",
-                    borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+                    borderTop: "1px solid rgba(255, 255, 255, 0.08)",
                   }}
                 >
                   {service.items.map((item, itemIdx) => (
@@ -216,14 +235,23 @@ export function Services() {
                       key={itemIdx}
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.6rem",
-                        letterSpacing: "0.05em",
-                        padding: "0.25rem 0.6rem",
-                        borderRadius: "6px",
-                        backgroundColor: "rgba(255, 255, 255, 0.03)",
-                        border: "1px solid rgba(255, 255, 255, 0.08)",
-                        color: "rgba(255, 255, 255, 0.7)",
-                        lineHeight: 1,
+                        fontSize: "0.7rem",
+                        letterSpacing: "0.04em",
+                        padding: "0.35rem 0.75rem",
+                        borderRadius: "8px",
+                        backgroundColor: "rgba(255, 255, 255, 0.06)",
+                        border: "1px solid rgba(255, 255, 255, 0.12)",
+                        color: "rgba(255, 255, 255, 0.85)",
+                        lineHeight: 1.2,
+                        transition: "border-color 0.2s ease, background-color 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = "rgba(123, 30, 122, 0.4)";
+                        e.currentTarget.style.backgroundColor = "rgba(123, 30, 122, 0.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.12)";
+                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.06)";
                       }}
                       data-testid={`badge-service-item-${i}-${itemIdx}`}
                     >
