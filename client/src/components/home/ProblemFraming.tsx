@@ -4,11 +4,10 @@ import { SectionLabel, SectionHeading } from "./SectionAnimations";
 import { GradientBlobs, problemBlobs } from "./GradientBlobs";
 
 const problems = [
-  { id: "01", text: "Marketing is active. Direction is unclear." },
-  { id: "02", text: "The website, pitch, and product all say different things." },
-  { id: "03", text: "Content goes out. Nothing compounds." },
-  { id: "04", text: "Strategy exists on paper. Nowhere else." },
-  { id: "05", text: "Everyone's working. Nobody's aligned." },
+  { id: "01", text: "You're doing marketing. You just can't explain why any of it's working." },
+  { id: "02", text: "Your website says one thing. Your pitch deck says another. Your team says a third." },
+  { id: "03", text: "Content goes out every week. You couldn't point to a single lead it brought in." },
+  { id: "04", text: "You have a strategy doc somewhere. Nobody's opened it since the offsite." },
 ];
 
 export function ProblemFraming() {
