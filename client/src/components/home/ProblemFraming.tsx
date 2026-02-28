@@ -55,7 +55,7 @@ export function ProblemFraming() {
           }}
         />
         <motion.div
-          className="max-w-[1000px] mx-auto relative z-[1]"
+          className="max-w-[1100px] mx-auto relative z-[1]"
           style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
         >
           <motion.div
