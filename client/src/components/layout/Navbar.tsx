@@ -27,7 +27,7 @@ export function Navbar() {
           src={logoImg}
           alt="Story Shapers"
           style={{
-            height: "28px",
+            height: "40px",
             width: "auto",
             filter: "invert(1) brightness(2)",
           }}
