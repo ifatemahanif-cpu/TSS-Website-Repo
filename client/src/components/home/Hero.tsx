@@ -198,7 +198,7 @@ export function Hero() {
         >
           <button
             onClick={() => {
-              const el = document.querySelector('[data-testid="origin-section"]');
+              const el = document.querySelector('[data-testid="services-section"]');
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
             className="inline-block font-medium text-sm transition-all duration-200 cursor-pointer"
