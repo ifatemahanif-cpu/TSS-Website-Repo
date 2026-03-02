@@ -74,9 +74,7 @@ export function ProblemFraming() {
                 marginBottom: "2.5rem",
               }}
               data-testid="text-problem-subheading"
-            >
-              These are the patterns we see again and again. The things founders tell us when they know something's off but can't quite name it.
-            </p>
+            >These are the patterns we see again and again. </p>
           </motion.div>
 
           <div className="flex flex-wrap gap-4">
