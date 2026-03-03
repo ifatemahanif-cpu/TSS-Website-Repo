@@ -225,7 +225,7 @@ export function Hero() {
               e.currentTarget.style.borderColor = "#7B1E7A";
             }}
           >
-            {heroData?.ctaText ?? "How we work"} &rarr;
+            {heroData?.ctaText ?? "How we work →"}
           </button>
         </motion.div>
       </div>
