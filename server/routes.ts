@@ -9,6 +9,7 @@ import express from "express";
 import multer from "multer";
 import { randomUUID } from "crypto";
 import fs from "fs";
+import { z } from "zod";
 
 const PgSession = ConnectPgSimple(session);
 
@@ -224,6 +225,46 @@ export async function registerRoutes(
   app.put("/api/cms/pages/:pageKey/:sectionKey", requireAuth, async (req: Request, res: Response) => {
     const section = await storage.upsertPageSection(req.params.pageKey, req.params.sectionKey, req.body);
     res.json(section);
+  });
+
+  const formSubmissionBody = z.object({
+    formType: z.enum(["join", "talk"]),
+    data: z.record(z.string(), z.string()).refine(
+      (d) => Object.keys(d).length <= 20,
+      { message: "Too many fields" }
+    ),
+  });
+
+  app.post("/api/forms/submit", async (req: Request, res: Response) => {
+    const parsed = formSubmissionBody.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
+    }
+    const submission = await storage.createFormSubmission(parsed.data);
+    res.json(submission);
+  });
+
+  app.get("/api/cms/submissions", requireAuth, async (_req: Request, res: Response) => {
+    const submissions = await storage.getFormSubmissions();
+    res.json(submissions);
+  });
+
+  app.put("/api/cms/submissions/:id/read", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const readVal = z.object({ read: z.boolean().optional().default(true) }).safeParse(req.body);
+    if (!readVal.success) return res.status(400).json({ message: "Invalid body" });
+    const submission = await storage.markFormSubmissionRead(id, readVal.data.read);
+    if (!submission) return res.status(404).json({ message: "Not found" });
+    res.json(submission);
+  });
+
+  app.delete("/api/cms/submissions/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const deleted = await storage.deleteFormSubmission(id);
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
   });
 
   return httpServer;

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
+import { apiRequest } from "@/lib/queryClient";
 
 function SectionDivider() {
   return (
@@ -121,6 +122,9 @@ function FormTextarea({ label, name, placeholder, required = true, testId }: {
 export default function Contact() {
   const [joinSubmitted, setJoinSubmitted] = useState(false);
   const [talkSubmitted, setTalkSubmitted] = useState(false);
+  const [joinSubmitting, setJoinSubmitting] = useState(false);
+  const [talkSubmitting, setTalkSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (window.location.hash) {
@@ -131,14 +135,40 @@ export default function Contact() {
     }
   }, []);
 
-  const handleJoinSubmit = (e: React.FormEvent) => {
+  const handleJoinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setJoinSubmitted(true);
+    setError(null);
+    setJoinSubmitting(true);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const data: Record<string, string> = {};
+    formData.forEach((val, key) => { data[key] = val as string; });
+    try {
+      await apiRequest("POST", "/api/forms/submit", { formType: "join", data });
+      setJoinSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setJoinSubmitting(false);
+    }
   };
 
-  const handleTalkSubmit = (e: React.FormEvent) => {
+  const handleTalkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTalkSubmitted(true);
+    setError(null);
+    setTalkSubmitting(true);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const data: Record<string, string> = {};
+    formData.forEach((val, key) => { data[key] = val as string; });
+    try {
+      await apiRequest("POST", "/api/forms/submit", { formType: "talk", data });
+      setTalkSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setTalkSubmitting(false);
+    }
   };
 
   return (
@@ -340,8 +370,12 @@ export default function Contact() {
                       />
                     </div>
 
+                    {error && (
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "#f87171", marginBottom: "0.75rem" }}>{error}</p>
+                    )}
                     <button
                       type="submit"
+                      disabled={joinSubmitting}
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
                         fontSize: "0.7rem",
@@ -351,15 +385,16 @@ export default function Contact() {
                         border: "none",
                         borderRadius: "8px",
                         padding: "1rem 2.5rem",
-                        cursor: "pointer",
+                        cursor: joinSubmitting ? "wait" : "pointer",
                         transition: "all 0.2s",
                         width: "100%",
+                        opacity: joinSubmitting ? 0.7 : 1,
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
+                      onMouseEnter={e => { if (!joinSubmitting) e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
                       onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
                       data-testid="button-submit-join"
                     >
-                      SUBMIT APPLICATION
+                      {joinSubmitting ? "SUBMITTING..." : "SUBMIT APPLICATION"}
                     </button>
                   </div>
                 </form>
@@ -519,8 +554,12 @@ export default function Contact() {
                       />
                     </div>
 
+                    {error && (
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "#f87171", marginBottom: "0.75rem" }}>{error}</p>
+                    )}
                     <button
                       type="submit"
+                      disabled={talkSubmitting}
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
                         fontSize: "0.7rem",
@@ -530,15 +569,16 @@ export default function Contact() {
                         border: "none",
                         borderRadius: "8px",
                         padding: "1rem 2.5rem",
-                        cursor: "pointer",
+                        cursor: talkSubmitting ? "wait" : "pointer",
                         transition: "all 0.2s",
                         width: "100%",
+                        opacity: talkSubmitting ? 0.7 : 1,
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
+                      onMouseEnter={e => { if (!talkSubmitting) e.currentTarget.style.backgroundColor = "#9B3E9A"; }}
                       onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
                       data-testid="button-submit-talk"
                     >
-                      SEND MESSAGE
+                      {talkSubmitting ? "SENDING..." : "SEND MESSAGE"}
                     </button>
                   </div>
                 </form>

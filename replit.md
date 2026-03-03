@@ -44,9 +44,12 @@ Preferred communication style: Simple, everyday language.
 - **problems** — displayId, text, sort order
 - **what_we_do_blocks** — title, description, teaser, expanded text, sort order
 - **page_sections** — Flexible key-value store for arbitrary page copy
+- **form_submissions** — formType ("join"/"talk"), data (jsonb of form fields), read (boolean), createdAt (timestamp)
 
 ### API Endpoints
 - Public read: `GET /api/cms/settings`, `/api/cms/team`, `/api/cms/services`, `/api/cms/problems`, `/api/cms/whatwedo`
+- Public submit: `POST /api/forms/submit` (Zod-validated: formType enum + data record)
+- Admin submissions: `GET /api/cms/submissions`, `PUT /api/cms/submissions/:id/read`, `DELETE /api/cms/submissions/:id`
 - Admin write (auth required): `PUT /api/cms/settings`, `POST/PUT/DELETE` for team/services/problems/whatwedo
 - Auth: `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
 - File upload: `POST /api/upload` (multer, saves to uploads/)
@@ -54,7 +57,8 @@ Preferred communication style: Simple, everyday language.
 ### Admin Dashboard
 - Located at `/admin` (login at `/admin/login`)
 - Default credentials: admin / storyshapers2024 (bcrypt hashed)
-- Tabs: Site Settings, Problems, What We Do, Team, Services
+- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services
+- Form Entries tab shows all submissions with expand-to-view-details, mark read/unread, and delete
 - Inline editing with save buttons, image upload for team members
 
 ### Frontend CMS Integration

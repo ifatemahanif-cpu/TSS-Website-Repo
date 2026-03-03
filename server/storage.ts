@@ -6,10 +6,11 @@ import {
   type Problem, type InsertProblem,
   type WhatWeDoBlock, type InsertWhatWeDoBlock,
   type PageSection, type InsertPageSection,
-  users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, pageSections,
+  type FormSubmission, type InsertFormSubmission,
+  users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, pageSections, formSubmissions,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, asc, and } from "drizzle-orm";
+import { eq, asc, and, desc } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -48,6 +49,12 @@ export interface IStorage {
   getPageSection(pageKey: string, sectionKey: string): Promise<PageSection | undefined>;
   upsertPageSection(pageKey: string, sectionKey: string, content: any): Promise<PageSection>;
   deletePageSection(id: number): Promise<boolean>;
+
+  createFormSubmission(submission: InsertFormSubmission): Promise<FormSubmission>;
+  getFormSubmissions(): Promise<FormSubmission[]>;
+  getFormSubmission(id: number): Promise<FormSubmission | undefined>;
+  markFormSubmissionRead(id: number, read: boolean): Promise<FormSubmission | undefined>;
+  deleteFormSubmission(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -205,6 +212,30 @@ export class DatabaseStorage implements IStorage {
 
   async deletePageSection(id: number): Promise<boolean> {
     const result = await db.delete(pageSections).where(eq(pageSections.id, id)).returning();
+    return result.length > 0;
+  }
+
+  async createFormSubmission(submission: InsertFormSubmission): Promise<FormSubmission> {
+    const [created] = await db.insert(formSubmissions).values(submission).returning();
+    return created;
+  }
+
+  async getFormSubmissions(): Promise<FormSubmission[]> {
+    return db.select().from(formSubmissions).orderBy(desc(formSubmissions.createdAt));
+  }
+
+  async getFormSubmission(id: number): Promise<FormSubmission | undefined> {
+    const [sub] = await db.select().from(formSubmissions).where(eq(formSubmissions.id, id));
+    return sub;
+  }
+
+  async markFormSubmissionRead(id: number, read: boolean): Promise<FormSubmission | undefined> {
+    const [updated] = await db.update(formSubmissions).set({ read }).where(eq(formSubmissions.id, id)).returning();
+    return updated;
+  }
+
+  async deleteFormSubmission(id: number): Promise<boolean> {
+    const result = await db.delete(formSubmissions).where(eq(formSubmissions.id, id)).returning();
     return result.length > 0;
   }
 }

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-type Tab = "settings" | "problems" | "whatwedo" | "team" | "services";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services";
 
 const tabLabels: Record<Tab, string> = {
+  submissions: "Form Entries",
   settings: "Site Settings",
   problems: "Problem Section",
   whatwedo: "What We Do",
@@ -92,6 +93,174 @@ function SuccessMessage({ show }: { show: boolean }) {
     >
       Saved!
     </span>
+  );
+}
+
+function SubmissionsViewer() {
+  const queryClient = useQueryClient();
+  const { data: submissions, isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms/submissions"],
+  });
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+  if (!submissions || submissions.length === 0) {
+    return <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No form submissions yet.</p>;
+  }
+
+  const markRead = async (id: number, read: boolean) => {
+    await fetch(`/api/cms/submissions/${id}/read`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ read }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/submissions"] });
+  };
+
+  const deleteSubmission = async (id: number) => {
+    if (!confirm("Delete this submission?")) return;
+    await fetch(`/api/cms/submissions/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/submissions"] });
+    if (expandedId === id) setExpandedId(null);
+  };
+
+  const formatDate = (dateStr: string) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) +
+      " at " + d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  };
+
+  const fieldLabels: Record<string, string> = {
+    name: "Name",
+    email: "Email",
+    linkedin: "LinkedIn",
+    portfolio: "Portfolio",
+    superpower: "Superpower",
+    workstyle: "Work Style",
+    company: "Company",
+    message: "Message",
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      {submissions.map((sub: any) => {
+        const isExpanded = expandedId === sub.id;
+        const data = sub.data as Record<string, string>;
+        return (
+          <div
+            key={sub.id}
+            style={{
+              backgroundColor: sub.read ? "rgba(255,255,255,0.03)" : "rgba(123,30,122,0.08)",
+              border: `1px solid ${sub.read ? "rgba(255,255,255,0.06)" : "rgba(123,30,122,0.25)"}`,
+              borderRadius: "8px",
+              overflow: "hidden",
+            }}
+            data-testid={`submission-${sub.id}`}
+          >
+            <div
+              onClick={() => {
+                setExpandedId(isExpanded ? null : sub.id);
+                if (!sub.read) markRead(sub.id, true);
+              }}
+              style={{
+                padding: "0.75rem 1rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+              }}
+            >
+              {!sub.read && (
+                <span style={{
+                  width: "6px", height: "6px", borderRadius: "50%",
+                  backgroundColor: "#7B1E7A", flexShrink: 0,
+                }} />
+              )}
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.1em",
+                  color: sub.formType === "join" ? "#a78bfa" : "#38bdf8",
+                  backgroundColor: sub.formType === "join" ? "rgba(167,139,250,0.12)" : "rgba(56,189,248,0.12)",
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "4px",
+                  flexShrink: 0,
+                }}
+              >
+                {sub.formType === "join" ? "JOIN" : "TALK"}
+              </span>
+              <span style={{
+                fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
+                color: "#FFFFFF", flex: 1,
+                fontWeight: sub.read ? 400 : 600,
+              }}>
+                {data.name || "—"}
+              </span>
+              <span style={{
+                fontFamily: "'Inter', sans-serif", fontSize: "0.75rem",
+                color: "rgba(255,255,255,0.4)",
+              }}>
+                {data.email || ""}
+              </span>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                color: "rgba(255,255,255,0.3)", flexShrink: 0,
+              }}>
+                {formatDate(sub.createdAt)}
+              </span>
+            </div>
+
+            {isExpanded && (
+              <div style={{
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+                padding: "1rem",
+              }}>
+                <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: "0.5rem 1rem" }}>
+                  {Object.entries(data).map(([key, value]) => (
+                    <div key={key} style={{ display: "contents" }}>
+                      <span style={{
+                        fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                        letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)",
+                        textTransform: "uppercase", paddingTop: "0.15rem",
+                      }}>
+                        {fieldLabels[key] || key}
+                      </span>
+                      <span style={{
+                        fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
+                        color: "#FFFFFF", whiteSpace: "pre-wrap", wordBreak: "break-word",
+                      }}>
+                        {value || "—"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+                  <button
+                    onClick={() => markRead(sub.id, !sub.read)}
+                    style={{
+                      ...btnPrimary,
+                      backgroundColor: "rgba(255,255,255,0.08)",
+                      fontSize: "0.55rem",
+                    }}
+                    data-testid={`button-toggle-read-${sub.id}`}
+                  >
+                    {sub.read ? "MARK UNREAD" : "MARK READ"}
+                  </button>
+                  <button
+                    onClick={() => deleteSubmission(sub.id)}
+                    style={btnDanger}
+                    data-testid={`button-delete-submission-${sub.id}`}
+                  >
+                    DELETE
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
@@ -741,11 +910,16 @@ function ServicesEditor() {
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<Tab>("settings");
+  const [activeTab, setActiveTab] = useState<Tab>("submissions");
   const { data: user, isLoading, error } = useQuery({
     queryKey: ["/api/auth/me"],
     retry: false,
   });
+  const { data: submissions } = useQuery<any[]>({
+    queryKey: ["/api/cms/submissions"],
+    enabled: !!user,
+  });
+  const unreadCount = submissions?.filter((s: any) => !s.read).length || 0;
 
   useEffect(() => {
     if (!isLoading && (error || !user)) {
@@ -768,7 +942,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["settings", "problems", "whatwedo", "team", "services"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -861,6 +1035,22 @@ export default function AdminDashboard() {
               data-testid={`tab-${tab}`}
             >
               {tabLabels[tab]}
+              {tab === "submissions" && unreadCount > 0 && (
+                <span style={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#7B1E7A",
+                  color: "#FFFFFF",
+                  fontSize: "0.55rem",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  padding: "0.1rem 0.4rem",
+                  borderRadius: "10px",
+                  minWidth: "18px",
+                  textAlign: "center",
+                  display: "inline-block",
+                }} data-testid="badge-unread-count">
+                  {unreadCount}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -877,6 +1067,7 @@ export default function AdminDashboard() {
             {tabLabels[activeTab]}
           </h2>
 
+          {activeTab === "submissions" && <SubmissionsViewer />}
           {activeTab === "settings" && <SettingsEditor />}
           {activeTab === "problems" && <ProblemsEditor />}
           {activeTab === "whatwedo" && <WhatWeDoEditor />}

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, jsonb, serial, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, jsonb, serial, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -89,3 +89,15 @@ export const pageSections = pgTable("page_sections", {
 export const insertPageSectionSchema = createInsertSchema(pageSections).omit({ id: true });
 export type InsertPageSection = z.infer<typeof insertPageSectionSchema>;
 export type PageSection = typeof pageSections.$inferSelect;
+
+export const formSubmissions = pgTable("form_submissions", {
+  id: serial("id").primaryKey(),
+  formType: text("form_type").notNull(),
+  data: jsonb("data").notNull(),
+  read: boolean("read").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertFormSubmissionSchema = createInsertSchema(formSubmissions).omit({ id: true, createdAt: true, read: true });
+export type InsertFormSubmission = z.infer<typeof insertFormSubmissionSchema>;
+export type FormSubmission = typeof formSubmissions.$inferSelect;
