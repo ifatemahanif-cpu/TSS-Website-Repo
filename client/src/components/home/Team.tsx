@@ -700,32 +700,6 @@ function FanCard({
       <div
         style={{
           position: "absolute",
-          top: "1rem",
-          left: "1rem",
-          right: "1rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.5rem",
-            color: "#FFFFFF",
-            opacity: 0.7,
-            backgroundColor: "rgba(42,40,112,0.6)",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-            marginLeft: "auto",
-          }}
-        >
-          SHAPER
-        </span>
-      </div>
-      <div
-        style={{
-          position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
@@ -830,31 +804,6 @@ function MobileCard({
           background: overlayGradient,
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          top: "1rem",
-          left: "1rem",
-          right: "1rem",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.55rem",
-            color: "#FFFFFF",
-            opacity: 0.7,
-            backgroundColor: "rgba(42,40,112,0.6)",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "4px",
-            marginLeft: "auto",
-          }}
-        >
-          SHAPER
-        </span>
-      </div>
       <div
         style={{
           position: "absolute",
