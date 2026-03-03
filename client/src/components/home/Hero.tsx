@@ -1,8 +1,13 @@
 import { motion } from "framer-motion";
+import { useCmsSettings } from "@/hooks/use-cms";
 
-const brands = ["Art Fervour", "LBB", "Headout", "SOCIAL", "Singapore Tourism Board", "Coca-Cola", "Cadbury's", "Heinz", "Google Pixel"];
+const defaultBrands = ["Art Fervour", "LBB", "Headout", "SOCIAL", "Singapore Tourism Board", "Coca-Cola", "Cadbury's", "Heinz", "Google Pixel"];
 
 export function Hero() {
+  const { data: settings } = useCmsSettings();
+  const heroData = settings?.hero;
+  const brands = heroData?.brands ?? defaultBrands;
+
   return (
     <section
       className="relative flex items-center justify-center overflow-hidden"
@@ -147,7 +152,7 @@ export function Hero() {
             }}
             data-testid="text-hero-label"
           >
-            The Story Shapers
+            {heroData?.label ?? "The Story Shapers"}
           </span>
           <h1
             className="hero-gradient-sweep"
@@ -168,9 +173,8 @@ export function Hero() {
               animation: "gradientSweep 8s ease-in-out infinite",
             }}
             data-testid="text-hero-heading"
-          >
-            Finally. Marketing people who <em>get it.</em>
-          </h1>
+            dangerouslySetInnerHTML={{ __html: heroData?.heading ?? "Finally. Marketing people who <em>get it.</em>" }}
+          />
         </motion.div>
 
         <motion.p
@@ -188,7 +192,7 @@ export function Hero() {
           }}
           data-testid="text-hero-subhead"
         >
-          Not an agency. Not a roster of freelancers. A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.
+          {heroData?.subheading ?? "Not an agency. Not a roster of freelancers. A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork."}
         </motion.p>
 
         <motion.div
@@ -221,7 +225,7 @@ export function Hero() {
               e.currentTarget.style.borderColor = "#7B1E7A";
             }}
           >
-            How we work &rarr;
+            {heroData?.ctaText ?? "How we work"} &rarr;
           </button>
         </motion.div>
       </div>
@@ -254,7 +258,7 @@ export function Hero() {
             }}
             data-testid="text-ticker-label"
           >
-            Brands we've worked with →
+            {heroData?.tickerLabel ?? "Brands we've worked with →"}
           </span>
           <div
             style={{

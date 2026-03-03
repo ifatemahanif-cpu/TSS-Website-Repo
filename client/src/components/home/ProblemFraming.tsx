@@ -2,8 +2,9 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
 import { GradientBlobs, problemBlobs } from "./GradientBlobs";
+import { useCmsSettings, useCmsProblems } from "@/hooks/use-cms";
 
-const problems = [
+const hardcodedProblems = [
   { id: "01", text: "You're doing marketing. You just can't explain why any of it's working." },
   { id: "02", text: "Your website says one thing. Your pitch deck says another. Your team says a third." },
   { id: "03", text: "Content goes out every week. You couldn't point to a single lead it brought in." },
@@ -13,6 +14,14 @@ const problems = [
 export function ProblemFraming() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  const { data: settings } = useCmsSettings();
+  const { data: cmsProblems } = useCmsProblems();
+
+  const problemSettings = settings?.problem;
+  const problemItems = cmsProblems
+    ? cmsProblems.map((p: any) => ({ id: p.displayId, text: p.text }))
+    : hardcodedProblems;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -58,10 +67,10 @@ export function ProblemFraming() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <SectionLabel isInView={isInView}>THE PROBLEM</SectionLabel>
+            <SectionLabel isInView={isInView}>{problemSettings?.label ?? "THE PROBLEM"}</SectionLabel>
 
             <SectionHeading isInView={isInView} testId="text-problem-heading">
-              Your product is clear.<br />Your marketing isn't.
+              <span dangerouslySetInnerHTML={{ __html: problemSettings?.heading ?? "Your product is clear.<br />Your marketing isn't." }} />
             </SectionHeading>
 
             <p
@@ -74,11 +83,11 @@ export function ProblemFraming() {
                 marginBottom: "2.5rem",
               }}
               data-testid="text-problem-subheading"
-            >These are the patterns we see again and again. </p>
+            >{problemSettings?.subheading ?? "These are the patterns we see again and again."} </p>
           </motion.div>
 
           <div className="flex flex-wrap gap-4">
-            {problems.map((item, index) => (
+            {problemItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}

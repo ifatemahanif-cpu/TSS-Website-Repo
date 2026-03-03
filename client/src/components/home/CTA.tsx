@@ -3,10 +3,14 @@ import { useRef } from "react";
 import { Link } from "wouter";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
 import { GradientBlobs, ctaBlobs } from "./GradientBlobs";
+import { useCmsSettings } from "@/hooks/use-cms";
 
 export function CTA() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  const { data: settings } = useCmsSettings();
+  const ctaSettings = settings?.cta;
 
   return (
     <section
@@ -33,7 +37,7 @@ export function CTA() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <SectionLabel isInView={isInView} testId="text-cta-label">Let's Talk</SectionLabel>
+            <SectionLabel isInView={isInView} testId="text-cta-label">{ctaSettings?.label ?? "Let's Talk"}</SectionLabel>
 
             <div className="flex flex-col items-center mb-6">
               <div 
@@ -49,7 +53,7 @@ export function CTA() {
                   marginBottom: "0",
                 }}
               >
-                Not sure where to start?
+                {ctaSettings?.heading ?? "Not sure where to start?"}
               </SectionHeading>
               <div 
                 className="w-12 h-[1px] mt-6 opacity-30" 
@@ -71,7 +75,7 @@ export function CTA() {
             }}
             data-testid="text-cta-p1"
           >
-            Tell us where things feel off. We'll tell you what we see and where to begin.
+            {ctaSettings?.paragraph ?? "Tell us where things feel off. We'll tell you what we see and where to begin."}
           </motion.p>
 
           <motion.div
@@ -80,7 +84,7 @@ export function CTA() {
             transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             <Link
-              href="/contact#talk"
+              href={ctaSettings?.buttonLink ?? "/contact#talk"}
               className="inline-block transition-all duration-200"
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -98,7 +102,7 @@ export function CTA() {
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; e.currentTarget.style.borderColor = "#7B1E7A"; }}
               data-testid="button-get-recommendation"
             >
-              Get our recommendation &rarr;
+              {ctaSettings?.buttonText ?? "Get our recommendation →"}
             </Link>
           </motion.div>
         </div>

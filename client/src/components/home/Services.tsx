@@ -2,8 +2,9 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
 import { GradientBlobs, servicesBlobs } from "./GradientBlobs";
+import { useCmsSettings, useCmsServices } from "@/hooks/use-cms";
 
-const services = [
+const hardcodedServices = [
   {
     id: "clarity",
     title: "Clarity & Direction",
@@ -76,6 +77,19 @@ export function Services() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
+  const { data: settings } = useCmsSettings();
+  const { data: cmsServicesData } = useCmsServices();
+
+  const serviceSettings = settings?.services;
+  const services = cmsServicesData
+    ? cmsServicesData.map((s: any, i: number) => ({
+        id: s.id?.toString() ?? `service-${i}`,
+        title: s.title,
+        subtitle: s.subtitle,
+        items: s.items || [],
+      }))
+    : hardcodedServices;
+
   return (
     <section
       ref={sectionRef}
@@ -107,10 +121,10 @@ export function Services() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="mb-10 md:mb-14"
           >
-            <SectionLabel isInView={isInView} testId="text-services-label">Services</SectionLabel>
+            <SectionLabel isInView={isInView} testId="text-services-label">{serviceSettings?.label ?? "Services"}</SectionLabel>
 
             <SectionHeading isInView={isInView} testId="text-services-heading">
-              How we work with you.
+              {serviceSettings?.heading ?? "How we work with you."}
             </SectionHeading>
             <p
               style={{
@@ -121,7 +135,7 @@ export function Services() {
                 fontStyle: "italic",
               }}
             >
-              Every brand arrives with different questions. The starting point is always the same.
+              {serviceSettings?.subheading ?? "Every brand arrives with different questions. The starting point is always the same."}
             </p>
           </motion.div>
 

@@ -2,11 +2,18 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
 import { SectionLabel } from "./SectionAnimations";
 import { GradientBlobs, teamBlobs } from "./GradientBlobs";
+import { useCmsSettings, useCmsTeam } from "@/hooks/use-cms";
 import teamFatema from "@assets/54b8c761-3071-4f74-8057-1840518e15a6_1772266999973.jpg";
 import teamShaili from "@assets/Shaili-brand-deck_1772267064740.jpeg";
 import teamAakanksha from "@assets/IMG_20260302_230326_1772542685201.jpg";
 
-const team = [
+const defaultImageMap: Record<string, string> = {
+  "Fatema Hanif": teamFatema,
+  "Shaili Contractor": teamShaili,
+  "Aakanksha Singh Devi": teamAakanksha,
+};
+
+const hardcodedTeam = [
   {
     name: "Fatema Hanif",
     image: teamFatema,
@@ -48,11 +55,38 @@ const cardColors = [
   { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
 ];
 
+type TeamMember = {
+  name: string;
+  image: string;
+  decisionsLed: string;
+  contextsNavigated: string;
+  brandsLabel: string;
+  brands: string;
+  whatSheBrings: string[];
+};
+
 export function Team() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [frontCardIndex, setFrontCardIndex] = useState<number | null>(null);
+
+  const { data: settings } = useCmsSettings();
+  const { data: cmsTeamData } = useCmsTeam();
+
+  const teamSettings = settings?.team;
+
+  const team: TeamMember[] = cmsTeamData
+    ? cmsTeamData.map((m: any) => ({
+        name: m.name,
+        image: m.image?.startsWith("/") ? m.image : (defaultImageMap[m.name] || m.image),
+        decisionsLed: m.decisionsLed || "",
+        contextsNavigated: "",
+        brandsLabel: "Brands",
+        brands: m.brands || "",
+        whatSheBrings: m.whatSheBrings || [],
+      }))
+    : hardcodedTeam;
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -120,7 +154,7 @@ export function Team() {
           {isMobile ? (
             <>
               <div className="mb-6">
-                <SectionLabel isInView={isInView} testId="text-team-label">The Shapers</SectionLabel>
+                <SectionLabel isInView={isInView} testId="text-team-label">{teamSettings?.label ?? "The Shapers"}</SectionLabel>
                 <h2
                   className="mb-4"
                   style={{
@@ -137,7 +171,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    Three senior marketers.{" "}
+                    {teamSettings?.headingLine1 ?? "Three senior marketers."}{" "}
                   </span>
                   <span
                     style={{
@@ -148,7 +182,7 @@ export function Team() {
                       opacity: 0.75,
                     }}
                   >
-                    45+ years of combined experience.
+                    {teamSettings?.headingLine2 ?? "45+ years of combined experience."}
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -161,16 +195,16 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise.
+                    {teamSettings?.intro ?? "We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise."}
                   </p>
                 </div>
               </div>
-              <MobileCards onCardClick={handleCardClick} />
+              <MobileCards onCardClick={handleCardClick} team={team} />
             </>
           ) : (
             <div className="flex items-start gap-8 lg:gap-12">
               <div className="w-[42%] shrink-0 sticky" style={{ top: "clamp(2rem, 4vw, 4rem)" }}>
-                <SectionLabel isInView={isInView} testId="text-team-label">The Shapers</SectionLabel>
+                <SectionLabel isInView={isInView} testId="text-team-label">{teamSettings?.label ?? "The Shapers"}</SectionLabel>
                 <h2
                   className="mb-5"
                   style={{
@@ -187,7 +221,7 @@ export function Team() {
                       fontWeight: 400,
                     }}
                   >
-                    Three senior marketers.{" "}
+                    {teamSettings?.headingLine1 ?? "Three senior marketers."}{" "}
                   </span>
                   <span
                     style={{
@@ -198,7 +232,7 @@ export function Team() {
                       opacity: 0.75,
                     }}
                   >
-                    45+ years of combined experience.
+                    {teamSettings?.headingLine2 ?? "45+ years of combined experience."}
                   </span>
                 </h2>
                 <div className="space-y-4">
@@ -211,7 +245,7 @@ export function Team() {
                     }}
                     data-testid="text-team-intro-1"
                   >
-                    We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise.
+                    {teamSettings?.intro ?? "We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise."}
                   </p>
                 </div>
                 <div className="mt-6">
@@ -236,6 +270,7 @@ export function Team() {
                   onCardClick={handleCardClick}
                   frontCardIndex={frontCardIndex}
                   setFrontCardIndex={setFrontCardIndex}
+                  team={team}
                 />
               </div>
             </div>
@@ -262,7 +297,7 @@ function TeamModal({
   colors,
   onClose,
 }: {
-  member: (typeof team)[0];
+  member: TeamMember;
   index: number;
   colors: (typeof cardColors)[0];
   onClose: () => void;
@@ -484,6 +519,7 @@ function DesktopFanCards({
   onCardClick,
   frontCardIndex,
   setFrontCardIndex,
+  team,
 }: {
   fanProgress: any;
   desktopFanConfigs: { rotate: number; x: number; y: number }[];
@@ -491,6 +527,7 @@ function DesktopFanCards({
   onCardClick: (index: number) => void;
   frontCardIndex: number | null;
   setFrontCardIndex: (index: number | null) => void;
+  team: TeamMember[];
 }) {
   const [isTablet, setIsTablet] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -552,7 +589,7 @@ function FanCard({
   onBringToFront,
   containerRef,
 }: {
-  member: (typeof team)[0];
+  member: TeamMember;
   index: number;
   fanProgress: any;
   targetRotate: number;
@@ -725,7 +762,7 @@ function FanCard({
   );
 }
 
-function MobileCards({ onCardClick }: { onCardClick: (index: number) => void }) {
+function MobileCards({ onCardClick, team }: { onCardClick: (index: number) => void; team: TeamMember[] }) {
   return (
     <div className="flex flex-col gap-5 mt-4">
       {team.map((member, i) => {
@@ -750,7 +787,7 @@ function MobileCard({
   colors,
   onCardClick,
 }: {
-  member: (typeof team)[0];
+  member: TeamMember;
   index: number;
   colors: (typeof cardColors)[0];
   onCardClick: (index: number) => void;

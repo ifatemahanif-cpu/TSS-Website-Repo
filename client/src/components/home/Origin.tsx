@@ -2,6 +2,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useCallback, type ReactNode, type MouseEvent } from "react";
 import { SectionLabel, SectionHeading } from "./SectionAnimations";
 import { GradientBlobs, originBlobs } from "./GradientBlobs";
+import { useCmsSettings, useCmsWhatWeDo } from "@/hooks/use-cms";
 
 const brandNames = ["SOCIAL", "Art Fervour", "LBB", "Headout"];
 
@@ -29,7 +30,7 @@ function highlightBrands(text: string): ReactNode {
   );
 }
 
-const blocks = [
+const hardcodedBlocks = [
   {
     title: "We start by figuring out what the brand actually stands for.",
     description: "Before campaigns or content, we establish what the brand should say and how.",
@@ -56,7 +57,7 @@ const blocks = [
   },
 ];
 
-function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; index: number; isInView: boolean }) {
+function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; description: string; teaser: string; expanded: string }; index: number; isInView: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
@@ -244,6 +245,11 @@ function WhatWeDoBlock({ block, index, isInView }: { block: typeof blocks[0]; in
 export function Origin() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const { data: settings } = useCmsSettings();
+  const { data: whatWeDoData } = useCmsWhatWeDo();
+
+  const originSettings = settings?.origin;
+  const cmsBlocks = whatWeDoData ?? hardcodedBlocks;
 
   return (
     <section
@@ -269,10 +275,10 @@ export function Origin() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <SectionLabel isInView={isInView} testId="text-origin-label">WHAT WE DO</SectionLabel>
+            <SectionLabel isInView={isInView} testId="text-origin-label">{originSettings?.label ?? "WHAT WE DO"}</SectionLabel>
 
             <SectionHeading isInView={isInView} testId="text-origin-heading" style={{ maxWidth: "900px" }}>
-              Here's how we solve it.
+              {originSettings?.heading ?? "Here's how we solve it."}
             </SectionHeading>
 
             <p
@@ -287,13 +293,13 @@ export function Origin() {
               }}
               data-testid="text-origin-subtitle"
             >
-              We fix positioning, messaging, content, and campaigns. And build the systems to keep them running.
+              {originSettings?.subtitle ?? "We fix positioning, messaging, content, and campaigns. And build the systems to keep them running."}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {blocks.map((block, i) => (
-              <WhatWeDoBlock key={i} block={block} index={i} isInView={isInView} />
+            {cmsBlocks.map((block: any, i: number) => (
+              <WhatWeDoBlock key={block.id ?? i} block={block} index={i} isInView={isInView} />
             ))}
           </div>
         </div>

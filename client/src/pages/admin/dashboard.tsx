@@ -1,0 +1,889 @@
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+type Tab = "settings" | "problems" | "whatwedo" | "team" | "services";
+
+const tabLabels: Record<Tab, string> = {
+  settings: "Site Settings",
+  problems: "Problem Section",
+  whatwedo: "What We Do",
+  team: "Team Members",
+  services: "Services",
+};
+
+const inputStyle: React.CSSProperties = {
+  fontFamily: "'Inter', sans-serif",
+  fontSize: "0.85rem",
+  color: "#FFFFFF",
+  backgroundColor: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.2)",
+  borderRadius: "8px",
+  padding: "0.7rem 0.85rem",
+  width: "100%",
+  outline: "none",
+};
+
+const textareaStyle: React.CSSProperties = {
+  ...inputStyle,
+  minHeight: "80px",
+  resize: "vertical",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: "0.55rem",
+  color: "rgba(255,255,255,0.5)",
+  letterSpacing: "0.15em",
+  textTransform: "uppercase",
+  display: "block",
+  marginBottom: "0.35rem",
+};
+
+const cardStyle: React.CSSProperties = {
+  backgroundColor: "rgba(255,255,255,0.03)",
+  border: "1px solid rgba(255,255,255,0.1)",
+  borderRadius: "12px",
+  padding: "1.25rem",
+  marginBottom: "1rem",
+};
+
+const btnPrimary: React.CSSProperties = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: "0.6rem",
+  letterSpacing: "0.1em",
+  color: "#FFFFFF",
+  backgroundColor: "#7B1E7A",
+  border: "none",
+  borderRadius: "6px",
+  padding: "0.6rem 1.25rem",
+  cursor: "pointer",
+};
+
+const btnDanger: React.CSSProperties = {
+  ...btnPrimary,
+  backgroundColor: "rgba(220,50,50,0.3)",
+  fontSize: "0.55rem",
+};
+
+function SaveButton({ onClick, saving }: { onClick: () => void; saving: boolean }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={saving}
+      style={{ ...btnPrimary, opacity: saving ? 0.6 : 1 }}
+      data-testid="button-save"
+    >
+      {saving ? "SAVING..." : "SAVE CHANGES"}
+    </button>
+  );
+}
+
+function SuccessMessage({ show }: { show: boolean }) {
+  if (!show) return null;
+  return (
+    <span
+      style={{
+        fontFamily: "'Inter', sans-serif",
+        fontSize: "0.75rem",
+        color: "#4ade80",
+        marginLeft: "0.75rem",
+      }}
+    >
+      Saved!
+    </span>
+  );
+}
+
+function SettingsEditor() {
+  const queryClient = useQueryClient();
+  const { data: settings, isLoading } = useQuery<Record<string, any>>({
+    queryKey: ["/api/cms/settings"],
+  });
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (settings) setFormData(settings);
+  }, [settings]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveSection = async (key: string) => {
+    setSaving(true);
+    await fetch(`/api/cms/settings/${key}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData[key]),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/settings"] });
+    setSaving(false);
+    setSaved(key);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const updateField = (section: string, field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], [field]: value },
+    }));
+  };
+
+  const sections = [
+    {
+      key: "hero",
+      title: "Hero Section",
+      fields: [
+        { name: "label", label: "Label", type: "text" },
+        { name: "heading", label: "Heading (HTML allowed)", type: "text" },
+        { name: "subheading", label: "Subheading", type: "textarea" },
+        { name: "ctaText", label: "CTA Button Text", type: "text" },
+        { name: "tickerLabel", label: "Ticker Label", type: "text" },
+        { name: "brands", label: "Brands (comma-separated)", type: "brands" },
+      ],
+    },
+    {
+      key: "problem",
+      title: "Problem Section",
+      fields: [
+        { name: "label", label: "Section Label", type: "text" },
+        { name: "heading", label: "Heading (HTML allowed)", type: "text" },
+        { name: "subheading", label: "Subheading", type: "text" },
+      ],
+    },
+    {
+      key: "origin",
+      title: "What We Do Section",
+      fields: [
+        { name: "label", label: "Section Label", type: "text" },
+        { name: "heading", label: "Heading", type: "text" },
+        { name: "subtitle", label: "Subtitle", type: "textarea" },
+      ],
+    },
+    {
+      key: "team",
+      title: "Team Section",
+      fields: [
+        { name: "label", label: "Section Label", type: "text" },
+        { name: "headingLine1", label: "Heading Line 1", type: "text" },
+        { name: "headingLine2", label: "Heading Line 2 (italic)", type: "text" },
+        { name: "intro", label: "Intro Paragraph", type: "textarea" },
+      ],
+    },
+    {
+      key: "services",
+      title: "Services Section",
+      fields: [
+        { name: "label", label: "Section Label", type: "text" },
+        { name: "heading", label: "Heading", type: "text" },
+        { name: "subheading", label: "Subheading", type: "text" },
+      ],
+    },
+    {
+      key: "cta",
+      title: "CTA Section",
+      fields: [
+        { name: "label", label: "Section Label", type: "text" },
+        { name: "heading", label: "Heading", type: "text" },
+        { name: "paragraph", label: "Paragraph", type: "textarea" },
+        { name: "buttonText", label: "Button Text", type: "text" },
+        { name: "buttonLink", label: "Button Link", type: "text" },
+      ],
+    },
+  ];
+
+  return (
+    <div>
+      {sections.map((section) => (
+        <div key={section.key} style={cardStyle}>
+          <h3
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.95rem",
+              fontWeight: 600,
+              color: "#FFFFFF",
+              marginBottom: "1rem",
+            }}
+          >
+            {section.title}
+          </h3>
+          {section.fields.map((field) => (
+            <div key={field.name} style={{ marginBottom: "0.75rem" }}>
+              <label style={labelStyle}>{field.label}</label>
+              {field.type === "textarea" ? (
+                <textarea
+                  value={formData[section.key]?.[field.name] || ""}
+                  onChange={(e) => updateField(section.key, field.name, e.target.value)}
+                  style={textareaStyle}
+                  data-testid={`input-settings-${section.key}-${field.name}`}
+                />
+              ) : field.type === "brands" ? (
+                <input
+                  type="text"
+                  value={(formData[section.key]?.[field.name] || []).join(", ")}
+                  onChange={(e) =>
+                    updateField(
+                      section.key,
+                      field.name,
+                      e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean)
+                    )
+                  }
+                  style={inputStyle}
+                  data-testid={`input-settings-${section.key}-${field.name}`}
+                />
+              ) : (
+                <input
+                  type="text"
+                  value={formData[section.key]?.[field.name] || ""}
+                  onChange={(e) => updateField(section.key, field.name, e.target.value)}
+                  style={inputStyle}
+                  data-testid={`input-settings-${section.key}-${field.name}`}
+                />
+              )}
+            </div>
+          ))}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <SaveButton onClick={() => saveSection(section.key)} saving={saving} />
+            <SuccessMessage show={saved === section.key} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProblemsEditor() {
+  const queryClient = useQueryClient();
+  const { data: problems = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms/problems"],
+  });
+  const [editData, setEditData] = useState<Record<number, any>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (problems.length) {
+      const map: Record<number, any> = {};
+      problems.forEach((p) => (map[p.id] = { ...p }));
+      setEditData(map);
+    }
+  }, [problems]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveProblem = async (id: number) => {
+    setSaving(id);
+    await fetch(`/api/cms/problems/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/problems"] });
+    setSaving(null);
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteProblem = async (id: number) => {
+    if (!confirm("Delete this problem?")) return;
+    await fetch(`/api/cms/problems/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/problems"] });
+  };
+
+  const addProblem = async () => {
+    const nextNum = String(problems.length + 1).padStart(2, "0");
+    await fetch("/api/cms/problems", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        displayId: nextNum,
+        text: "New problem statement",
+        sortOrder: problems.length,
+      }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/problems"] });
+  };
+
+  return (
+    <div>
+      {problems.map((p: any) => (
+        <div key={p.id} style={cardStyle}>
+          <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
+            <div style={{ width: "60px" }}>
+              <label style={labelStyle}>ID</label>
+              <input
+                type="text"
+                value={editData[p.id]?.displayId || ""}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    [p.id]: { ...prev[p.id], displayId: e.target.value },
+                  }))
+                }
+                style={inputStyle}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Text</label>
+              <input
+                type="text"
+                value={editData[p.id]?.text || ""}
+                onChange={(e) =>
+                  setEditData((prev) => ({
+                    ...prev,
+                    [p.id]: { ...prev[p.id], text: e.target.value },
+                  }))
+                }
+                style={inputStyle}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveProblem(p.id)} saving={saving === p.id} />
+            <SuccessMessage show={saved === p.id} />
+            <button onClick={() => deleteProblem(p.id)} style={btnDanger}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addProblem} style={btnPrimary} data-testid="button-add-problem">
+        + ADD PROBLEM
+      </button>
+    </div>
+  );
+}
+
+function WhatWeDoEditor() {
+  const queryClient = useQueryClient();
+  const { data: blocks = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms/whatwedo"],
+  });
+  const [editData, setEditData] = useState<Record<number, any>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (blocks.length) {
+      const map: Record<number, any> = {};
+      blocks.forEach((b) => (map[b.id] = { ...b }));
+      setEditData(map);
+    }
+  }, [blocks]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveBlock = async (id: number) => {
+    setSaving(id);
+    await fetch(`/api/cms/whatwedo/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/whatwedo"] });
+    setSaving(null);
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteBlock = async (id: number) => {
+    if (!confirm("Delete this block?")) return;
+    await fetch(`/api/cms/whatwedo/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/whatwedo"] });
+  };
+
+  const addBlock = async () => {
+    await fetch("/api/cms/whatwedo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "New block title",
+        description: "Description here",
+        teaser: "Case study teaser",
+        expanded: "Full case study text",
+        sortOrder: blocks.length,
+      }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/whatwedo"] });
+  };
+
+  const updateField = (id: number, field: string, value: string) => {
+    setEditData((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
+  };
+
+  return (
+    <div>
+      {blocks.map((b: any) => (
+        <div key={b.id} style={cardStyle}>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Title</label>
+            <input
+              type="text"
+              value={editData[b.id]?.title || ""}
+              onChange={(e) => updateField(b.id, "title", e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Description</label>
+            <textarea
+              value={editData[b.id]?.description || ""}
+              onChange={(e) => updateField(b.id, "description", e.target.value)}
+              style={textareaStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Case Study Teaser</label>
+            <textarea
+              value={editData[b.id]?.teaser || ""}
+              onChange={(e) => updateField(b.id, "teaser", e.target.value)}
+              style={textareaStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Case Study Expanded</label>
+            <textarea
+              value={editData[b.id]?.expanded || ""}
+              onChange={(e) => updateField(b.id, "expanded", e.target.value)}
+              style={{ ...textareaStyle, minHeight: "120px" }}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveBlock(b.id)} saving={saving === b.id} />
+            <SuccessMessage show={saved === b.id} />
+            <button onClick={() => deleteBlock(b.id)} style={btnDanger}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addBlock} style={btnPrimary} data-testid="button-add-whatwedo">
+        + ADD BLOCK
+      </button>
+    </div>
+  );
+}
+
+function TeamEditor() {
+  const queryClient = useQueryClient();
+  const { data: members = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms/team"],
+  });
+  const [editData, setEditData] = useState<Record<number, any>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+  const [uploading, setUploading] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (members.length) {
+      const map: Record<number, any> = {};
+      members.forEach((m) => (map[m.id] = { ...m }));
+      setEditData(map);
+    }
+  }, [members]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveMember = async (id: number) => {
+    setSaving(id);
+    await fetch(`/api/cms/team/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/team"] });
+    setSaving(null);
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteMember = async (id: number) => {
+    if (!confirm("Delete this team member?")) return;
+    await fetch(`/api/cms/team/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/team"] });
+  };
+
+  const uploadImage = async (id: number, file: File) => {
+    setUploading(id);
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    const { url } = await res.json();
+    setEditData((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], image: url },
+    }));
+    setUploading(null);
+  };
+
+  const addMember = async () => {
+    await fetch("/api/cms/team", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "New Team Member",
+        image: "",
+        decisionsLed: "",
+        brands: "",
+        brandsLabel: "Brands",
+        whatSheBrings: [""],
+        sortOrder: members.length,
+      }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/team"] });
+  };
+
+  const updateField = (id: number, field: string, value: any) => {
+    setEditData((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
+  };
+
+  return (
+    <div>
+      {members.map((m: any) => (
+        <div key={m.id} style={cardStyle}>
+          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+            <div style={{ width: "80px", height: "80px", borderRadius: "8px", overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.15)" }}>
+              {editData[m.id]?.image && (
+                <img src={editData[m.id].image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              )}
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Name</label>
+              <input
+                type="text"
+                value={editData[m.id]?.name || ""}
+                onChange={(e) => updateField(m.id, "name", e.target.value)}
+                style={inputStyle}
+              />
+              <div style={{ marginTop: "0.5rem" }}>
+                <label style={labelStyle}>Photo</label>
+                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                  <input
+                    type="text"
+                    value={editData[m.id]?.image || ""}
+                    onChange={(e) => updateField(m.id, "image", e.target.value)}
+                    style={{ ...inputStyle, fontSize: "0.75rem" }}
+                    placeholder="Image URL or upload"
+                  />
+                  <label
+                    style={{
+                      ...btnPrimary,
+                      fontSize: "0.5rem",
+                      padding: "0.5rem 0.75rem",
+                      whiteSpace: "nowrap",
+                      opacity: uploading === m.id ? 0.6 : 1,
+                    }}
+                  >
+                    {uploading === m.id ? "..." : "UPLOAD"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) uploadImage(m.id, f);
+                      }}
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Decisions Led</label>
+            <input
+              type="text"
+              value={editData[m.id]?.decisionsLed || ""}
+              onChange={(e) => updateField(m.id, "decisionsLed", e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Brands</label>
+            <input
+              type="text"
+              value={editData[m.id]?.brands || ""}
+              onChange={(e) => updateField(m.id, "brands", e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Bio</label>
+            <textarea
+              value={(editData[m.id]?.whatSheBrings || []).join("\n\n")}
+              onChange={(e) =>
+                updateField(m.id, "whatSheBrings", e.target.value.split("\n\n").filter(Boolean))
+              }
+              style={{ ...textareaStyle, minHeight: "100px" }}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveMember(m.id)} saving={saving === m.id} />
+            <SuccessMessage show={saved === m.id} />
+            <button onClick={() => deleteMember(m.id)} style={btnDanger}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addMember} style={btnPrimary} data-testid="button-add-team">
+        + ADD MEMBER
+      </button>
+    </div>
+  );
+}
+
+function ServicesEditor() {
+  const queryClient = useQueryClient();
+  const { data: servicesList = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms/services"],
+  });
+  const [editData, setEditData] = useState<Record<number, any>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (servicesList.length) {
+      const map: Record<number, any> = {};
+      servicesList.forEach((s) => (map[s.id] = { ...s }));
+      setEditData(map);
+    }
+  }, [servicesList]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveService = async (id: number) => {
+    setSaving(id);
+    await fetch(`/api/cms/services/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/services"] });
+    setSaving(null);
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteService = async (id: number) => {
+    if (!confirm("Delete this service?")) return;
+    await fetch(`/api/cms/services/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/services"] });
+  };
+
+  const addService = async () => {
+    await fetch("/api/cms/services", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        serviceId: `service-${Date.now()}`,
+        title: "New Service",
+        subtitle: "Service description",
+        items: ["Item 1"],
+        sortOrder: servicesList.length,
+      }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/services"] });
+  };
+
+  const updateField = (id: number, field: string, value: any) => {
+    setEditData((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
+  };
+
+  return (
+    <div>
+      {servicesList.map((s: any) => (
+        <div key={s.id} style={cardStyle}>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Title</label>
+            <input
+              type="text"
+              value={editData[s.id]?.title || ""}
+              onChange={(e) => updateField(s.id, "title", e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Subtitle</label>
+            <textarea
+              value={editData[s.id]?.subtitle || ""}
+              onChange={(e) => updateField(s.id, "subtitle", e.target.value)}
+              style={textareaStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Items (one per line)</label>
+            <textarea
+              value={(editData[s.id]?.items || []).join("\n")}
+              onChange={(e) =>
+                updateField(s.id, "items", e.target.value.split("\n").filter(Boolean))
+              }
+              style={textareaStyle}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveService(s.id)} saving={saving === s.id} />
+            <SuccessMessage show={saved === s.id} />
+            <button onClick={() => deleteService(s.id)} style={btnDanger}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addService} style={btnPrimary} data-testid="button-add-service">
+        + ADD SERVICE
+      </button>
+    </div>
+  );
+}
+
+export default function AdminDashboard() {
+  const [, setLocation] = useLocation();
+  const [activeTab, setActiveTab] = useState<Tab>("settings");
+  const { data: user, isLoading, error } = useQuery({
+    queryKey: ["/api/auth/me"],
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (!isLoading && (error || !user)) {
+      setLocation("/admin/login");
+    }
+  }, [isLoading, error, user, setLocation]);
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setLocation("/admin/login");
+  };
+
+  if (isLoading) {
+    return (
+      <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif" }}>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  const tabs: Tab[] = ["settings", "problems", "whatwedo", "team", "services"];
+
+  return (
+    <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
+      <div
+        style={{
+          borderBottom: "1px solid rgba(255,255,255,0.1)",
+          padding: "0.75rem 1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          position: "sticky",
+          top: 0,
+          backgroundColor: "#0C0A3E",
+          zIndex: 50,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <h1
+            style={{
+              fontFamily: "'Libre Baskerville', serif",
+              fontSize: "1rem",
+              color: "#FFFFFF",
+            }}
+          >
+            CMS
+          </h1>
+          <a
+            href="/"
+            target="_blank"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "0.55rem",
+              color: "rgba(255,255,255,0.4)",
+              textDecoration: "none",
+              letterSpacing: "0.1em",
+            }}
+          >
+            VIEW SITE →
+          </a>
+        </div>
+        <button
+          onClick={handleLogout}
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.55rem",
+            color: "rgba(255,255,255,0.5)",
+            background: "none",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "6px",
+            padding: "0.4rem 0.75rem",
+            cursor: "pointer",
+            letterSpacing: "0.1em",
+          }}
+          data-testid="button-admin-logout"
+        >
+          LOGOUT
+        </button>
+      </div>
+
+      <div style={{ display: "flex", minHeight: "calc(100vh - 50px)" }}>
+        <div
+          style={{
+            width: "200px",
+            borderRight: "1px solid rgba(255,255,255,0.08)",
+            padding: "1rem 0",
+            flexShrink: 0,
+          }}
+        >
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.8rem",
+                color: activeTab === tab ? "#FFFFFF" : "rgba(255,255,255,0.5)",
+                backgroundColor: activeTab === tab ? "rgba(123,30,122,0.2)" : "transparent",
+                borderLeft: activeTab === tab ? "2px solid #7B1E7A" : "2px solid transparent",
+                border: "none",
+                borderLeftWidth: "2px",
+                borderLeftStyle: "solid",
+                borderLeftColor: activeTab === tab ? "#7B1E7A" : "transparent",
+                padding: "0.65rem 1.25rem",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
+              data-testid={`tab-${tab}`}
+            >
+              {tabLabels[tab]}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ flex: 1, padding: "1.5rem", maxWidth: "800px" }}>
+          <h2
+            style={{
+              fontFamily: "'Libre Baskerville', serif",
+              fontSize: "1.25rem",
+              color: "#FFFFFF",
+              marginBottom: "1.5rem",
+            }}
+          >
+            {tabLabels[activeTab]}
+          </h2>
+
+          {activeTab === "settings" && <SettingsEditor />}
+          {activeTab === "problems" && <ProblemsEditor />}
+          {activeTab === "whatwedo" && <WhatWeDoEditor />}
+          {activeTab === "team" && <TeamEditor />}
+          {activeTab === "services" && <ServicesEditor />}
+        </div>
+      </div>
+    </div>
+  );
+}
