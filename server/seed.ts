@@ -5,12 +5,20 @@ import bcrypt from "bcryptjs";
 
 export async function seedDatabase() {
   const existingSettings = await storage.getAllSettings();
-  if (existingSettings.length > 0) {
-    console.log("Database already seeded, skipping...");
-    return;
-  }
+  const existingKeys = new Set(existingSettings.map((s) => s.key));
+  const isFullySeeded = existingSettings.length > 0;
 
-  console.log("Seeding database with initial content...");
+  if (isFullySeeded) {
+    const subpageKeys = ["ourStory", "join", "contact"];
+    const missingKeys = subpageKeys.filter((k) => !existingKeys.has(k));
+    if (missingKeys.length === 0) {
+      console.log("Database already seeded, skipping...");
+      return;
+    }
+    console.log(`Backfilling missing settings: ${missingKeys.join(", ")}...`);
+  } else {
+    console.log("Seeding database with initial content...");
+  }
 
   const existingAdmin = await storage.getUserByUsername("admin");
   if (!existingAdmin) {
@@ -19,6 +27,7 @@ export async function seedDatabase() {
     console.log("Created default admin user");
   }
 
+  if (!isFullySeeded) {
   await storage.upsertSetting("hero", {
     label: "The Story Shapers",
     heading: "Finally. Marketing people who <em>get it.</em>",
@@ -179,6 +188,88 @@ export async function seedDatabase() {
       sortOrder: 5,
     },
   ]);
+  } // end !isFullySeeded
+
+  if (!existingKeys.has("ourStory")) {
+  await storage.upsertSetting("ourStory", {
+    label: "Our Story",
+    headingMain: "The Story Shapers:",
+    headingItalic: "An Origin",
+    opening: "Once upon a time, which is how all good stories begin, there were three marketers. Not musketeers, though they'd later discover they shared the same battle scars.",
+    misplacedVoice: "They'd built careers helping others find their voice. And somewhere along the way, they'd misplaced their own.",
+    photocopy: "They worked in different corners of the industry. Agencies. Corporates. Startups. Strategy rooms with too much air conditioning and not enough oxygen. They were good at what they did. Sometimes great. But the work had started to feel like a photocopy of a photocopy, each version a little more faded than the last.",
+    person1: "One had spent years writing for others. Brand voices. Campaign manifestos. Thought pieces with neat conclusions. Her own words lived elsewhere, half-formed, sitting in drafts she never sent.",
+    person2: "Another had mastered the art of the perfect pitch deck. She could sell a vision in her sleep, and had long stopped counting how many times she'd stood in a room presenting someone else's thinking as if it were her own.",
+    person3: "And the third had simply grown tired of being the smartest person in rooms that didn't want to listen.",
+    notBoardroom: "They didn't meet in a boardroom. Or a conference. Or one of those networking events where everyone talks and no one says anything.",
+    slowlyThenAtOnce: "They met the way most meaningful things happen, slowly, then all at once. A late-night message that said: \"Is it just me, or does this feel broken?\"",
+    notJustHer: "It wasn't just her.",
+    sameWeight: "What they discovered was that they'd all been carrying the same quiet weight: knowing exactly what a brand needed, and watching it do the opposite. Being senior enough to see the problem, but not free enough to fix it.",
+    stoppedWaiting: "And then one day, they stopped waiting for permission.",
+    noAgency: "No agency. No corporate ladder. No one else's rules about what work should look like or who gets to shape it.",
+    threeHumans: "Just three humans, a writer, a thinker, a doer (all three of each, really), asking a precarious question:",
+    bigQuestion: "What if we actually did this the way we've always known it should be done?",
+    notBornFromBusiness: "The Story Shapers wasn't born from any grand business idea.",
+    collectiveExhale: "It was born from a collective exhale.",
+    interdisciplinary: "Interdisciplinary by design. Flexible by intention. Built on the radical idea that the best work doesn't ask you to shrink — into a role, a title, a lane, a niche. It asks you to show up whole.",
+    nowTheyDo: "Now they do for others what they finally did for themselves. They help businesses find the story that's been there all along, buried under decks and campaigns and \"we've always done it this way.\"",
+    dontClaimAnswers: "They don't claim to have all the answers. But they've learned, the hard way, the only way, that the story you're afraid to tell is usually the one that matters most.",
+    closing: "This is us. The Story Shapers.",
+  });
+  }
+
+  if (!existingKeys.has("join")) {
+  await storage.upsertSetting("join", {
+    label: "Join the Collective",
+    headingMain: "This isn't a job.",
+    headingItalic: "It's not a gig platform either.",
+    introParagraphs: [
+      "The Story Shapers is a collective — a small, intentional group of senior strategists who've chosen to work together instead of alone.",
+      "We built this because we were tired of the two options the industry offers: agencies that drown good work in process, or solo freelancing that trades depth for freedom.",
+      "We wanted both. Autonomy and collaboration. Independence and support. Big thinking and small teams.",
+    ],
+    thirdSpace: "So we created a third space.",
+    principles: ["Clarity", "Integrity", "Collaboration", "Creativity", "Impact"],
+    collectiveAdvantages: [
+      { title: "Combined Expertise", body: "Together we offer a wider range of skills and experiences than any one person alone. This means we can tackle larger, more complex projects as a team, without giving up the agility of independent work." },
+      { title: "Agility and Flexibility", body: "We aren't bound by rigid agency structures or long chain-of-command approvals. The collective stays nimble and can adapt to project needs quickly – adjusting team size, skills, and approach as needed without the bureaucracy." },
+      { title: "Quality & Consistency", body: "Clients get senior-level thinking with personal ownership. By working as a close-knit team of veterans, we maintain consistency and depth in our work that lone freelancers might struggle with. Each project benefits from peer review and shared standards, so quality never falls through the cracks." },
+      { title: "Support & Community", body: "Going solo can be isolating. In our model, members have a support network of peers to bounce ideas off, get feedback, or share resources. We celebrate each other's wins and learn from each other's expertise, which makes us all better." },
+      { title: "Shared Reputation", body: "Under The Story Shapers banner, we collectively build a brand that stands for clarity and credibility. This shared reputation can open bigger opportunities than an individual might secure alone – while still keeping our individual brands and independence intact." },
+    ],
+    benefitsIntro: "Being a Story Shapers collaborator comes with tangible benefits, beyond what solo consulting or a traditional job can offer:",
+    memberBenefits: [
+      { title: "Bigger, Better Projects", body: "As a team, we can pursue more ambitious projects and high-profile clients that would be hard to win or execute solo. Members can tap into projects that match their \"zone of genius,\" without having to be an expert in everything – the collective fills in the gaps." },
+      { title: "Autonomy with Backup", body: "You maintain the freedom of a freelancer (choosing projects, setting your schedule) with the backup of a team. When you need a second set of eyes on a strategy or someone to cover a skill you don't have, the collective has your back. You're independent, but never alone." },
+      { title: "Shared Learning", body: "Each member brings decades of experience across domains (brand, content, SEO, social, community, etc.). We regularly share insights, frameworks, and feedback. This pooled intelligence means continuous learning – you grow faster by collaborating with other senior strategists than you would in isolation." },
+      { title: "Reduced Overhead and Hassle", body: "The collective structure takes care of a lot of administrative overhead that solo consultants face. We develop common tools, templates, and processes (from proposal decks to contracts) so you don't reinvent the wheel each time. We also handle things like invoicing systems, knowledge libraries, and marketing under one umbrella (more on the 20% contribution later), so you can focus more on your craft." },
+    ],
+    levelsIntro: "Not everyone participates the same way. That's by design.",
+    levels: [
+      { label: "CORE", title: "Core Members", body: "The backbone. Deeply involved in shaping direction, leading projects, mentoring others. Available most of the time. First in line for new opportunities — and first to step up when things get hard." },
+      { label: "CONTRIBUTING", title: "Contributing Members", body: "Active, but project-based. You join when the right work comes. You step back when it doesn't. Flexibility without obligation." },
+      { label: "AFFILIATE", title: "Affiliates", body: "On the roster for specific expertise. Called in when needed. Light commitment, occasional collaboration." },
+    ],
+    levelsFooter: "You can move between levels as your life changes. The only ask: communicate clearly so we can plan accordingly.",
+    howToJoinIntro: "Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work.",
+    howToJoinButton: "FILL THE FORM",
+  });
+  }
+
+  if (!existingKeys.has("contact")) {
+  await storage.upsertSetting("contact", {
+    joinHeadingMain: "Join the",
+    joinHeadingItalic: "Collective",
+    joinIntro: "Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work.",
+    joinSuccessTitle: "Thank you for reaching out.",
+    joinSuccessBody: "We'll review your submission and get back to you shortly.",
+    talkHeadingMain: "Let's",
+    talkHeadingItalic: "Talk",
+    talkIntro: "Got a challenge that needs clarity? Tell us what you're working on and we'll figure out how we can help.",
+    talkSuccessTitle: "Message received.",
+    talkSuccessBody: "We'll be in touch soon to start the conversation.",
+  });
+  }
 
   console.log("Database seeded successfully!");
 }

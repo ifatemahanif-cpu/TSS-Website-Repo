@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
@@ -11,6 +11,9 @@ const tabLabels: Record<Tab, string> = {
   whatwedo: "What We Do",
   team: "Team Members",
   services: "Services",
+  ourstory: "Our Story",
+  joinpage: "Join Page",
+  contactpage: "Contact Page",
 };
 
 const inputStyle: React.CSSProperties = {
@@ -908,6 +911,364 @@ function ServicesEditor() {
   );
 }
 
+function OurStoryEditor() {
+  const queryClient = useQueryClient();
+  const { data: settings, isLoading } = useQuery<Record<string, any>>({
+    queryKey: ["/api/cms/settings"],
+  });
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  useEffect(() => {
+    if (settings?.ourStory) setFormData(settings.ourStory);
+  }, [settings]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const save = async () => {
+    setSaving(true);
+    setSaveError(false);
+    const res = await fetch("/api/cms/settings/ourStory", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    setSaving(false);
+    if (!res.ok) { setSaveError(true); return; }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/settings"] });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const update = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const storyFields = [
+    { key: "label", label: "Section Label", multiline: false },
+    { key: "headingMain", label: "Heading (main)", multiline: false },
+    { key: "headingItalic", label: "Heading (italic part)", multiline: false },
+    { key: "opening", label: "Opening paragraph", multiline: true },
+    { key: "misplacedVoice", label: "Misplaced voice paragraph", multiline: true },
+    { key: "photocopy", label: "Photocopy paragraph", multiline: true },
+    { key: "person1", label: "Person 1 (writer)", multiline: true },
+    { key: "person2", label: "Person 2 (pitch deck)", multiline: true },
+    { key: "person3", label: "Person 3 (smartest person)", multiline: true },
+    { key: "notBoardroom", label: "Not a boardroom", multiline: true },
+    { key: "slowlyThenAtOnce", label: "Slowly then at once", multiline: true },
+    { key: "notJustHer", label: "Not just her", multiline: false },
+    { key: "sameWeight", label: "Same quiet weight", multiline: true },
+    { key: "stoppedWaiting", label: "Stopped waiting", multiline: true },
+    { key: "noAgency", label: "No agency", multiline: true },
+    { key: "threeHumans", label: "Three humans", multiline: true },
+    { key: "bigQuestion", label: "The big question", multiline: true },
+    { key: "notBornFromBusiness", label: "Not born from business", multiline: true },
+    { key: "collectiveExhale", label: "Collective exhale", multiline: false },
+    { key: "interdisciplinary", label: "Interdisciplinary", multiline: true },
+    { key: "nowTheyDo", label: "Now they do", multiline: true },
+    { key: "dontClaimAnswers", label: "Don't claim answers", multiline: true },
+    { key: "closing", label: "Closing line", multiline: false },
+  ];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      {storyFields.map((f) => (
+        <div key={f.key}>
+          <label style={labelStyle}>{f.label}</label>
+          {f.multiline ? (
+            <textarea
+              style={{ ...inputStyle, minHeight: "80px" }}
+              value={formData[f.key] || ""}
+              onChange={(e) => update(f.key, e.target.value)}
+              data-testid={`input-ourstory-${f.key}`}
+            />
+          ) : (
+            <input
+              style={inputStyle}
+              value={formData[f.key] || ""}
+              onChange={(e) => update(f.key, e.target.value)}
+              data-testid={`input-ourstory-${f.key}`}
+            />
+          )}
+        </div>
+      ))}
+      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <SaveButton onClick={save} saving={saving} />
+        <SuccessMessage show={saved} />
+      </div>
+    </div>
+  );
+}
+
+function JoinPageEditor() {
+  const queryClient = useQueryClient();
+  const { data: settings, isLoading } = useQuery<Record<string, any>>({
+    queryKey: ["/api/cms/settings"],
+  });
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  useEffect(() => {
+    if (settings?.join) setFormData(settings.join);
+  }, [settings]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const save = async () => {
+    setSaving(true);
+    setSaveError(false);
+    const res = await fetch("/api/cms/settings/join", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    setSaving(false);
+    if (!res.ok) { setSaveError(true); return; }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/settings"] });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const update = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const updateArrayItem = (field: string, index: number, prop: string, value: string) => {
+    setFormData((prev) => {
+      const arr = [...(prev[field] || [])];
+      arr[index] = { ...arr[index], [prop]: value };
+      return { ...prev, [field]: arr };
+    });
+  };
+
+  const addArrayItem = (field: string, template: Record<string, string>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: [...(prev[field] || []), template],
+    }));
+  };
+
+  const removeArrayItem = (field: string, index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: (prev[field] || []).filter((_: any, i: number) => i !== index),
+    }));
+  };
+
+  const renderListEditor = (field: string, label: string, hasLabel = false) => {
+    const items = formData[field] || [];
+    return (
+      <div style={{ marginBottom: "1.5rem" }}>
+        <label style={{ ...labelStyle, fontSize: "0.7rem", marginBottom: "0.75rem" }}>{label}</label>
+        {items.map((item: any, idx: number) => (
+          <div
+            key={idx}
+            style={{
+              backgroundColor: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "8px",
+              padding: "0.75rem",
+              marginBottom: "0.5rem",
+            }}
+          >
+            {hasLabel && (
+              <div style={{ marginBottom: "0.5rem" }}>
+                <label style={labelStyle}>Badge Label</label>
+                <input
+                  style={inputStyle}
+                  value={item.label || ""}
+                  onChange={(e) => updateArrayItem(field, idx, "label", e.target.value)}
+                />
+              </div>
+            )}
+            <div style={{ marginBottom: "0.5rem" }}>
+              <label style={labelStyle}>Title</label>
+              <input
+                style={inputStyle}
+                value={item.title || ""}
+                onChange={(e) => updateArrayItem(field, idx, "title", e.target.value)}
+              />
+            </div>
+            <div style={{ marginBottom: "0.5rem" }}>
+              <label style={labelStyle}>Description</label>
+              <textarea
+                style={{ ...inputStyle, minHeight: "60px" }}
+                value={item.body || ""}
+                onChange={(e) => updateArrayItem(field, idx, "body", e.target.value)}
+              />
+            </div>
+            <button onClick={() => removeArrayItem(field, idx)} style={btnDanger}>REMOVE</button>
+          </div>
+        ))}
+        <button
+          onClick={() => addArrayItem(field, hasLabel ? { label: "", title: "", body: "" } : { title: "", body: "" })}
+          style={{ ...btnPrimary, fontSize: "0.55rem" }}
+        >
+          + ADD ITEM
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div>
+        <label style={labelStyle}>Section Label</label>
+        <input style={inputStyle} value={formData.label || ""} onChange={(e) => update("label", e.target.value)} data-testid="input-join-label" />
+      </div>
+      <div>
+        <label style={labelStyle}>Heading (main)</label>
+        <input style={inputStyle} value={formData.headingMain || ""} onChange={(e) => update("headingMain", e.target.value)} data-testid="input-join-headingMain" />
+      </div>
+      <div>
+        <label style={labelStyle}>Heading (italic)</label>
+        <input style={inputStyle} value={formData.headingItalic || ""} onChange={(e) => update("headingItalic", e.target.value)} data-testid="input-join-headingItalic" />
+      </div>
+      <div>
+        <label style={labelStyle}>Intro Paragraphs (one per line)</label>
+        <textarea
+          style={{ ...inputStyle, minHeight: "100px" }}
+          value={(formData.introParagraphs || []).join("\n\n")}
+          onChange={(e) => update("introParagraphs", e.target.value.split("\n\n").filter((s: string) => s.trim()))}
+          data-testid="input-join-introParagraphs"
+        />
+      </div>
+      <div>
+        <label style={labelStyle}>"Third space" line</label>
+        <input style={inputStyle} value={formData.thirdSpace || ""} onChange={(e) => update("thirdSpace", e.target.value)} />
+      </div>
+      <div>
+        <label style={labelStyle}>Operating Principles (comma-separated)</label>
+        <input
+          style={inputStyle}
+          value={(formData.principles || []).join(", ")}
+          onChange={(e) => update("principles", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))}
+          data-testid="input-join-principles"
+        />
+      </div>
+
+      {renderListEditor("collectiveAdvantages", "Collective Advantages")}
+      
+      <div>
+        <label style={labelStyle}>Benefits Intro</label>
+        <textarea style={{ ...inputStyle, minHeight: "60px" }} value={formData.benefitsIntro || ""} onChange={(e) => update("benefitsIntro", e.target.value)} />
+      </div>
+
+      {renderListEditor("memberBenefits", "Member Benefits")}
+
+      <div>
+        <label style={labelStyle}>Levels Intro</label>
+        <input style={inputStyle} value={formData.levelsIntro || ""} onChange={(e) => update("levelsIntro", e.target.value)} />
+      </div>
+
+      {renderListEditor("levels", "Membership Levels", true)}
+
+      <div>
+        <label style={labelStyle}>Levels Footer</label>
+        <input style={inputStyle} value={formData.levelsFooter || ""} onChange={(e) => update("levelsFooter", e.target.value)} />
+      </div>
+      <div>
+        <label style={labelStyle}>How to Join Intro</label>
+        <textarea style={{ ...inputStyle, minHeight: "60px" }} value={formData.howToJoinIntro || ""} onChange={(e) => update("howToJoinIntro", e.target.value)} />
+      </div>
+      <div>
+        <label style={labelStyle}>How to Join Button Text</label>
+        <input style={inputStyle} value={formData.howToJoinButton || ""} onChange={(e) => update("howToJoinButton", e.target.value)} />
+      </div>
+
+      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <SaveButton onClick={save} saving={saving} />
+        <SuccessMessage show={saved} />
+      </div>
+    </div>
+  );
+}
+
+function ContactPageEditor() {
+  const queryClient = useQueryClient();
+  const { data: settings, isLoading } = useQuery<Record<string, any>>({
+    queryKey: ["/api/cms/settings"],
+  });
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  useEffect(() => {
+    if (settings?.contact) setFormData(settings.contact);
+  }, [settings]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const save = async () => {
+    setSaving(true);
+    setSaveError(false);
+    const res = await fetch("/api/cms/settings/contact", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    setSaving(false);
+    if (!res.ok) { setSaveError(true); return; }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/settings"] });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const update = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const contactFields = [
+    { key: "joinHeadingMain", label: "Join Section — Heading (main)" },
+    { key: "joinHeadingItalic", label: "Join Section — Heading (italic)" },
+    { key: "joinIntro", label: "Join Section — Intro text", multiline: true },
+    { key: "joinSuccessTitle", label: "Join Section — Success title" },
+    { key: "joinSuccessBody", label: "Join Section — Success body" },
+    { key: "talkHeadingMain", label: "Talk Section — Heading (main)" },
+    { key: "talkHeadingItalic", label: "Talk Section — Heading (italic)" },
+    { key: "talkIntro", label: "Talk Section — Intro text", multiline: true },
+    { key: "talkSuccessTitle", label: "Talk Section — Success title" },
+    { key: "talkSuccessBody", label: "Talk Section — Success body" },
+  ];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      {contactFields.map((f) => (
+        <div key={f.key}>
+          <label style={labelStyle}>{f.label}</label>
+          {f.multiline ? (
+            <textarea
+              style={{ ...inputStyle, minHeight: "80px" }}
+              value={formData[f.key] || ""}
+              onChange={(e) => update(f.key, e.target.value)}
+              data-testid={`input-contact-${f.key}`}
+            />
+          ) : (
+            <input
+              style={inputStyle}
+              value={formData[f.key] || ""}
+              onChange={(e) => update(f.key, e.target.value)}
+              data-testid={`input-contact-${f.key}`}
+            />
+          )}
+        </div>
+      ))}
+      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <SaveButton onClick={save} saving={saving} />
+        <SuccessMessage show={saved} />
+      </div>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<Tab>("submissions");
@@ -942,7 +1303,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -1073,6 +1434,9 @@ export default function AdminDashboard() {
           {activeTab === "whatwedo" && <WhatWeDoEditor />}
           {activeTab === "team" && <TeamEditor />}
           {activeTab === "services" && <ServicesEditor />}
+          {activeTab === "ourstory" && <OurStoryEditor />}
+          {activeTab === "joinpage" && <JoinPageEditor />}
+          {activeTab === "contactpage" && <ContactPageEditor />}
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
+import { useCmsSettings } from "@/hooks/use-cms";
 
-const collectiveAdvantages = [
+const defaultCollectiveAdvantages = [
   {
     title: "Combined Expertise",
     body: "Together we offer a wider range of skills and experiences than any one person alone. This means we can tackle larger, more complex projects as a team, without giving up the agility of independent work.",
@@ -25,7 +26,7 @@ const collectiveAdvantages = [
   },
 ];
 
-const memberBenefits = [
+const defaultMemberBenefits = [
   {
     title: "Bigger, Better Projects",
     body: "As a team, we can pursue more ambitious projects and high-profile clients that would be hard to win or execute solo. Members can tap into projects that match their \"zone of genius,\" without having to be an expert in everything – the collective fills in the gaps.",
@@ -44,7 +45,7 @@ const memberBenefits = [
   },
 ];
 
-const levels = [
+const defaultLevels = [
   {
     label: "CORE",
     title: "Core Members",
@@ -89,6 +90,28 @@ function SectionDivider() {
 }
 
 export default function Join() {
+  const { data: settings } = useCmsSettings();
+  const cms = settings?.join;
+
+  const collectiveAdvantages = cms?.collectiveAdvantages ?? defaultCollectiveAdvantages;
+  const memberBenefits = cms?.memberBenefits ?? defaultMemberBenefits;
+  const levels = cms?.levels ?? defaultLevels;
+  const label = cms?.label ?? "Join the Collective";
+  const headingMain = cms?.headingMain ?? "This isn't a job.";
+  const headingItalic = cms?.headingItalic ?? "It's not a gig platform either.";
+  const introParagraphs = cms?.introParagraphs ?? [
+    "The Story Shapers is a collective — a small, intentional group of senior strategists who've chosen to work together instead of alone.",
+    "We built this because we were tired of the two options the industry offers: agencies that drown good work in process, or solo freelancing that trades depth for freedom.",
+    "We wanted both. Autonomy and collaboration. Independence and support. Big thinking and small teams.",
+  ];
+  const thirdSpace = cms?.thirdSpace ?? "So we created a third space.";
+  const principles = cms?.principles ?? ["Clarity", "Integrity", "Collaboration", "Creativity", "Impact"];
+  const benefitsIntro = cms?.benefitsIntro ?? "Being a Story Shapers collaborator comes with tangible benefits, beyond what solo consulting or a traditional job can offer:";
+  const levelsIntro = cms?.levelsIntro ?? "Not everyone participates the same way. That's by design.";
+  const levelsFooter = cms?.levelsFooter ?? "You can move between levels as your life changes. The only ask: communicate clearly so we can plan accordingly.";
+  const howToJoinIntro = cms?.howToJoinIntro ?? "Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work.";
+  const howToJoinButton = cms?.howToJoinButton ?? "FILL THE FORM";
+
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
       <Navbar />
@@ -145,7 +168,7 @@ export default function Join() {
                   textTransform: "uppercase",
                 }}
               >
-                Join the Collective
+                {label}
               </span>
 
               <h1
@@ -164,7 +187,7 @@ export default function Join() {
                     fontWeight: 400,
                   }}
                 >
-                  This isn't a job.{" "}
+                  {headingMain}{" "}
                 </span>
                 <br className="hidden md:block" />
                 <span
@@ -176,7 +199,7 @@ export default function Join() {
                     opacity: 0.8,
                   }}
                 >
-                  It's not a gig platform either.
+                  {headingItalic}
                 </span>
               </h1>
 
@@ -195,41 +218,20 @@ export default function Join() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  lineHeight: 1.8,
-                }}
-              >
-                The Story Shapers is a collective — a small, intentional group of senior strategists who've chosen to work together instead of alone.
-              </p>
-
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  lineHeight: 1.8,
-                }}
-              >
-                We built this because we were tired of the two options the industry offers: agencies that drown good work in process, or solo freelancing that trades depth for freedom.
-              </p>
-
-              <p
-                className="mb-8"
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  lineHeight: 1.8,
-                }}
-              >
-                We wanted both. Autonomy and collaboration. Independence and support. Big thinking and small teams.
-              </p>
+              {introParagraphs.map((para: string, idx: number) => (
+                <p
+                  key={idx}
+                  className="mb-8"
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                    color: "rgba(255, 255, 255, 0.85)",
+                    lineHeight: 1.8,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
 
               <p
                 className="mb-4"
@@ -242,7 +244,7 @@ export default function Join() {
                   fontStyle: "italic",
                 }}
               >
-                So we created a third space.
+                {thirdSpace}
               </p>
 
               <SectionDivider />
@@ -278,7 +280,7 @@ export default function Join() {
               </h2>
 
               <div className="flex flex-wrap gap-3 mb-4">
-                {["Clarity", "Integrity", "Collaboration", "Creativity", "Impact"].map((principle, idx) => (
+                {principles.map((principle: string, idx: number) => (
                   <motion.span
                     key={principle}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -305,7 +307,7 @@ export default function Join() {
               <SectionDivider />
 
               <div className="space-y-4 mb-4">
-                {collectiveAdvantages.map((item, idx) => (
+                {collectiveAdvantages.map((item: { title: string; body: string }, idx: number) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 15 }}
@@ -402,11 +404,11 @@ export default function Join() {
                   lineHeight: 1.8,
                 }}
               >
-                Being a Story Shapers collaborator comes with tangible benefits, beyond what solo consulting or a traditional job can offer:
+                {benefitsIntro}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                {memberBenefits.map((benefit, idx) => (
+                {memberBenefits.map((benefit: { title: string; body: string }, idx: number) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 15 }}
@@ -487,11 +489,11 @@ export default function Join() {
                   lineHeight: 1.8,
                 }}
               >
-                Not everyone participates the same way. That's by design.
+                {levelsIntro}
               </p>
 
               <div className="space-y-4 mb-8">
-                {levels.map((level, idx) => (
+                {levels.map((level: { label: string; title: string; body: string }, idx: number) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, x: -15 }}
@@ -566,7 +568,7 @@ export default function Join() {
                   lineHeight: 1.8,
                 }}
               >
-                You can move between levels as your life changes. The only ask: communicate clearly so we can plan accordingly.
+                {levelsFooter}
               </p>
 
               <SectionDivider />
@@ -610,7 +612,7 @@ export default function Join() {
                   lineHeight: 1.8,
                 }}
               >
-                Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work.
+                {howToJoinIntro}
               </p>
 
               <div className="text-center">
@@ -634,7 +636,7 @@ export default function Join() {
                   onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; }}
                   data-testid="button-fill-form"
                 >
-                  FILL THE FORM
+                  {howToJoinButton}
                 </Link>
               </div>
             </motion.div>

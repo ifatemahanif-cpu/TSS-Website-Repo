@@ -57,13 +57,15 @@ Preferred communication style: Simple, everyday language.
 ### Admin Dashboard
 - Located at `/admin` (login at `/admin/login`)
 - Default credentials: admin / storyshapers2024 (bcrypt hashed)
-- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services
+- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page
 - Form Entries tab shows all submissions with expand-to-view-details, mark read/unread, and delete
+- Our Story / Join Page / Contact Page tabs allow editing all subpage text content
 - Inline editing with save buttons, image upload for team members
 
 ### Frontend CMS Integration
 - Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsProblems, useCmsWhatWeDo, useCmsTeam, useCmsServices
-- All homepage components fetch from API with hardcoded fallback values
+- All homepage and subpage components fetch from API with hardcoded fallback values
+- Subpage CMS keys: `ourStory`, `join`, `contact` in site_settings table
 - Hero and Problem headings use dangerouslySetInnerHTML for HTML formatting (admin-only content)
 - React Query with 60s staleTime for CMS data
 

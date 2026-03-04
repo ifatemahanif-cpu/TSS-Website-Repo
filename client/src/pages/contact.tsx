@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { apiRequest } from "@/lib/queryClient";
+import { useCmsSettings } from "@/hooks/use-cms";
 
 function SectionDivider() {
   return (
@@ -125,6 +126,19 @@ export default function Contact() {
   const [joinSubmitting, setJoinSubmitting] = useState(false);
   const [talkSubmitting, setTalkSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { data: settings } = useCmsSettings();
+  const cms = settings?.contact as {
+    joinHeadingMain?: string;
+    joinHeadingItalic?: string;
+    joinIntro?: string;
+    joinSuccessTitle?: string;
+    joinSuccessBody?: string;
+    talkHeadingMain?: string;
+    talkHeadingItalic?: string;
+    talkIntro?: string;
+    talkSuccessTitle?: string;
+    talkSuccessBody?: string;
+  } | undefined;
 
   useEffect(() => {
     if (window.location.hash) {
@@ -256,7 +270,7 @@ export default function Contact() {
                       fontWeight: 400,
                     }}
                   >
-                    Join the{" "}
+                    {cms?.joinHeadingMain ?? "Join the"}{" "}
                   </span>
                   <span
                     style={{
@@ -267,7 +281,7 @@ export default function Contact() {
                       opacity: 0.8,
                     }}
                   >
-                    Collective
+                    {cms?.joinHeadingItalic ?? "Collective"}
                   </span>
                 </h2>
               </div>
@@ -281,7 +295,7 @@ export default function Contact() {
                   lineHeight: 2,
                 }}
               >
-                Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work.
+                {cms?.joinIntro ?? "Fill the form thoughtfully. Tell us what you're good at, what you want to do more of, and how you like to work."}
               </p>
 
               {joinSubmitted ? (
@@ -305,7 +319,7 @@ export default function Contact() {
                       marginBottom: "0.5rem",
                     }}
                   >
-                    Thank you for reaching out.
+                    {cms?.joinSuccessTitle ?? "Thank you for reaching out."}
                   </p>
                   <p
                     style={{
@@ -314,7 +328,7 @@ export default function Contact() {
                       color: "rgba(255, 255, 255, 0.7)",
                     }}
                   >
-                    We'll review your submission and get back to you shortly.
+                    {cms?.joinSuccessBody ?? "We'll review your submission and get back to you shortly."}
                   </p>
                 </motion.div>
               ) : (
@@ -448,7 +462,7 @@ export default function Contact() {
                       fontWeight: 400,
                     }}
                   >
-                    Let's{" "}
+                    {cms?.talkHeadingMain ?? "Let's"}{" "}
                   </span>
                   <span
                     style={{
@@ -459,7 +473,7 @@ export default function Contact() {
                       opacity: 0.8,
                     }}
                   >
-                    Talk
+                    {cms?.talkHeadingItalic ?? "Talk"}
                   </span>
                 </h2>
               </div>
@@ -473,7 +487,7 @@ export default function Contact() {
                   lineHeight: 2,
                 }}
               >
-                Got a challenge that needs clarity? Tell us what you're working on and we'll figure out how we can help.
+                {cms?.talkIntro ?? "Got a challenge that needs clarity? Tell us what you're working on and we'll figure out how we can help."}
               </p>
 
               {talkSubmitted ? (
@@ -497,7 +511,7 @@ export default function Contact() {
                       marginBottom: "0.5rem",
                     }}
                   >
-                    Message received.
+                    {cms?.talkSuccessTitle ?? "Message received."}
                   </p>
                   <p
                     style={{
@@ -506,7 +520,7 @@ export default function Contact() {
                       color: "rgba(255, 255, 255, 0.7)",
                     }}
                   >
-                    We'll be in touch soon to start the conversation.
+                    {cms?.talkSuccessBody ?? "We'll be in touch soon to start the conversation."}
                   </p>
                 </motion.div>
               ) : (

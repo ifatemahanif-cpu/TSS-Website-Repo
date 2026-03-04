@@ -1,8 +1,36 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
+import { useCmsSettings } from "@/hooks/use-cms";
 
 export default function OurStory() {
+  const { data: settings } = useCmsSettings();
+  const s = settings?.ourStory ?? {};
+
+  const label = s.label ?? "Our Story";
+  const headingMain = s.headingMain ?? "The Story Shapers:";
+  const headingItalic = s.headingItalic ?? "An Origin";
+  const opening = s.opening ?? "Once upon a time, which is how all good stories begin, there were three marketers. Not musketeers, though they'd later discover they shared the same battle scars.";
+  const misplacedVoice = s.misplacedVoice ?? "They'd built careers helping others find their voice. And somewhere along the way, they'd misplaced their own.";
+  const photocopy = s.photocopy ?? "They worked in different corners of the industry. Agencies. Corporates. Startups. Strategy rooms with too much air conditioning and not enough oxygen. They were good at what they did. Sometimes great. But the work had started to feel like a photocopy of a photocopy, each version a little more faded than the last.";
+  const person1 = s.person1 ?? "One had spent years writing for others. Brand voices. Campaign manifestos. Thought pieces with neat conclusions. Her own words lived elsewhere, half-formed, sitting in drafts she never sent.";
+  const person2 = s.person2 ?? "Another had mastered the art of the perfect pitch deck. She could sell a vision in her sleep, and had long stopped counting how many times she'd stood in a room presenting someone else's thinking as if it were her own.";
+  const person3 = s.person3 ?? "And the third had simply grown tired of being the smartest person in rooms that didn't want to listen.";
+  const notBoardroom = s.notBoardroom ?? "They didn't meet in a boardroom. Or a conference. Or one of those networking events where everyone talks and no one says anything.";
+  const slowlyThenAtOnce = s.slowlyThenAtOnce ?? 'They met the way most meaningful things happen, slowly, then all at once. A late-night message that said: "Is it just me, or does this feel broken?"';
+  const notJustHer = s.notJustHer ?? "It wasn't just her.";
+  const sameWeight = s.sameWeight ?? "What they discovered was that they'd all been carrying the same quiet weight: knowing exactly what a brand needed, and watching it do the opposite. Being senior enough to see the problem, but not free enough to fix it.";
+  const stoppedWaiting = s.stoppedWaiting ?? "And then one day, they stopped waiting for permission.";
+  const noAgency = s.noAgency ?? "No agency. No corporate ladder. No one else's rules about what work should look like or who gets to shape it.";
+  const threeHumans = s.threeHumans ?? "Just three humans, a writer, a thinker, a doer (all three of each, really), asking a precarious question:";
+  const bigQuestion = s.bigQuestion ?? "What if we actually did this the way we've always known it should be done?";
+  const notBornFromBusiness = s.notBornFromBusiness ?? "The Story Shapers wasn't born from any grand business idea.";
+  const collectiveExhale = s.collectiveExhale ?? "It was born from a collective exhale.";
+  const interdisciplinary = s.interdisciplinary ?? "Interdisciplinary by design. Flexible by intention. Built on the radical idea that the best work doesn't ask you to shrink — into a role, a title, a lane, a niche. It asks you to show up whole.";
+  const nowTheyDo = s.nowTheyDo ?? 'Now they do for others what they finally did for themselves. They help businesses find the story that\'s been there all along, buried under decks and campaigns and "we\'ve always done it this way."';
+  const dontClaimAnswers = s.dontClaimAnswers ?? "They don't claim to have all the answers. But they've learned, the hard way, the only way, that the story you're afraid to tell is usually the one that matters most.";
+  const closing = s.closing ?? "This is us. The Story Shapers.";
+
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
       <Navbar />
@@ -60,7 +88,7 @@ export default function OurStory() {
                 }}
                 data-testid="text-story-label"
               >
-                Our Story
+                {label}
               </span>
 
               <h1
@@ -79,7 +107,7 @@ export default function OurStory() {
                     fontWeight: 400,
                   }}
                 >
-                  The Story Shapers:{" "}
+                  {headingMain}{" "}
                 </span>
                 <span
                   style={{
@@ -90,7 +118,7 @@ export default function OurStory() {
                     opacity: 0.8,
                   }}
                 >
-                  An Origin
+                  {headingItalic}
                 </span>
               </h1>
 
@@ -121,7 +149,7 @@ export default function OurStory() {
                 }}
                 data-testid="text-story-opening"
               >
-                Once upon a time, which is how all good stories begin, there were three marketers. Not musketeers, though they'd later discover they shared the same battle scars.
+                {opening}
               </p>
 
               <p
@@ -135,7 +163,7 @@ export default function OurStory() {
                   fontStyle: "italic",
                 }}
               >
-                They'd built careers helping others find their voice. And somewhere along the way, they'd misplaced their own.
+                {misplacedVoice}
               </p>
 
               <p
@@ -147,7 +175,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                They worked in different corners of the industry. Agencies. Corporates. Startups. Strategy rooms with too much air conditioning and not enough oxygen. They were good at what they did. Sometimes great. But the work had started to feel like a photocopy of a photocopy, each version a little more faded than the last.
+                {photocopy}
               </p>
 
               <div
@@ -165,7 +193,7 @@ export default function OurStory() {
                       lineHeight: 1.9,
                     }}
                   >
-                    One had spent years writing for others. Brand voices. Campaign manifestos. Thought pieces with neat conclusions. Her own words lived elsewhere, half-formed, sitting in drafts she never sent.
+                    {person1}
                   </p>
                   <p
                     style={{
@@ -175,7 +203,7 @@ export default function OurStory() {
                       lineHeight: 1.9,
                     }}
                   >
-                    Another had mastered the art of the perfect pitch deck. She could sell a vision in her sleep, and had long stopped counting how many times she'd stood in a room presenting someone else's thinking as if it were her own.
+                    {person2}
                   </p>
                   <p
                     style={{
@@ -185,7 +213,7 @@ export default function OurStory() {
                       lineHeight: 1.9,
                     }}
                   >
-                    And the third had simply grown tired of being the smartest person in rooms that didn't want to listen.
+                    {person3}
                   </p>
                 </div>
               </div>
@@ -221,7 +249,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                They didn't meet in a boardroom. Or a conference. Or one of those networking events where everyone talks and no one says anything.
+                {notBoardroom}
               </p>
 
               <p
@@ -233,7 +261,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                They met the way most meaningful things happen, slowly, then all at once. A late-night message that said: "Is it just me, or does this feel broken?"
+                {slowlyThenAtOnce}
               </p>
 
               <p
@@ -247,7 +275,7 @@ export default function OurStory() {
                   fontStyle: "italic",
                 }}
               >
-                It wasn't just her.
+                {notJustHer}
               </p>
 
               <div
@@ -281,7 +309,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                What they discovered was that they'd all been carrying the same quiet weight: knowing exactly what a brand needed, and watching it do the opposite. Being senior enough to see the problem, but not free enough to fix it.
+                {sameWeight}
               </p>
 
               <p
@@ -293,7 +321,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                And then one day, they stopped waiting for permission.
+                {stoppedWaiting}
               </p>
 
               <p
@@ -305,7 +333,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                No agency. No corporate ladder. No one else's rules about what work should look like or who gets to shape it.
+                {noAgency}
               </p>
 
               <p
@@ -317,7 +345,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                Just three humans, a writer, a thinker, a doer (all three of each, really), asking a precarious question:
+                {threeHumans}
               </p>
 
               <div
@@ -339,7 +367,7 @@ export default function OurStory() {
                     fontStyle: "italic",
                   }}
                 >
-                  What if we actually did this the way we've always known it should be done?
+                  {bigQuestion}
                 </p>
               </div>
 
@@ -374,7 +402,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                The Story Shapers wasn't born from any grand business idea.
+                {notBornFromBusiness}
               </p>
 
               <p
@@ -388,7 +416,7 @@ export default function OurStory() {
                   fontStyle: "italic",
                 }}
               >
-                It was born from a collective exhale.
+                {collectiveExhale}
               </p>
 
               <p
@@ -400,7 +428,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                Interdisciplinary by design. Flexible by intention. Built on the radical idea that the best work doesn't ask you to shrink — into a role, a title, a lane, a niche. It asks you to show up whole.
+                {interdisciplinary}
               </p>
 
               <div
@@ -434,7 +462,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                Now they do for others what they finally did for themselves. They help businesses find the story that's been there all along, buried under decks and campaigns and "we've always done it this way."
+                {nowTheyDo}
               </p>
 
               <p
@@ -446,7 +474,7 @@ export default function OurStory() {
                   lineHeight: 2,
                 }}
               >
-                They don't claim to have all the answers. But they've learned, the hard way, the only way, that the story you're afraid to tell is usually the one that matters most.
+                {dontClaimAnswers}
               </p>
 
               <div
@@ -462,7 +490,7 @@ export default function OurStory() {
                   }}
                   data-testid="text-story-closing"
                 >
-                  This is us. The Story Shapers.
+                  {closing}
                 </p>
                 <div
                   className="mt-4 mx-auto"
