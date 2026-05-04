@@ -9,6 +9,8 @@ import Home from "@/pages/home";
 import OurStory from "@/pages/our-story";
 import Join from "@/pages/join";
 import Contact from "@/pages/contact";
+import Blog from "@/pages/blog";
+import BlogPostPage from "@/pages/blog-post";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 
@@ -29,6 +31,8 @@ function Router() {
         <Route path="/our-story" component={OurStory} />
         <Route path="/join" component={Join} />
         <Route path="/contact" component={Contact} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin" component={AdminDashboard} />
         <Route component={NotFound} />

@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { BlogPost, BlogCategory } from "@shared/schema";
+const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogcategories" | "blogposts";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
@@ -14,6 +16,8 @@ const tabLabels: Record<Tab, string> = {
   ourstory: "Our Story",
   joinpage: "Join Page",
   contactpage: "Contact Page",
+  blogcategories: "Blog Categories",
+  blogposts: "Blog Posts",
 };
 
 const inputStyle: React.CSSProperties = {
@@ -1269,6 +1273,577 @@ function ContactPageEditor() {
   );
 }
 
+function BlogCategoriesEditor() {
+  const queryClient = useQueryClient();
+  const { data: categories = [], isLoading } = useQuery<BlogCategory[]>({
+    queryKey: ["/api/cms/blog/categories"],
+  });
+  const [editData, setEditData] = useState<Record<number, Partial<BlogCategory>>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (categories.length) {
+      const map: Record<number, Partial<BlogCategory>> = {};
+      categories.forEach((c) => (map[c.id] = { ...c }));
+      setEditData(map);
+    }
+  }, [categories]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveCategory = async (id: number) => {
+    setSaving(id);
+    const res = await fetch(`/api/cms/blog/categories/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    setSaving(null);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: "Save failed" }));
+      alert(err.message || "Failed to save category");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/categories"] });
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteCategory = async (id: number) => {
+    if (!confirm("Delete this category?")) return;
+    const res = await fetch(`/api/cms/blog/categories/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: "Delete failed" }));
+      alert(err.message || "Failed to delete category");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/categories"] });
+  };
+
+  const addCategory = async () => {
+    await fetch("/api/cms/blog/categories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: `New Category ${Date.now()}`,
+        description: "",
+        sortOrder: categories.length,
+      }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/categories"] });
+  };
+
+  const updateField = (id: number, field: string, value: string) => {
+    setEditData((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
+  };
+
+  return (
+    <div>
+      {categories.map((c) => (
+        <div key={c.id} style={cardStyle}>
+          <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Name</label>
+              <input
+                type="text"
+                value={editData[c.id]?.name || ""}
+                onChange={(e) => updateField(c.id, "name", e.target.value)}
+                style={inputStyle}
+                data-testid={`input-blog-category-name-${c.id}`}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Slug</label>
+              <input
+                type="text"
+                value={editData[c.id]?.slug || ""}
+                onChange={(e) => updateField(c.id, "slug", e.target.value)}
+                style={inputStyle}
+                data-testid={`input-blog-category-slug-${c.id}`}
+              />
+            </div>
+            <div style={{ width: "80px" }}>
+              <label style={labelStyle}>Order</label>
+              <input
+                type="number"
+                value={editData[c.id]?.sortOrder ?? 0}
+                onChange={(e) => updateField(c.id, "sortOrder", e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Description</label>
+            <textarea
+              value={editData[c.id]?.description || ""}
+              onChange={(e) => updateField(c.id, "description", e.target.value)}
+              style={textareaStyle}
+              data-testid={`input-blog-category-desc-${c.id}`}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveCategory(c.id)} saving={saving === c.id} />
+            <SuccessMessage show={saved === c.id} />
+            <button onClick={() => deleteCategory(c.id)} style={btnDanger} data-testid={`button-delete-category-${c.id}`}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addCategory} style={btnPrimary} data-testid="button-add-blog-category">
+        + ADD CATEGORY
+      </button>
+    </div>
+  );
+}
+
+function BlogPostsEditor() {
+  const queryClient = useQueryClient();
+  const { data: postsData, isLoading } = useQuery<{ posts: BlogPost[]; total: number; page: number; totalPages: number }>({
+    queryKey: ["/api/cms/blog/posts"],
+  });
+  const { data: categories = [] } = useQuery<BlogCategory[]>({
+    queryKey: ["/api/cms/blog/categories"],
+  });
+  const [editingPostId, setEditingPostId] = useState<number | null>(null);
+  const [editingPost, setEditingPost] = useState<Partial<BlogPost> | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [seoOpen, setSeoOpen] = useState(false);
+
+  const posts = postsData?.posts || [];
+
+  const getCategoryName = (categoryId: number | null) => {
+    if (!categoryId) return "—";
+    const cat = categories.find((c) => c.id === categoryId);
+    return cat?.name || "—";
+  };
+
+  const formatDate = (dateStr: string | Date | null) => {
+    if (!dateStr) return "—";
+    const d = typeof dateStr === "string" ? new Date(dateStr) : dateStr;
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  };
+
+  const startEditing = async (postId: number) => {
+    const res = await fetch(`/api/cms/blog/posts/${postId}`);
+    if (!res.ok) {
+      alert("Failed to load post");
+      return;
+    }
+    const post = await res.json();
+    setEditingPost({ ...post });
+    setEditingPostId(postId);
+    setSeoOpen(false);
+  };
+
+  const createNewPost = async () => {
+    const res = await fetch("/api/cms/blog/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "Untitled Post",
+        slug: `untitled-${Date.now()}`,
+        content: "",
+        excerpt: "",
+        status: "draft",
+        authorName: "The Story Shapers",
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: "Create failed" }));
+      alert(err.message || "Failed to create post");
+      return;
+    }
+    const post = await res.json();
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/posts"] });
+    setEditingPost({ ...post });
+    setEditingPostId(post.id);
+    setSeoOpen(false);
+  };
+
+  const savePost = async () => {
+    if (!editingPost) return;
+    setSaving(true);
+    const res = await fetch(`/api/cms/blog/posts/${editingPostId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editingPost),
+    });
+    setSaving(false);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: "Save failed" }));
+      alert(err.message || "Failed to save post");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/posts"] });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const deletePost = async (id: number) => {
+    if (!confirm("Delete this post?")) return;
+    await fetch(`/api/cms/blog/posts/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/posts"] });
+    if (editingPostId === id) {
+      setEditingPostId(null);
+      setEditingPost(null);
+    }
+  };
+
+  const uploadImage = async (file: File) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      if (!res.ok) {
+        alert("Failed to upload image");
+        return;
+      }
+      const { url } = await res.json();
+      setEditingPost((prev) => prev ? { ...prev, featuredImage: url } : prev);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const updatePostField = (field: string, value: string | number | null) => {
+    setEditingPost((prev) => prev ? { ...prev, [field]: value } : prev);
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+  };
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  if (editingPost) {
+    return (
+      <div>
+        <button
+          onClick={() => { setEditingPostId(null); setEditingPost(null); }}
+          style={{
+            ...btnPrimary,
+            backgroundColor: "rgba(255,255,255,0.08)",
+            marginBottom: "1.5rem",
+            fontSize: "0.55rem",
+          }}
+          data-testid="button-back-to-posts"
+        >
+          &larr; BACK TO LIST
+        </button>
+
+        <div style={cardStyle}>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Title</label>
+            <input
+              type="text"
+              value={editingPost.title || ""}
+              onChange={(e) => {
+                updatePostField("title", e.target.value);
+                if (!editingPost.slug || editingPost.slug === generateSlug(editingPost.title || "") || editingPost.slug.startsWith("untitled-")) {
+                  updatePostField("slug", generateSlug(e.target.value));
+                }
+              }}
+              style={inputStyle}
+              data-testid="input-post-title"
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Slug</label>
+            <input
+              type="text"
+              value={editingPost.slug || ""}
+              onChange={(e) => updatePostField("slug", e.target.value)}
+              style={{ ...inputStyle, fontSize: "0.75rem" }}
+              data-testid="input-post-slug"
+            />
+          </div>
+
+          <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Author Name</label>
+              <input
+                type="text"
+                value={editingPost.authorName || ""}
+                onChange={(e) => updatePostField("authorName", e.target.value)}
+                style={inputStyle}
+                data-testid="input-post-author"
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Category</label>
+              <select
+                value={editingPost.categoryId || ""}
+                onChange={(e) => updatePostField("categoryId", e.target.value ? parseInt(e.target.value) : null)}
+                style={inputStyle}
+                data-testid="select-post-category"
+              >
+                <option value="">No category</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Status</label>
+              <select
+                value={editingPost.status || "draft"}
+                onChange={(e) => updatePostField("status", e.target.value)}
+                style={inputStyle}
+                data-testid="select-post-status"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Publish Date</label>
+              <input
+                type="date"
+                value={editingPost.publishedAt ? new Date(editingPost.publishedAt).toISOString().split("T")[0] : ""}
+                onChange={(e) => updatePostField("publishedAt", e.target.value ? new Date(e.target.value).toISOString() : null)}
+                style={inputStyle}
+                data-testid="input-post-publish-date"
+              />
+            </div>
+          </div>
+
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Featured Image</label>
+            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <input
+                type="text"
+                value={editingPost.featuredImage || ""}
+                onChange={(e) => updatePostField("featuredImage", e.target.value)}
+                style={{ ...inputStyle, fontSize: "0.75rem" }}
+                placeholder="Image URL or upload"
+                data-testid="input-post-featured-image"
+              />
+              <label
+                style={{
+                  ...btnPrimary,
+                  fontSize: "0.5rem",
+                  padding: "0.5rem 0.75rem",
+                  whiteSpace: "nowrap",
+                  opacity: uploading ? 0.6 : 1,
+                }}
+              >
+                {uploading ? "..." : "UPLOAD"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) uploadImage(f);
+                  }}
+                  data-testid="input-post-upload-image"
+                />
+              </label>
+            </div>
+            {editingPost.featuredImage && (
+              <div style={{ marginTop: "0.5rem", maxWidth: "200px", borderRadius: "6px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+                <img src={editingPost.featuredImage} alt="" style={{ width: "100%", height: "auto" }} />
+              </div>
+            )}
+          </div>
+
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Excerpt</label>
+            <textarea
+              value={editingPost.excerpt || ""}
+              onChange={(e) => updatePostField("excerpt", e.target.value)}
+              style={textareaStyle}
+              placeholder="Brief summary of the post..."
+              data-testid="input-post-excerpt"
+            />
+          </div>
+
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Content</label>
+            <Suspense fallback={<div style={{ color: "rgba(255,255,255,0.5)", padding: "1rem" }}>Loading editor...</div>}>
+              <RichTextEditor
+                content={editingPost.content || ""}
+                onChange={(html) => updatePostField("content", html)}
+              />
+            </Suspense>
+          </div>
+
+          <div style={{ marginBottom: "0.75rem" }}>
+            <button
+              onClick={() => setSeoOpen(!seoOpen)}
+              style={{
+                ...btnPrimary,
+                backgroundColor: "rgba(255,255,255,0.06)",
+                fontSize: "0.55rem",
+                width: "100%",
+                textAlign: "left",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              data-testid="button-toggle-seo"
+            >
+              <span>SEO SETTINGS</span>
+              <span>{seoOpen ? "▲" : "▼"}</span>
+            </button>
+
+            {seoOpen && (
+              <div style={{ ...cardStyle, marginTop: "0.5rem", backgroundColor: "rgba(255,255,255,0.02)" }}>
+                <div style={{ marginBottom: "0.75rem" }}>
+                  <label style={labelStyle}>Meta Title</label>
+                  <input
+                    type="text"
+                    value={editingPost.metaTitle || ""}
+                    onChange={(e) => updatePostField("metaTitle", e.target.value)}
+                    style={inputStyle}
+                    placeholder="Custom page title for search engines"
+                    data-testid="input-post-meta-title"
+                  />
+                </div>
+                <div style={{ marginBottom: "0.75rem" }}>
+                  <label style={labelStyle}>Meta Description</label>
+                  <textarea
+                    value={editingPost.metaDescription || ""}
+                    onChange={(e) => updatePostField("metaDescription", e.target.value)}
+                    style={{ ...textareaStyle, minHeight: "60px" }}
+                    placeholder="Description shown in search results"
+                    data-testid="input-post-meta-description"
+                  />
+                </div>
+                <div style={{ marginBottom: "0.75rem" }}>
+                  <label style={labelStyle}>OG Image URL</label>
+                  <input
+                    type="text"
+                    value={editingPost.ogImage || ""}
+                    onChange={(e) => updatePostField("ogImage", e.target.value)}
+                    style={inputStyle}
+                    placeholder="Image URL for social sharing"
+                    data-testid="input-post-og-image"
+                  />
+                </div>
+                <div style={{ marginBottom: "0.75rem" }}>
+                  <label style={labelStyle}>Focus Keyword</label>
+                  <input
+                    type="text"
+                    value={editingPost.focusKeyword || ""}
+                    onChange={(e) => updatePostField("focusKeyword", e.target.value)}
+                    style={inputStyle}
+                    placeholder="Primary keyword for SEO"
+                    data-testid="input-post-focus-keyword"
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Canonical URL</label>
+                  <input
+                    type="text"
+                    value={editingPost.canonicalUrl || ""}
+                    onChange={(e) => updatePostField("canonicalUrl", e.target.value)}
+                    style={inputStyle}
+                    placeholder="https://..."
+                    data-testid="input-post-canonical-url"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={savePost} saving={saving} />
+            <SuccessMessage show={saved} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div style={{ marginBottom: "1rem" }}>
+        <button onClick={createNewPost} style={btnPrimary} data-testid="button-add-blog-post">
+          + NEW POST
+        </button>
+      </div>
+
+      {posts.length === 0 ? (
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No blog posts yet. Create your first post above.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              style={{
+                ...cardStyle,
+                marginBottom: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+                cursor: "pointer",
+              }}
+              onClick={() => startEditing(post.id)}
+              data-testid={`post-row-${post.id}`}
+            >
+              <span
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.1em",
+                  color: post.status === "published" ? "#4ade80" : "#fbbf24",
+                  backgroundColor: post.status === "published" ? "rgba(74,222,128,0.12)" : "rgba(251,191,36,0.12)",
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "4px",
+                  flexShrink: 0,
+                  textTransform: "uppercase",
+                }}
+              >
+                {post.status}
+              </span>
+              <span style={{
+                fontFamily: "'Inter', sans-serif", fontSize: "0.85rem",
+                color: "#FFFFFF", flex: 1, fontWeight: 500,
+              }}>
+                {post.title}
+              </span>
+              <span style={{
+                fontFamily: "'Inter', sans-serif", fontSize: "0.75rem",
+                color: "rgba(255,255,255,0.4)", flexShrink: 0,
+              }}>
+                {getCategoryName(post.categoryId)}
+              </span>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                color: "rgba(255,255,255,0.3)", flexShrink: 0,
+              }}>
+                {formatDate(post.publishedAt || post.createdAt)}
+              </span>
+              <button
+                onClick={(e) => { e.stopPropagation(); deletePost(post.id); }}
+                style={{ ...btnDanger, flexShrink: 0 }}
+                data-testid={`button-delete-post-${post.id}`}
+              >
+                DELETE
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<Tab>("submissions");
@@ -1303,7 +1878,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogcategories", "blogposts"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -1437,6 +2012,8 @@ export default function AdminDashboard() {
           {activeTab === "ourstory" && <OurStoryEditor />}
           {activeTab === "joinpage" && <JoinPageEditor />}
           {activeTab === "contactpage" && <ContactPageEditor />}
+          {activeTab === "blogcategories" && <BlogCategoriesEditor />}
+          {activeTab === "blogposts" && <BlogPostsEditor />}
         </div>
       </div>
     </div>

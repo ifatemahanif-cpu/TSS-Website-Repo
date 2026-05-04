@@ -45,11 +45,15 @@ Preferred communication style: Simple, everyday language.
 - **what_we_do_blocks** — title, description, teaser, expanded text, sort order
 - **page_sections** — Flexible key-value store for arbitrary page copy
 - **form_submissions** — formType ("join"/"talk"), data (jsonb of form fields), read (boolean), createdAt (timestamp)
+- **blog_categories** — name, slug (unique), description, sort order
+- **blog_posts** — title, slug (unique), content (HTML), excerpt, featuredImage, authorName, categoryId, status (draft/published enum), publishedAt, metaTitle, metaDescription, ogImage, focusKeyword, canonicalUrl, readingTime, sortOrder, createdAt, updatedAt
 
 ### API Endpoints
 - Public read: `GET /api/cms/settings`, `/api/cms/team`, `/api/cms/services`, `/api/cms/problems`, `/api/cms/whatwedo`
+- Public blog: `GET /api/blog/posts` (pagination + category filter), `GET /api/blog/posts/:slug`, `GET /api/blog/categories`
 - Public submit: `POST /api/forms/submit` (Zod-validated: formType enum + data record)
 - Admin submissions: `GET /api/cms/submissions`, `PUT /api/cms/submissions/:id/read`, `DELETE /api/cms/submissions/:id`
+- Admin blog: `GET/POST /api/cms/blog/categories`, `PUT/DELETE /api/cms/blog/categories/:id`, `GET/POST /api/cms/blog/posts`, `GET/PUT/DELETE /api/cms/blog/posts/:id`
 - Admin write (auth required): `PUT /api/cms/settings`, `POST/PUT/DELETE` for team/services/problems/whatwedo
 - Auth: `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
 - File upload: `POST /api/upload` (multer, saves to uploads/)
@@ -57,15 +61,16 @@ Preferred communication style: Simple, everyday language.
 ### Admin Dashboard
 - Located at `/admin` (login at `/admin/login`)
 - Default credentials: admin / storyshapers2024 (bcrypt hashed)
-- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page
+- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page, Blog Categories, Blog Posts
 - Form Entries tab shows all submissions with expand-to-view-details, mark read/unread, and delete
 - Our Story / Join Page / Contact Page tabs allow editing all subpage text content
 - Inline editing with save buttons, image upload for team members
 
 ### Frontend CMS Integration
-- Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsProblems, useCmsWhatWeDo, useCmsTeam, useCmsServices
+- Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsProblems, useCmsWhatWeDo, useCmsTeam, useCmsServices, useBlogPosts, useBlogPost, useBlogCategories
 - All homepage and subpage components fetch from API with hardcoded fallback values
 - Subpage CMS keys: `ourStory`, `join`, `contact` in site_settings table
+- Blog pages: `/blog` (listing with category filters, pagination), `/blog/:slug` (individual post with SEO meta tags + JSON-LD structured data)
 - Hero and Problem headings use dangerouslySetInnerHTML for HTML formatting (admin-only content)
 - React Query with 60s staleTime for CMS data
 
@@ -73,7 +78,7 @@ Preferred communication style: Simple, everyday language.
 
 - **Framework**: React 18 with TypeScript
 - **Bundler**: Vite with HMR
-- **Routing**: Wouter (lightweight client-side router)
+- **Routing**: Wouter (lightweight client-side router) — Routes: /, /our-story, /join, /contact, /blog, /blog/:slug, /admin, /admin/login
 - **State/Data**: TanStack React Query for server state management
 - **UI Components**: Shadcn/ui (new-york style) with Radix UI primitives
 - **Styling**: Tailwind CSS v4 (via `@tailwindcss/vite` plugin) with CSS custom properties for theming
@@ -95,7 +100,7 @@ Preferred communication style: Simple, everyday language.
 ## Data Storage
 
 - **ORM**: Drizzle ORM with PostgreSQL dialect
-- **Schema**: CMS tables (site_settings, team_members, services, problems, what_we_do_blocks, page_sections) + users table
+- **Schema**: CMS tables (site_settings, team_members, services, problems, what_we_do_blocks, page_sections, blog_categories, blog_posts) + users table
 - **Validation**: drizzle-zod generates Zod schemas from Drizzle table definitions
 - **Runtime Storage**: `DatabaseStorage` class using Drizzle queries against PostgreSQL
 - **Database Config**: `drizzle.config.ts` expects `DATABASE_URL` environment variable pointing to PostgreSQL

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, jsonb, serial, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, jsonb, serial, boolean, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -101,3 +101,43 @@ export const formSubmissions = pgTable("form_submissions", {
 export const insertFormSubmissionSchema = createInsertSchema(formSubmissions).omit({ id: true, createdAt: true, read: true });
 export type InsertFormSubmission = z.infer<typeof insertFormSubmissionSchema>;
 export type FormSubmission = typeof formSubmissions.$inferSelect;
+
+export const blogCategories = pgTable("blog_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description").notNull().default(""),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+export const insertBlogCategorySchema = createInsertSchema(blogCategories).omit({ id: true });
+export type InsertBlogCategory = z.infer<typeof insertBlogCategorySchema>;
+export type BlogCategory = typeof blogCategories.$inferSelect;
+
+export const blogPostStatusEnum = pgEnum("blog_post_status", ["draft", "published"]);
+
+export const blogPosts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  content: text("content").notNull().default(""),
+  excerpt: text("excerpt").notNull().default(""),
+  featuredImage: text("featured_image").notNull().default(""),
+  authorName: text("author_name").notNull().default("The Story Shapers"),
+  categoryId: integer("category_id").references(() => blogCategories.id, { onDelete: "set null" }),
+  status: blogPostStatusEnum("status").notNull().default("draft"),
+  publishedAt: timestamp("published_at"),
+  metaTitle: text("meta_title").notNull().default(""),
+  metaDescription: text("meta_description").notNull().default(""),
+  ogImage: text("og_image").notNull().default(""),
+  focusKeyword: text("focus_keyword").notNull().default(""),
+  canonicalUrl: text("canonical_url").notNull().default(""),
+  readingTime: integer("reading_time").notNull().default(0),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({ id: true, createdAt: true, updatedAt: true });
+export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type BlogPost = typeof blogPosts.$inferSelect;

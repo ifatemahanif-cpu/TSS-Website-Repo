@@ -7,10 +7,13 @@ import {
   type WhatWeDoBlock, type InsertWhatWeDoBlock,
   type PageSection, type InsertPageSection,
   type FormSubmission, type InsertFormSubmission,
+  type BlogCategory, type InsertBlogCategory,
+  type BlogPost, type InsertBlogPost,
   users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, pageSections, formSubmissions,
+  blogCategories, blogPosts,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, asc, and, desc } from "drizzle-orm";
+import { eq, asc, and, desc, sql, count } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -55,6 +58,19 @@ export interface IStorage {
   getFormSubmission(id: number): Promise<FormSubmission | undefined>;
   markFormSubmissionRead(id: number, read: boolean): Promise<FormSubmission | undefined>;
   deleteFormSubmission(id: number): Promise<boolean>;
+
+  getBlogCategories(): Promise<BlogCategory[]>;
+  getBlogCategory(id: number): Promise<BlogCategory | undefined>;
+  createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory>;
+  updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined>;
+  deleteBlogCategory(id: number): Promise<boolean>;
+
+  getBlogPosts(options: { status?: "draft" | "published"; categoryId?: number; limit?: number; offset?: number }): Promise<{ posts: BlogPost[]; total: number }>;
+  getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
+  getBlogPost(id: number): Promise<BlogPost | undefined>;
+  createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined>;
+  deleteBlogPost(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -236,6 +252,82 @@ export class DatabaseStorage implements IStorage {
 
   async deleteFormSubmission(id: number): Promise<boolean> {
     const result = await db.delete(formSubmissions).where(eq(formSubmissions.id, id)).returning();
+    return result.length > 0;
+  }
+
+  async getBlogCategories(): Promise<BlogCategory[]> {
+    return db.select().from(blogCategories).orderBy(asc(blogCategories.sortOrder));
+  }
+
+  async getBlogCategory(id: number): Promise<BlogCategory | undefined> {
+    const [category] = await db.select().from(blogCategories).where(eq(blogCategories.id, id));
+    return category;
+  }
+
+  async createBlogCategory(category: InsertBlogCategory): Promise<BlogCategory> {
+    const [created] = await db.insert(blogCategories).values(category).returning();
+    return created;
+  }
+
+  async updateBlogCategory(id: number, category: Partial<InsertBlogCategory>): Promise<BlogCategory | undefined> {
+    const [updated] = await db.update(blogCategories).set(category).where(eq(blogCategories.id, id)).returning();
+    return updated;
+  }
+
+  async deleteBlogCategory(id: number): Promise<boolean> {
+    const result = await db.delete(blogCategories).where(eq(blogCategories.id, id)).returning();
+    return result.length > 0;
+  }
+
+  async getBlogPosts(options: { status?: "draft" | "published"; categoryId?: number; limit?: number; offset?: number }): Promise<{ posts: BlogPost[]; total: number }> {
+    const conditions = [];
+    if (options.status) {
+      conditions.push(eq(blogPosts.status, options.status));
+    }
+    if (options.categoryId) {
+      conditions.push(eq(blogPosts.categoryId, options.categoryId));
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const [totalResult] = await db.select({ value: count() }).from(blogPosts).where(whereClause);
+    const total = totalResult?.value || 0;
+
+    let query = db.select().from(blogPosts).where(whereClause).orderBy(desc(blogPosts.publishedAt), desc(blogPosts.createdAt));
+
+    if (options.limit) {
+      query = query.limit(options.limit) as typeof query;
+    }
+    if (options.offset) {
+      query = query.offset(options.offset) as typeof query;
+    }
+
+    const posts = await query;
+    return { posts, total };
+  }
+
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+    return post;
+  }
+
+  async getBlogPost(id: number): Promise<BlogPost | undefined> {
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+    return post;
+  }
+
+  async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
+    const [created] = await db.insert(blogPosts).values(post).returning();
+    return created;
+  }
+
+  async updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
+    const [updated] = await db.update(blogPosts).set({ ...post, updatedAt: new Date() }).where(eq(blogPosts.id, id)).returning();
+    return updated;
+  }
+
+  async deleteBlogPost(id: number): Promise<boolean> {
+    const result = await db.delete(blogPosts).where(eq(blogPosts.id, id)).returning();
     return result.length > 0;
   }
 }

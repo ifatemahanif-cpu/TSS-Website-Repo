@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import type { BlogPost, BlogCategory } from "@shared/schema";
 
 export function useCmsSettings() {
   return useQuery<Record<string, any>>({
@@ -31,6 +32,32 @@ export function useCmsTeam() {
 export function useCmsServices() {
   return useQuery<any[]>({
     queryKey: ["/api/cms/services"],
+    staleTime: 60000,
+  });
+}
+
+export function useBlogPosts(options?: { page?: number; categoryId?: number }) {
+  const params = new URLSearchParams();
+  if (options?.page) params.set("page", String(options.page));
+  if (options?.categoryId) params.set("categoryId", String(options.categoryId));
+  const qs = params.toString();
+  return useQuery<{ posts: BlogPost[]; total: number; page: number; totalPages: number }>({
+    queryKey: ["/api/blog/posts" + (qs ? `?${qs}` : "")],
+    staleTime: 60000,
+  });
+}
+
+export function useBlogPost(slug: string) {
+  return useQuery<BlogPost>({
+    queryKey: [`/api/blog/posts/${slug}`],
+    staleTime: 60000,
+    enabled: !!slug,
+  });
+}
+
+export function useBlogCategories() {
+  return useQuery<BlogCategory[]>({
+    queryKey: ["/api/blog/categories"],
     staleTime: 60000,
   });
 }

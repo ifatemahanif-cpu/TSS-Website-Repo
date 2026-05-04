@@ -10,6 +10,32 @@ import multer from "multer";
 import { randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
+import { insertBlogCategorySchema, insertBlogPostSchema } from "@shared/schema";
+
+function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
+  const coerced = { ...body };
+  if (typeof coerced.publishedAt === "string") {
+    coerced.publishedAt = new Date(coerced.publishedAt as string);
+  }
+  if (typeof coerced.readingTime === "string") {
+    coerced.readingTime = parseInt(coerced.readingTime as string, 10) || 0;
+  }
+  if (typeof coerced.sortOrder === "string") {
+    coerced.sortOrder = parseInt(coerced.sortOrder as string, 10) || 0;
+  }
+  if (typeof coerced.categoryId === "string") {
+    coerced.categoryId = coerced.categoryId ? parseInt(coerced.categoryId as string, 10) : null;
+  }
+  return coerced;
+}
+
+function coerceBlogCategoryBody(body: Record<string, unknown>): Record<string, unknown> {
+  const coerced = { ...body };
+  if (typeof coerced.sortOrder === "string") {
+    coerced.sortOrder = parseInt(coerced.sortOrder as string, 10) || 0;
+  }
+  return coerced;
+}
 
 const PgSession = ConnectPgSimple(session);
 
@@ -263,6 +289,201 @@ export async function registerRoutes(
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
     const deleted = await storage.deleteFormSubmission(id);
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  });
+
+  function generateSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+  }
+
+  function calculateReadingTime(html: string): number {
+    const text = html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    const wordCount = text.split(" ").filter(Boolean).length;
+    return Math.max(1, Math.ceil(wordCount / 200));
+  }
+
+  app.get("/api/blog/categories", async (_req: Request, res: Response) => {
+    const categories = await storage.getBlogCategories();
+    res.json(categories);
+  });
+
+  app.get("/api/blog/posts", async (req: Request, res: Response) => {
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 9));
+    const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
+    const offset = (page - 1) * limit;
+
+    const { posts, total } = await storage.getBlogPosts({
+      status: "published",
+      categoryId,
+      limit,
+      offset,
+    });
+
+    res.json({
+      posts,
+      total,
+      page,
+      totalPages: Math.max(1, Math.ceil(total / limit)),
+    });
+  });
+
+  app.get("/api/blog/posts/:slug", async (req: Request, res: Response) => {
+    const post = await storage.getBlogPostBySlug(req.params.slug);
+    if (!post || post.status !== "published") {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.json(post);
+  });
+
+  app.get("/api/cms/blog/categories", requireAuth, async (_req: Request, res: Response) => {
+    const categories = await storage.getBlogCategories();
+    res.json(categories);
+  });
+
+  app.post("/api/cms/blog/categories", requireAuth, async (req: Request, res: Response) => {
+    try {
+      const parsed = insertBlogCategorySchema.partial().parse(coerceBlogCategoryBody(req.body));
+      const slug = generateSlug(parsed.name || "category");
+      const category = await storage.createBlogCategory({
+        name: parsed.name || "Untitled",
+        slug,
+        description: parsed.description || "",
+        sortOrder: parsed.sortOrder || 0,
+      });
+      res.json(category);
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      }
+      if (err instanceof Error && err.message?.includes("unique")) {
+        return res.status(409).json({ message: "A category with this slug already exists" });
+      }
+      throw err;
+    }
+  });
+
+  app.put("/api/cms/blog/categories/:id", requireAuth, async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+      const updates = insertBlogCategorySchema.partial().parse(coerceBlogCategoryBody(req.body));
+      if (updates.name && !updates.slug) {
+        updates.slug = generateSlug(updates.name);
+      }
+      const category = await storage.updateBlogCategory(id, updates);
+      if (!category) return res.status(404).json({ message: "Not found" });
+      res.json(category);
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      }
+      if (err instanceof Error && err.message?.includes("unique")) {
+        return res.status(409).json({ message: "A category with this slug already exists" });
+      }
+      throw err;
+    }
+  });
+
+  app.delete("/api/cms/blog/categories/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const { posts } = await storage.getBlogPosts({ categoryId: id, limit: 1, offset: 0 });
+    if (posts.length > 0) {
+      return res.status(409).json({ message: "Cannot delete category that has posts assigned to it. Reassign or delete those posts first." });
+    }
+    const deleted = await storage.deleteBlogCategory(id);
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  });
+
+  app.get("/api/cms/blog/posts", requireAuth, async (req: Request, res: Response) => {
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 50));
+    const status = req.query.status as "draft" | "published" | undefined;
+    const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
+    const offset = (page - 1) * limit;
+
+    const { posts, total } = await storage.getBlogPosts({ status, categoryId, limit, offset });
+    res.json({ posts, total, page, totalPages: Math.max(1, Math.ceil(total / limit)) });
+  });
+
+  app.get("/api/cms/blog/posts/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const post = await storage.getBlogPost(id);
+    if (!post) return res.status(404).json({ message: "Not found" });
+    res.json(post);
+  });
+
+  app.post("/api/cms/blog/posts", requireAuth, async (req: Request, res: Response) => {
+    try {
+      const data = insertBlogPostSchema.partial().parse(coerceBlogPostBody(req.body));
+      if (!data.slug && data.title) {
+        data.slug = generateSlug(data.title);
+      }
+      data.readingTime = data.content ? calculateReadingTime(data.content) : 1;
+      if (data.status === "published" && !data.publishedAt) {
+        data.publishedAt = new Date();
+      }
+      const post = await storage.createBlogPost({
+        title: data.title || "Untitled",
+        slug: data.slug || `untitled-${Date.now()}`,
+        ...data,
+      });
+      res.json(post);
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      }
+      if (err instanceof Error && err.message?.includes("unique")) {
+        return res.status(409).json({ message: "A post with this slug already exists" });
+      }
+      throw err;
+    }
+  });
+
+  app.put("/api/cms/blog/posts/:id", requireAuth, async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+      const data = insertBlogPostSchema.partial().parse(coerceBlogPostBody(req.body));
+      if (data.slug !== undefined && !data.slug.trim() && data.title) {
+        data.slug = generateSlug(data.title);
+      }
+      if (data.content !== undefined) {
+        data.readingTime = data.content ? calculateReadingTime(data.content) : 1;
+      }
+      if (data.status === "published") {
+        const existing = await storage.getBlogPost(id);
+        if (existing && !existing.publishedAt && !data.publishedAt) {
+          data.publishedAt = new Date();
+        }
+      }
+      const post = await storage.updateBlogPost(id, data);
+      if (!post) return res.status(404).json({ message: "Not found" });
+      res.json(post);
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      }
+      if (err instanceof Error && err.message?.includes("unique")) {
+        return res.status(409).json({ message: "A post with this slug already exists" });
+      }
+      throw err;
+    }
+  });
+
+  app.delete("/api/cms/blog/posts/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const deleted = await storage.deleteBlogPost(id);
     if (!deleted) return res.status(404).json({ message: "Not found" });
     res.json({ message: "Deleted" });
   });

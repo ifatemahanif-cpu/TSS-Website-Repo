@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { storage } from "./storage";
-import { siteSettings, teamMembers, services, problems, whatWeDoBlocks } from "@shared/schema";
+import { siteSettings, teamMembers, services, problems, whatWeDoBlocks, blogCategories, blogPosts } from "@shared/schema";
 import bcrypt from "bcryptjs";
 
 export async function seedDatabase() {
@@ -8,14 +8,19 @@ export async function seedDatabase() {
   const existingKeys = new Set(existingSettings.map((s) => s.key));
   const isFullySeeded = existingSettings.length > 0;
 
+  const existingCategories = await storage.getBlogCategories();
+  const needsBlogSeed = existingCategories.length === 0;
+
   if (isFullySeeded) {
     const subpageKeys = ["ourStory", "join", "contact"];
     const missingKeys = subpageKeys.filter((k) => !existingKeys.has(k));
-    if (missingKeys.length === 0) {
+    if (missingKeys.length === 0 && !needsBlogSeed) {
       console.log("Database already seeded, skipping...");
       return;
     }
-    console.log(`Backfilling missing settings: ${missingKeys.join(", ")}...`);
+    if (missingKeys.length > 0) {
+      console.log(`Backfilling missing settings: ${missingKeys.join(", ")}...`);
+    }
   } else {
     console.log("Seeding database with initial content...");
   }
@@ -269,6 +274,54 @@ export async function seedDatabase() {
     talkSuccessTitle: "Message received.",
     talkSuccessBody: "We'll be in touch soon to start the conversation.",
   });
+  }
+
+  if (needsBlogSeed) {
+    console.log("Seeding blog categories and posts...");
+
+    const insertedCategories = await db.insert(blogCategories).values([
+      { name: "Strategy", slug: "strategy", description: "Brand strategy and positioning insights", sortOrder: 0 },
+      { name: "Content", slug: "content", description: "Content systems and storytelling", sortOrder: 1 },
+      { name: "Growth", slug: "growth", description: "Scaling and growth marketing", sortOrder: 2 },
+    ]).returning();
+
+    const strategyCategory = insertedCategories[0];
+    const contentCategory = insertedCategories[1];
+
+    await db.insert(blogPosts).values([
+      {
+        title: "Why Most Brand Strategies Fail Before They Start",
+        slug: "why-most-brand-strategies-fail",
+        content: `<p>Every quarter, another brand publishes a strategy document that nobody reads. It gets presented once, filed away, and forgotten by the time the next campaign brief lands.</p><p>The problem isn't the thinking. It's that the strategy lives in a deck instead of in the decisions your team makes every day.</p><h2>The Gap Between Strategy and Execution</h2><p>We've seen it dozens of times: brilliant positioning work that never makes it past the boardroom. The messaging framework that marketing wrote but sales never adopted. The brand guidelines that design follows but content ignores.</p><p>Strategy fails when it's treated as a document rather than a practice. When it's something you reference occasionally rather than something that shapes every decision.</p><h2>What Actually Works</h2><p>The brands that get this right don't have better strategies. They have better systems for keeping strategy alive in daily work.</p><p>At SOCIAL, we didn't just define what the brand stood for — we built it into the briefing process, the content calendar, and the way teams talked about their work. The strategy wasn't a reference document. It was the operating system.</p><p>This is what we mean when we say we build what your team runs after we leave. Not a deck. A practice.</p><h2>Three Signs Your Strategy Isn't Working</h2><p><strong>1. Your team can't explain the brand in one sentence.</strong> If five people give five different answers about what you stand for, the strategy hasn't landed.</p><p><strong>2. Your content doesn't compound.</strong> If every piece of content starts from scratch rather than building on what came before, your editorial system is missing a spine.</p><p><strong>3. Your campaigns spike and fade.</strong> If launches create momentary buzz but don't build lasting equity, your campaign architecture needs restructuring.</p><p>The fix isn't more strategy. It's making the strategy you have actually work.</p>`,
+        excerpt: "Every quarter, another brand publishes a strategy document that nobody reads. The problem isn't the thinking — it's that the strategy lives in a deck instead of in the decisions your team makes every day.",
+        featuredImage: "",
+        authorName: "Fatema Hanif",
+        categoryId: strategyCategory.id,
+        status: "published",
+        publishedAt: new Date("2026-04-28"),
+        metaTitle: "Why Most Brand Strategies Fail Before They Start | The Story Shapers",
+        metaDescription: "The problem isn't the thinking. It's that the strategy lives in a deck instead of in decisions. Here's how to fix it.",
+        readingTime: 3,
+        sortOrder: 0,
+      },
+      {
+        title: "Content Systems That Actually Compound",
+        slug: "content-systems-that-compound",
+        content: `<p>Most brands treat content like a to-do list. Post three times a week. Hit the SEO keywords. Fill the calendar. Check the box.</p><p>But content that compounds — content that builds brand equity over time — doesn't come from output. It comes from architecture.</p><h2>The Difference Between Output and Architecture</h2><p>Output is volume. Architecture is structure. The difference matters because one creates noise and the other creates recognition.</p><p>When we worked with LBB, the challenge wasn't creating more content. The editorial teams across multiple cities were already producing plenty. The challenge was making that content work together instead of in isolation.</p><h2>Building an Editorial Backbone</h2><p>An editorial backbone is the structural framework that connects every piece of content to a larger narrative. It answers three questions:</p><p><strong>What do we believe?</strong> This is your editorial position — the perspective that makes your content distinctly yours.</p><p><strong>What do we repeat?</strong> These are your recurring formats and themes — the patterns that create recognition over time.</p><p><strong>What do we build on?</strong> This is your content architecture — how each piece connects to and strengthens what came before.</p><h2>Why This Matters Now</h2><p>In the age of AI-generated content, the brands that win won't be the ones producing the most. They'll be the ones with the clearest editorial identity. The ones whose content you'd recognize without seeing the logo.</p><p>That comes from architecture, not output. And it's what separates content that compounds from content that just fills space.</p>`,
+        excerpt: "Most brands treat content like a to-do list. But content that compounds — content that builds brand equity over time — doesn't come from output. It comes from architecture.",
+        featuredImage: "",
+        authorName: "Shaili Contractor",
+        categoryId: contentCategory.id,
+        status: "published",
+        publishedAt: new Date("2026-04-15"),
+        metaTitle: "Content Systems That Actually Compound | The Story Shapers",
+        metaDescription: "Content that builds brand equity doesn't come from output. It comes from architecture. Here's how to build systems that compound.",
+        readingTime: 3,
+        sortOrder: 1,
+      },
+    ]);
+
+    console.log("Blog seed data created.");
   }
 
   console.log("Database seeded successfully!");
