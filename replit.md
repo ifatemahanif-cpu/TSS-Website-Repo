@@ -21,13 +21,16 @@ Preferred communication style: Simple, everyday language.
   - `client/src/hooks/` — Custom React hooks (use-cms.ts for CMS data fetching)
   - `client/src/lib/` — Utilities (query client, cn helper)
 - `server/` — Express backend
-  - `server/index.ts` — Entry point, HTTP server setup, runs seed on startup
-  - `server/routes.ts` — API route registration (CMS CRUD + auth endpoints)
+  - `server/index.ts` — Entry point, HTTP server setup, runs migrations then seed on startup
+  - `server/routes.ts` — API route registration (CMS CRUD + blog + auth endpoints)
   - `server/storage.ts` — DatabaseStorage implementation using Drizzle ORM
   - `server/seed.ts` — Seeds database with initial hardcoded content (idempotent)
+  - `server/migrate.ts` — Auto-migration for blog tables (runs on every startup with IF NOT EXISTS guards)
   - `server/db.ts` — Database connection pool
   - `server/static.ts` — Static file serving for production builds
   - `server/vite.ts` — Vite dev server middleware integration
+- `scripts/` — Build and maintenance scripts
+  - `scripts/post-merge.sh` — Post-merge setup script (npm install + drizzle-kit push)
 - `shared/` — Shared code between client and server
   - `shared/schema.ts` — Drizzle ORM schema and Zod validation schemas
 - `migrations/` — Drizzle migration output directory
@@ -135,6 +138,8 @@ Preferred communication style: Simple, everyday language.
 - **zod** + **drizzle-zod** — Schema validation
 - **Radix UI** — Full suite of accessible UI primitives (dialog, accordion, tabs, popover, etc.)
 - **Shadcn/ui** — Pre-built component library built on Radix + Tailwind
+- **@tiptap/react** + extensions — Rich text editor for blog post content in admin
+- **dompurify** — HTML sanitization for rendering blog post content safely
 
 ## Fonts (External CDN)
 - Google Fonts: Libre Baskerville, Inter, JetBrains Mono, Press Start 2P
