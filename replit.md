@@ -49,14 +49,19 @@ Preferred communication style: Simple, everyday language.
 - **page_sections** — Flexible key-value store for arbitrary page copy
 - **form_submissions** — formType ("join"/"talk"), data (jsonb of form fields), read (boolean), createdAt (timestamp)
 - **blog_categories** — name, slug (unique), description, sort order
-- **blog_posts** — title, slug (unique), content (HTML), excerpt, featuredImage, authorName, categoryId, status (draft/published enum), publishedAt, metaTitle, metaDescription, ogImage, focusKeyword, canonicalUrl, readingTime, sortOrder, createdAt, updatedAt
+- **blog_posts** — title, slug (unique), content (HTML), excerpt, featuredImage, authorName, authorId (FK→authors), categoryId (FK→blog_categories), status (draft/published enum), featured (boolean), publishedAt, metaTitle, metaDescription, ogImage, focusKeyword, canonicalUrl, readingTime, sortOrder, createdAt, updatedAt
+- **authors** — name, slug (unique), photo, bio, twitter, linkedin, website, sort order
+- **email_subscribers** — email (unique), status (active/unsubscribed enum), unsubscribeToken, source, createdAt
 
 ### API Endpoints
 - Public read: `GET /api/cms/settings`, `/api/cms/team`, `/api/cms/services`, `/api/cms/problems`, `/api/cms/whatwedo`
-- Public blog: `GET /api/blog/posts` (pagination + category filter), `GET /api/blog/posts/:slug`, `GET /api/blog/categories`
+- Public blog: `GET /api/blog/posts` (pagination + category filter), `GET /api/blog/posts/:slug`, `GET /api/blog/posts/:slug/related`, `GET /api/blog/categories`, `GET /api/blog/authors`, `GET /api/blog/featured`
+- Public subscribe: `POST /api/subscribers`, `GET /api/subscribers/unsubscribe?token=...`
 - Public submit: `POST /api/forms/submit` (Zod-validated: formType enum + data record)
 - Admin submissions: `GET /api/cms/submissions`, `PUT /api/cms/submissions/:id/read`, `DELETE /api/cms/submissions/:id`
-- Admin blog: `GET/POST /api/cms/blog/categories`, `PUT/DELETE /api/cms/blog/categories/:id`, `GET/POST /api/cms/blog/posts`, `GET/PUT/DELETE /api/cms/blog/posts/:id`
+- Admin blog: `GET/POST /api/cms/blog/categories`, `PUT/DELETE /api/cms/blog/categories/:id`, `GET/POST /api/cms/blog/posts`, `GET/PUT/DELETE /api/cms/blog/posts/:id`, `POST /api/cms/blog/posts/:id/feature`
+- Admin authors: `GET/POST /api/cms/authors`, `PUT/DELETE /api/cms/authors/:id`
+- Admin subscribers: `GET /api/cms/subscribers`, `PUT /api/cms/subscribers/:id/unsubscribe`, `DELETE /api/cms/subscribers/:id`, `GET /api/cms/subscribers/export`
 - Admin write (auth required): `PUT /api/cms/settings`, `POST/PUT/DELETE` for team/services/problems/whatwedo
 - Auth: `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
 - File upload: `POST /api/upload` (multer, saves to uploads/)
@@ -64,18 +69,25 @@ Preferred communication style: Simple, everyday language.
 ### Admin Dashboard
 - Located at `/admin` (login at `/admin/login`)
 - Default credentials: admin / storyshapers2024 (bcrypt hashed)
-- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page, Blog Categories, Blog Posts
-- Form Entries tab shows all submissions with expand-to-view-details, mark read/unread, and delete
-- Our Story / Join Page / Contact Page tabs allow editing all subpage text content
-- Inline editing with save buttons, image upload for team members
+- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page, Blog Categories, Blog Posts, Authors, Subscribers
+- Blog Posts editor: Author Name + Author Profile (links to authors table), Category, Status, Featured toggle (☆ SET AS FEATURED / ★ FEATURED), SEO fields, video embed in editor
+- Authors tab: Manage author profiles (name, slug, bio, photo upload, LinkedIn, Twitter, Website)
+- Subscribers tab: View all subscribers (status, email, source, date), CSV export, unsubscribe, delete
 
 ### Frontend CMS Integration
-- Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsProblems, useCmsWhatWeDo, useCmsTeam, useCmsServices, useBlogPosts, useBlogPost, useBlogCategories
+- Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsProblems, useCmsWhatWeDo, useCmsTeam, useCmsServices, useBlogPosts, useBlogPost, useBlogCategories, useBlogAuthors, useFeaturedPost, useRelatedPosts
 - All homepage and subpage components fetch from API with hardcoded fallback values
 - Subpage CMS keys: `ourStory`, `join`, `contact` in site_settings table
-- Blog pages: `/blog` (listing with category filters, pagination), `/blog/:slug` (individual post with SEO meta tags + JSON-LD structured data)
+- Blog listing (`/blog`): Editorial homepage — featured hero card + category filter tabs + recent posts grid + email subscribe module
+- Blog post (`/blog/:slug`): Author avatar + bio block, sharing row (copy link/X/LinkedIn), subscribe module, related posts section, SEO meta/JSON-LD, video iframe support (YouTube/Vimeo only, sanitized via DOMPurify)
+- Rich text editor: Tiptap with video embed button (converts YouTube/Vimeo watch URLs to embed URLs)
 - Hero and Problem headings use dangerouslySetInnerHTML for HTML formatting (admin-only content)
 - React Query with 60s staleTime for CMS data
+
+### Email / Subscriptions
+- Email sending is intentionally NOT implemented (user decision). Subscribers are collected and stored but no emails are sent.
+- Subscribers can unsubscribe via token URL (`/api/subscribers/unsubscribe?token=...`)
+- Admin can view, unsubscribe, delete, and export subscribers as CSV
 
 ## Frontend Architecture
 
@@ -103,12 +115,12 @@ Preferred communication style: Simple, everyday language.
 ## Data Storage
 
 - **ORM**: Drizzle ORM with PostgreSQL dialect
-- **Schema**: CMS tables (site_settings, team_members, services, problems, what_we_do_blocks, page_sections, blog_categories, blog_posts) + users table
+- **Schema**: CMS tables (site_settings, team_members, services, problems, what_we_do_blocks, page_sections, blog_categories, blog_posts, authors, email_subscribers) + users table
 - **Validation**: drizzle-zod generates Zod schemas from Drizzle table definitions
 - **Runtime Storage**: `DatabaseStorage` class using Drizzle queries against PostgreSQL
 - **Database Config**: `drizzle.config.ts` expects `DATABASE_URL` environment variable pointing to PostgreSQL
 - **Migrations**: Run via `drizzle-kit push` (`npm run db:push`)
-- **Seeding**: `server/seed.ts` runs on startup, checks if siteSettings is empty before inserting
+- **Seeding**: `server/seed.ts` runs on startup, checks if siteSettings is empty before inserting; authors seeded idempotently
 
 ## Key Design Decisions
 
@@ -121,6 +133,10 @@ Preferred communication style: Simple, everyday language.
 4. **Team images**: Stored in DB as "/assets/filename.jpg" paths. Server serves attached_assets/ at /assets and uploads/ at /uploads. Frontend has a defaultImageMap for known team members to use Vite-imported images as fallback.
 
 5. **Production build**: Uses a custom build script that runs Vite for client and esbuild for server, bundling select dependencies to reduce cold start time.
+
+6. **Video embeds**: Only YouTube and Vimeo are allowed in blog content. The Tiptap editor converts watch URLs to privacy-enhanced embed URLs. DOMPurify validates iframe src against an allowlist of known video hosts before rendering.
+
+7. **Email**: Subscriber emails are collected and stored, but sending is intentionally not implemented. The system stores unsubscribe tokens for future use when an email provider is added.
 
 # External Dependencies
 
@@ -138,8 +154,8 @@ Preferred communication style: Simple, everyday language.
 - **zod** + **drizzle-zod** — Schema validation
 - **Radix UI** — Full suite of accessible UI primitives (dialog, accordion, tabs, popover, etc.)
 - **Shadcn/ui** — Pre-built component library built on Radix + Tailwind
-- **@tiptap/react** + extensions — Rich text editor for blog post content in admin
-- **dompurify** — HTML sanitization for rendering blog post content safely
+- **@tiptap/react** + extensions — Rich text editor for blog post content in admin (includes custom VideoEmbed node)
+- **dompurify** — HTML sanitization for rendering blog post content safely (iframe allowlist for YouTube/Vimeo)
 
 ## Fonts (External CDN)
 - Google Fonts: Libre Baskerville, Inter, JetBrains Mono, Press Start 2P

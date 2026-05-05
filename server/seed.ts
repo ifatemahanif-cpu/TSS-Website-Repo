@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { storage } from "./storage";
-import { siteSettings, teamMembers, services, problems, whatWeDoBlocks, blogCategories, blogPosts } from "@shared/schema";
+import { siteSettings, teamMembers, services, problems, whatWeDoBlocks, blogCategories, blogPosts, authors } from "@shared/schema";
 import bcrypt from "bcryptjs";
 
 export async function seedDatabase() {
@@ -11,10 +11,13 @@ export async function seedDatabase() {
   const existingCategories = await storage.getBlogCategories();
   const needsBlogSeed = existingCategories.length === 0;
 
+  const existingAuthors = await storage.getAuthors();
+  const needsAuthorSeed = existingAuthors.length === 0;
+
   if (isFullySeeded) {
     const subpageKeys = ["ourStory", "join", "contact"];
     const missingKeys = subpageKeys.filter((k) => !existingKeys.has(k));
-    if (missingKeys.length === 0 && !needsBlogSeed) {
+    if (missingKeys.length === 0 && !needsBlogSeed && !needsAuthorSeed) {
       console.log("Database already seeded, skipping...");
       return;
     }
@@ -302,6 +305,7 @@ export async function seedDatabase() {
         metaTitle: "Why Most Brand Strategies Fail Before They Start | The Story Shapers",
         metaDescription: "The problem isn't the thinking. It's that the strategy lives in a deck instead of in decisions. Here's how to fix it.",
         readingTime: 3,
+        featured: true,
         sortOrder: 0,
       },
       {
@@ -322,6 +326,44 @@ export async function seedDatabase() {
     ]);
 
     console.log("Blog seed data created.");
+  }
+
+  if (needsAuthorSeed) {
+    console.log("Seeding authors...");
+
+    const insertedAuthors = await db.insert(authors).values([
+      {
+        name: "Fatema Hanif",
+        slug: "fatema-hanif",
+        bio: "Specialises in making sure brand strategy and business reality point in the same direction. She has built marketing functions from scratch, scaled creator programs across markets, and driven brand transformations for startups and global companies.",
+        photo: "/assets/54b8c761-3071-4f74-8057-1840518e15a6_1772266999973.jpg",
+        linkedin: "https://www.linkedin.com/in/fatemahanif/",
+        sortOrder: 0,
+      },
+      {
+        name: "Shaili Contractor",
+        slug: "shaili-contractor",
+        bio: "Builds content systems that create compounding brand equity — not just output. She moves teams from scattered, ad-hoc content to structured storytelling that builds recall and credibility over time.",
+        photo: "/assets/Shaili-brand-deck_1772267064740.jpeg",
+        linkedin: "https://www.linkedin.com/in/shailicontractor/",
+        sortOrder: 1,
+      },
+    ]).returning();
+
+    const fatema = insertedAuthors[0];
+    const shaili = insertedAuthors[1];
+
+    // Link existing posts to authors
+    const { posts: existingPosts } = await storage.getBlogPosts({ limit: 100, offset: 0 });
+    for (const post of existingPosts) {
+      if (post.authorName === "Fatema Hanif" && fatema) {
+        await storage.updateBlogPost(post.id, { authorId: fatema.id });
+      } else if (post.authorName === "Shaili Contractor" && shaili) {
+        await storage.updateBlogPost(post.id, { authorId: shaili.id });
+      }
+    }
+
+    console.log("Authors seeded and linked to posts.");
   }
 
   console.log("Database seeded successfully!");

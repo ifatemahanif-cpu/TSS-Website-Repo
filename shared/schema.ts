@@ -114,6 +114,37 @@ export const insertBlogCategorySchema = createInsertSchema(blogCategories).omit(
 export type InsertBlogCategory = z.infer<typeof insertBlogCategorySchema>;
 export type BlogCategory = typeof blogCategories.$inferSelect;
 
+export const authors = pgTable("authors", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  photo: text("photo").notNull().default(""),
+  bio: text("bio").notNull().default(""),
+  twitter: text("twitter").notNull().default(""),
+  linkedin: text("linkedin").notNull().default(""),
+  website: text("website").notNull().default(""),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+export const insertAuthorSchema = createInsertSchema(authors).omit({ id: true });
+export type InsertAuthor = z.infer<typeof insertAuthorSchema>;
+export type Author = typeof authors.$inferSelect;
+
+export const emailSubscriberStatusEnum = pgEnum("email_subscriber_status", ["active", "unsubscribed"]);
+
+export const emailSubscribers = pgTable("email_subscribers", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  status: emailSubscriberStatusEnum("status").notNull().default("active"),
+  unsubscribeToken: text("unsubscribe_token").notNull().default(sql`gen_random_uuid()`),
+  source: text("source").notNull().default("blog"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertEmailSubscriberSchema = createInsertSchema(emailSubscribers).omit({ id: true, createdAt: true, unsubscribeToken: true });
+export type InsertEmailSubscriber = z.infer<typeof insertEmailSubscriberSchema>;
+export type EmailSubscriber = typeof emailSubscribers.$inferSelect;
+
 export const blogPostStatusEnum = pgEnum("blog_post_status", ["draft", "published"]);
 
 export const blogPosts = pgTable("blog_posts", {
@@ -124,8 +155,10 @@ export const blogPosts = pgTable("blog_posts", {
   excerpt: text("excerpt").notNull().default(""),
   featuredImage: text("featured_image").notNull().default(""),
   authorName: text("author_name").notNull().default("The Story Shapers"),
+  authorId: integer("author_id").references(() => authors.id, { onDelete: "set null" }),
   categoryId: integer("category_id").references(() => blogCategories.id, { onDelete: "set null" }),
   status: blogPostStatusEnum("status").notNull().default("draft"),
+  featured: boolean("featured").notNull().default(false),
   publishedAt: timestamp("published_at"),
   metaTitle: text("meta_title").notNull().default(""),
   metaDescription: text("meta_description").notNull().default(""),

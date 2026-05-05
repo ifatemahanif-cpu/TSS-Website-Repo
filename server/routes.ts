@@ -10,39 +10,29 @@ import multer from "multer";
 import { randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
-import { insertBlogCategorySchema, insertBlogPostSchema } from "@shared/schema";
+import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema } from "@shared/schema";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
-  if (typeof coerced.publishedAt === "string") {
-    coerced.publishedAt = new Date(coerced.publishedAt as string);
-  }
-  if (typeof coerced.readingTime === "string") {
-    coerced.readingTime = parseInt(coerced.readingTime as string, 10) || 0;
-  }
-  if (typeof coerced.sortOrder === "string") {
-    coerced.sortOrder = parseInt(coerced.sortOrder as string, 10) || 0;
-  }
-  if (typeof coerced.categoryId === "string") {
-    coerced.categoryId = coerced.categoryId ? parseInt(coerced.categoryId as string, 10) : null;
-  }
+  if (typeof coerced.publishedAt === "string") coerced.publishedAt = new Date(coerced.publishedAt as string);
+  if (typeof coerced.readingTime === "string") coerced.readingTime = parseInt(coerced.readingTime as string, 10) || 0;
+  if (typeof coerced.sortOrder === "string") coerced.sortOrder = parseInt(coerced.sortOrder as string, 10) || 0;
+  if (typeof coerced.categoryId === "string") coerced.categoryId = coerced.categoryId ? parseInt(coerced.categoryId as string, 10) : null;
+  if (typeof coerced.authorId === "string") coerced.authorId = coerced.authorId ? parseInt(coerced.authorId as string, 10) : null;
+  if (typeof coerced.featured === "string") coerced.featured = coerced.featured === "true";
   return coerced;
 }
 
 function coerceBlogCategoryBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
-  if (typeof coerced.sortOrder === "string") {
-    coerced.sortOrder = parseInt(coerced.sortOrder as string, 10) || 0;
-  }
+  if (typeof coerced.sortOrder === "string") coerced.sortOrder = parseInt(coerced.sortOrder as string, 10) || 0;
   return coerced;
 }
 
 const PgSession = ConnectPgSimple(session);
 
 const uploadsDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -67,10 +57,7 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export async function registerRoutes(
-  httpServer: Server,
-  app: Express
-): Promise<Server> {
+export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
   app.use(
     session({
       store: new PgSession({
@@ -80,12 +67,7 @@ export async function registerRoutes(
       secret: process.env.SESSION_SECRET || "story-shapers-cms-secret-key",
       resave: false,
       saveUninitialized: false,
-      cookie: {
-        maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-      },
+      cookie: { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: false, sameSite: "lax" },
     })
   );
 
@@ -94,59 +76,41 @@ export async function registerRoutes(
 
   app.post("/api/auth/login", async (req: Request, res: Response) => {
     const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ message: "Username and password required" });
-    }
+    if (!username || !password) return res.status(400).json({ message: "Username and password required" });
     const user = await storage.getUserByUsername(username);
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    if (!user) return res.status(401).json({ message: "Invalid credentials" });
     const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    if (!valid) return res.status(401).json({ message: "Invalid credentials" });
     (req.session as any).userId = user.id;
     res.json({ user: { id: user.id, username: user.username } });
   });
 
   app.post("/api/auth/logout", (req: Request, res: Response) => {
-    req.session.destroy(() => {
-      res.json({ message: "Logged out" });
-    });
+    req.session.destroy(() => res.json({ message: "Logged out" }));
   });
 
   app.get("/api/auth/me", async (req: Request, res: Response) => {
-    if (!(req.session as any)?.userId) {
-      return res.status(401).json({ message: "Not authenticated" });
-    }
+    if (!(req.session as any)?.userId) return res.status(401).json({ message: "Not authenticated" });
     const user = await storage.getUser((req.session as any).userId);
-    if (!user) {
-      return res.status(401).json({ message: "Not authenticated" });
-    }
+    if (!user) return res.status(401).json({ message: "Not authenticated" });
     res.json({ user: { id: user.id, username: user.username } });
   });
 
   app.post("/api/upload", requireAuth, upload.single("file"), (req: Request, res: Response) => {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
     res.json({ url: `/uploads/${req.file.filename}` });
   });
 
   app.get("/api/cms/settings", async (_req: Request, res: Response) => {
     const all = await storage.getAllSettings();
     const settingsMap: Record<string, any> = {};
-    for (const s of all) {
-      settingsMap[s.key] = s.value;
-    }
+    for (const s of all) settingsMap[s.key] = s.value;
     res.json(settingsMap);
   });
 
   app.get("/api/cms/settings/:key", async (req: Request, res: Response) => {
     const value = await storage.getSetting(req.params.key);
-    if (value === undefined) {
-      return res.status(404).json({ message: "Setting not found" });
-    }
+    if (value === undefined) return res.status(404).json({ message: "Setting not found" });
     res.json(value);
   });
 
@@ -156,13 +120,11 @@ export async function registerRoutes(
   });
 
   app.get("/api/cms/team", async (_req: Request, res: Response) => {
-    const members = await storage.getTeamMembers();
-    res.json(members);
+    res.json(await storage.getTeamMembers());
   });
 
   app.post("/api/cms/team", requireAuth, async (req: Request, res: Response) => {
-    const member = await storage.createTeamMember(req.body);
-    res.json(member);
+    res.json(await storage.createTeamMember(req.body));
   });
 
   app.put("/api/cms/team/:id", requireAuth, async (req: Request, res: Response) => {
@@ -178,13 +140,11 @@ export async function registerRoutes(
   });
 
   app.get("/api/cms/services", async (_req: Request, res: Response) => {
-    const all = await storage.getServices();
-    res.json(all);
+    res.json(await storage.getServices());
   });
 
   app.post("/api/cms/services", requireAuth, async (req: Request, res: Response) => {
-    const service = await storage.createService(req.body);
-    res.json(service);
+    res.json(await storage.createService(req.body));
   });
 
   app.put("/api/cms/services/:id", requireAuth, async (req: Request, res: Response) => {
@@ -200,13 +160,11 @@ export async function registerRoutes(
   });
 
   app.get("/api/cms/problems", async (_req: Request, res: Response) => {
-    const all = await storage.getProblems();
-    res.json(all);
+    res.json(await storage.getProblems());
   });
 
   app.post("/api/cms/problems", requireAuth, async (req: Request, res: Response) => {
-    const problem = await storage.createProblem(req.body);
-    res.json(problem);
+    res.json(await storage.createProblem(req.body));
   });
 
   app.put("/api/cms/problems/:id", requireAuth, async (req: Request, res: Response) => {
@@ -222,13 +180,11 @@ export async function registerRoutes(
   });
 
   app.get("/api/cms/whatwedo", async (_req: Request, res: Response) => {
-    const all = await storage.getWhatWeDoBlocks();
-    res.json(all);
+    res.json(await storage.getWhatWeDoBlocks());
   });
 
   app.post("/api/cms/whatwedo", requireAuth, async (req: Request, res: Response) => {
-    const block = await storage.createWhatWeDoBlock(req.body);
-    res.json(block);
+    res.json(await storage.createWhatWeDoBlock(req.body));
   });
 
   app.put("/api/cms/whatwedo/:id", requireAuth, async (req: Request, res: Response) => {
@@ -244,35 +200,27 @@ export async function registerRoutes(
   });
 
   app.get("/api/cms/pages/:pageKey", async (req: Request, res: Response) => {
-    const sections = await storage.getPageSections(req.params.pageKey);
-    res.json(sections);
+    res.json(await storage.getPageSections(req.params.pageKey));
   });
 
   app.put("/api/cms/pages/:pageKey/:sectionKey", requireAuth, async (req: Request, res: Response) => {
-    const section = await storage.upsertPageSection(req.params.pageKey, req.params.sectionKey, req.body);
-    res.json(section);
+    res.json(await storage.upsertPageSection(req.params.pageKey, req.params.sectionKey, req.body));
   });
 
   const formSubmissionBody = z.object({
     formType: z.enum(["join", "talk"]),
-    data: z.record(z.string(), z.string()).refine(
-      (d) => Object.keys(d).length <= 20,
-      { message: "Too many fields" }
-    ),
+    data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
   app.post("/api/forms/submit", async (req: Request, res: Response) => {
     const parsed = formSubmissionBody.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
-    }
+    if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
     res.json(submission);
   });
 
   app.get("/api/cms/submissions", requireAuth, async (_req: Request, res: Response) => {
-    const submissions = await storage.getFormSubmissions();
-    res.json(submissions);
+    res.json(await storage.getFormSubmissions());
   });
 
   app.put("/api/cms/submissions/:id/read", requireAuth, async (req: Request, res: Response) => {
@@ -294,12 +242,7 @@ export async function registerRoutes(
   });
 
   function generateSlug(title: string): string {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
+    return title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
   }
 
   function calculateReadingTime(html: string): number {
@@ -308,9 +251,13 @@ export async function registerRoutes(
     return Math.max(1, Math.ceil(wordCount / 200));
   }
 
+  // Public blog endpoints
   app.get("/api/blog/categories", async (_req: Request, res: Response) => {
-    const categories = await storage.getBlogCategories();
-    res.json(categories);
+    res.json(await storage.getBlogCategories());
+  });
+
+  app.get("/api/blog/authors", async (_req: Request, res: Response) => {
+    res.json(await storage.getAuthors());
   });
 
   app.get("/api/blog/posts", async (req: Request, res: Response) => {
@@ -318,53 +265,137 @@ export async function registerRoutes(
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 9));
     const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
     const offset = (page - 1) * limit;
+    const { posts, total } = await storage.getBlogPosts({ status: "published", categoryId, limit, offset });
+    res.json({ posts, total, page, totalPages: Math.max(1, Math.ceil(total / limit)) });
+  });
 
-    const { posts, total } = await storage.getBlogPosts({
-      status: "published",
-      categoryId,
-      limit,
-      offset,
-    });
+  app.get("/api/blog/featured", async (_req: Request, res: Response) => {
+    const post = await storage.getFeaturedPost();
+    if (!post) return res.status(404).json({ message: "No featured post" });
+    res.json(post);
+  });
 
-    res.json({
-      posts,
-      total,
-      page,
-      totalPages: Math.max(1, Math.ceil(total / limit)),
-    });
+  app.get("/api/blog/posts/:slug/related", async (req: Request, res: Response) => {
+    const post = await storage.getBlogPostBySlug(req.params.slug);
+    if (!post || post.status !== "published") return res.status(404).json({ message: "Post not found" });
+    const related = await storage.getRelatedPosts(post.id, post.categoryId, 3);
+    res.json(related);
   });
 
   app.get("/api/blog/posts/:slug", async (req: Request, res: Response) => {
     const post = await storage.getBlogPostBySlug(req.params.slug);
-    if (!post || post.status !== "published") {
-      return res.status(404).json({ message: "Post not found" });
-    }
+    if (!post || post.status !== "published") return res.status(404).json({ message: "Post not found" });
     res.json(post);
   });
 
+  // Public subscriber endpoints
+  const subscribeSchema = z.object({ email: z.string().email(), source: z.string().optional() });
+
+  app.post("/api/subscribers", async (req: Request, res: Response) => {
+    const parsed = subscribeSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ message: "Invalid email address" });
+    try {
+      const subscriber = await storage.createEmailSubscriber(parsed.data.email, parsed.data.source);
+      res.json({ message: "Subscribed successfully", id: subscriber.id });
+    } catch (err: any) {
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "Already subscribed" });
+      throw err;
+    }
+  });
+
+  app.get("/api/subscribers/unsubscribe", async (req: Request, res: Response) => {
+    const token = req.query.token as string;
+    if (!token) return res.status(400).json({ message: "Token required" });
+    const ok = await storage.unsubscribeByToken(token);
+    if (!ok) return res.status(404).json({ message: "Subscription not found" });
+    res.send(`<html><body style="font-family:sans-serif;text-align:center;padding:4rem;background:#0C0A3E;color:#fff"><h2>You've been unsubscribed.</h2><p>You won't receive further emails from The Story Shapers blog.</p><a href="/" style="color:#a78bfa">← Back to site</a></body></html>`);
+  });
+
+  // Admin subscriber endpoints
+  app.get("/api/cms/subscribers", requireAuth, async (_req: Request, res: Response) => {
+    res.json(await storage.getEmailSubscribers());
+  });
+
+  app.put("/api/cms/subscribers/:id/unsubscribe", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const ok = await storage.unsubscribeById(id);
+    if (!ok) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Unsubscribed" });
+  });
+
+  app.delete("/api/cms/subscribers/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const ok = await storage.deleteEmailSubscriber(id);
+    if (!ok) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  });
+
+  app.get("/api/cms/subscribers/export", requireAuth, async (_req: Request, res: Response) => {
+    const subs = await storage.getEmailSubscribers();
+    const rows = ["email,status,source,created_at"];
+    for (const s of subs) rows.push(`${s.email},${s.status},${s.source},${s.createdAt.toISOString()}`);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attachment; filename=subscribers.csv");
+    res.send(rows.join("\n"));
+  });
+
+  // Admin author endpoints
+  app.get("/api/cms/authors", requireAuth, async (_req: Request, res: Response) => {
+    res.json(await storage.getAuthors());
+  });
+
+  app.post("/api/cms/authors", requireAuth, async (req: Request, res: Response) => {
+    try {
+      const data = insertAuthorSchema.partial().parse(req.body);
+      const slug = data.slug || generateSlug(data.name || "author");
+      const author = await storage.createAuthor({ name: data.name || "Author", slug, ...data });
+      res.json(author);
+    } catch (err: any) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "An author with this slug already exists" });
+      throw err;
+    }
+  });
+
+  app.put("/api/cms/authors/:id", requireAuth, async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+      const data = insertAuthorSchema.partial().parse(req.body);
+      const author = await storage.updateAuthor(id, data);
+      if (!author) return res.status(404).json({ message: "Not found" });
+      res.json(author);
+    } catch (err: any) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "An author with this slug already exists" });
+      throw err;
+    }
+  });
+
+  app.delete("/api/cms/authors/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const deleted = await storage.deleteAuthor(id);
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  });
+
+  // Admin blog endpoints
   app.get("/api/cms/blog/categories", requireAuth, async (_req: Request, res: Response) => {
-    const categories = await storage.getBlogCategories();
-    res.json(categories);
+    res.json(await storage.getBlogCategories());
   });
 
   app.post("/api/cms/blog/categories", requireAuth, async (req: Request, res: Response) => {
     try {
       const parsed = insertBlogCategorySchema.partial().parse(coerceBlogCategoryBody(req.body));
       const slug = generateSlug(parsed.name || "category");
-      const category = await storage.createBlogCategory({
-        name: parsed.name || "Untitled",
-        slug,
-        description: parsed.description || "",
-        sortOrder: parsed.sortOrder || 0,
-      });
+      const category = await storage.createBlogCategory({ name: parsed.name || "Untitled", slug, description: parsed.description || "", sortOrder: parsed.sortOrder || 0 });
       res.json(category);
-    } catch (err: unknown) {
-      if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid data", errors: err.errors });
-      }
-      if (err instanceof Error && err.message?.includes("unique")) {
-        return res.status(409).json({ message: "A category with this slug already exists" });
-      }
+    } catch (err: any) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "A category with this slug already exists" });
       throw err;
     }
   });
@@ -374,19 +405,13 @@ export async function registerRoutes(
       const id = parseInt(req.params.id);
       if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
       const updates = insertBlogCategorySchema.partial().parse(coerceBlogCategoryBody(req.body));
-      if (updates.name && !updates.slug) {
-        updates.slug = generateSlug(updates.name);
-      }
+      if (updates.name && !updates.slug) updates.slug = generateSlug(updates.name);
       const category = await storage.updateBlogCategory(id, updates);
       if (!category) return res.status(404).json({ message: "Not found" });
       res.json(category);
-    } catch (err: unknown) {
-      if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid data", errors: err.errors });
-      }
-      if (err instanceof Error && err.message?.includes("unique")) {
-        return res.status(409).json({ message: "A category with this slug already exists" });
-      }
+    } catch (err: any) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "A category with this slug already exists" });
       throw err;
     }
   });
@@ -395,9 +420,7 @@ export async function registerRoutes(
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
     const { posts } = await storage.getBlogPosts({ categoryId: id, limit: 1, offset: 0 });
-    if (posts.length > 0) {
-      return res.status(409).json({ message: "Cannot delete category that has posts assigned to it. Reassign or delete those posts first." });
-    }
+    if (posts.length > 0) return res.status(409).json({ message: "Cannot delete category that has posts assigned to it." });
     const deleted = await storage.deleteBlogCategory(id);
     if (!deleted) return res.status(404).json({ message: "Not found" });
     res.json({ message: "Deleted" });
@@ -409,7 +432,6 @@ export async function registerRoutes(
     const status = req.query.status as "draft" | "published" | undefined;
     const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
     const offset = (page - 1) * limit;
-
     const { posts, total } = await storage.getBlogPosts({ status, categoryId, limit, offset });
     res.json({ posts, total, page, totalPages: Math.max(1, Math.ceil(total / limit)) });
   });
@@ -425,26 +447,15 @@ export async function registerRoutes(
   app.post("/api/cms/blog/posts", requireAuth, async (req: Request, res: Response) => {
     try {
       const data = insertBlogPostSchema.partial().parse(coerceBlogPostBody(req.body));
-      if (!data.slug && data.title) {
-        data.slug = generateSlug(data.title);
-      }
+      if (!data.slug && data.title) data.slug = generateSlug(data.title);
       data.readingTime = data.content ? calculateReadingTime(data.content) : 1;
-      if (data.status === "published" && !data.publishedAt) {
-        data.publishedAt = new Date();
-      }
-      const post = await storage.createBlogPost({
-        title: data.title || "Untitled",
-        slug: data.slug || `untitled-${Date.now()}`,
-        ...data,
-      });
+      if (data.status === "published" && !data.publishedAt) data.publishedAt = new Date();
+      const post = await storage.createBlogPost({ title: data.title || "Untitled", slug: data.slug || `untitled-${Date.now()}`, ...data });
+      if (data.featured) await storage.setFeaturedPost(post.id);
       res.json(post);
-    } catch (err: unknown) {
-      if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid data", errors: err.errors });
-      }
-      if (err instanceof Error && err.message?.includes("unique")) {
-        return res.status(409).json({ message: "A post with this slug already exists" });
-      }
+    } catch (err: any) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "A post with this slug already exists" });
       throw err;
     }
   });
@@ -454,30 +465,32 @@ export async function registerRoutes(
       const id = parseInt(req.params.id);
       if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
       const data = insertBlogPostSchema.partial().parse(coerceBlogPostBody(req.body));
-      if (data.slug !== undefined && !data.slug.trim() && data.title) {
-        data.slug = generateSlug(data.title);
-      }
-      if (data.content !== undefined) {
-        data.readingTime = data.content ? calculateReadingTime(data.content) : 1;
-      }
+      if (data.slug !== undefined && !data.slug.trim() && data.title) data.slug = generateSlug(data.title);
+      if (data.content !== undefined) data.readingTime = data.content ? calculateReadingTime(data.content) : 1;
       if (data.status === "published") {
         const existing = await storage.getBlogPost(id);
-        if (existing && !existing.publishedAt && !data.publishedAt) {
-          data.publishedAt = new Date();
-        }
+        if (existing && !existing.publishedAt && !data.publishedAt) data.publishedAt = new Date();
+      }
+      if (data.featured === true) {
+        await storage.setFeaturedPost(id);
+        delete data.featured;
       }
       const post = await storage.updateBlogPost(id, data);
       if (!post) return res.status(404).json({ message: "Not found" });
       res.json(post);
-    } catch (err: unknown) {
-      if (err instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid data", errors: err.errors });
-      }
-      if (err instanceof Error && err.message?.includes("unique")) {
-        return res.status(409).json({ message: "A post with this slug already exists" });
-      }
+    } catch (err: any) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
+      if (err?.message?.includes("unique")) return res.status(409).json({ message: "A post with this slug already exists" });
       throw err;
     }
+  });
+
+  app.post("/api/cms/blog/posts/:id/feature", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const post = await storage.setFeaturedPost(id);
+    if (!post) return res.status(404).json({ message: "Not found" });
+    res.json(post);
   });
 
   app.delete("/api/cms/blog/posts/:id", requireAuth, async (req: Request, res: Response) => {

@@ -1,10 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { BlogPost, BlogCategory } from "@shared/schema";
+import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/schema";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogcategories" | "blogposts";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogcategories" | "blogposts" | "authors" | "subscribers";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
@@ -18,6 +18,8 @@ const tabLabels: Record<Tab, string> = {
   contactpage: "Contact Page",
   blogcategories: "Blog Categories",
   blogposts: "Blog Posts",
+  authors: "Authors",
+  subscribers: "Subscribers",
 };
 
 const inputStyle: React.CSSProperties = {
@@ -1407,10 +1409,14 @@ function BlogPostsEditor() {
   const { data: categories = [] } = useQuery<BlogCategory[]>({
     queryKey: ["/api/cms/blog/categories"],
   });
+  const { data: authorsList = [] } = useQuery<Author[]>({
+    queryKey: ["/api/cms/authors"],
+  });
   const [editingPostId, setEditingPostId] = useState<number | null>(null);
   const [editingPost, setEditingPost] = useState<Partial<BlogPost> | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [featuring, setFeaturing] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [seoOpen, setSeoOpen] = useState(false);
 
@@ -1579,6 +1585,25 @@ function BlogPostsEditor() {
                 style={inputStyle}
                 data-testid="input-post-author"
               />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Author Profile</label>
+              <select
+                value={editingPost.authorId || ""}
+                onChange={(e) => {
+                  const id = e.target.value ? parseInt(e.target.value) : null;
+                  const author = authorsList.find((a) => a.id === id);
+                  updatePostField("authorId", id);
+                  if (author) updatePostField("authorName", author.name);
+                }}
+                style={inputStyle}
+                data-testid="select-post-author-id"
+              >
+                <option value="">No linked profile</option>
+                {authorsList.map((a) => (
+                  <option key={a.id} value={a.id}>{a.name}</option>
+                ))}
+              </select>
             </div>
             <div style={{ flex: 1 }}>
               <label style={labelStyle}>Category</label>
@@ -1761,9 +1786,37 @@ function BlogPostsEditor() {
             )}
           </div>
 
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
             <SaveButton onClick={savePost} saving={saving} />
             <SuccessMessage show={saved} />
+            <button
+              onClick={async () => {
+                if (!editingPostId) return;
+                if (!confirm("Set this as the featured post? The current featured post will be unfeatured.")) return;
+                setFeaturing(true);
+                const res = await fetch(`/api/cms/blog/posts/${editingPostId}/feature`, { method: "POST" });
+                setFeaturing(false);
+                if (res.ok) {
+                  queryClient.invalidateQueries({ queryKey: ["/api/cms/blog/posts"] });
+                  setEditingPost((prev) => prev ? { ...prev, featured: true } : prev);
+                } else {
+                  alert("Failed to set featured post");
+                }
+              }}
+              disabled={featuring}
+              style={{
+                ...btnPrimary,
+                backgroundColor: editingPost?.featured ? "rgba(251,191,36,0.25)" : "rgba(255,255,255,0.08)",
+                borderWidth: "1px",
+                borderStyle: "solid",
+                borderColor: editingPost?.featured ? "rgba(251,191,36,0.4)" : "rgba(255,255,255,0.15)",
+                fontSize: "0.55rem",
+                opacity: featuring ? 0.6 : 1,
+              }}
+              data-testid="button-feature-post"
+            >
+              {editingPost?.featured ? "★ FEATURED" : "☆ SET AS FEATURED"}
+            </button>
           </div>
         </div>
       </div>
@@ -1811,6 +1864,9 @@ function BlogPostsEditor() {
               >
                 {post.status}
               </span>
+              {post.featured && (
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "#fbbf24", flexShrink: 0 }} title="Featured post">★</span>
+              )}
               <span style={{
                 fontFamily: "'Inter', sans-serif", fontSize: "0.85rem",
                 color: "#FFFFFF", flex: 1, fontWeight: 500,
@@ -1834,6 +1890,236 @@ function BlogPostsEditor() {
                 style={{ ...btnDanger, flexShrink: 0 }}
                 data-testid={`button-delete-post-${post.id}`}
               >
+                DELETE
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AuthorsEditor() {
+  const queryClient = useQueryClient();
+  const { data: authorsList = [], isLoading } = useQuery<Author[]>({
+    queryKey: ["/api/cms/authors"],
+  });
+  const [editData, setEditData] = useState<Record<number, Partial<Author>>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+  const [uploading, setUploading] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (authorsList.length) {
+      const map: Record<number, Partial<Author>> = {};
+      authorsList.forEach((a) => (map[a.id] = { ...a }));
+      setEditData(map);
+    }
+  }, [authorsList]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveAuthor = async (id: number) => {
+    setSaving(id);
+    const res = await fetch(`/api/cms/authors/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    setSaving(null);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: "Save failed" }));
+      alert(err.message || "Failed to save");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/authors"] });
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteAuthor = async (id: number) => {
+    if (!confirm("Delete this author?")) return;
+    const res = await fetch(`/api/cms/authors/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      alert("Failed to delete author");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/authors"] });
+  };
+
+  const addAuthor = async () => {
+    await fetch("/api/cms/authors", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "New Author", slug: `new-author-${Date.now()}`, sortOrder: authorsList.length }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/authors"] });
+  };
+
+  const uploadPhoto = async (id: number, file: File) => {
+    setUploading(id);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      if (!res.ok) { alert("Upload failed"); return; }
+      const { url } = await res.json();
+      setEditData((prev) => ({ ...prev, [id]: { ...prev[id], photo: url } }));
+    } finally {
+      setUploading(null);
+    }
+  };
+
+  const updateField = (id: number, field: string, value: string | number | null) => {
+    setEditData((prev) => ({ ...prev, [id]: { ...prev[id], [field]: value } }));
+  };
+
+  return (
+    <div>
+      {authorsList.map((a) => (
+        <div key={a.id} style={cardStyle}>
+          <div style={{ display: "flex", gap: "1rem", marginBottom: "0.75rem", alignItems: "flex-start" }}>
+            <div style={{ flexShrink: 0 }}>
+              {editData[a.id]?.photo ? (
+                <img src={editData[a.id]?.photo || ""} alt={a.name} style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(167,139,250,0.3)" }} />
+              ) : (
+                <div style={{ width: "60px", height: "60px", borderRadius: "50%", backgroundColor: "rgba(167,139,250,0.1)", border: "2px solid rgba(167,139,250,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: "1.25rem" }}>👤</span>
+                </div>
+              )}
+              <label style={{ ...btnPrimary, display: "block", fontSize: "0.45rem", padding: "0.3rem 0.4rem", marginTop: "0.35rem", textAlign: "center", opacity: uploading === a.id ? 0.6 : 1 }}>
+                {uploading === a.id ? "..." : "PHOTO"}
+                <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadPhoto(a.id, f); }} />
+              </label>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Name</label>
+                  <input type="text" value={editData[a.id]?.name || ""} onChange={(e) => updateField(a.id, "name", e.target.value)} style={inputStyle} data-testid={`input-author-name-${a.id}`} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Slug</label>
+                  <input type="text" value={editData[a.id]?.slug || ""} onChange={(e) => updateField(a.id, "slug", e.target.value)} style={{ ...inputStyle, fontSize: "0.75rem" }} data-testid={`input-author-slug-${a.id}`} />
+                </div>
+              </div>
+              <div style={{ marginBottom: "0.5rem" }}>
+                <label style={labelStyle}>Bio</label>
+                <textarea value={editData[a.id]?.bio || ""} onChange={(e) => updateField(a.id, "bio", e.target.value)} style={textareaStyle} rows={3} data-testid={`input-author-bio-${a.id}`} />
+              </div>
+              <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.5rem" }}>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>LinkedIn URL</label>
+                  <input type="text" value={editData[a.id]?.linkedin || ""} onChange={(e) => updateField(a.id, "linkedin", e.target.value)} style={inputStyle} placeholder="https://linkedin.com/in/..." data-testid={`input-author-linkedin-${a.id}`} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Twitter/X URL</label>
+                  <input type="text" value={editData[a.id]?.twitter || ""} onChange={(e) => updateField(a.id, "twitter", e.target.value)} style={inputStyle} placeholder="https://x.com/..." data-testid={`input-author-twitter-${a.id}`} />
+                </div>
+              </div>
+              <div style={{ marginBottom: "0.5rem" }}>
+                <label style={labelStyle}>Website</label>
+                <input type="text" value={editData[a.id]?.website || ""} onChange={(e) => updateField(a.id, "website", e.target.value)} style={inputStyle} placeholder="https://..." data-testid={`input-author-website-${a.id}`} />
+              </div>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveAuthor(a.id)} saving={saving === a.id} />
+            <SuccessMessage show={saved === a.id} />
+            <button onClick={() => deleteAuthor(a.id)} style={btnDanger} data-testid={`button-delete-author-${a.id}`}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addAuthor} style={btnPrimary} data-testid="button-add-author">+ ADD AUTHOR</button>
+    </div>
+  );
+}
+
+function SubscribersEditor() {
+  const queryClient = useQueryClient();
+  const { data: subscribers = [], isLoading } = useQuery<EmailSubscriber[]>({
+    queryKey: ["/api/cms/subscribers"],
+  });
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const unsubscribe = async (id: number) => {
+    if (!confirm("Mark this subscriber as unsubscribed?")) return;
+    await fetch(`/api/cms/subscribers/${id}/unsubscribe`, { method: "PUT" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/subscribers"] });
+  };
+
+  const deleteSubscriber = async (id: number) => {
+    if (!confirm("Delete this subscriber record?")) return;
+    await fetch(`/api/cms/subscribers/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/subscribers"] });
+  };
+
+  const formatDate = (d: string | Date) => {
+    const date = typeof d === "string" ? new Date(d) : d;
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  };
+
+  const active = subscribers.filter((s) => s.status === "active");
+  const inactive = subscribers.filter((s) => s.status !== "active");
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>
+          <span style={{ color: "#4ade80", fontWeight: 600 }}>{active.length}</span> active · {inactive.length} unsubscribed
+        </p>
+        <a
+          href="/api/cms/subscribers/export"
+          download
+          style={{
+            ...btnPrimary,
+            textDecoration: "none",
+            fontSize: "0.55rem",
+            backgroundColor: "rgba(255,255,255,0.08)",
+          }}
+          data-testid="link-export-subscribers"
+        >
+          EXPORT CSV
+        </a>
+      </div>
+
+      {subscribers.length === 0 ? (
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No subscribers yet.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+          {subscribers.map((sub) => (
+            <div
+              key={sub.id}
+              style={{
+                ...cardStyle,
+                marginBottom: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+                padding: "0.75rem 1rem",
+              }}
+              data-testid={`subscriber-row-${sub.id}`}
+            >
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.08em", color: sub.status === "active" ? "#4ade80" : "rgba(255,255,255,0.3)", backgroundColor: sub.status === "active" ? "rgba(74,222,128,0.1)" : "rgba(255,255,255,0.05)", padding: "0.15rem 0.45rem", borderRadius: "4px", flexShrink: 0, textTransform: "uppercase" }}>
+                {sub.status}
+              </span>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "#FFFFFF", flex: 1 }} data-testid={`text-subscriber-email-${sub.id}`}>
+                {sub.email}
+              </span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>
+                {sub.source}
+              </span>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", flexShrink: 0 }}>
+                {formatDate(sub.createdAt)}
+              </span>
+              {sub.status === "active" && (
+                <button onClick={() => unsubscribe(sub.id)} style={{ ...btnDanger, fontSize: "0.5rem", flexShrink: 0 }} data-testid={`button-unsubscribe-${sub.id}`}>
+                  UNSUB
+                </button>
+              )}
+              <button onClick={() => deleteSubscriber(sub.id)} style={{ ...btnDanger, fontSize: "0.5rem", flexShrink: 0 }} data-testid={`button-delete-subscriber-${sub.id}`}>
                 DELETE
               </button>
             </div>
@@ -1878,7 +2164,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogcategories", "blogposts"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogcategories", "blogposts", "authors", "subscribers"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2014,6 +2300,8 @@ export default function AdminDashboard() {
           {activeTab === "contactpage" && <ContactPageEditor />}
           {activeTab === "blogcategories" && <BlogCategoriesEditor />}
           {activeTab === "blogposts" && <BlogPostsEditor />}
+          {activeTab === "authors" && <AuthorsEditor />}
+          {activeTab === "subscribers" && <SubscribersEditor />}
         </div>
       </div>
     </div>

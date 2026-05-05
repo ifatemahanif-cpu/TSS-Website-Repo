@@ -10,11 +10,32 @@ export async function runMigrations() {
   `);
 
   await db.execute(sql`
+    DO $$ BEGIN
+      CREATE TYPE email_subscriber_status AS ENUM ('active', 'unsubscribed');
+    EXCEPTION WHEN duplicate_object THEN null;
+    END $$;
+  `);
+
+  await db.execute(sql`
     CREATE TABLE IF NOT EXISTS blog_categories (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
       slug TEXT NOT NULL UNIQUE,
       description TEXT NOT NULL DEFAULT '',
+      sort_order INTEGER NOT NULL DEFAULT 0
+    );
+  `);
+
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS authors (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      slug TEXT NOT NULL UNIQUE,
+      photo TEXT NOT NULL DEFAULT '',
+      bio TEXT NOT NULL DEFAULT '',
+      twitter TEXT NOT NULL DEFAULT '',
+      linkedin TEXT NOT NULL DEFAULT '',
+      website TEXT NOT NULL DEFAULT '',
       sort_order INTEGER NOT NULL DEFAULT 0
     );
   `);
@@ -28,8 +49,10 @@ export async function runMigrations() {
       excerpt TEXT NOT NULL DEFAULT '',
       featured_image TEXT NOT NULL DEFAULT '',
       author_name TEXT NOT NULL DEFAULT 'The Story Shapers',
+      author_id INTEGER REFERENCES authors(id) ON DELETE SET NULL,
       category_id INTEGER REFERENCES blog_categories(id) ON DELETE SET NULL,
       status blog_post_status NOT NULL DEFAULT 'draft',
+      featured BOOLEAN NOT NULL DEFAULT false,
       published_at TIMESTAMP,
       meta_title TEXT NOT NULL DEFAULT '',
       meta_description TEXT NOT NULL DEFAULT '',
@@ -42,6 +65,20 @@ export async function runMigrations() {
       updated_at TIMESTAMP NOT NULL DEFAULT NOW()
     );
   `);
+
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS email_subscribers (
+      id SERIAL PRIMARY KEY,
+      email TEXT NOT NULL UNIQUE,
+      status email_subscriber_status NOT NULL DEFAULT 'active',
+      unsubscribe_token TEXT NOT NULL DEFAULT gen_random_uuid()::text,
+      source TEXT NOT NULL DEFAULT 'blog',
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    );
+  `);
+
+  await db.execute(sql`ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS author_id INTEGER REFERENCES authors(id) ON DELETE SET NULL;`);
+  await db.execute(sql`ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS featured BOOLEAN NOT NULL DEFAULT false;`);
 
   console.log("Migrations applied successfully.");
 }

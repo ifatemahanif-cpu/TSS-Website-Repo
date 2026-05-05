@@ -3,7 +3,67 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
+import { Node, mergeAttributes } from "@tiptap/core";
 import { useEffect, useCallback } from "react";
+
+const VIDEO_HOSTS = ["youtube.com", "youtube-nocookie.com", "vimeo.com", "player.vimeo.com", "www.youtube.com", "www.youtube-nocookie.com"];
+
+function isAllowedVideoUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace(/^www\./, "");
+    return VIDEO_HOSTS.some((h) => host === h || host.endsWith("." + h));
+  } catch {
+    return false;
+  }
+}
+
+function toEmbedUrl(url: string): string | null {
+  if (!isAllowedVideoUrl(url)) return null;
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname;
+    if (host.includes("youtube") && !host.includes("nocookie")) {
+      const vid = parsed.searchParams.get("v") || parsed.pathname.split("/").pop();
+      if (vid) return `https://www.youtube-nocookie.com/embed/${vid}`;
+    }
+    if (host.includes("vimeo")) {
+      const vid = parsed.pathname.split("/").filter(Boolean).pop();
+      if (vid) return `https://player.vimeo.com/video/${vid}`;
+    }
+    return url;
+  } catch {
+    return null;
+  }
+}
+
+const VideoEmbed = Node.create({
+  name: "videoEmbed",
+  group: "block",
+  atom: true,
+  addAttributes() {
+    return { src: { default: null } };
+  },
+  parseHTML() {
+    return [{ tag: "iframe[src]" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "div",
+      { class: "video-embed-wrapper", style: "position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin:1.5rem 0;" },
+      [
+        "iframe",
+        mergeAttributes(HTMLAttributes, {
+          style: "position:absolute;top:0;left:0;width:100%;height:100%;border:none;",
+          frameborder: "0",
+          allowfullscreen: "true",
+          allow: "accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture",
+          loading: "lazy",
+        }),
+      ],
+    ];
+  },
+});
 
 const menuBtnStyle: React.CSSProperties = {
   fontFamily: "'JetBrains Mono', monospace",
@@ -30,16 +90,23 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
 
   const addImage = useCallback(() => {
     const url = window.prompt("Image URL:");
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+    if (url) editor.chain().focus().setImage({ src: url }).run();
   }, [editor]);
 
   const addLink = useCallback(() => {
     const url = window.prompt("Link URL:");
-    if (url) {
-      editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    if (url) editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  }, [editor]);
+
+  const addVideo = useCallback(() => {
+    const url = window.prompt("YouTube or Vimeo URL:");
+    if (!url) return;
+    const embedUrl = toEmbedUrl(url);
+    if (!embedUrl) {
+      alert("Only YouTube and Vimeo URLs are supported.");
+      return;
     }
+    editor.chain().focus().insertContent({ type: "videoEmbed", attrs: { src: embedUrl } }).run();
   }, [editor]);
 
   const buttons = [
@@ -53,20 +120,13 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
     { label: "</>", action: () => editor.chain().focus().toggleCodeBlock().run(), active: editor.isActive("codeBlock") },
     { label: "Link", action: addLink, active: editor.isActive("link") },
     { label: "IMG", action: addImage, active: false },
+    { label: "▶ Video", action: addVideo, active: false },
     { label: "—", action: () => editor.chain().focus().setHorizontalRule().run(), active: false },
   ];
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "0.25rem",
-        padding: "0.5rem",
-        backgroundColor: "rgba(255,255,255,0.03)",
-        borderBottom: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: "8px 8px 0 0",
-      }}
+      style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem", padding: "0.5rem", backgroundColor: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px 8px 0 0" }}
       data-testid="rich-text-toolbar"
     >
       {buttons.map((btn, i) => (
@@ -92,25 +152,14 @@ interface RichTextEditorProps {
 export default function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: { levels: [2, 3] },
-      }),
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: { target: "_blank", rel: "noopener noreferrer" },
-      }),
-      Image.configure({
-        inline: false,
-        allowBase64: true,
-      }),
-      Placeholder.configure({
-        placeholder: "Start writing your blog post...",
-      }),
+      StarterKit.configure({ heading: { levels: [2, 3] } }),
+      Link.configure({ openOnClick: false, HTMLAttributes: { target: "_blank", rel: "noopener noreferrer" } }),
+      Image.configure({ inline: false, allowBase64: true }),
+      Placeholder.configure({ placeholder: "Start writing your blog post..." }),
+      VideoEmbed,
     ],
     content: content || "",
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
+    onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
         style: [
@@ -134,12 +183,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
   return (
     <div
-      style={{
-        border: "1px solid rgba(255,255,255,0.12)",
-        borderRadius: "8px",
-        backgroundColor: "rgba(255,255,255,0.04)",
-        overflow: "hidden",
-      }}
+      style={{ border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" }}
       data-testid="rich-text-editor"
     >
       <MenuBar editor={editor} />
