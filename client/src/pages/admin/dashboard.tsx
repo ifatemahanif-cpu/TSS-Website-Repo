@@ -1949,11 +1949,13 @@ function AuthorsEditor() {
   };
 
   const addAuthor = async () => {
-    await fetch("/api/cms/authors", {
+    const res = await fetch("/api/cms/authors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: "New Author", slug: `new-author-${Date.now()}`, sortOrder: authorsList.length }),
     });
+    if (res.status === 401) { window.location.href = "/admin/login"; return; }
+    if (!res.ok) { alert("Failed to create author"); return; }
     queryClient.invalidateQueries({ queryKey: ["/api/cms/authors"] });
   };
 
@@ -2136,6 +2138,8 @@ export default function AdminDashboard() {
   const { data: user, isLoading, error } = useQuery({
     queryKey: ["/api/auth/me"],
     retry: false,
+    staleTime: 60 * 1000,
+    refetchOnWindowFocus: true,
   });
   const { data: submissions } = useQuery<any[]>({
     queryKey: ["/api/cms/submissions"],
