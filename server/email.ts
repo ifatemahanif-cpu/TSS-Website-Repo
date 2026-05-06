@@ -55,11 +55,10 @@ export async function sendWelcomeEmail(email: string, unsubscribeToken: string):
     return;
   }
 
-  const siteUrl = process.env.REPLIT_DOMAINS
-    ? `https://${process.env.REPLIT_DOMAINS.split(",")[0].trim()}`
-    : process.env.REPLIT_DEV_DOMAIN
-    ? `https://${process.env.REPLIT_DEV_DOMAIN}`
-    : "https://thestoryshapers.com";
+  const siteUrl = process.env.SITE_URL
+    || (process.env.REPLIT_DOMAINS ? `https://${process.env.REPLIT_DOMAINS.split(",")[0].trim()}` : null)
+    || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : null)
+    || "https://www.storyshaperscollective.com";
 
   const unsubscribeUrl = `${siteUrl}/api/subscribers/unsubscribe?token=${unsubscribeToken}`;
 
@@ -106,11 +105,10 @@ export async function sendNewPostNotification(
     return;
   }
 
-  const siteUrl = process.env.REPLIT_DOMAINS
-    ? `https://${process.env.REPLIT_DOMAINS.split(",")[0].trim()}`
-    : process.env.REPLIT_DEV_DOMAIN
-    ? `https://${process.env.REPLIT_DEV_DOMAIN}`
-    : "https://thestoryshapers.com";
+  const siteUrl = process.env.SITE_URL
+    || (process.env.REPLIT_DOMAINS ? `https://${process.env.REPLIT_DOMAINS.split(",")[0].trim()}` : null)
+    || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : null)
+    || "https://www.storyshaperscollective.com";
 
   const postUrl = `${siteUrl}/blog/${post.slug}`;
 

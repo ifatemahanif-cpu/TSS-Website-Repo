@@ -49,3 +49,8 @@ mockupState = "FULLSTACK"
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 60000
+
+[userenv]
+
+[userenv.shared]
+SITE_URL = "https://www.storyshaperscollective.com"
