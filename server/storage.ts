@@ -84,6 +84,7 @@ export interface IStorage {
   deleteAuthor(id: number): Promise<boolean>;
 
   getEmailSubscribers(): Promise<EmailSubscriber[]>;
+  getActiveEmailSubscribers(): Promise<EmailSubscriber[]>;
   createEmailSubscriber(email: string, source?: string): Promise<EmailSubscriber>;
   getEmailSubscriberByToken(token: string): Promise<EmailSubscriber | undefined>;
   unsubscribeByToken(token: string): Promise<boolean>;
@@ -408,6 +409,12 @@ export class DatabaseStorage implements IStorage {
 
   async getEmailSubscribers(): Promise<EmailSubscriber[]> {
     return db.select().from(emailSubscribers).orderBy(desc(emailSubscribers.createdAt));
+  }
+
+  async getActiveEmailSubscribers(): Promise<EmailSubscriber[]> {
+    return db.select().from(emailSubscribers)
+      .where(eq(emailSubscribers.status, "active"))
+      .orderBy(desc(emailSubscribers.createdAt));
   }
 
   async createEmailSubscriber(email: string, source = "blog"): Promise<EmailSubscriber> {

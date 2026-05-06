@@ -11,6 +11,7 @@ import { randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema } from "@shared/schema";
+import { sendWelcomeEmail, sendNewPostNotification } from "./email";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
@@ -297,6 +298,10 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     try {
       const subscriber = await storage.createEmailSubscriber(parsed.data.email, parsed.data.source);
       res.json({ message: "Subscribed successfully", id: subscriber.id });
+      // Send welcome email after responding (non-blocking)
+      sendWelcomeEmail(subscriber.email, subscriber.unsubscribeToken).catch((err) =>
+        console.error("[email] Welcome email error:", err)
+      );
     } catch (err: any) {
       if (err?.message?.includes("unique")) return res.status(409).json({ message: "Already subscribed" });
       throw err;
@@ -467,8 +472,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       const data = insertBlogPostSchema.partial().parse(coerceBlogPostBody(req.body));
       if (data.slug !== undefined && !data.slug.trim() && data.title) data.slug = generateSlug(data.title);
       if (data.content !== undefined) data.readingTime = data.content ? calculateReadingTime(data.content) : 1;
+
+      // Capture existing post before update to detect draft→published transition
+      const existing = await storage.getBlogPost(id);
+      const isPublishing = data.status === "published" && existing?.status !== "published";
+
       if (data.status === "published") {
-        const existing = await storage.getBlogPost(id);
         if (existing && !existing.publishedAt && !data.publishedAt) data.publishedAt = new Date();
       }
       if (data.featured === true) {
@@ -478,6 +487,22 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       const post = await storage.updateBlogPost(id, data);
       if (!post) return res.status(404).json({ message: "Not found" });
       res.json(post);
+
+      // Send new post notifications after responding (non-blocking)
+      if (isPublishing) {
+        storage.getActiveEmailSubscribers().then((subs) => {
+          if (subs.length === 0) return;
+          return sendNewPostNotification(
+            subs.map((s) => ({ email: s.email, unsubscribeToken: s.unsubscribeToken })),
+            {
+              title: post.title,
+              slug: post.slug,
+              excerpt: post.excerpt ?? null,
+              authorName: post.authorName,
+            }
+          );
+        }).catch((err) => console.error("[email] New post notification error:", err));
+      }
     } catch (err: any) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
       if (err?.message?.includes("unique")) return res.status(409).json({ message: "A post with this slug already exists" });

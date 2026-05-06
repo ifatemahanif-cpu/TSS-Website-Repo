@@ -85,8 +85,12 @@ Preferred communication style: Simple, everyday language.
 - React Query with 60s staleTime for CMS data
 
 ### Email / Subscriptions
-- Email sending is intentionally NOT implemented (user decision). Subscribers are collected and stored but no emails are sent.
-- Subscribers can unsubscribe via token URL (`/api/subscribers/unsubscribe?token=...`)
+- Email sending via **SendGrid** (`@sendgrid/mail`). Requires `SENDGRID_API_KEY` and `SENDGRID_FROM_EMAIL` secrets.
+- Email logic lives in `server/email.ts`: `sendWelcomeEmail()` and `sendNewPostNotification()`
+- **Welcome email** fires after `POST /api/subscribers` succeeds (non-blocking, after response sent)
+- **New post notification** fires when a blog post transitions draft → published in `PUT /api/cms/blog/posts/:id` (non-blocking, sent to all active subscribers)
+- Email failures are logged but never block the main operation (subscribe or publish always succeeds)
+- Subscribers can unsubscribe via token URL (`/api/subscribers/unsubscribe?token=...`); unsubscribe link included in every email footer
 - Admin can view, unsubscribe, delete, and export subscribers as CSV
 
 ## Frontend Architecture
@@ -136,7 +140,7 @@ Preferred communication style: Simple, everyday language.
 
 6. **Video embeds**: Only YouTube and Vimeo are allowed in blog content. The Tiptap editor converts watch URLs to privacy-enhanced embed URLs. DOMPurify validates iframe src against an allowlist of known video hosts before rendering.
 
-7. **Email**: Subscriber emails are collected and stored, but sending is intentionally not implemented. The system stores unsubscribe tokens for future use when an email provider is added.
+7. **Email**: SendGrid integration via `server/email.ts`. Welcome email sent on new subscription; new post notification sent to all active subscribers on draft→published transition. Both sends are fire-and-forget (non-blocking) so they never delay API responses. Requires `SENDGRID_API_KEY` + `SENDGRID_FROM_EMAIL` secrets.
 
 # External Dependencies
 
