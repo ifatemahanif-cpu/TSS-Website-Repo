@@ -348,7 +348,7 @@ export default function Blog() {
               }}
               data-testid="text-blog-heading"
             >
-              Insights & Thinking
+              Notes from the Margins
             </h1>
 
             <p
@@ -361,7 +361,7 @@ export default function Blog() {
                 lineHeight: 1.7,
               }}
             >
-              Observations on brand strategy, content systems, and the work of making marketing make sense.
+              Because good brands are built on thinking, not just things to post.
             </p>
 
             <div
