@@ -36,13 +36,7 @@ const uploadsDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: uploadsDir,
-    filename: (_req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      cb(null, `${randomUUID()}${ext}`);
-    },
-  }),
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const allowed = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
@@ -97,9 +91,22 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json({ user: { id: user.id, username: user.username } });
   });
 
-  app.post("/api/upload", requireAuth, upload.single("file"), (req: Request, res: Response) => {
+  app.post("/api/upload", requireAuth, upload.single("file"), async (req: Request, res: Response) => {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-    res.json({ url: `/uploads/${req.file.filename}` });
+    const base64 = req.file.buffer.toString("base64");
+    const image = await storage.saveImageUpload(req.file.originalname, req.file.mimetype, base64);
+    res.json({ url: `/api/images/${image.id}` });
+  });
+
+  app.get("/api/images/:id", async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const image = await storage.getImageUpload(id);
+    if (!image) return res.status(404).json({ message: "Image not found" });
+    const buffer = Buffer.from(image.data, "base64");
+    res.set("Content-Type", image.mimeType);
+    res.set("Cache-Control", "public, max-age=31536000, immutable");
+    res.send(buffer);
   });
 
   app.get("/api/cms/settings", async (_req: Request, res: Response) => {

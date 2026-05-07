@@ -11,8 +11,9 @@ import {
   type BlogPost, type InsertBlogPost,
   type Author, type InsertAuthor,
   type EmailSubscriber, type InsertEmailSubscriber,
+  type ImageUpload,
   users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, pageSections, formSubmissions,
-  blogCategories, blogPosts, authors, emailSubscribers,
+  blogCategories, blogPosts, authors, emailSubscribers, imageUploads,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc, and, desc, sql, count, ne } from "drizzle-orm";
@@ -90,6 +91,9 @@ export interface IStorage {
   unsubscribeByToken(token: string): Promise<boolean>;
   unsubscribeById(id: number): Promise<boolean>;
   deleteEmailSubscriber(id: number): Promise<boolean>;
+
+  saveImageUpload(filename: string, mimeType: string, data: string): Promise<ImageUpload>;
+  getImageUpload(id: number): Promise<ImageUpload | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -446,6 +450,16 @@ export class DatabaseStorage implements IStorage {
   async deleteEmailSubscriber(id: number): Promise<boolean> {
     const result = await db.delete(emailSubscribers).where(eq(emailSubscribers.id, id)).returning();
     return result.length > 0;
+  }
+
+  async saveImageUpload(filename: string, mimeType: string, data: string): Promise<ImageUpload> {
+    const [image] = await db.insert(imageUploads).values({ filename, mimeType, data }).returning();
+    return image;
+  }
+
+  async getImageUpload(id: number): Promise<ImageUpload | undefined> {
+    const [image] = await db.select().from(imageUploads).where(eq(imageUploads.id, id));
+    return image;
   }
 }
 

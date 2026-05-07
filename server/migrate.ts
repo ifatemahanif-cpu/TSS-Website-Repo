@@ -80,5 +80,15 @@ export async function runMigrations() {
   await db.execute(sql`ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS author_id INTEGER REFERENCES authors(id) ON DELETE SET NULL;`);
   await db.execute(sql`ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS featured BOOLEAN NOT NULL DEFAULT false;`);
 
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS image_uploads (
+      id SERIAL PRIMARY KEY,
+      filename TEXT NOT NULL,
+      mime_type TEXT NOT NULL,
+      data TEXT NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    );
+  `);
+
   console.log("Migrations applied successfully.");
 }
