@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
-import { useBlogPosts, useBlogCategories, useFeaturedPost } from "@/hooks/use-cms";
+import { useBlogPosts, useBlogCategories, useFeaturedPost, useCmsSettings } from "@/hooks/use-cms";
 import type { BlogPost } from "@shared/schema";
 
 function SubscribeModule() {
@@ -287,6 +287,11 @@ export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(undefined);
   const { data: categoriesData } = useBlogCategories();
   const { data: featuredData } = useFeaturedPost();
+  const { data: settings } = useCmsSettings();
+  const blogSettings = (settings as any)?.blog || {};
+  const blogLabel = blogSettings.label || "Blog";
+  const blogHeading = blogSettings.heading || "Notes from the Margins";
+  const blogSubtext = blogSettings.subtext || "Because good brands are built on thinking, not just things to post.";
   const { data, isLoading } = useBlogPosts({
     page,
     categoryId: selectedCategory,
@@ -333,7 +338,7 @@ export default function Blog() {
               }}
               data-testid="text-blog-label"
             >
-              Blog
+              {blogLabel}
             </span>
 
             <h1
@@ -348,7 +353,7 @@ export default function Blog() {
               }}
               data-testid="text-blog-heading"
             >
-              Notes from the Margins
+              {blogHeading}
             </h1>
 
             <p
@@ -360,8 +365,9 @@ export default function Blog() {
                 maxWidth: "600px",
                 lineHeight: 1.7,
               }}
+              data-testid="text-blog-subtext"
             >
-              Because good brands are built on thinking, not just things to post.
+              {blogSubtext}
             </p>
 
             <div

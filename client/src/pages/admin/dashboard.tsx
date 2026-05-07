@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/schema";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogcategories" | "blogposts" | "authors" | "subscribers";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
@@ -16,6 +16,7 @@ const tabLabels: Record<Tab, string> = {
   ourstory: "Our Story",
   joinpage: "Join Page",
   contactpage: "Contact Page",
+  blogpage: "Blog Page",
   blogcategories: "Blog Categories",
   blogposts: "Blog Posts",
   authors: "Authors",
@@ -1196,6 +1197,65 @@ function JoinPageEditor() {
   );
 }
 
+function BlogPageEditor() {
+  const queryClient = useQueryClient();
+  const { data: settings, isLoading } = useQuery<Record<string, any>>({
+    queryKey: ["/api/cms/settings"],
+  });
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  useEffect(() => {
+    if (settings?.blog) setFormData(settings.blog);
+  }, [settings]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const save = async () => {
+    setSaving(true);
+    setSaveError(false);
+    const res = await fetch("/api/cms/settings/blog", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    setSaving(false);
+    if (!res.ok) { setSaveError(true); return; }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/settings"] });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const update = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div>
+        <label style={labelStyle}>Section Label</label>
+        <input style={inputStyle} value={formData.label || ""} onChange={(e) => update("label", e.target.value)} placeholder="Blog" data-testid="input-blog-label" />
+      </div>
+      <div>
+        <label style={labelStyle}>Heading</label>
+        <input style={inputStyle} value={formData.heading || ""} onChange={(e) => update("heading", e.target.value)} placeholder="Notes from the Margins" data-testid="input-blog-heading" />
+      </div>
+      <div>
+        <label style={labelStyle}>Subtext</label>
+        <textarea style={{ ...inputStyle, minHeight: "70px" }} value={formData.subtext || ""} onChange={(e) => update("subtext", e.target.value)} placeholder="Because good brands are built on thinking, not just things to post." data-testid="input-blog-subtext" />
+      </div>
+
+      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <SaveButton onClick={save} saving={saving} />
+        <SuccessMessage show={saved} />
+      </div>
+    </div>
+  );
+}
+
 function ContactPageEditor() {
   const queryClient = useQueryClient();
   const { data: settings, isLoading } = useQuery<Record<string, any>>({
@@ -2168,7 +2228,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogcategories", "blogposts", "authors", "subscribers"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2302,6 +2362,7 @@ export default function AdminDashboard() {
           {activeTab === "ourstory" && <OurStoryEditor />}
           {activeTab === "joinpage" && <JoinPageEditor />}
           {activeTab === "contactpage" && <ContactPageEditor />}
+          {activeTab === "blogpage" && <BlogPageEditor />}
           {activeTab === "blogcategories" && <BlogCategoriesEditor />}
           {activeTab === "blogposts" && <BlogPostsEditor />}
           {activeTab === "authors" && <AuthorsEditor />}

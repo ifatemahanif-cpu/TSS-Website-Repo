@@ -4,7 +4,7 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Node, mergeAttributes } from "@tiptap/core";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 
 const VIDEO_HOSTS = ["youtube.com", "youtube-nocookie.com", "vimeo.com", "player.vimeo.com", "www.youtube.com", "www.youtube-nocookie.com"];
 
@@ -85,13 +85,21 @@ const menuBtnActiveStyle: React.CSSProperties = {
   borderColor: "rgba(123,30,122,0.6)",
 };
 
-function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
-  if (!editor) return null;
+async function uploadImageFile(file: File): Promise<string | null> {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    if (!res.ok) return null;
+    const { url } = await res.json();
+    return url || null;
+  } catch {
+    return null;
+  }
+}
 
-  const addImage = useCallback(() => {
-    const url = window.prompt("Image URL:");
-    if (url) editor.chain().focus().setImage({ src: url }).run();
-  }, [editor]);
+function MenuBar({ editor, onPickImage, uploading }: { editor: ReturnType<typeof useEditor>; onPickImage: () => void; uploading: boolean }) {
+  if (!editor) return null;
 
   const addLink = useCallback(() => {
     const url = window.prompt("Link URL:");
@@ -109,6 +117,11 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
     editor.chain().focus().insertContent({ type: "videoEmbed", attrs: { src: embedUrl } }).run();
   }, [editor]);
 
+  const addImageByUrl = useCallback(() => {
+    const url = window.prompt("Image URL:");
+    if (url) editor.chain().focus().setImage({ src: url }).run();
+  }, [editor]);
+
   const buttons = [
     { label: "B", action: () => editor.chain().focus().toggleBold().run(), active: editor.isActive("bold") },
     { label: "I", action: () => editor.chain().focus().toggleItalic().run(), active: editor.isActive("italic") },
@@ -119,14 +132,27 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
     { label: "❝", action: () => editor.chain().focus().toggleBlockquote().run(), active: editor.isActive("blockquote") },
     { label: "</>", action: () => editor.chain().focus().toggleCodeBlock().run(), active: editor.isActive("codeBlock") },
     { label: "Link", action: addLink, active: editor.isActive("link") },
-    { label: "IMG", action: addImage, active: false },
+    { label: uploading ? "Uploading…" : "Upload IMG", action: onPickImage, active: false },
+    { label: "IMG URL", action: addImageByUrl, active: false },
     { label: "▶ Video", action: addVideo, active: false },
     { label: "—", action: () => editor.chain().focus().setHorizontalRule().run(), active: false },
   ];
 
   return (
     <div
-      style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem", padding: "0.5rem", backgroundColor: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px 8px 0 0" }}
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "0.25rem",
+        padding: "0.5rem",
+        backgroundColor: "rgba(20,18,60,0.95)",
+        backdropFilter: "blur(8px)",
+        borderBottom: "1px solid rgba(255,255,255,0.1)",
+        borderRadius: "8px 8px 0 0",
+        position: "sticky",
+        top: 0,
+        zIndex: 20,
+      }}
       data-testid="rich-text-toolbar"
     >
       {buttons.map((btn, i) => (
@@ -150,6 +176,10 @@ interface RichTextEditorProps {
 }
 
 export default function RichTextEditor({ content, onChange }: RichTextEditorProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: { levels: [2, 3] } }),
@@ -172,8 +202,58 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           "color: rgba(255,255,255,0.85)",
         ].join(";"),
       },
+      handlePaste: (_view, event) => {
+        const items = event.clipboardData?.items;
+        if (!items) return false;
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          if (item.type.startsWith("image/")) {
+            const file = item.getAsFile();
+            if (file) {
+              event.preventDefault();
+              handleFileUpload(file);
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+      handleDrop: (_view, event) => {
+        const files = event.dataTransfer?.files;
+        if (files && files.length > 0) {
+          const imageFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
+          if (imageFiles.length > 0) {
+            event.preventDefault();
+            imageFiles.forEach((f) => handleFileUpload(f));
+            return true;
+          }
+        }
+        return false;
+      },
     },
   });
+
+  const handleFileUpload = useCallback(async (file: File) => {
+    if (!editor) return;
+    setUploading(true);
+    const url = await uploadImageFile(file);
+    setUploading(false);
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    } else {
+      alert("Failed to upload image.");
+    }
+  }, [editor]);
+
+  const onPickImage = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileUpload(file);
+    e.target.value = "";
+  }, [handleFileUpload]);
 
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
@@ -183,11 +263,49 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
   return (
     <div
-      style={{ border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" }}
+      style={{
+        border: dragActive ? "1px solid rgba(123,30,122,0.7)" : "1px solid rgba(255,255,255,0.12)",
+        borderRadius: "8px",
+        backgroundColor: dragActive ? "rgba(123,30,122,0.08)" : "rgba(255,255,255,0.04)",
+        overflow: "visible",
+        position: "relative",
+        transition: "border-color 0.15s, background-color 0.15s",
+      }}
+      onDragEnter={(e) => { e.preventDefault(); setDragActive(true); }}
+      onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+      onDragLeave={(e) => { e.preventDefault(); setDragActive(false); }}
+      onDrop={() => setDragActive(false)}
       data-testid="rich-text-editor"
     >
-      <MenuBar editor={editor} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={onFileChange}
+        data-testid="rte-image-file-input"
+      />
+      <MenuBar editor={editor} onPickImage={onPickImage} uploading={uploading} />
       <EditorContent editor={editor} />
+      {dragActive && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "none",
+            color: "rgba(255,255,255,0.7)",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.7rem",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}
+        >
+          Drop image to upload
+        </div>
+      )}
     </div>
   );
 }
