@@ -175,6 +175,27 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({ id: tru
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type BlogPost = typeof blogPosts.$inferSelect;
 
+export const teamMemberPortfolios = pgTable("team_member_portfolios", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  metaTitle: text("meta_title").notNull().default(""),
+  metaDescription: text("meta_description").notNull().default(""),
+  hero: jsonb("hero").notNull().default({}),
+  brands: jsonb("brands").notNull().default({}),
+  stats: jsonb("stats").notNull().default({}),
+  caseStudies: jsonb("case_studies").notNull().default({}),
+  testimonials: jsonb("testimonials").notNull().default([]),
+  about: jsonb("about").notNull().default({}),
+  workWithMe: jsonb("work_with_me").notNull().default({}),
+  footer: jsonb("footer").notNull().default({}),
+});
+
+export const insertTeamMemberPortfolioSchema = createInsertSchema(teamMemberPortfolios).omit({ id: true });
+export type InsertTeamMemberPortfolio = z.infer<typeof insertTeamMemberPortfolioSchema>;
+export type TeamMemberPortfolio = typeof teamMemberPortfolios.$inferSelect;
+
 export const imageUploads = pgTable("image_uploads", {
   id: serial("id").primaryKey(),
   filename: text("filename").notNull(),

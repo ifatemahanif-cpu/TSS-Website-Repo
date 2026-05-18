@@ -10,7 +10,7 @@ import multer from "multer";
 import { randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
-import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema } from "@shared/schema";
+import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
 import { sendWelcomeEmail, sendNewPostNotification } from "./email";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
@@ -247,6 +247,46 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const deleted = await storage.deleteFormSubmission(id);
     if (!deleted) return res.status(404).json({ message: "Not found" });
     res.json({ message: "Deleted" });
+  });
+
+  // Public portfolio summaries — for the /team page (only exposes non-sensitive public fields)
+  app.get("/api/portfolios/summaries", async (_req: Request, res: Response) => {
+    const all = await storage.getTeamMemberPortfolios();
+    res.json(all.map((p) => ({
+      id: p.id,
+      slug: p.slug,
+      name: p.name,
+      metaTitle: p.metaTitle,
+      metaDescription: p.metaDescription,
+      hero: p.hero,
+      stats: p.stats,
+      about: p.about,
+    })));
+  });
+
+  // Team member portfolios — admin list (auth required)
+  app.get("/api/cms/portfolios", requireAuth, async (_req: Request, res: Response) => {
+    res.json(await storage.getTeamMemberPortfolios());
+  });
+
+  // Public single-portfolio fetch by slug (used by /:slug pages)
+  app.get("/api/cms/portfolios/:slug", async (req: Request, res: Response) => {
+    const portfolio = await storage.getTeamMemberPortfolioBySlug(req.params.slug);
+    if (!portfolio) return res.status(404).json({ message: "Not found" });
+    res.json(portfolio);
+  });
+
+  app.put("/api/cms/portfolios/:id", requireAuth, async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+    const { id: _ignore, ...rest } = req.body || {};
+    const parsed = insertTeamMemberPortfolioSchema.partial().safeParse(rest);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Invalid portfolio data", errors: parsed.error.flatten() });
+    }
+    const updated = await storage.updateTeamMemberPortfolio(id, parsed.data);
+    if (!updated) return res.status(404).json({ message: "Not found" });
+    res.json(updated);
   });
 
   function generateSlug(title: string): string {

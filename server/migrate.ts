@@ -81,6 +81,25 @@ export async function runMigrations() {
   await db.execute(sql`ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS featured BOOLEAN NOT NULL DEFAULT false;`);
 
   await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS team_member_portfolios (
+      id SERIAL PRIMARY KEY,
+      slug TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      meta_title TEXT NOT NULL DEFAULT '',
+      meta_description TEXT NOT NULL DEFAULT '',
+      hero JSONB NOT NULL DEFAULT '{}'::jsonb,
+      brands JSONB NOT NULL DEFAULT '{}'::jsonb,
+      stats JSONB NOT NULL DEFAULT '{}'::jsonb,
+      case_studies JSONB NOT NULL DEFAULT '{}'::jsonb,
+      testimonials JSONB NOT NULL DEFAULT '[]'::jsonb,
+      about JSONB NOT NULL DEFAULT '{}'::jsonb,
+      work_with_me JSONB NOT NULL DEFAULT '{}'::jsonb,
+      footer JSONB NOT NULL DEFAULT '{}'::jsonb
+    );
+  `);
+
+  await db.execute(sql`
     CREATE TABLE IF NOT EXISTS image_uploads (
       id SERIAL PRIMARY KEY,
       filename TEXT NOT NULL,

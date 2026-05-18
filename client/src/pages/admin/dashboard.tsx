@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/schema";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
@@ -21,6 +21,7 @@ const tabLabels: Record<Tab, string> = {
   blogposts: "Blog Posts",
   authors: "Authors",
   subscribers: "Subscribers",
+  portfolios: "Portfolios",
 };
 
 const inputStyle: React.CSSProperties = {
@@ -2192,6 +2193,438 @@ function SubscribersEditor() {
   );
 }
 
+function PortfoliosEditor() {
+  const queryClient = useQueryClient();
+  const { data: portfolios, isLoading } = useQuery<any[]>({ queryKey: ["/api/cms/portfolios"] });
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editing, setEditing] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const startEdit = (p: any) => {
+    setEditingId(p.id);
+    setEditing(JSON.parse(JSON.stringify(p)));
+  };
+
+  const updateField = (path: string[], value: any) => {
+    setEditing((prev: any) => {
+      if (!prev) return prev;
+      const next = { ...prev };
+      let cur: any = next;
+      for (let i = 0; i < path.length - 1; i++) {
+        cur[path[i]] = { ...(cur[path[i]] || {}) };
+        cur = cur[path[i]];
+      }
+      cur[path[path.length - 1]] = value;
+      return next;
+    });
+  };
+
+  const updateArrayItem = (section: string, key: string, idx: number, field: string, value: any) => {
+    setEditing((prev: any) => {
+      const sec = { ...(prev[section] || {}) };
+      const arr = [...(sec[key] || [])];
+      arr[idx] = { ...arr[idx], [field]: value };
+      sec[key] = arr;
+      return { ...prev, [section]: sec };
+    });
+  };
+
+  const addArrayItem = (section: string, key: string, blank: any) => {
+    setEditing((prev: any) => {
+      const sec = { ...(prev[section] || {}) };
+      sec[key] = [...(sec[key] || []), blank];
+      return { ...prev, [section]: sec };
+    });
+  };
+
+  const removeArrayItem = (section: string, key: string, idx: number) => {
+    setEditing((prev: any) => {
+      const sec = { ...(prev[section] || {}) };
+      sec[key] = (sec[key] || []).filter((_: any, i: number) => i !== idx);
+      return { ...prev, [section]: sec };
+    });
+  };
+
+  const updateTopArray = (key: string, idx: number, field: string, value: any) => {
+    setEditing((prev: any) => {
+      const arr = [...(prev[key] || [])];
+      arr[idx] = { ...arr[idx], [field]: value };
+      return { ...prev, [key]: arr };
+    });
+  };
+
+  const addTopArrayItem = (key: string, blank: any) => {
+    setEditing((prev: any) => ({ ...prev, [key]: [...(prev[key] || []), blank] }));
+  };
+
+  const removeTopArrayItem = (key: string, idx: number) => {
+    setEditing((prev: any) => ({ ...prev, [key]: (prev[key] || []).filter((_: any, i: number) => i !== idx) }));
+  };
+
+  const upload = async (file: File, onUrl: (u: string) => void) => {
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const r = await fetch("/api/upload", { method: "POST", body: fd });
+      if (r.ok) {
+        const { url } = await r.json();
+        onUrl(url);
+      }
+    } finally { setUploading(false); }
+  };
+
+  const save = async () => {
+    if (!editing || !editingId) return;
+    setSaving(true);
+    const r = await fetch(`/api/cms/portfolios/${editingId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editing),
+    });
+    setSaving(false);
+    if (!r.ok) {
+      alert("Failed to save");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/portfolios"] });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  if (editing) {
+    const sectionHeader: React.CSSProperties = {
+      fontFamily: "'JetBrains Mono', monospace",
+      fontSize: "0.65rem",
+      letterSpacing: "0.2em",
+      color: "#FFAEDA",
+      textTransform: "uppercase",
+      marginTop: "1.5rem",
+      marginBottom: "0.75rem",
+      paddingBottom: "0.5rem",
+      borderBottom: "1px solid rgba(255,255,255,0.1)",
+    };
+    const subRow: React.CSSProperties = { display: "flex", gap: "0.5rem", marginBottom: "0.5rem", flexWrap: "wrap" };
+    const smallBtn: React.CSSProperties = { ...btnPrimary, fontSize: "0.5rem", padding: "0.4rem 0.7rem" };
+
+    const ImageInput = ({ value, onChange, testid }: { value: string; onChange: (v: string) => void; testid: string }) => (
+      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <input type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} style={{ ...inputStyle, fontSize: "0.75rem" }} placeholder="Image URL" data-testid={testid} />
+        <label style={{ ...smallBtn, opacity: uploading ? 0.6 : 1, cursor: "pointer", whiteSpace: "nowrap" }}>
+          {uploading ? "..." : "UPLOAD"}
+          <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f, onChange); }} />
+        </label>
+      </div>
+    );
+
+    return (
+      <div>
+        <button onClick={() => { setEditingId(null); setEditing(null); }} style={{ ...btnPrimary, backgroundColor: "rgba(255,255,255,0.08)", marginBottom: "1rem", fontSize: "0.55rem" }} data-testid="button-back-portfolios">
+          ← BACK TO LIST
+        </button>
+
+        <div style={cardStyle}>
+          <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.1rem", color: "#fff", marginBottom: "1rem" }}>
+            {editing.name} <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem" }}>/{editing.slug}</span>
+          </h3>
+
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Display Name</label>
+            <input style={inputStyle} value={editing.name || ""} onChange={(e) => updateField(["name"], e.target.value)} data-testid="input-portfolio-name" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Meta Title</label>
+            <input style={inputStyle} value={editing.metaTitle || ""} onChange={(e) => updateField(["metaTitle"], e.target.value)} data-testid="input-portfolio-meta-title" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Meta Description</label>
+            <textarea style={textareaStyle} value={editing.metaDescription || ""} onChange={(e) => updateField(["metaDescription"], e.target.value)} data-testid="input-portfolio-meta-description" />
+          </div>
+
+          {/* HERO */}
+          <div style={sectionHeader}>Hero</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Eyebrow (optional)</label>
+            <input style={inputStyle} value={editing.hero?.eyebrow || ""} onChange={(e) => updateField(["hero", "eyebrow"], e.target.value)} />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Headline Line 1</label>
+            <input style={inputStyle} value={editing.hero?.headlineLine1 || ""} onChange={(e) => updateField(["hero", "headlineLine1"], e.target.value)} data-testid="input-hero-line1" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Headline Line 2</label>
+            <input style={inputStyle} value={editing.hero?.headlineLine2 || ""} onChange={(e) => updateField(["hero", "headlineLine2"], e.target.value)} data-testid="input-hero-line2" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={{ ...labelStyle, display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <input type="checkbox" checked={!!editing.hero?.headlineLine2Italic} onChange={(e) => updateField(["hero", "headlineLine2Italic"], e.target.checked)} />
+              <span>Italic accent on Line 2</span>
+            </label>
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Subtext</label>
+            <textarea style={textareaStyle} value={editing.hero?.subtext || ""} onChange={(e) => updateField(["hero", "subtext"], e.target.value)} />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Portrait Image</label>
+            <ImageInput value={editing.hero?.portrait || ""} onChange={(v) => updateField(["hero", "portrait"], v)} testid="input-hero-portrait" />
+          </div>
+          <label style={labelStyle}>Hero CTAs</label>
+          {(editing.hero?.ctas || []).map((c: any, i: number) => (
+            <div key={i} style={subRow}>
+              <input style={{ ...inputStyle, flex: 1 }} placeholder="Label" value={c.label || ""} onChange={(e) => updateArrayItem("hero", "ctas", i, "label", e.target.value)} />
+              <input style={{ ...inputStyle, flex: 2 }} placeholder="URL" value={c.href || ""} onChange={(e) => updateArrayItem("hero", "ctas", i, "href", e.target.value)} />
+              <button style={btnDanger} onClick={() => removeArrayItem("hero", "ctas", i)}>×</button>
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addArrayItem("hero", "ctas", { label: "", href: "" })}>+ ADD CTA</button>
+
+          {/* BRANDS */}
+          <div style={sectionHeader}>Brands strip</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Section Title</label>
+            <input style={inputStyle} value={editing.brands?.title || ""} onChange={(e) => updateField(["brands", "title"], e.target.value)} />
+          </div>
+          {(editing.brands?.items || []).map((b: any, i: number) => (
+            <div key={i} style={subRow}>
+              <input style={{ ...inputStyle, flex: 1 }} placeholder="Brand name" value={b.name || ""} onChange={(e) => updateArrayItem("brands", "items", i, "name", e.target.value)} />
+              <input style={{ ...inputStyle, flex: 2 }} placeholder="Logo URL (optional)" value={b.logo || ""} onChange={(e) => updateArrayItem("brands", "items", i, "logo", e.target.value)} />
+              <button style={btnDanger} onClick={() => removeArrayItem("brands", "items", i)}>×</button>
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addArrayItem("brands", "items", { name: "", logo: "" })}>+ ADD BRAND</button>
+
+          {/* STATS */}
+          <div style={sectionHeader}>Stats</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Eyebrow Label</label>
+            <input style={inputStyle} value={editing.stats?.label || ""} onChange={(e) => updateField(["stats", "label"], e.target.value)} />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Section Title</label>
+            <input style={inputStyle} value={editing.stats?.title || ""} onChange={(e) => updateField(["stats", "title"], e.target.value)} />
+          </div>
+          {(editing.stats?.items || []).map((s: any, i: number) => (
+            <div key={i} style={{ ...cardStyle, padding: "0.75rem", marginBottom: "0.5rem" }}>
+              <div style={subRow}>
+                <input style={{ ...inputStyle, flex: 1 }} placeholder="Value (e.g. 5M+)" value={s.value || ""} onChange={(e) => updateArrayItem("stats", "items", i, "value", e.target.value)} />
+                <input style={{ ...inputStyle, flex: 2 }} placeholder="Label" value={s.label || ""} onChange={(e) => updateArrayItem("stats", "items", i, "label", e.target.value)} />
+                <button style={btnDanger} onClick={() => removeArrayItem("stats", "items", i)}>×</button>
+              </div>
+              <textarea style={{ ...textareaStyle, minHeight: "50px" }} placeholder="Context (optional)" value={s.context || ""} onChange={(e) => updateArrayItem("stats", "items", i, "context", e.target.value)} />
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addArrayItem("stats", "items", { value: "", label: "", context: "" })}>+ ADD STAT</button>
+
+          {/* CASE STUDIES */}
+          <div style={sectionHeader}>Case Studies</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Eyebrow Label</label>
+            <input style={inputStyle} value={editing.caseStudies?.label || ""} onChange={(e) => updateField(["caseStudies", "label"], e.target.value)} />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Section Title</label>
+            <input style={inputStyle} value={editing.caseStudies?.title || ""} onChange={(e) => updateField(["caseStudies", "title"], e.target.value)} />
+          </div>
+          {(editing.caseStudies?.items || []).map((c: any, i: number) => (
+            <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.75rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>CASE #{i + 1}</span>
+                <button style={btnDanger} onClick={() => removeArrayItem("caseStudies", "items", i)}>REMOVE</button>
+              </div>
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Tag (e.g. Headout · Content Leadership)" value={c.tag || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "tag", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Card Title" value={c.cardTitle || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "cardTitle", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Modal Title (optional, defaults to card title)" value={c.modalTitle || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "modalTitle", e.target.value)} />
+              <label style={labelStyle}>Case Image (optional)</label>
+              <div style={{ marginBottom: "0.4rem" }}>
+                <ImageInput value={c.image || ""} onChange={(v) => updateArrayItem("caseStudies", "items", i, "image", v)} testid={`input-case-image-${i}`} />
+              </div>
+              <textarea style={{ ...textareaStyle, marginBottom: "0.4rem" }} placeholder="The situation" value={c.situation || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "situation", e.target.value)} />
+              <label style={labelStyle}>What I built (rich text)</label>
+              <div style={{ marginBottom: "0.4rem" }}>
+                <Suspense fallback={<div style={{ color: "rgba(255,255,255,0.5)", padding: "0.5rem" }}>Loading editor...</div>}>
+                  <RichTextEditor content={c.whatIBuilt || ""} onChange={(html) => updateArrayItem("caseStudies", "items", i, "whatIBuilt", html)} />
+                </Suspense>
+              </div>
+              <textarea style={{ ...textareaStyle, marginBottom: "0.4rem" }} placeholder="What changed" value={c.whatChanged || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "whatChanged", e.target.value)} />
+              <label style={labelStyle}>Metrics</label>
+              {(c.metrics || []).map((m: any, mi: number) => (
+                <div key={mi} style={subRow}>
+                  <input style={{ ...inputStyle, flex: 1 }} placeholder="Value" value={m.value || ""} onChange={(e) => {
+                    const newMetrics = [...(c.metrics || [])];
+                    newMetrics[mi] = { ...newMetrics[mi], value: e.target.value };
+                    updateArrayItem("caseStudies", "items", i, "metrics", newMetrics);
+                  }} />
+                  <input style={{ ...inputStyle, flex: 2 }} placeholder="Label" value={m.label || ""} onChange={(e) => {
+                    const newMetrics = [...(c.metrics || [])];
+                    newMetrics[mi] = { ...newMetrics[mi], label: e.target.value };
+                    updateArrayItem("caseStudies", "items", i, "metrics", newMetrics);
+                  }} />
+                  <button style={btnDanger} onClick={() => {
+                    const newMetrics = (c.metrics || []).filter((_: any, x: number) => x !== mi);
+                    updateArrayItem("caseStudies", "items", i, "metrics", newMetrics);
+                  }}>×</button>
+                </div>
+              ))}
+              <button style={smallBtn} onClick={() => {
+                const newMetrics = [...(c.metrics || []), { value: "", label: "" }];
+                updateArrayItem("caseStudies", "items", i, "metrics", newMetrics);
+              }}>+ METRIC</button>
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addArrayItem("caseStudies", "items", { tag: "", cardTitle: "", modalTitle: "", situation: "", whatIBuilt: "", whatChanged: "", metrics: [] })}>+ ADD CASE STUDY</button>
+
+          {/* TESTIMONIALS */}
+          <div style={sectionHeader}>Testimonials</div>
+          {(editing.testimonials || []).map((t: any, i: number) => (
+            <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>QUOTE #{i + 1}</span>
+                <button style={btnDanger} onClick={() => removeTopArrayItem("testimonials", i)}>REMOVE</button>
+              </div>
+              <textarea style={{ ...textareaStyle, marginBottom: "0.4rem" }} placeholder="Quote" value={t.quote || ""} onChange={(e) => updateTopArray("testimonials", i, "quote", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Name" value={t.name || ""} onChange={(e) => updateTopArray("testimonials", i, "name", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Role · Org" value={t.role || ""} onChange={(e) => updateTopArray("testimonials", i, "role", e.target.value)} />
+              <label style={labelStyle}>Avatar</label>
+              <ImageInput value={t.avatar || ""} onChange={(v) => updateTopArray("testimonials", i, "avatar", v)} testid={`input-testimonial-avatar-${i}`} />
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addTopArrayItem("testimonials", { quote: "", name: "", role: "", avatar: "" })}>+ ADD TESTIMONIAL</button>
+
+          {/* ABOUT */}
+          <div style={sectionHeader}>About</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Eyebrow Label</label>
+            <input style={inputStyle} value={editing.about?.label || ""} onChange={(e) => updateField(["about", "label"], e.target.value)} />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Title</label>
+            <input style={inputStyle} value={editing.about?.title || ""} onChange={(e) => updateField(["about", "title"], e.target.value)} />
+          </div>
+          <label style={labelStyle}>Paragraphs</label>
+          {(editing.about?.paragraphs || []).map((p: string, i: number) => (
+            <div key={i} style={subRow}>
+              <textarea style={{ ...textareaStyle, flex: 1, minHeight: "70px" }} value={p} onChange={(e) => {
+                const arr = [...(editing.about?.paragraphs || [])];
+                arr[i] = e.target.value;
+                updateField(["about", "paragraphs"], arr);
+              }} />
+              <button style={btnDanger} onClick={() => {
+                const arr = (editing.about?.paragraphs || []).filter((_: any, x: number) => x !== i);
+                updateField(["about", "paragraphs"], arr);
+              }}>×</button>
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => updateField(["about", "paragraphs"], [...(editing.about?.paragraphs || []), ""])}>+ PARAGRAPH</button>
+
+          <div style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Pull Quote (optional)</label>
+            <textarea style={textareaStyle} placeholder="A short standout quote rendered between paragraphs" value={editing.about?.pullQuote || ""} onChange={(e) => updateField(["about", "pullQuote"], e.target.value)} data-testid="input-about-pullquote" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Photo</label>
+            <ImageInput value={editing.about?.photo || ""} onChange={(v) => updateField(["about", "photo"], v)} testid="input-about-photo" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Secondary Photo (optional)</label>
+            <ImageInput value={editing.about?.secondaryPhoto || ""} onChange={(v) => updateField(["about", "secondaryPhoto"], v)} testid="input-about-secondary-photo" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Tags (comma-separated)</label>
+            <input style={inputStyle} value={(editing.about?.tags || []).join(", ")} onChange={(e) => updateField(["about", "tags"], e.target.value.split(",").map((s) => s.trim()).filter(Boolean))} />
+          </div>
+
+          {/* WORK WITH ME */}
+          <div style={sectionHeader}>Work With Me</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Section Title</label>
+            <input style={inputStyle} value={editing.workWithMe?.title || ""} onChange={(e) => updateField(["workWithMe", "title"], e.target.value)} />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Subtitle</label>
+            <textarea style={textareaStyle} value={editing.workWithMe?.subtitle || ""} onChange={(e) => updateField(["workWithMe", "subtitle"], e.target.value)} />
+          </div>
+          {(editing.workWithMe?.cards || []).map((card: any, i: number) => (
+            <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>OFFER #{i + 1}</span>
+                <button style={btnDanger} onClick={() => removeArrayItem("workWithMe", "cards", i)}>REMOVE</button>
+              </div>
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Eyebrow (e.g. Start here)" value={card.eyebrow || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "eyebrow", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Title" value={card.title || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "title", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Price (e.g. ₹3,000 / 30 min)" value={card.price || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "price", e.target.value)} />
+              <textarea style={{ ...textareaStyle, marginBottom: "0.4rem" }} placeholder="Description" value={card.description || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "description", e.target.value)} />
+              <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="CTA Label" value={card.ctaLabel || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "ctaLabel", e.target.value)} />
+              <input style={inputStyle} placeholder="CTA URL" value={card.ctaHref || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "ctaHref", e.target.value)} />
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addArrayItem("workWithMe", "cards", { eyebrow: "", title: "", price: "", description: "", ctaLabel: "", ctaHref: "" })}>+ ADD OFFER</button>
+
+          {/* FOOTER */}
+          <div style={sectionHeader}>Footer</div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Tagline (italic line under logo)</label>
+            <input style={inputStyle} value={editing.footer?.tagline || ""} onChange={(e) => updateField(["footer", "tagline"], e.target.value)} data-testid="input-footer-tagline" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Contact Email</label>
+            <input style={inputStyle} placeholder="hello@storyshaperscollective.com" value={editing.footer?.email || ""} onChange={(e) => updateField(["footer", "email"], e.target.value)} data-testid="input-footer-email" />
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
+            <label style={labelStyle}>Copyright Line</label>
+            <input style={inputStyle} placeholder="© 2026 The Story Shapers. All rights reserved." value={editing.footer?.copyright || ""} onChange={(e) => updateField(["footer", "copyright"], e.target.value)} data-testid="input-footer-copyright" />
+          </div>
+          <label style={labelStyle}>Links</label>
+          {(editing.footer?.links || []).map((l: any, i: number) => (
+            <div key={i} style={subRow}>
+              <input style={{ ...inputStyle, flex: 1 }} placeholder="Label" value={l.label || ""} onChange={(e) => updateArrayItem("footer", "links", i, "label", e.target.value)} />
+              <input style={{ ...inputStyle, flex: 2 }} placeholder="URL" value={l.href || ""} onChange={(e) => updateArrayItem("footer", "links", i, "href", e.target.value)} />
+              <button style={btnDanger} onClick={() => removeArrayItem("footer", "links", i)}>×</button>
+            </div>
+          ))}
+          <button style={smallBtn} onClick={() => addArrayItem("footer", "links", { label: "", href: "" })}>+ ADD LINK</button>
+
+          <div style={{ marginTop: "1.5rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <SaveButton onClick={save} saving={saving} />
+            <SuccessMessage show={saved} />
+            <a href={`/${editing.slug}`} target="_blank" rel="noreferrer" style={{ ...btnPrimary, backgroundColor: "rgba(255,255,255,0.08)", textDecoration: "none", display: "inline-block" }}>
+              VIEW PAGE →
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {(portfolios || []).length === 0 ? (
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No portfolios yet.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {(portfolios || []).map((p: any) => (
+            <div key={p.id} style={{ ...cardStyle, marginBottom: 0, display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }} onClick={() => startEdit(p)} data-testid={`portfolio-row-${p.slug}`}>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.95rem", color: "#FFFFFF", flex: 1, fontWeight: 500 }}>
+                {p.name}
+              </span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.4)" }}>
+                /{p.slug}
+              </span>
+              <button onClick={(e) => { e.stopPropagation(); startEdit(p); }} style={{ ...btnPrimary, fontSize: "0.55rem" }} data-testid={`button-edit-portfolio-${p.slug}`}>
+                EDIT
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<Tab>("submissions");
@@ -2228,7 +2661,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2367,6 +2800,7 @@ export default function AdminDashboard() {
           {activeTab === "blogposts" && <BlogPostsEditor />}
           {activeTab === "authors" && <AuthorsEditor />}
           {activeTab === "subscribers" && <SubscribersEditor />}
+          {activeTab === "portfolios" && <PortfoliosEditor />}
         </div>
       </div>
     </div>

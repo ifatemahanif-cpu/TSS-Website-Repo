@@ -15,6 +15,7 @@ export function Navbar() {
 
   const links = [
     { name: "Our Story", href: "/our-story" },
+    { name: "Team", href: "/team" },
     { name: "Blog", href: "/blog" },
     { name: "Join the collective", href: "/join" },
   ];

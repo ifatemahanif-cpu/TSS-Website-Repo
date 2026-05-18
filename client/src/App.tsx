@@ -13,6 +13,10 @@ import Blog from "@/pages/blog";
 import BlogPostPage from "@/pages/blog-post";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
+import Portfolio from "@/pages/portfolio";
+import TeamPage from "@/pages/team";
+
+const PORTFOLIO_SLUGS = ["fatema", "shaili", "aakanksha"];
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -32,9 +36,13 @@ function Router() {
         <Route path="/join" component={Join} />
         <Route path="/contact" component={Contact} />
         <Route path="/blog" component={Blog} />
+        <Route path="/team" component={TeamPage} />
         <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin" component={AdminDashboard} />
+        {PORTFOLIO_SLUGS.map((slug) => (
+          <Route key={slug} path={`/${slug}`} component={Portfolio} />
+        ))}
         <Route component={NotFound} />
       </Switch>
     </>

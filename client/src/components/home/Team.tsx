@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
+import { Link } from "wouter";
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
 import { SectionLabel } from "./SectionAnimations";
 import { GradientBlobs, teamBlobs } from "./GradientBlobs";
@@ -12,6 +13,14 @@ const defaultImageMap: Record<string, string> = {
   "Shaili Contractor": teamShaili,
   "Aakanksha Singh Devi": teamAakanksha,
 };
+
+const KNOWN_PORTFOLIO_SLUGS = new Set(["fatema", "shaili", "aakanksha"]);
+
+function getPortfolioSlug(memberName: string): string | null {
+  if (!memberName) return null;
+  const firstName = memberName.trim().split(/\s+/)[0]?.toLowerCase() || "";
+  return KNOWN_PORTFOLIO_SLUGS.has(firstName) ? firstName : null;
+}
 
 const hardcodedTeam = [
   {
@@ -462,7 +471,7 @@ function TeamModal({
               </p>
             </ModalSection>
 
-            <ModalSection label={member.brandsLabel} accent={modalAccent} last>
+            <ModalSection label={member.brandsLabel} accent={modalAccent}>
               <p
                 style={{
                   fontFamily: "'Inter', sans-serif",
@@ -474,6 +483,30 @@ function TeamModal({
                 {member.brands}
               </p>
             </ModalSection>
+
+            {getPortfolioSlug(member.name) && (
+              <Link
+                href={`/${getPortfolioSlug(member.name)}`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#FFFFFF",
+                  backgroundColor: "#7B1E7A",
+                  padding: "0.7rem 1rem",
+                  borderRadius: "6px",
+                  textDecoration: "none",
+                  marginTop: "0.5rem",
+                }}
+                data-testid={`link-portfolio-${index}`}
+              >
+                View portfolio →
+              </Link>
+            )}
           </div>
         </div>
       </motion.div>

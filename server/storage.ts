@@ -11,9 +11,10 @@ import {
   type BlogPost, type InsertBlogPost,
   type Author, type InsertAuthor,
   type EmailSubscriber, type InsertEmailSubscriber,
+  type TeamMemberPortfolio, type InsertTeamMemberPortfolio,
   type ImageUpload,
   users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, pageSections, formSubmissions,
-  blogCategories, blogPosts, authors, emailSubscribers, imageUploads,
+  blogCategories, blogPosts, authors, emailSubscribers, teamMemberPortfolios, imageUploads,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc, and, desc, sql, count, ne } from "drizzle-orm";
@@ -91,6 +92,12 @@ export interface IStorage {
   unsubscribeByToken(token: string): Promise<boolean>;
   unsubscribeById(id: number): Promise<boolean>;
   deleteEmailSubscriber(id: number): Promise<boolean>;
+
+  getTeamMemberPortfolios(): Promise<TeamMemberPortfolio[]>;
+  getTeamMemberPortfolioBySlug(slug: string): Promise<TeamMemberPortfolio | undefined>;
+  getTeamMemberPortfolio(id: number): Promise<TeamMemberPortfolio | undefined>;
+  createTeamMemberPortfolio(p: InsertTeamMemberPortfolio): Promise<TeamMemberPortfolio>;
+  updateTeamMemberPortfolio(id: number, p: Partial<InsertTeamMemberPortfolio>): Promise<TeamMemberPortfolio | undefined>;
 
   saveImageUpload(filename: string, mimeType: string, data: string): Promise<ImageUpload>;
   getImageUpload(id: number): Promise<ImageUpload | undefined>;
@@ -450,6 +457,30 @@ export class DatabaseStorage implements IStorage {
   async deleteEmailSubscriber(id: number): Promise<boolean> {
     const result = await db.delete(emailSubscribers).where(eq(emailSubscribers.id, id)).returning();
     return result.length > 0;
+  }
+
+  async getTeamMemberPortfolios(): Promise<TeamMemberPortfolio[]> {
+    return db.select().from(teamMemberPortfolios).orderBy(asc(teamMemberPortfolios.sortOrder));
+  }
+
+  async getTeamMemberPortfolioBySlug(slug: string): Promise<TeamMemberPortfolio | undefined> {
+    const [p] = await db.select().from(teamMemberPortfolios).where(eq(teamMemberPortfolios.slug, slug));
+    return p;
+  }
+
+  async getTeamMemberPortfolio(id: number): Promise<TeamMemberPortfolio | undefined> {
+    const [p] = await db.select().from(teamMemberPortfolios).where(eq(teamMemberPortfolios.id, id));
+    return p;
+  }
+
+  async createTeamMemberPortfolio(p: InsertTeamMemberPortfolio): Promise<TeamMemberPortfolio> {
+    const [created] = await db.insert(teamMemberPortfolios).values(p).returning();
+    return created;
+  }
+
+  async updateTeamMemberPortfolio(id: number, p: Partial<InsertTeamMemberPortfolio>): Promise<TeamMemberPortfolio | undefined> {
+    const [updated] = await db.update(teamMemberPortfolios).set(p).where(eq(teamMemberPortfolios.id, id)).returning();
+    return updated;
   }
 
   async saveImageUpload(filename: string, mimeType: string, data: string): Promise<ImageUpload> {

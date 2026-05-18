@@ -14,6 +14,9 @@ export async function seedDatabase() {
   const existingAuthors = await storage.getAuthors();
   const needsAuthorSeed = existingAuthors.length === 0;
 
+  const { seedPortfolios } = await import("./seedPortfolios");
+  await seedPortfolios();
+
   if (isFullySeeded) {
     const subpageKeys = ["ourStory", "join", "contact"];
     const missingKeys = subpageKeys.filter((k) => !existingKeys.has(k));
