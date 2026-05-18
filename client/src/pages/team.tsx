@@ -108,7 +108,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
         gridTemplateColumns: portrait ? (isEven ? "220px 1fr" : "1fr 220px") : "1fr",
         gap: "0",
         alignItems: "stretch",
-        height: "260px",
+        minHeight: "220px",
         backgroundColor: CARD,
         borderRadius: "16px",
         border: `1px solid ${BORDER}`,
@@ -129,7 +129,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
           <img
             src={portrait}
             alt={member.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: member.slug === "aakanksha" ? "center" : "top" }}
             data-testid={`img-member-${member.slug}`}
           />
         </div>
