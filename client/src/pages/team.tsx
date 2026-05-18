@@ -105,9 +105,10 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
       transition={{ duration: 0.6 }}
       style={{
         display: "grid",
-        gridTemplateColumns: portrait ? "220px 1fr" : "1fr",
+        gridTemplateColumns: portrait ? (isEven ? "220px 1fr" : "1fr 220px") : "1fr",
         gap: "0",
         alignItems: "stretch",
+        height: "260px",
         backgroundColor: CARD,
         borderRadius: "16px",
         border: `1px solid ${BORDER}`,
@@ -122,7 +123,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
           style={{
             order: isEven ? 0 : 1,
             overflow: "hidden",
-            minHeight: "220px",
+            height: "100%",
           }}
         >
           <img
