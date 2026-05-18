@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import { seedDatabase } from "./seed";
+import { seedPortfolios } from "./seedPortfolios";
 import { runMigrations } from "./migrate";
 
 const app = express();
@@ -72,6 +73,12 @@ app.use((req, res, next) => {
     await seedDatabase();
   } catch (e) {
     console.error("Seed error:", e);
+  }
+
+  try {
+    await seedPortfolios();
+  } catch (e) {
+    console.error("Portfolio seed error:", e);
   }
 
   await registerRoutes(httpServer, app);
