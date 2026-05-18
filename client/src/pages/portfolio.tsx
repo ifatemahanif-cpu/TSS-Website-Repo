@@ -161,34 +161,6 @@ export default function PortfolioPage() {
         </section>
       )}
 
-      {/* STATS */}
-      {stats.items && stats.items.length > 0 && (
-        <section style={{ padding: "6rem 1.5rem", maxWidth: "1280px", margin: "0 auto" }}>
-          {stats.label && (
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
-              {stats.label}
-            </div>
-          )}
-          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "3rem", maxWidth: "760px" }} data-testid="text-stats-title">
-            {stats.title}
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1px", backgroundColor: BORDER, border: `1px solid ${BORDER}`, borderRadius: "12px", overflow: "hidden" }}>
-            {stats.items.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}
-                style={{ padding: "2rem 1.75rem", backgroundColor: CARD }} data-testid={`stat-${i}`}>
-                <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "2.2rem", color: "#FFAEDA", lineHeight: 1, marginBottom: "0.75rem" }}>
-                  {s.value}
-                </div>
-                <div style={{ fontSize: "0.95rem", color: "#FFFFFF", marginBottom: s.context ? "0.75rem" : 0, fontWeight: 500 }}>
-                  {s.label}
-                </div>
-                {s.context && <div style={{ fontSize: "0.8rem", color: MUTED, lineHeight: 1.5 }}>{s.context}</div>}
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* CASE STUDIES (with interleaved testimonials) */}
       {caseStudies.items && caseStudies.items.length > 0 ? (
         <section id="work" style={{ padding: "5rem 1.5rem 6rem", maxWidth: "1280px", margin: "0 auto" }}>
