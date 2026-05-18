@@ -60,17 +60,6 @@ const hardcodedServices = [
       "Team playbooks",
     ],
   },
-  {
-    id: "ai",
-    title: "AI-Assisted Systems",
-    subtitle: "When AI is making you faster at producing the wrong things.",
-    items: [
-      "Content workflows",
-      "Insight automation",
-      "Monitoring systems",
-      "Operational efficiency",
-    ],
-  },
 ];
 
 export function Services() {
@@ -140,8 +129,8 @@ export function Services() {
           </motion.div>
 
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            style={{ gap: "1.5rem" }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "1.5rem" }}
+            className="services-grid"
           >
             {services.map((service, i) => (
               <motion.div
@@ -149,8 +138,8 @@ export function Services() {
                 initial={{ opacity: 0, y: 25 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.15 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-                className=""
                 style={{
+                  gridColumn: i < 3 ? "span 2" : "span 3",
                   backgroundColor: "rgba(255, 255, 255, 0.04)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   borderRadius: "16px",

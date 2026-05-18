@@ -307,3 +307,15 @@
   height: 0;
 }
 
+
+/* Services grid — 5-card layout: 3 top + 2 bottom */
+@media (max-width: 767px) {
+  .services-grid > * {
+    grid-column: span 6 !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .services-grid > * {
+    grid-column: span 3 !important;
+  }
+}
