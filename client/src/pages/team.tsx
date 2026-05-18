@@ -60,7 +60,7 @@ export default function TeamPage() {
             LOADING…
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             {(members || []).map((member, idx) => (
               <MemberCard key={member.slug} member={member} idx={idx} />
             ))}
@@ -105,11 +105,11 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
       transition={{ duration: 0.6 }}
       style={{
         display: "grid",
-        gridTemplateColumns: portrait ? "1fr 1fr" : "1fr",
-        gap: "3rem",
-        alignItems: "start",
+        gridTemplateColumns: portrait ? "220px 1fr" : "1fr",
+        gap: "0",
+        alignItems: "stretch",
         backgroundColor: CARD,
-        borderRadius: "20px",
+        borderRadius: "16px",
         border: `1px solid ${BORDER}`,
         overflow: "hidden",
         padding: "0",
@@ -121,9 +121,8 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
         <div
           style={{
             order: isEven ? 0 : 1,
-            aspectRatio: "3/4",
             overflow: "hidden",
-            minHeight: "400px",
+            minHeight: "220px",
           }}
         >
           <img
@@ -139,10 +138,10 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
       <div
         style={{
           order: isEven ? 1 : 0,
-          padding: "3rem",
+          padding: "1.75rem 2rem",
           display: "flex",
           flexDirection: "column",
-          gap: "1.25rem",
+          gap: "0.75rem",
           justifyContent: "center",
         }}
       >
@@ -150,7 +149,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
           {(member.hero as HeroBlock).eyebrow || member.name}
         </div>
 
-        <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3vw, 2.6rem)", lineHeight: 1.15, fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }} data-testid={`text-member-name-${member.slug}`}>
+        <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.3rem, 2vw, 1.7rem)", lineHeight: 1.2, fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }} data-testid={`text-member-name-${member.slug}`}>
           {(member.hero as HeroBlock).headlineLine1 || member.name}
           {(member.hero as HeroBlock).headlineLine2 && (
             <>
@@ -166,33 +165,12 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
         </h2>
 
         {subtext && (
-          <p style={{ fontSize: "0.95rem", lineHeight: 1.7, color: MUTED, maxWidth: "520px", margin: 0 }} data-testid={`text-member-subtext-${member.slug}`}>
+          <p style={{ fontSize: "0.85rem", lineHeight: 1.6, color: MUTED, maxWidth: "520px", margin: 0 }} data-testid={`text-member-subtext-${member.slug}`}>
             {subtext}
           </p>
         )}
 
-        {stats.length > 0 && (
-          <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", margin: "0.5rem 0" }}>
-            {stats.map((s, i) => (
-              <div key={i} style={{ borderLeft: `2px solid ${ACCENT}`, paddingLeft: "0.75rem" }} data-testid={`stat-${member.slug}-${i}`}>
-                <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.3rem", fontWeight: 400, color: "#fff" }}>{s.value}</div>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.1em", color: MUTED, textTransform: "uppercase" }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tags.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-            {tags.slice(0, 5).map((t, i) => (
-              <span key={i} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", padding: "0.4rem 0.7rem", borderRadius: "999px", border: `1px solid ${BORDER}`, color: MUTED }}>
-                {t}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <div style={{ marginTop: "0.5rem" }}>
+        <div style={{ marginTop: "0.25rem" }}>
           <Link
             href={`/${member.slug}`}
             style={{
@@ -205,7 +183,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
               textTransform: "uppercase",
               color: "#FFFFFF",
               backgroundColor: ACCENT,
-              padding: "0.85rem 1.5rem",
+              padding: "0.65rem 1.1rem",
               borderRadius: "6px",
               textDecoration: "none",
               transition: "background-color 0.2s",
