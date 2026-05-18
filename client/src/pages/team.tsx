@@ -96,7 +96,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
 
   const photoPosition =
     member.slug === "aakanksha" ? "50% 20%" :
-    member.slug === "shaili" ? "center 15%" :
+    member.slug === "shaili" ? "center 40%" :
     "center top";
 
   return (
