@@ -54,13 +54,13 @@ export default function TeamPage() {
       </section>
 
       {/* MEMBER CARDS */}
-      <section style={{ padding: "0 1.5rem 7rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <section style={{ padding: "0 1.5rem 7rem", maxWidth: "1100px", margin: "0 auto" }}>
         {isLoading ? (
           <div style={{ textAlign: "center", color: MUTED, fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.2em", padding: "4rem 0" }}>
             LOADING…
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
             {(members || []).map((member, idx) => (
               <MemberCard key={member.slug} member={member} idx={idx} />
             ))}
@@ -91,70 +91,55 @@ export default function TeamPage() {
 }
 
 function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) {
-  const isEven = idx % 2 === 0;
   const portrait = (member.hero as HeroBlock).portrait;
   const subtext = (member.hero as HeroBlock).subtext;
-  const tags = member.about?.tags || [];
-  const stats = (member.stats?.items || []).slice(0, 3);
+
+  const photoPosition =
+    member.slug === "aakanksha" ? "50% 20%" :
+    member.slug === "shaili" ? "center 15%" :
+    "center top";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5, delay: idx * 0.08 }}
       style={{
-        display: "grid",
-        gridTemplateColumns: portrait ? (isEven ? "220px 1fr" : "1fr 220px") : "1fr",
-        gap: "0",
-        alignItems: "stretch",
-        minHeight: "220px",
+        display: "flex",
+        flexDirection: "column",
         backgroundColor: CARD,
         borderRadius: "16px",
         border: `1px solid ${BORDER}`,
         overflow: "hidden",
-        padding: "0",
       }}
       data-testid={`member-card-${member.slug}`}
     >
-      {/* Photo — left on even, right on odd */}
-      {portrait && (
-        <div
-          style={{
-            order: isEven ? 0 : 1,
-            overflow: "hidden",
-            height: "100%",
-          }}
-        >
+      {/* Photo */}
+      <div style={{ width: "100%", aspectRatio: "4/3", overflow: "hidden", flexShrink: 0 }}>
+        {portrait ? (
           <img
             src={portrait}
             alt={member.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: member.slug === "aakanksha" ? "center" : "top" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: photoPosition }}
             data-testid={`img-member-${member.slug}`}
           />
-        </div>
-      )}
+        ) : (
+          <div style={{ width: "100%", height: "100%", backgroundColor: "rgba(123,30,122,0.15)" }} />
+        )}
+      </div>
 
       {/* Content */}
-      <div
-        style={{
-          order: isEven ? 1 : 0,
-          padding: "1.75rem 2rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.75rem",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED }}>
-          {(member.hero as HeroBlock).eyebrow || member.name}
+      <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED }}>
+          {member.name}
         </div>
 
-        <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.3rem, 2vw, 1.7rem)", lineHeight: 1.2, fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }} data-testid={`text-member-name-${member.slug}`}>
+        <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.15rem", lineHeight: 1.25, fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }} data-testid={`text-member-name-${member.slug}`}>
           {(member.hero as HeroBlock).headlineLine1 || member.name}
           {(member.hero as HeroBlock).headlineLine2 && (
             <>
-              <br />
+              {" "}
               <span style={{
                 fontStyle: (member.hero as HeroBlock).headlineLine2Italic ? "italic" : "normal",
                 color: (member.hero as HeroBlock).headlineLine2Italic ? "#FFAEDA" : "inherit",
@@ -166,31 +151,27 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
         </h2>
 
         {subtext && (
-          <p style={{ fontSize: "0.85rem", lineHeight: 1.6, color: MUTED, maxWidth: "520px", margin: 0 }} data-testid={`text-member-subtext-${member.slug}`}>
+          <p style={{ fontSize: "0.8rem", lineHeight: 1.55, color: MUTED, margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" } as React.CSSProperties} data-testid={`text-member-subtext-${member.slug}`}>
             {subtext}
           </p>
         )}
 
-        <div style={{ marginTop: "0.25rem" }}>
+        <div style={{ marginTop: "auto", paddingTop: "0.75rem" }}>
           <Link
             href={`/${member.slug}`}
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.4rem",
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "0.6rem",
+              fontSize: "0.55rem",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#FFFFFF",
-              backgroundColor: ACCENT,
-              padding: "0.65rem 1.1rem",
-              borderRadius: "6px",
+              color: "#FFAEDA",
               textDecoration: "none",
-              transition: "background-color 0.2s",
+              gap: "0.3rem",
             }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = ACCENT_HOVER)}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = ACCENT)}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = "0.75")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = "1")}
             data-testid={`link-view-portfolio-${member.slug}`}
           >
             View full portfolio →
