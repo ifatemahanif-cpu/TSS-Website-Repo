@@ -94,10 +94,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
   const portrait = (member.hero as HeroBlock).portrait;
   const subtext = (member.hero as HeroBlock).subtext;
 
-  const photoPosition =
-    member.slug === "aakanksha" ? "50% 20%" :
-    member.slug === "shaili" ? "center 40%" :
-    "center top";
+  const photoPosition = "center center";
 
   return (
     <motion.div
