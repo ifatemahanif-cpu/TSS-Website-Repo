@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRoute } from "wouter";
+import { useRoute, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import DOMPurify from "dompurify";
@@ -79,6 +79,30 @@ export default function PortfolioPage() {
   return (
     <div style={{ backgroundColor: BG, color: "#FFFFFF", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }} data-testid={`portfolio-${portfolio.slug}`}>
       <Navbar />
+
+      {/* BACK BUTTON */}
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "5.5rem 1.5rem 0" }}>
+        <Link
+          href="/team"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.6rem",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: MUTED,
+            textDecoration: "none",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#FFFFFF")}
+          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = MUTED)}
+          data-testid="link-back-to-team"
+        >
+          ← Back to team
+        </Link>
+      </div>
 
       {/* HERO */}
       <section style={{ padding: "8rem 1.5rem 5rem", maxWidth: "1280px", margin: "0 auto" }}>
