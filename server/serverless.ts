@@ -25,6 +25,8 @@ app.use(
 );
 app.use(express.urlencoded({ extended: false, limit: "10mb" }));
 
+let initError: Error | null = null;
+
 const initPromise = (async () => {
   try {
     await runMigrations();
@@ -51,9 +53,17 @@ const initPromise = (async () => {
     if (res.headersSent) return next(err);
     return res.status(status).json({ message });
   });
-})();
+})().catch((e) => {
+  // Prevent unhandled rejection from killing the process.
+  // Store the error and return it on the first request instead.
+  initError = e instanceof Error ? e : new Error(String(e));
+  console.error("Init failed:", initError);
+});
 
 export default async function handler(req: any, res: any) {
   await initPromise;
+  if (initError) {
+    return res.status(500).json({ error: initError.message, stack: initError.stack });
+  }
   return app(req, res);
 }
