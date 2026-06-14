@@ -33,7 +33,11 @@ function coerceBlogCategoryBody(body: Record<string, unknown>): Record<string, u
 const PgSession = ConnectPgSimple(session);
 
 const uploadsDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+try {
+  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+} catch (_) {
+  // read-only filesystem (e.g. Vercel) — uploads dir not needed since multer uses memoryStorage
+}
 
 const upload = multer({
   storage: multer.memoryStorage(),
