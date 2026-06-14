@@ -471,10 +471,10 @@ const AAKANKSHA: InsertTeamMemberPortfolio = {
     title: "Work with me.",
     subtitle: "Four ways in. Pick the one that fits.",
     cards: [
-      { eyebrow: "Start here", title: "Coffee Chat", price: "Free / 30 mins", description: "A quick conversation to discuss your content, brand, or challenge.", ctaLabel: "Start here →", ctaHref: "/contact" },
-      { eyebrow: "Diagnostic", title: "Brand Audit Call", price: "₹5,000 / 45 mins", description: "Review your content, positioning, and gaps with clear next steps.", ctaLabel: "Book this call →", ctaHref: "/contact" },
-      { eyebrow: "Project", title: "Strategy Sprint", price: "Scoped / 2–4 weeks", description: "Solve a specific content or brand problem in a structured sprint.", ctaLabel: "Tell me the problem →", ctaHref: "/contact" },
-      { eyebrow: "Ongoing", title: "Fractional Partnership", price: "Custom / monthly", description: "Ongoing strategic content and brand support.", ctaLabel: "Start a conversation →", ctaHref: "/contact" },
+      { eyebrow: "Start here", title: "Coffee Chat", price: "Free / 30 mins", description: "A quick conversation to discuss your content, brand, or challenge.", ctaLabel: "Start here →", ctaHref: "https://topmate.io/aakanksha_singh_devi/2107926?utm_source=public_profile&utm_campaign=aakanksha_singh_devi" },
+      { eyebrow: "Diagnostic", title: "Brand Audit Call", price: "₹5,000 / 45 mins", description: "Review your content, positioning, and gaps with clear next steps.", ctaLabel: "Book this call →", ctaHref: "https://topmate.io/aakanksha_singh_devi/2123230?utm_source=public_profile&utm_campaign=aakanksha_singh_devi" },
+      { eyebrow: "Project", title: "Strategy Sprint", price: "Scoped / 2–4 weeks", description: "Solve a specific content or brand problem in a structured sprint.", ctaLabel: "Tell me the problem →", ctaHref: "https://topmate.io/aakanksha_singh_devi/2123243?utm_source=public_profile&utm_campaign=aakanksha_singh_devi" },
+      { eyebrow: "Ongoing", title: "Fractional Partnership", price: "Custom / monthly", description: "Ongoing strategic content and brand support.", ctaLabel: "Start a conversation →", ctaHref: "https://topmate.io/aakanksha_singh_devi/2123248?utm_source=public_profile&utm_campaign=aakanksha_singh_devi" },
     ],
   },
   footer: {
