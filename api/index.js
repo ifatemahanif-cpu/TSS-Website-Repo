@@ -1,2 +1,2 @@
-const handler = require('../dist/serverless.cjs');
+const handler = require('./server.cjs');
 module.exports = handler.default || handler;

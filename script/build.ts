@@ -66,7 +66,7 @@ async function buildAll() {
     platform: "node",
     bundle: true,
     format: "cjs",
-    outfile: "dist/serverless.cjs",
+    outfile: "api/server.cjs",
     define: {
       "process.env.NODE_ENV": '"production"',
     },
