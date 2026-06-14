@@ -62,7 +62,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       secret: process.env.SESSION_SECRET || "story-shapers-cms-secret-key",
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: false, sameSite: "lax" },
+      cookie: { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" },
     })
   );
 

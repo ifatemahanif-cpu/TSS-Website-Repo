@@ -59,6 +59,21 @@ async function buildAll() {
     external: externals,
     logLevel: "info",
   });
+
+  console.log("building serverless handler...");
+  await esbuild({
+    entryPoints: ["server/serverless.ts"],
+    platform: "node",
+    bundle: true,
+    format: "cjs",
+    outfile: "dist/serverless.cjs",
+    define: {
+      "process.env.NODE_ENV": '"production"',
+    },
+    minify: true,
+    external: externals,
+    logLevel: "info",
+  });
 }
 
 buildAll().catch((err) => {
