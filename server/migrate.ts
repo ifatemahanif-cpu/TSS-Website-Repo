@@ -109,5 +109,53 @@ export async function runMigrations() {
     );
   `);
 
+  // Update Shaili's work_with_me CTA links from /contact to Topmate booking pages
+  await db.execute(sql`
+    UPDATE team_member_portfolios
+    SET work_with_me = jsonb_set(
+      jsonb_set(
+        jsonb_set(
+          jsonb_set(
+            work_with_me,
+            '{cards,0,ctaHref}',
+            '"https://topmate.io/shaili_contractor/2108835?utm_source=public_profile&utm_campaign=shaili_contractor"'
+          ),
+          '{cards,1,ctaHref}',
+          '"https://topmate.io/shaili_contractor/2108836?utm_source=public_profile&utm_campaign=shaili_contractor"'
+        ),
+        '{cards,2,ctaHref}',
+        '"https://topmate.io/shaili_contractor/2108837?utm_source=public_profile&utm_campaign=shaili_contractor"'
+      ),
+      '{cards,3,ctaHref}',
+      '"https://topmate.io/shaili_contractor/2108838?utm_source=public_profile&utm_campaign=shaili_contractor"'
+    )
+    WHERE slug = 'shaili'
+      AND work_with_me->'cards'->0->>'ctaHref' = '/contact';
+  `);
+
+  // Update Aakanksha's work_with_me CTA links from /contact to Topmate booking pages
+  await db.execute(sql`
+    UPDATE team_member_portfolios
+    SET work_with_me = jsonb_set(
+      jsonb_set(
+        jsonb_set(
+          jsonb_set(
+            work_with_me,
+            '{cards,0,ctaHref}',
+            '"https://topmate.io/aakanksha_singh_devi/2107926?utm_source=public_profile&utm_campaign=aakanksha_singh_devi"'
+          ),
+          '{cards,1,ctaHref}',
+          '"https://topmate.io/aakanksha_singh_devi/2123230?utm_source=public_profile&utm_campaign=aakanksha_singh_devi"'
+        ),
+        '{cards,2,ctaHref}',
+        '"https://topmate.io/aakanksha_singh_devi/2123243?utm_source=public_profile&utm_campaign=aakanksha_singh_devi"'
+      ),
+      '{cards,3,ctaHref}',
+      '"https://topmate.io/aakanksha_singh_devi/2123248?utm_source=public_profile&utm_campaign=aakanksha_singh_devi"'
+    )
+    WHERE slug = 'aakanksha'
+      AND work_with_me->'cards'->0->>'ctaHref' = '/contact';
+  `);
+
   console.log("Migrations applied successfully.");
 }
