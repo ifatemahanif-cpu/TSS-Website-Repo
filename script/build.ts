@@ -1,6 +1,7 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
 import { rm, readFile, cp } from "fs/promises";
+import { prerender } from "./prerender";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -40,6 +41,14 @@ async function buildAll() {
 
   console.log("copying attached_assets to dist/public/assets...");
   await cp("attached_assets", "dist/public/assets", { recursive: true });
+
+  console.log("prerendering public routes...");
+  try {
+    await prerender();
+  } catch (err) {
+    // Never fail the deploy over prerendering — the site still works as an SPA
+    console.warn("[prerender] failed, continuing as plain SPA:", err);
+  }
 
   console.log("building server...");
   const pkg = JSON.parse(await readFile("package.json", "utf-8"));
