@@ -22,6 +22,13 @@ export function useCmsWhatWeDo() {
   });
 }
 
+export function useCmsFaqs() {
+  return useQuery<any[]>({
+    queryKey: ["/api/cms/faqs"],
+    staleTime: 60000,
+  });
+}
+
 export function useCmsTeam() {
   return useQuery<any[]>({
     queryKey: ["/api/cms/team"],

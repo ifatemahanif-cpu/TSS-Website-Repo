@@ -80,6 +80,17 @@ export const insertWhatWeDoBlockSchema = createInsertSchema(whatWeDoBlocks).omit
 export type InsertWhatWeDoBlock = z.infer<typeof insertWhatWeDoBlockSchema>;
 export type WhatWeDoBlock = typeof whatWeDoBlocks.$inferSelect;
 
+export const faqs = pgTable("faqs", {
+  id: serial("id").primaryKey(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+export const insertFaqSchema = createInsertSchema(faqs).omit({ id: true });
+export type InsertFaq = z.infer<typeof insertFaqSchema>;
+export type Faq = typeof faqs.$inferSelect;
+
 export const pageSections = pgTable("page_sections", {
   id: serial("id").primaryKey(),
   pageKey: text("page_key").notNull(),

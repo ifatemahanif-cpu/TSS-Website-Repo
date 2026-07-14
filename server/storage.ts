@@ -5,6 +5,7 @@ import {
   type Service, type InsertService,
   type Problem, type InsertProblem,
   type WhatWeDoBlock, type InsertWhatWeDoBlock,
+  type Faq, type InsertFaq,
   type PageSection, type InsertPageSection,
   type FormSubmission, type InsertFormSubmission,
   type BlogCategory, type InsertBlogCategory,
@@ -13,7 +14,7 @@ import {
   type EmailSubscriber, type InsertEmailSubscriber,
   type TeamMemberPortfolio, type InsertTeamMemberPortfolio,
   type ImageUpload,
-  users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, pageSections, formSubmissions,
+  users, siteSettings, teamMembers, services, problems, whatWeDoBlocks, faqs, pageSections, formSubmissions,
   blogCategories, blogPosts, authors, emailSubscribers, teamMemberPortfolios, imageUploads,
 } from "@shared/schema";
 import { db } from "./db";
@@ -51,6 +52,11 @@ export interface IStorage {
   createWhatWeDoBlock(block: InsertWhatWeDoBlock): Promise<WhatWeDoBlock>;
   updateWhatWeDoBlock(id: number, block: Partial<InsertWhatWeDoBlock>): Promise<WhatWeDoBlock | undefined>;
   deleteWhatWeDoBlock(id: number): Promise<boolean>;
+
+  getFaqs(): Promise<Faq[]>;
+  createFaq(faq: InsertFaq): Promise<Faq>;
+  updateFaq(id: number, faq: Partial<InsertFaq>): Promise<Faq | undefined>;
+  deleteFaq(id: number): Promise<boolean>;
 
   getPageSections(pageKey: string): Promise<PageSection[]>;
   getPageSection(pageKey: string, sectionKey: string): Promise<PageSection | undefined>;
@@ -231,6 +237,25 @@ export class DatabaseStorage implements IStorage {
 
   async deleteWhatWeDoBlock(id: number): Promise<boolean> {
     const result = await db.delete(whatWeDoBlocks).where(eq(whatWeDoBlocks.id, id)).returning();
+    return result.length > 0;
+  }
+
+  async getFaqs(): Promise<Faq[]> {
+    return db.select().from(faqs).orderBy(asc(faqs.sortOrder));
+  }
+
+  async createFaq(faq: InsertFaq): Promise<Faq> {
+    const [created] = await db.insert(faqs).values(faq).returning();
+    return created;
+  }
+
+  async updateFaq(id: number, faq: Partial<InsertFaq>): Promise<Faq | undefined> {
+    const [updated] = await db.update(faqs).set(faq).where(eq(faqs.id, id)).returning();
+    return updated;
+  }
+
+  async deleteFaq(id: number): Promise<boolean> {
+    const result = await db.delete(faqs).where(eq(faqs.id, id)).returning();
     return result.length > 0;
   }
 

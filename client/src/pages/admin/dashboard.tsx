@@ -4,13 +4,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/schema";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "faqs" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
   settings: "Site Settings",
   problems: "Problem Section",
   whatwedo: "What We Do",
+  faqs: "FAQ",
   team: "Team Members",
   services: "Services",
   ourstory: "Our Story",
@@ -649,6 +650,99 @@ function WhatWeDoEditor() {
       ))}
       <button onClick={addBlock} style={btnPrimary} data-testid="button-add-whatwedo">
         + ADD BLOCK
+      </button>
+    </div>
+  );
+}
+
+function FaqEditor() {
+  const queryClient = useQueryClient();
+  const { data: faqs = [], isLoading } = useQuery<any[]>({
+    queryKey: ["/api/cms/faqs"],
+  });
+  const [editData, setEditData] = useState<Record<number, any>>({});
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (faqs.length) {
+      const map: Record<number, any> = {};
+      faqs.forEach((f) => (map[f.id] = { ...f }));
+      setEditData(map);
+    }
+  }, [faqs]);
+
+  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
+
+  const saveFaq = async (id: number) => {
+    setSaving(id);
+    await fetch(`/api/cms/faqs/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData[id]),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/faqs"] });
+    setSaving(null);
+    setSaved(id);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  const deleteFaq = async (id: number) => {
+    if (!confirm("Delete this question?")) return;
+    await fetch(`/api/cms/faqs/${id}`, { method: "DELETE" });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/faqs"] });
+  };
+
+  const addFaq = async () => {
+    await fetch("/api/cms/faqs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question: "New question?",
+        answer: "Answer here.",
+        sortOrder: faqs.length,
+      }),
+    });
+    queryClient.invalidateQueries({ queryKey: ["/api/cms/faqs"] });
+  };
+
+  const updateField = (id: number, field: string, value: string) => {
+    setEditData((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
+  };
+
+  return (
+    <div>
+      {faqs.map((f: any) => (
+        <div key={f.id} style={cardStyle}>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Question</label>
+            <input
+              type="text"
+              value={editData[f.id]?.question || ""}
+              onChange={(e) => updateField(f.id, "question", e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Answer — blank line starts a new paragraph</label>
+            <textarea
+              value={editData[f.id]?.answer || ""}
+              onChange={(e) => updateField(f.id, "answer", e.target.value)}
+              style={{ ...textareaStyle, minHeight: "140px" }}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <SaveButton onClick={() => saveFaq(f.id)} saving={saving === f.id} />
+            <SuccessMessage show={saved === f.id} />
+            <button onClick={() => deleteFaq(f.id)} style={btnDanger}>DELETE</button>
+          </div>
+        </div>
+      ))}
+      <button onClick={addFaq} style={btnPrimary} data-testid="button-add-faq">
+        + ADD QUESTION
       </button>
     </div>
   );
@@ -2671,7 +2765,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios"];
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "faqs", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2800,6 +2894,7 @@ export default function AdminDashboard() {
           {activeTab === "settings" && <SettingsEditor />}
           {activeTab === "problems" && <ProblemsEditor />}
           {activeTab === "whatwedo" && <WhatWeDoEditor />}
+          {activeTab === "faqs" && <FaqEditor />}
           {activeTab === "team" && <TeamEditor />}
           {activeTab === "services" && <ServicesEditor />}
           {activeTab === "ourstory" && <OurStoryEditor />}

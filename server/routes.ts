@@ -211,6 +211,26 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json({ message: "Deleted" });
   });
 
+  app.get("/api/cms/faqs", async (_req: Request, res: Response) => {
+    res.json(await storage.getFaqs());
+  });
+
+  app.post("/api/cms/faqs", requireAuth, async (req: Request, res: Response) => {
+    res.json(await storage.createFaq(req.body));
+  });
+
+  app.put("/api/cms/faqs/:id", requireAuth, async (req: Request, res: Response) => {
+    const faq = await storage.updateFaq(parseInt(String(req.params.id)), req.body);
+    if (!faq) return res.status(404).json({ message: "Not found" });
+    res.json(faq);
+  });
+
+  app.delete("/api/cms/faqs/:id", requireAuth, async (req: Request, res: Response) => {
+    const deleted = await storage.deleteFaq(parseInt(String(req.params.id)));
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  });
+
   app.get("/api/cms/pages/:pageKey", async (req: Request, res: Response) => {
     res.json(await storage.getPageSections(req.params.pageKey));
   });

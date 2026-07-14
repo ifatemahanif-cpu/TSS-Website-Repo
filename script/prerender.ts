@@ -58,6 +58,7 @@ const ROUTES: RouteDef[] = [
     description:
       "Notes on brand strategy, positioning, messaging and content systems from The Story Shapers collective.",
   },
+  { route: "/faq" },
   { route: "/fatema" },
   { route: "/shaili" },
   { route: "/aakanksha" },

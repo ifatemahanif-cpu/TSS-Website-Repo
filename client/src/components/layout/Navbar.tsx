@@ -17,6 +17,7 @@ export function Navbar() {
     { name: "Our Story", href: "/our-story" },
     { name: "Team", href: "/team" },
     { name: "Blog", href: "/blog" },
+    { name: "FAQ", href: "/faq" },
     { name: "Join the collective", href: "/join" },
   ];
 
