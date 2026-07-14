@@ -23,12 +23,15 @@ const PORT = 45173;
 const DIST = path.resolve(process.cwd(), "dist", "public");
 
 // Per-route head overrides. Pages whose components already set their own
-// document.title (team, portfolios) are left as rendered.
-const ROUTES: Array<{
+// document.title (team, portfolios, blog articles) are left as rendered.
+type RouteDef = {
   route: string;
   title?: string;
   description?: string;
-}> = [
+  lastmod?: string;
+};
+
+const ROUTES: RouteDef[] = [
   { route: "/" },
   {
     route: "/our-story",
@@ -59,6 +62,55 @@ const ROUTES: Array<{
   { route: "/shaili" },
   { route: "/aakanksha" },
 ];
+
+// Published blog articles live in the CMS, so their routes are discovered at
+// build time. Each article page sets its own title/description/canonical/
+// JSON-LD from CMS fields once rendered.
+async function fetchBlogRoutes(): Promise<RouteDef[]> {
+  try {
+    const routes: RouteDef[] = [];
+    let page = 1;
+    let totalPages = 1;
+    do {
+      const res = await fetch(
+        `${PROD_API}/api/blog/posts?limit=100&page=${page}`,
+        { headers: { accept: "application/json" } },
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      for (const post of data.posts ?? []) {
+        if (!post?.slug) continue;
+        routes.push({
+          route: `/blog/${post.slug}`,
+          lastmod: (post.updatedAt ?? post.publishedAt ?? "").slice(0, 10) || undefined,
+        });
+      }
+      totalPages = data.totalPages ?? 1;
+      page++;
+    } while (page <= totalPages);
+    console.log(`[prerender] discovered ${routes.length} blog article routes`);
+    return routes;
+  } catch (err) {
+    console.warn("[prerender] could not fetch blog posts; articles will not be prerendered:", err);
+    return [];
+  }
+}
+
+function buildSitemap(routes: RouteDef[]): string {
+  const origin = "https://www.storyshaperscollective.com";
+  const entries = routes
+    .map(({ route, lastmod }) => {
+      const loc = `${origin}${route === "/" ? "/" : route}`;
+      return [
+        "  <url>",
+        `    <loc>${loc}</loc>`,
+        ...(lastmod ? [`    <lastmod>${lastmod}</lastmod>`] : []),
+        "  </url>",
+      ].join("\n");
+    })
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`;
+}
 
 async function getBrowser() {
   if (process.platform === "darwin") {
@@ -110,6 +162,14 @@ export async function prerender() {
     return;
   }
 
+  const blogRoutes = await fetchBlogRoutes();
+  const allRoutes = [...ROUTES, ...blogRoutes];
+
+  // Regenerate the sitemap with article URLs before the browser step, so it
+  // stays current even when Chrome fails soft and the build ships as an SPA.
+  await writeFile(path.join(DIST, "sitemap.xml"), buildSitemap(allRoutes), "utf-8");
+  console.log(`[prerender] sitemap.xml written with ${allRoutes.length} URLs`);
+
   const serverHandle = await startServer();
   let browser;
   try {
@@ -117,7 +177,7 @@ export async function prerender() {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
 
-    for (const { route, title, description } of ROUTES) {
+    for (const { route, title, description } of allRoutes) {
       const url = `http://localhost:${PORT}${route}`;
       await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
 
@@ -174,6 +234,14 @@ export async function prerender() {
             ?.setAttribute("content", description);
           document.querySelector('meta[name="twitter:description"]')
             ?.setAttribute("content", description);
+        }
+
+        // CMS image fields are site-relative paths; social platforms and
+        // crawlers need absolute URLs
+        for (const sel of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) {
+          const el = document.querySelector(sel);
+          const src = el?.getAttribute("content");
+          if (src && src.startsWith("/")) el.setAttribute("content", origin + src);
         }
       })(${headParams})`);
 
