@@ -57,7 +57,22 @@ const hardcodedBlocks = [
   },
 ];
 
-function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; description: string; teaser: string; expanded: string }; index: number; isInView: boolean }) {
+const readStoryCtaStyle = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: "0.7rem",
+  letterSpacing: "0.05em",
+  color: "#FFFFFF",
+  opacity: 0.8,
+  background: "none",
+  border: "none",
+  padding: 0,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+} as const;
+
+function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; description: string; teaser: string; expanded: string; linkUrl?: string | null }; index: number; isInView: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
@@ -215,26 +230,23 @@ function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; des
               </AnimatePresence>
             </div>
 
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.7rem",
-                letterSpacing: "0.05em",
-                color: "#FFFFFF",
-                opacity: 0.8,
-                background: "none",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-              }}
-              data-testid={`button-read-story-${index}`}
-            >
-              {isExpanded ? "Close story ↑" : "Read the full story →"}
-            </button>
+            {block.linkUrl ? (
+              <a
+                href={block.linkUrl}
+                style={{ ...readStoryCtaStyle, textDecoration: "none", width: "fit-content" }}
+                data-testid={`link-read-story-${index}`}
+              >
+                Read the full story →
+              </a>
+            ) : (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                style={readStoryCtaStyle}
+                data-testid={`button-read-story-${index}`}
+              >
+                {isExpanded ? "Close story ↑" : "Read the full story →"}
+              </button>
+            )}
           </div>
         </div>
       </motion.div>

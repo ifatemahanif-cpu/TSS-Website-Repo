@@ -72,6 +72,7 @@ export const whatWeDoBlocks = pgTable("what_we_do_blocks", {
   description: text("description").notNull(),
   teaser: text("teaser").notNull(),
   expanded: text("expanded").notNull(),
+  linkUrl: text("link_url"),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
