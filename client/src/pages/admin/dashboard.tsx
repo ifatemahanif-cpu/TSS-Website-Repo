@@ -630,6 +630,16 @@ function WhatWeDoEditor() {
               style={{ ...textareaStyle, minHeight: "120px" }}
             />
           </div>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label style={labelStyle}>Full Story Link — when filled, "Read the full story" links here instead of expanding (e.g. /blog/your-case-study)</label>
+            <input
+              type="text"
+              value={editData[b.id]?.linkUrl || ""}
+              onChange={(e) => updateField(b.id, "linkUrl", e.target.value)}
+              style={inputStyle}
+              placeholder="/blog/case-study-slug"
+            />
+          </div>
           <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
             <SaveButton onClick={() => saveBlock(b.id)} saving={saving === b.id} />
             <SuccessMessage show={saved === b.id} />
