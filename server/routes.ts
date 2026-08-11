@@ -11,7 +11,7 @@ import { randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
-import { sendWelcomeEmail, sendNewPostNotification } from "./email";
+import { sendWelcomeEmail, sendNewPostNotification, sendWebsitesApplicationNotification } from "./email";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
@@ -220,7 +220,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   const formSubmissionBody = z.object({
-    formType: z.enum(["join", "talk"]),
+    formType: z.enum(["join", "talk", "websites"]),
     data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
@@ -228,6 +228,20 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const parsed = formSubmissionBody.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
+    if (parsed.data.formType === "websites") {
+      // Time-boxed five-slot offer: the team must hear about applications
+      // without watching the admin dashboard, and works the pipeline in a
+      // shared sheet. Both are fire-and-forget so neither can fail a submit.
+      sendWebsitesApplicationNotification(parsed.data.data).catch(() => {});
+      const sheetWebhook = process.env.FORMS_SHEET_WEBHOOK_URL;
+      if (sheetWebhook) {
+        fetch(sheetWebhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(parsed.data.data),
+        }).catch((err) => console.error("[forms] sheet webhook failed:", err?.message));
+      }
+    }
     res.json(submission);
   });
 

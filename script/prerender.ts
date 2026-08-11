@@ -61,6 +61,12 @@ const ROUTES: RouteDef[] = [
   { route: "/fatema" },
   { route: "/shaili" },
   { route: "/aakanksha" },
+  {
+    route: "/websites",
+    title: "Five Websites in August | The Story Shapers",
+    description:
+      "We write every word and build the whole thing. Live in 10 working days, ₹75,000 flat. Five slots in August. A brand site by The Story Shapers collective.",
+  },
 ];
 
 // Published blog articles live in the CMS, so their routes are discovered at

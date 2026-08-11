@@ -16,6 +16,7 @@ import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import Portfolio from "@/pages/portfolio";
 import TeamPage from "@/pages/team";
+import Websites from "@/pages/websites";
 
 const PORTFOLIO_SLUGS = ["fatema", "shaili", "aakanksha"];
 
@@ -38,6 +39,7 @@ function Router() {
         <Route path="/contact" component={Contact} />
         <Route path="/blog" component={Blog} />
         <Route path="/team" component={TeamPage} />
+        <Route path="/websites" component={Websites} />
         <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin" component={AdminDashboard} />
