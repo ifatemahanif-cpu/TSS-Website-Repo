@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import path from "path";
 import express from "express";
 import multer from "multer";
-import { randomUUID } from "crypto";
+import { randomBytes, randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
@@ -57,13 +57,21 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
+  // A literal fallback here would make admin sessions forgeable from the public
+  // repo, so production refuses to boot without a real secret. Development
+  // still gets an ephemeral one so `npm run dev` works with no setup.
+  const sessionSecret = process.env.SESSION_SECRET;
+  if (!sessionSecret && process.env.NODE_ENV === "production") {
+    throw new Error("SESSION_SECRET must be set in production");
+  }
+
   app.use(
     session({
       store: new PgSession({
         conString: process.env.DATABASE_URL,
         createTableIfMissing: true,
       }),
-      secret: process.env.SESSION_SECRET || "story-shapers-cms-secret-key",
+      secret: sessionSecret || randomBytes(32).toString("hex"),
       resave: false,
       saveUninitialized: false,
       cookie: { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" },
