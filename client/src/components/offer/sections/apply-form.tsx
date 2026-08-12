@@ -467,8 +467,9 @@ export function ApplyForm() {
                 </span>
               </label>
               <p className="mt-3 pl-[34px] text-[13px] leading-[1.7] text-white/45">
-                Nothing is payable now. If we’re both in after the call, ₹25,000
-                holds your slot and comes off the ₹79,000.
+                Nothing to pay today. If we both say yes on the call, ₹25,000
+                books your slot and the ₹54,000 balance is due the day you go
+                live.
               </p>
               {errors.priceAcknowledged && (
                 <p role="alert" className="mt-3 pl-[34px] text-[12.5px] text-[#ff9bd0]">

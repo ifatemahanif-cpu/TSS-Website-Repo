@@ -9,7 +9,7 @@ const ENDINGS = [
   "you’d rather not send.",
   "are still “almost ready”.",
   "never say what you do.",
-  "you wrote at 1am.",
+  "look like everyone else’s.",
 ];
 
 /**
