@@ -1,0 +1,166 @@
+/**
+ * Styles for the /offer landing page and /offer/terms only.
+ *
+ * Everything here is either prefixed (.o-*) or scoped under .offer-page, so it
+ * cannot collide with the site's existing .serif-display / .blog-content /
+ * .tiptap rules. The colour + font tokens (navy, magenta, font-display,
+ * font-body) live in client/src/index.css inside the existing @theme inline
+ * block — see patches/01-index-css-tokens.md.
+ *
+ * Note: the site already paints a grain overlay via body::after, so the offer
+ * page does NOT add its own (the standalone had a .grain dot texture — dropped
+ * on purpose to avoid double texture).
+ */
+
+/* --- Page shell -------------------------------------------------------- */
+.offer-page {
+	background-color: #0c0a3e;
+	color: #fff;
+	font-family: var(--font-body);
+	overflow-x: hidden;
+}
+
+/* The standalone set a default border colour globally in @layer base; scope
+   the same thing to the offer page so `border` without a colour still reads
+   as a hairline. */
+.offer-page *,
+.offer-page *::before,
+.offer-page *::after {
+	border-color: rgb(255 255 255 / 0.08);
+}
+
+/* White, not magenta: the magenta ring is ~2.6:1 on navy and disappears
+   entirely on the magenta buttons it is supposed to outline. */
+.offer-page :focus-visible {
+	outline: 2px solid #ffffff;
+	outline-offset: 3px;
+}
+
+.offer-page input,
+.offer-page textarea,
+.offer-page select,
+.offer-page button {
+	font-family: inherit;
+}
+
+/* The only numeric input is a phone number — kill the spinners. */
+.offer-page input[type="tel"]::-webkit-outer-spin-button,
+.offer-page input[type="tel"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* --- Type utilities (prefixed replacements for @utility eyebrow/display) -- */
+.o-eyebrow {
+	font-family: var(--font-mono);
+	font-size: 10.4px;
+	letter-spacing: 2.08px;
+	text-transform: uppercase;
+	line-height: 1.4;
+}
+
+.o-display {
+	font-family: var(--font-display);
+	font-weight: 400;
+	letter-spacing: -0.03em;
+	line-height: 1.12;
+}
+
+/* --- Brands marquee ---------------------------------------------------- */
+@keyframes tss-marquee {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-50%, 0, 0);
+	}
+}
+
+.marquee-track {
+	display: flex;
+	width: max-content;
+	animation: tss-marquee 42s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+	animation-play-state: paused;
+}
+
+/* --- Caret ------------------------------------------------------------- */
+@keyframes tss-caret {
+	0%,
+	45% {
+		opacity: 1;
+	}
+	50%,
+	95% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.caret {
+	animation: tss-caret 1.1s steps(1, end) infinite;
+}
+
+/* --- Hero: an endless diagonal scroll of the sites we've built ---------- */
+@keyframes tss-stack-up {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(0, -50%, 0);
+	}
+}
+
+@keyframes tss-stack-down {
+	from {
+		transform: translate3d(0, -50%, 0);
+	}
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+.stack-track {
+	/* Flex, not block: in a flex column the last child's bottom margin is kept
+	   in the parent's height, so the doubled list is exactly 2x one repeat and
+	   the -50% loop is seamless. As a block it collapsed out and the stream
+	   jumped one gutter (~24px) on every cycle. Don't change this to block. */
+	display: flex;
+	flex-direction: column;
+	animation: tss-stack-up var(--dur, 46s) linear infinite;
+	will-change: transform;
+	backface-visibility: hidden;
+}
+
+.stack-track > * {
+	/* The column sits in a fixed-height parent and the list deliberately
+	   overflows it — without this the flex items shrink to fit and the -50%
+	   loop no longer lands on a whole repeat. */
+	flex: none;
+}
+
+.stack-track-down {
+	animation-name: tss-stack-down;
+}
+
+.stack-row {
+	display: flex;
+	width: max-content;
+	animation: tss-marquee var(--dur, 40s) linear infinite;
+	will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.marquee-track,
+	.caret,
+	.stack-track,
+	.stack-row {
+		animation: none !important;
+		transition: none !important;
+		transform: none !important;
+	}
+}

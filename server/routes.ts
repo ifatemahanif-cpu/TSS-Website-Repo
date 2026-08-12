@@ -11,7 +11,7 @@ import { randomBytes, randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
-import { sendWelcomeEmail, sendNewPostNotification } from "./email";
+import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
@@ -228,7 +228,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   const formSubmissionBody = z.object({
-    formType: z.enum(["join", "talk"]),
+    formType: z.enum(["join", "talk", "offer"]),
     data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
@@ -236,6 +236,11 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const parsed = formSubmissionBody.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
+    // Fire-and-forget: the submission is already saved, so an email failure
+    // must never fail the request or lose the lead.
+    void sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+      console.error("[forms] notification failed:", error);
+    });
     res.json(submission);
   });
 

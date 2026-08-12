@@ -150,6 +150,36 @@ function SubmissionsViewer() {
     workstyle: "Work Style",
     company: "Company",
     message: "Message",
+    // /offer application fields
+    brand: "Brand",
+    whatsapp: "WhatsApp",
+    instagram: "Instagram",
+    website: "Current Site",
+    whatYouDo: "What They Do",
+    stage: "Stage",
+    needsStore: "Needs Store",
+    assetsIn48h: "Assets in 48h",
+    decisionMaker: "Decision Maker",
+    liveBy: "Live By",
+    whatsBroken: "What's Broken",
+    priceAcknowledged: "Agreed Terms",
+    referrer: "Referrer",
+  };
+
+  const BADGE: Record<string, { label: string; color: string; bg: string }> = {
+    join: { label: "JOIN", color: "#a78bfa", bg: "rgba(167,139,250,0.12)" },
+    talk: { label: "TALK", color: "#38bdf8", bg: "rgba(56,189,248,0.12)" },
+    offer: { label: "OFFER", color: "#f0abfc", bg: "rgba(240,171,252,0.14)" },
+  };
+
+  const offerFlags = (data: Record<string, string>) => {
+    const flags: string[] = [];
+    if (data.needsStore === "Yes") flags.push("NEEDS A STORE — primary disqualifier");
+    if (data.needsStore === "Not sure") flags.push("Unsure about commerce — probe on the call");
+    if (data.assetsIn48h === "No") flags.push("Cannot send assets in 48h — timeline risk");
+    if (data.assetsIn48h === "Probably") flags.push("Hesitant on assets — timeline risk");
+    if (data.liveBy === "Just exploring") flags.push("Just exploring — soft disqualify");
+    return flags;
   };
 
   return (
@@ -192,14 +222,14 @@ function SubmissionsViewer() {
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.55rem",
                   letterSpacing: "0.1em",
-                  color: sub.formType === "join" ? "#a78bfa" : "#38bdf8",
-                  backgroundColor: sub.formType === "join" ? "rgba(167,139,250,0.12)" : "rgba(56,189,248,0.12)",
+                  color: (BADGE[sub.formType] ?? BADGE.talk).color,
+                  backgroundColor: (BADGE[sub.formType] ?? BADGE.talk).bg,
                   padding: "0.2rem 0.5rem",
                   borderRadius: "4px",
                   flexShrink: 0,
                 }}
               >
-                {sub.formType === "join" ? "JOIN" : "TALK"}
+                {(BADGE[sub.formType] ?? BADGE.talk).label}
               </span>
               <span style={{
                 fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
@@ -246,6 +276,32 @@ function SubmissionsViewer() {
                     </div>
                   ))}
                 </div>
+                {sub.formType === "offer" && offerFlags(data).length > 0 && (
+                  <div style={{
+                    marginTop: "1rem",
+                    padding: "0.75rem 0.9rem",
+                    backgroundColor: "rgba(123,30,122,0.14)",
+                    borderLeft: "3px solid #7B1E7A",
+                    borderRadius: "4px",
+                  }}>
+                    <span style={{
+                      fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem",
+                      letterSpacing: "0.12em", color: "rgba(255,255,255,0.55)",
+                      textTransform: "uppercase",
+                    }}>
+                      Flags
+                    </span>
+                    <ul style={{
+                      margin: "0.4rem 0 0", paddingLeft: "1.1rem",
+                      fontFamily: "'Inter', sans-serif", fontSize: "0.78rem",
+                      lineHeight: 1.7, color: "#FFFFFF",
+                    }}>
+                      {offerFlags(data).map((flag) => (
+                        <li key={flag}>{flag}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
                   <button
                     onClick={() => markRead(sub.id, !sub.read)}
