@@ -21,13 +21,13 @@ const COL_A = [
   "/proof/tiles/hitl-b.webp",
   "/proof/tiles/tuisa-a.webp",
   "/proof/tiles/tss-b.webp",
-  "/proof/tiles/kelly-b.webp",
+  "/proof/tiles/schmancy-b.webp",
   "/proof/tiles/tuisa-b.webp",
 ];
 
 const COL_B = [
   "/proof/tiles/tss-a.webp",
-  "/proof/tiles/kelly-a.webp",
+  "/proof/tiles/schmancy-a.webp",
   "/proof/tiles/theyn-b.webp",
   "/proof/tiles/hitl-a.webp",
   "/proof/tiles/tuisa-b.webp",
@@ -37,10 +37,10 @@ const COL_B = [
 const COL_C = [
   "/proof/tiles/tuisa-a.webp",
   "/proof/tiles/theyn-a.webp",
-  "/proof/tiles/kelly-b.webp",
+  "/proof/tiles/schmancy-b.webp",
   "/proof/tiles/tss-b.webp",
   "/proof/tiles/hitl-b.webp",
-  "/proof/tiles/kelly-a.webp",
+  "/proof/tiles/schmancy-a.webp",
 ];
 
 function Shot({ src, className }: { src: string; className?: string }) {
