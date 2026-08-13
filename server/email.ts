@@ -151,7 +151,9 @@ export async function sendNewPostNotification(
 
 
 /** Human labels for the offer form, in the order we want to read them. */
-const OFFER_FIELDS: Array<[string, string]> = [
+/* Exported so the Slack notifier shows the same fields in the same order, and
+   so the triage rules below can never drift between the two channels. */
+export const OFFER_FIELDS: Array<[string, string]> = [
   ["name", "Name"],
   ["brand", "Brand"],
   ["email", "Email"],
@@ -170,7 +172,7 @@ const OFFER_FIELDS: Array<[string, string]> = [
 ];
 
 /** The qualification read, so nobody has to work it out by eye. */
-function offerFlags(data: Record<string, string>): string[] {
+export function offerFlags(data: Record<string, string>): string[] {
   const flags: string[] = [];
   if (data.needsStore === "Yes")
     flags.push("NEEDS A STORE — primary disqualifier");

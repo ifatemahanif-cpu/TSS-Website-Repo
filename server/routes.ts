@@ -12,6 +12,7 @@ import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
 import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
+import { sendSlackNotification } from "./slack";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
@@ -239,7 +240,10 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     // Fire-and-forget: the submission is already saved, so an email failure
     // must never fail the request or lose the lead.
     void sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
-      console.error("[forms] notification failed:", error);
+      console.error("[forms] email notification failed:", error);
+    });
+    void sendSlackNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+      console.error("[forms] slack notification failed:", error);
     });
     res.json(submission);
   });
