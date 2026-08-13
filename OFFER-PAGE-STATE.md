@@ -6,6 +6,63 @@ Branch `feat/offer-page` in the worktree `~/tss-website-offer` (branched from
 Built from the handover package at `~/Downloads/tss-offer-handover` by following
 its `INSTRUCTIONS.md`.
 
+> Sections below this line are from 12 Aug and are partly superseded — five
+> commits are now pushed and PR #7 is open. Read the queue immediately below
+> first.
+
+## TERMS REWRITE — 13 Aug, lawyer's pass, APPLIED
+
+The lawyer's mark-up arrived and was applied in a single pass together with
+Fatema's own queued edits. Her wording used verbatim wherever she supplied it.
+
+Applied:
+
+1. **Commercial structure.** Balance now falls due once scope and revision
+   rounds are complete, payable *before* deployment/transfer/publication —
+   previously "on launch". New clause 5 paragraph withholds final files, code
+   repository, credentials, production deployment and IP until cleared funds.
+2. **Clause 6 deemed acceptance** — five working days → the lawyer's three-limb
+   test (written approval / publication or use / three working days).
+3. **Clause 5 booking fee** reframed off "genuine pre-estimate" onto reserved
+   production capacity + preparatory work.
+4. **Clause 12** cancellation rewritten: stage-based valuation, written
+   statement of work, invoice up to the total fee, no percentages.
+5. **Clause 10** new paragraph — watermarked/restricted review environments,
+   right to withdraw access, no recreating via another provider.
+6. **Clause 16** AI-tools disclaimer.
+7. **Clause 8** rewritten warranty + right to refuse infringing material +
+   indemnity procedure (notice, cooperation, costs, no unilateral settlement).
+8. **"Flat and all-inclusive"** → "the complete professional fee … third-party
+   costs and excluded services are not included."
+9. **Hers:** GST sentence removed; cooling-off 48h → 24h (terms clause 12 *and*
+   FAQ, moved together); terms intro paragraph cut.
+10. **Knock-on copy fixes** so the sales page doesn't contradict the terms: FAQ
+    deemed-acceptance answer rewritten to three working days, FAQ "₹54,000 at
+    launch" → "before the site goes live", form deposit note likewise.
+
+### Still open on the terms
+
+- **⚠️ One sentence is MINE, not the lawyer's.** Her note ended mid-sentence at
+  "Any delay caused while you replace or obtain permission for such". Completed
+  as "…such material is a delay on your side for the purposes of clause 6."
+  Marked with a TODO comment in `offer-terms.tsx` clause 8. Must be confirmed.
+- **Register clash in clause 6.** The lawyer's text says "the Client" and "the
+  Scope Note"; the rest of the document says "you" and "the scope note". Applied
+  verbatim rather than silently converted. Fatema's call.
+- **"Scope Note" is not a formally defined term** anywhere in the document —
+  clause 1 refers to "the written scope note issued after the alignment call".
+  Worth defining once if the lawyer wants the capitalised term to carry weight.
+- **Clause 13's 14-day defect window runs from launch**, and launch is now the
+  ready-for-review notification. A client who delays payment burns their own
+  defect period. Deliberate but worth a second look.
+- **LLPIN still missing** — two TODO markers in `offer-terms.tsx`.
+- **Undecided: meta/OG tags, analytics installation, image compression.** Hers:
+  "can be added but want to avoid, especially analytics." Still listed as
+  *promised deliverables* in four places: terms clause 2, terms clause 4 (the
+  SEO exclusion is defined by reference to clause 2's meta/OG tags),
+  `offer.tsx` line 18, `faq.tsx` line 22. Recommendation on file: keep meta/OG
+  and compression, drop analytics. Must change in all four or none.
+
 ## What is committed vs not
 
 - **Committed** (one commit, local branch only): the two security fixes —
@@ -84,12 +141,12 @@ Also changed while sweeping for contradictions: the name field's placeholder was
 
 ## Open decisions — these need Fatema
 
-1. **Booking fee.** Terms clause 12 says the ₹25,000 is "not refundable in any
-   circumstance" — including if The Story Shapers declines or fails to deliver.
-   The `/websites` terms refunded in full in exactly those cases. The absolute
-   version is the harsher position and the weaker one to defend.
-2. **Jurisdiction: Mumbai.** `offer-config.ts` sets `GOVERNING_CITY = "Mumbai"`.
-   The `/websites` terms assumed Kolkata.
+1. ~~**Booking fee.**~~ RESOLVED 13 Aug: clause 12 now has a cooling-off window
+   plus an asymmetric refund (full refund if TSS cancels for any reason other
+   than her breaching). The window itself is going 48h → 24h, see the queue.
+2. ~~**Jurisdiction: Mumbai.**~~ RESOLVED 13 Aug: `GOVERNING_CITY = "Bengaluru"`,
+   entity is an LLP, registered office in clause 1. LLPIN still outstanding —
+   two TODO markers in `offer-terms.tsx`.
 3. **"When do you want to be live?"** is back in this form, with "Just
    exploring" as a soft-disqualify flag. She removed that exact question from
    the `/websites` form on 12 Aug.

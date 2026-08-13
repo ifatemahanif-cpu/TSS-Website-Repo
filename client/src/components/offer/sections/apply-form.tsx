@@ -309,8 +309,8 @@ export function ApplyForm() {
               </label>
               <p className="mt-3 pl-[34px] text-[13px] leading-[1.7] text-white/45">
                 Nothing to pay today. If we both say yes on the call, ₹25,000
-                books your slot and the ₹54,000 balance is due the day the site
-                is ready to go live.
+                books your slot and the ₹54,000 balance is due once the work is
+                done, before the site goes live.
               </p>
               {errors.priceAcknowledged && (
                 <p role="alert" className="mt-3 pl-[34px] text-[12.5px] text-[#ff9bd0]">

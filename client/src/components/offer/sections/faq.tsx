@@ -34,16 +34,16 @@ const ITEMS: QA[] = [
   },
   {
     q: "What if I’m slow getting things back to you?",
-    /* Terms clause 6. Deemed approval at five working days is a real term, so
+    /* Terms clause 6. Deemed acceptance at three working days is a real term, so
        it belongs on the sales page, not just buried in the T&Cs. */
-    a: "The finish date moves by however long you take, and we’ll tell you when it moves. Nothing dramatic. But if something sits with you unanswered for more than five working days we’ll write to say we’re treating it as approved and carrying on, because the alternative is your slot blocking the next brand’s. Tell us in advance if you’re travelling and we’ll plan around it.",
+    a: "The finish date moves by however long you take, and we’ll tell you when it moves. Nothing dramatic. But once we send you the finished work for final review, you have three working days to flag anything that misses the agreed scope, after which we treat it as accepted and carry on, because the alternative is your slot blocking the next brand’s. Tell us in advance if you’re travelling and we’ll plan around it.",
   },
   {
     q: "What happens to the ₹25,000 if things change?",
-    /* Terms clauses 5, 12. Two things the old answer left out: the 48 hours
+    /* Terms clauses 5, 12. Two things the old answer left out: the 24 hours
        also requires “before kickoff”, and our-side cancellation refunds unless
        you’re the one in breach. */
-    a: "It’s only due after the call, once we’ve both said yes, and it comes off the total, so you pay ₹54,000 at launch and nothing on top. Change your mind within 48 hours of paying, and before we’ve kicked off, and you get it back in full. After that it’s holding your slot and turning other people away, so it stays with us if you walk. If we’re the ones who cancel, for any reason other than you breaking the terms, you get it back in full.",
+    a: "It’s only due after the call, once we’ve both said yes, and it comes off the total, so you pay ₹54,000 before the site goes live and nothing on top. Change your mind within 24 hours of paying, and before we’ve kicked off, and you get it back in full. After that it’s holding your slot and turning other people away, so it stays with us if you walk. If we’re the ones who cancel, for any reason other than you breaking the terms, you get it back in full.",
   },
 ];
 

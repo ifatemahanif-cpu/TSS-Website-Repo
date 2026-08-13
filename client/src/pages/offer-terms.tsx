@@ -42,7 +42,7 @@ const CLAUSES: Clause[] = [
     title: "2. The Offer",
     body: [
       "The Offer comprises: brand and website copywriting; design and development of a website of up to five (5) pages; mobile-responsive implementation; meta and Open Graph tags; analytics installation; image compression; and functional contact or enquiry forms. We test what we deliver on the release versions current at your kickoff date of Chrome, Safari, Firefox and Edge, on desktop, and on current iOS and Android devices.",
-      "The fee is ₹79,000 (Indian Rupees seventy-nine thousand), flat and all-inclusive: nothing further is payable for the scope described above. We are not registered for GST, and no GST or other tax is charged on or added to this fee. If our tax registration position changes later, the fee for slots already confirmed does not change.",
+      "₹79,000 (Indian Rupees seventy-nine thousand) is the complete professional fee payable to The Story Shapers for the included scope. Third-party costs and excluded services described in these Terms are not included. If our tax registration position changes later, the fee for slots already confirmed does not change.",
       "“Up to five pages” is a ceiling, not a target. If your website needs fewer, the fee is the same, and unused pages cannot be carried forward, exchanged for other work, or given to anyone else.",
       "The Offer is limited to five (5) Clients and to one website each. Applications close at 23:59 IST on 31 August 2026. “Closes 31 August” refers to the date by which a slot must be confirmed, not the date by which websites are delivered. A slot is personal to you and cannot be sold, transferred or shared.",
       "We run a limited number of builds at a time, so slots are scheduled in the order in which booking fees are received. Your kickoff date is confirmed in writing before you pay the booking fee. The ten (10) working days are then counted from the start of the clock described in clause 6, which follows your kickoff.",
@@ -85,10 +85,11 @@ const CLAUSES: Clause[] = [
   {
     title: "5. Fees, booking fee and payment",
     body: [
-      "The total fee is ₹79,000 payable in Indian Rupees in two instalments: (a) a booking fee of ₹25,000 (Indian Rupees twenty-five thousand), and (b) the balance of ₹54,000 (Indian Rupees fifty-four thousand) payable on launch.",
+      "The total fee is ₹79,000 payable in Indian Rupees in two instalments: (a) a booking fee of ₹25,000 (Indian Rupees twenty-five thousand), and (b) the balance of ₹54,000 (Indian Rupees fifty-four thousand), payable before deployment, transfer or publication as set out below.",
       "A slot is confirmed only on receipt of the booking fee in cleared funds. A payment link will be issued after the alignment call. Slots are allocated in the order in which booking fees are received.",
-      "The booking fee is credited in full against the total fee and is not an additional charge. It is not refunded if you cancel, except as set out in clause 12. It is consideration for taking a slot off the market: we run five builds, we turn other applicants away once a slot is taken, and we reserve writing, design and development time against your kickoff date. Both parties agree that ₹25,000 is a genuine and reasonable pre-estimate of what that costs us, and is not a penalty.",
-      "The balance is due on launch. “Launch” means the date on which we make the completed website available for publication, whether or not you publish it on that date and whether or not you have given final approval. Where we cannot make it available because you have not provided the domain, hosting or access we asked for, launch is the date we notify you in writing that the website is finished and waiting on you.",
+      "The booking fee is credited in full against the total fee and is not an additional charge. It is payable in consideration of reserving production capacity for your engagement and the onboarding, planning and preparatory work that begins once your slot is confirmed. Except for the cancellation right expressly set out in clause 12, the booking fee is non-refundable if you cancel or do not proceed. This is because, once your slot is confirmed, we reserve writing, design and development capacity for you and may decline other work for that period.",
+      "The balance of ₹54,000 falls due once the included scope and the included revision rounds have been completed, and is payable before deployment, transfer or publication of the website. We will notify you in writing when the completed website is ready for final review and deployment. “Launch” means the date of that notification, whether or not you have then paid, approved or published the website. Where we cannot issue it because you have not provided the domain, hosting or access we asked for, launch is the date we notify you in writing that the website is finished and waiting on you.",
+      "No final files, code repository, credentials, production deployment or transfer of intellectual property rights are provided until the balance reaches us in cleared funds, and no rights in the deliverables pass to you before then; see clause 10.",
       "Invoices are payable within seven (7) days of issue. Amounts unpaid after fourteen (14) days may attract simple interest at 1.5% per month, or the highest rate permitted by law if that is lower. While any amount is overdue we may suspend work, withhold deployment and withhold transfer of the deliverables, and no rights in them pass to you; see clause 10.",
       "Bank charges, gateway fees and, for international Clients, currency conversion costs are payable by you. Where you are required by law to deduct tax at source, you may deduct it from the amount payable and will issue the relevant certificate promptly; the amount deducted counts towards the fee and does not increase what you owe.",
     ],
@@ -99,7 +100,11 @@ const CLAUSES: Clause[] = [
       "Delivery is ten (10) working days from the start of the clock described below. Working days exclude weekends and public holidays observed by The Story Shapers in India. The ten working days are a commitment we make on the condition that you meet the response times in this clause. The clock does not run while we are waiting on you.",
       "The clock starts on the first working day after we receive all assets and information listed in the asset checklist issued at kickoff. It does not start on the date the booking fee is paid.",
       "You agree to provide all assets within forty-eight (48) hours of kickoff and feedback at each review round within twenty-four (24) hours. Each working day of delay in providing assets, feedback or approvals extends the delivery date by an equivalent period, and where a delay costs us your production window, until the next window we are able to offer you. Delays exceeding ten (10) working days in aggregate entitle us to reschedule your slot to the next available window, and the ten-working-day delivery commitment then no longer applies to that engagement.",
-      "If you have not responded to something we have sent you for review within five (5) working days, we may treat it as approved as sent and move to the next stage. We will tell you in writing at the time that we are doing so. Work you have approved, or that has been treated as approved, is not reopened by a later revision round.",
+      // ⚠️ Lawyer's wording, applied verbatim. It says "the Client" where the rest
+      // of the document says "you" — flagged to Fatema, hers to keep or convert.
+      "The Deliverables will be deemed accepted on the earliest of: (a) written approval; (b) publication or use of any Deliverable by the Client; (c) expiry of three working days after we notify the Client that the Deliverables are ready for final review without the Client identifying a material non-conformity with the agreed Scope Note.",
+      "A subjective preference, change of mind or request for work outside the agreed scope is not a material non-conformity.",
+      "Work you have approved, or that has been treated as accepted, is not reopened by a later revision round.",
       "If a project is inactive on your side for thirty (30) consecutive days, we may treat the engagement as suspended, invoice for work completed to date, and require a fresh slot allocation to resume.",
     ],
   },
@@ -114,11 +119,17 @@ const CLAUSES: Clause[] = [
   {
     title: "8. Your responsibilities",
     body: [
-      "You agree to: nominate a single decision-maker with authority to give feedback and final approval, and to route all instructions through that person; provide accurate, complete and lawful content, images, product information and brand material; hold all necessary rights, licences and permissions in the material you supply; and respond within the timelines set out in clause 6.",
+      "You agree to: nominate a single decision-maker with authority to give feedback and final approval, and to route all instructions through that person; provide accurate, complete and lawful content, images, product information and brand material; and respond within the timelines set out in clause 6. You represent and warrant that you own, or have obtained all necessary rights, licences, releases, consents and permissions to allow us to use, reproduce, edit, adapt and publish every asset or piece of material you supply or instruct us to use. We are entitled to rely on that warranty and are not required to independently verify ownership or licensing.",
+      // ⚠️ TODO — the lawyer's note ended mid-sentence at "Any delay caused while
+      // you replace or obtain permission for such". The closing words below are
+      // MINE, written to the obviously intended effect. Confirm with the lawyer
+      // before launch.
+      "We may refuse to use, or remove, any material that we reasonably believe may be unlawful, infringing, misleading or inadequately licensed. Any delay caused while you replace or obtain permission for such material is a delay on your side for the purposes of clause 6.",
       "You grant us a non-exclusive, royalty-free licence to store, use, reproduce and adapt the material you supply, for the purpose of delivering this engagement and, subject to clause 11, of showing the finished work. Keep your own copies of everything you send us. We are not your archive.",
       "You are responsible for the accuracy of factual claims, pricing, statutory disclosures, product descriptions and any regulated content on the website, and for any privacy policy, terms of use, cookie notice or other statement your website is required by law to carry. We may raise questions but do not verify your claims.",
       "Where the material you supply is insufficient to complete the agreed scope, we will tell you in writing and propose options. We are not obliged to source, licence, create or purchase substitute assets within the fee.",
       "You will indemnify us against any third-party claim, and any loss, cost or expense we reasonably incur as a result, arising from the material you supply to us or from your use of the website — including claims of intellectual property infringement, misleading advertising, or breach of statutory disclosure requirements. This does not apply to the extent the claim arises from our own breach of these Terms.",
+      "If a third-party claim covered by this indemnity is made or threatened, we will notify you within a reasonable time after becoming aware of it and provide reasonable cooperation in responding to it. You will reimburse our reasonable costs, including legal costs, arising from the claim to the extent covered by the indemnity. Neither party may settle a claim in a manner that imposes liability, an admission or a continuing obligation on the other without that party's written consent.",
     ],
   },
   {
@@ -133,6 +144,7 @@ const CLAUSES: Clause[] = [
     title: "10. Intellectual property",
     body: [
       "Until the balance is paid in full, all copy, design files, code and other deliverables remain our property, and any access granted to you is a limited licence for review purposes only. If the full fee is never paid, no rights pass to you and you may not use, publish, adapt or authorise anyone else to use the deliverables.",
+      "Before payment in full, drafts and review versions may be supplied through password-protected, watermarked, restricted or non-production environments. We may restrict or withdraw access to those versions following cancellation or non-payment. You may not copy, reproduce, publish, deploy, adapt, instruct another provider to recreate, or otherwise use any unpaid deliverable or substantial part of it. Review access does not constitute delivery or transfer of ownership.",
       "On receipt of the full fee in cleared funds, we assign to you all right, title and interest in the final delivered copy, design and build — worldwide, for the full term of copyright and any renewals or extensions of it. We claim no rights in the material you supplied to us, which remains yours throughout, subject only to the licences you grant us in clauses 8 and 11.",
       "That assignment cannot and does not cover third-party or open-source material used in or by the website, such as fonts, stock imagery, plugins, code libraries and hosted services. Those are not ours to assign and reach you on their own licensors' terms.",
       "We retain ownership of our pre-existing intellectual property, including our methods, frameworks, internal templates, component libraries, tooling and know-how, and of concepts, drafts and routes not selected by you. Nothing in these Terms prevents us from reusing that pre-existing intellectual property on other engagements. Where any of it is embedded in what we deliver, you have a perpetual, worldwide, royalty-free licence to use it as part of your website.",
@@ -149,8 +161,8 @@ const CLAUSES: Clause[] = [
   {
     title: "12. Cancellation",
     body: [
-      "You may cancel at any time by written notice. If you cancel within forty-eight (48) hours of paying the booking fee, and before kickoff, we will refund it in full. After that, the booking fee is not refunded if you cancel: it is consideration for reserving one of five slots and for the scheduling we commit to on receiving it, as explained in clause 5.",
-      "If you cancel after work has commenced, you remain liable for the value of the work completed to the date of cancellation, assessed on a proportionate basis against the agreed scope. The booking fee is credited against that amount. Where the amount is higher, we will invoice you for the difference. Where it is lower, nothing further is payable by you and no refund arises.",
+      "You may cancel at any time by written notice. If you cancel within twenty-four (24) hours of paying the booking fee, and before kickoff, we will refund it in full. After that period, the booking fee is non-refundable if you cancel or do not proceed, for the reasons set out in clause 5.",
+      "If you cancel after work has commenced, the booking fee remains non-refundable and will be applied towards the value of work undertaken. For this purpose, work is valued by reference to the stage the engagement has reached, including discovery and planning, copy development, design development and website development, and not merely by the number of pages completed. We will provide you with a written statement of the work completed. If the value of work completed exceeds the booking fee, we may invoice you for the difference, up to the total fee. No further work will be undertaken after cancellation.",
       "Cancellation transfers no rights in work in progress. Clause 10 continues to apply: nothing passes to you unless the full fee is paid.",
       "We may cancel if you materially breach these Terms, including sustained non-response or non-payment, or if the engagement requires content that is unlawful, misleading, infringing or inconsistent with our professional standards; in that case the booking fee is not refunded. Where we cancel for any other reason, including where we are unable to deliver, we will refund the booking fee in full, together with any amounts paid in excess of work completed to the date of cancellation.",
     ],
@@ -183,6 +195,7 @@ const CLAUSES: Clause[] = [
     title: "16. Independent contractor status",
     body: [
       "We act as an independent service provider. Nothing in these Terms creates an employment, partnership, agency or joint venture relationship. We determine our own working methods, personnel and hours, and may use vetted collaborators, remaining responsible for their work.",
+      "We may use professional software, automation and AI-assisted tools as part of our internal working process, while remaining responsible for the work we deliver to you. We will not knowingly submit your confidential information to a third-party AI service for model training. Where you specifically instruct us to use material through a particular third-party or AI service, you are responsible for ensuring that you have the right to provide that material for that purpose.",
       "During the engagement, and for twelve (12) months after it ends, you will not directly engage or employ anyone we introduced to you in the course of this work without our written consent. Responding to a public job advertisement is not covered by this.",
     ],
   },
@@ -247,11 +260,6 @@ export default function OfferTermsPage() {
           The August website offer,{" "}
           <span className="font-body font-light text-white/70">in full.</span>
         </h1>
-        <p className="mt-6 max-w-[62ch] text-[15px] leading-[1.8] text-white/60">
-          Nothing here should surprise you if you’ve read the page and had the
-          call. It’s written out properly so that neither of us has to rely on
-          memory later.
-        </p>
         <p className="mt-8 font-mono text-[11.5px] uppercase tracking-[1.6px] text-white/35">
           Last updated 13 August 2026 · The Story Shapers Collective LLP
         </p>
