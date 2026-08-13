@@ -9,20 +9,16 @@ type Block = string | string[];
 type Clause = { title: string; body: Block[] };
 
 /* ---------------------------------------------------------------------------
- * ⚠️ TODO BEFORE THIS PAGE GOES LIVE — statutory, not cosmetic.
+ * LLP Act 2008 s.21 compliance — statutory, not cosmetic. Every LLP's
+ * "invoices, official correspondence and publications" must carry: (a) the
+ * LLP's name, (b) the address of its registered office, (c) its LLPIN, and
+ * (d) a statement that it is registered with limited liability. A public T&C
+ * page behind a ₹25,000 payment is squarely a "publication".
  *
- * LLP Act 2008 s.21 requires every LLP's "invoices, official correspondence
- * and publications" to carry: (a) the LLP's name, (b) the address of its
- * registered office, (c) its registration number (LLPIN), and (d) a statement
- * that it is registered with limited liability. Penalty for contravention is
- * ₹10,000. A public T&C page behind a ₹25,000 payment is squarely a
- * "publication".
- *
- * DONE: name, registered office address (clause 1, clause 17, footer) and the
- * limited-liability statement (clause 1, footer).
- * STILL MISSING: the LLPIN. Deliberately left out rather than guessed. Fatema:
- * add it to clause 1 and to the footer line. It is on the Certificate of
- * Incorporation and on the MCA master-data page for the LLP.
+ * All four are present: clause 1 (all four), clause 17 (name + LLPIN +
+ * address, for service of notice) and the page footer (all four).
+ * LLPIN ACW-3552, supplied by Fatema 13 Aug 2026. If it ever changes, those
+ * are the three places.
  *
  * NOTE on spelling: the registered address says "Bangalore" because that is
  * how the LLP is registered; clause 19 says "Bengaluru" via GOVERNING_CITY.
@@ -33,7 +29,7 @@ const CLAUSES: Clause[] = [
   {
     title: "1. Who we are, and what these terms cover",
     body: [
-      "These Terms & Conditions (“Terms”) govern the website design, copywriting and development engagement offered by The Story Shapers Collective LLP, a limited liability partnership registered in India under the Limited Liability Partnership Act, 2008 and registered with limited liability, whose registered office is at 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India (“The Story Shapers”, “we”, “us”), under its August 2026 Independence Day offer (the “Offer”) to the person or entity that applies for and confirms a slot (the “Client”, “you”).",
+      "These Terms & Conditions (“Terms”) govern the website design, copywriting and development engagement offered by The Story Shapers Collective LLP, a limited liability partnership registered in India under the Limited Liability Partnership Act, 2008 with LLP identification number ACW-3552 and registered with limited liability, whose registered office is at 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India (“The Story Shapers”, “we”, “us”), under its August 2026 Independence Day offer (the “Offer”) to the person or entity that applies for and confirms a slot (the “Client”, “you”).",
       "Submitting an application is not a booking, and we are not obliged to accept it. The alignment call commits neither of us. A contract to deliver the Offer comes into existence only when we confirm a slot to you in writing and your booking fee reaches us in cleared funds, as set out in clause 5.",
       "From that point, these Terms and the written scope note issued after the alignment call together form the whole agreement between us. Where the scope note and these Terms conflict, the scope note prevails on matters of scope alone, for that engagement only, and only where you have confirmed it in writing. The scope note cannot change the fee, the refund position, the intellectual property terms, the limits on our liability or the governing law. Those change only by a written amendment under clause 20.",
     ],
@@ -205,7 +201,7 @@ const CLAUSES: Clause[] = [
     body: [
       "Notices under these Terms — including cancellation under clause 12, confidentiality requests and requests to remove our footer credit under clause 11, and data requests under clause 15 — must be in writing and sent by email: to us at hello@storyshaperscollective.com, and to you at the email address given in your application or any address you later notify to us in writing.",
       "A notice is treated as received on the next working day after it is sent, unless the sender receives a delivery failure message.",
-      "Formal legal notice may also be served on us by post at our registered office: The Story Shapers Collective LLP, 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India. A notice sent by post is treated as received on the third working day after it is posted.",
+      "Formal legal notice may also be served on us by post at our registered office: The Story Shapers Collective LLP (LLPIN ACW-3552), 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India. A notice sent by post is treated as received on the third working day after it is posted.",
       "Where these Terms require something to be recorded, agreed or confirmed in writing, email is sufficient. A message on WhatsApp, Instagram or any other channel is not.",
     ],
   },
@@ -298,12 +294,13 @@ export default function OfferTermsPage() {
         </div>
 
         <div className="mt-20 border-t border-white/8 pt-8">
-          {/* ⚠️ LLP Act 2008 s.21: this line still needs the LLPIN.
-              See the TODO at the top of this file. */}
+          {/* LLP Act 2008 s.21 disclosure: name, LLPIN, registered office and
+              the limited-liability statement. All four required. */}
           <p className="text-[13px] leading-[1.8] text-white/40">
-            The Story Shapers Collective LLP is registered in India with limited
-            liability. Registered office: 15, Raam Durg, 3rd Main, Jayamahal
-            Extension, Benson Town, Bangalore – 560046, Karnataka, India.
+            The Story Shapers Collective LLP (LLPIN ACW-3552) is registered in
+            India with limited liability. Registered office: 15, Raam Durg, 3rd
+            Main, Jayamahal Extension, Benson Town, Bangalore – 560046,
+            Karnataka, India.
           </p>
           <p className="mt-4 text-[13px] leading-[1.8] text-white/40">
             Questions on any of the above? Ask before you pay, not after —{" "}
