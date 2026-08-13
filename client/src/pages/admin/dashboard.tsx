@@ -176,9 +176,6 @@ function SubmissionsViewer() {
     const flags: string[] = [];
     if (data.needsStore === "Yes") flags.push("NEEDS A STORE — primary disqualifier");
     if (data.needsStore === "Not sure") flags.push("Unsure about commerce — probe on the call");
-    if (data.assetsIn48h === "No") flags.push("Cannot send assets in 48h — timeline risk");
-    if (data.assetsIn48h === "Probably") flags.push("Hesitant on assets — timeline risk");
-    if (data.liveBy === "Just exploring") flags.push("Just exploring — soft disqualify");
     return flags;
   };
 

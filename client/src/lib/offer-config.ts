@@ -4,8 +4,7 @@
  */
 export const SITE_URL = "https://storyshaperscollective.com";
 
-/* CONFIRMED CORRECT by Fatema. client/index.html's Organization JSON-LD still
-   has the old handles — patches/06-index-html-social.md fixes that to match. */
+/* CONFIRMED CORRECT by Fatema. index.html's Organization JSON-LD matches. */
 export const INSTAGRAM_URL = "https://instagram.com/thestoryshapers";
 export const LINKEDIN_URL =
   "https://www.linkedin.com/company/the-story-shapers-collective";

@@ -11,7 +11,7 @@ export function TheOfferLine() {
     <Section eyebrow="THE INDEPENDENCE OFFER" className="bg-navy-lift">
       <Reveal>
         <p className="o-display max-w-[30ch] text-[30px] leading-[1.16] sm:text-[40px] md:text-[50px]">
-          This August, we’re handpicking five selected brands
+          This August, we’re handpicking five brands
           <span className="font-body font-light text-white/70">
             {" "}
             to shape their story and build them a high-functioning website at{" "}

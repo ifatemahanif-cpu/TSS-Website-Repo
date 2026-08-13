@@ -9,20 +9,16 @@ type Block = string | string[];
 type Clause = { title: string; body: Block[] };
 
 /* ---------------------------------------------------------------------------
- * ⚠️ TODO BEFORE THIS PAGE GOES LIVE — statutory, not cosmetic.
+ * LLP Act 2008 s.21 compliance — statutory, not cosmetic. Every LLP's
+ * "invoices, official correspondence and publications" must carry: (a) the
+ * LLP's name, (b) the address of its registered office, (c) its LLPIN, and
+ * (d) a statement that it is registered with limited liability. A public T&C
+ * page behind a ₹25,000 payment is squarely a "publication".
  *
- * LLP Act 2008 s.21 requires every LLP's "invoices, official correspondence
- * and publications" to carry: (a) the LLP's name, (b) the address of its
- * registered office, (c) its registration number (LLPIN), and (d) a statement
- * that it is registered with limited liability. Penalty for contravention is
- * ₹10,000. A public T&C page behind a ₹25,000 payment is squarely a
- * "publication".
- *
- * DONE: name, registered office address (clause 1, clause 17, footer) and the
- * limited-liability statement (clause 1, footer).
- * STILL MISSING: the LLPIN. Deliberately left out rather than guessed. Fatema:
- * add it to clause 1 and to the footer line. It is on the Certificate of
- * Incorporation and on the MCA master-data page for the LLP.
+ * All four are present: clause 1 (all four), clause 17 (name + LLPIN +
+ * address, for service of notice) and the page footer (all four).
+ * LLPIN ACW-3552, supplied by Fatema 13 Aug 2026. If it ever changes, those
+ * are the three places.
  *
  * NOTE on spelling: the registered address says "Bangalore" because that is
  * how the LLP is registered; clause 19 says "Bengaluru" via GOVERNING_CITY.
@@ -33,7 +29,7 @@ const CLAUSES: Clause[] = [
   {
     title: "1. Who we are, and what these terms cover",
     body: [
-      "These Terms & Conditions (“Terms”) govern the website design, copywriting and development engagement offered by The Story Shapers Collective LLP, a limited liability partnership registered in India under the Limited Liability Partnership Act, 2008 and registered with limited liability, whose registered office is at 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India (“The Story Shapers”, “we”, “us”), under its August 2026 Independence Day offer (the “Offer”) to the person or entity that applies for and confirms a slot (the “Client”, “you”).",
+      "These Terms & Conditions (“Terms”) govern the website design, copywriting and development engagement offered by The Story Shapers Collective LLP, a limited liability partnership registered in India under the Limited Liability Partnership Act, 2008 with LLP identification number ACW-3552 and registered with limited liability, whose registered office is at 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India (“The Story Shapers”, “we”, “us”), under its August 2026 Independence Day offer (the “Offer”) to the person or entity that applies for and confirms a slot (the “Client”, “you”).",
       "Submitting an application is not a booking, and we are not obliged to accept it. The alignment call commits neither of us. A contract to deliver the Offer comes into existence only when we confirm a slot to you in writing and your booking fee reaches us in cleared funds, as set out in clause 5.",
       "From that point, these Terms and the written scope note issued after the alignment call together form the whole agreement between us. Where the scope note and these Terms conflict, the scope note prevails on matters of scope alone, for that engagement only, and only where you have confirmed it in writing. The scope note cannot change the fee, the refund position, the intellectual property terms, the limits on our liability or the governing law. Those change only by a written amendment under clause 20.",
     ],
@@ -44,7 +40,7 @@ const CLAUSES: Clause[] = [
       "The Offer comprises: brand and website copywriting; design and development of a website of up to five (5) pages; mobile-responsive implementation; meta and Open Graph tags; analytics installation; image compression; and functional contact or enquiry forms. We test what we deliver on the release versions current at your kickoff date of Chrome, Safari, Firefox and Edge, on desktop, and on current iOS and Android devices.",
       "₹80,000 (Indian Rupees eighty thousand) is the complete professional fee payable to The Story Shapers for the included scope. Third-party costs and excluded services described in these Terms are not included. If our tax registration position changes later, the fee for slots already confirmed does not change.",
       "“Up to five pages” is a ceiling, not a target. If your website needs fewer, the fee is the same, and unused pages cannot be carried forward, exchanged for other work, or given to anyone else.",
-      "The Offer is limited to five (5) Clients and to one website each. Applications close at 23:59 IST on 31 August 2026. “Closes 31 August” refers to the date by which a slot must be confirmed, not the date by which websites are delivered. A slot is personal to you and cannot be sold, transferred or shared.",
+      "The Offer is limited to five (5) Clients and to one website each. Applications close at 23:59 IST on 31 August 2026. That is the date by which a slot must be confirmed, not the date by which websites are delivered. A slot is personal to you and cannot be sold, transferred or shared.",
       "We run a limited number of builds at a time, so slots are scheduled in the order in which booking fees are received. Your kickoff date is confirmed in writing before you pay the booking fee. The ten (10) working days are then counted from the start of the clock described in clause 6, which follows your kickoff.",
       "We reserve the right to decline any application at our discretion, including after the alignment call, and to withdraw or modify the Offer for applications not yet confirmed. Withdrawal or modification will not affect slots already confirmed by payment.",
     ],
@@ -88,7 +84,7 @@ const CLAUSES: Clause[] = [
       "The total fee is ₹80,000 payable in Indian Rupees in two instalments: (a) a booking fee of ₹25,000 (Indian Rupees twenty-five thousand), and (b) the balance of ₹55,000 (Indian Rupees fifty-five thousand), payable before deployment, transfer or publication as set out below.",
       "A slot is confirmed only on receipt of the booking fee in cleared funds. A payment link will be issued after the alignment call. Slots are allocated in the order in which booking fees are received.",
       "The booking fee is credited in full against the total fee and is not an additional charge. It is payable in consideration of reserving production capacity for your engagement and the onboarding, planning and preparatory work that begins once your slot is confirmed. Except for the cancellation right expressly set out in clause 12, the booking fee is non-refundable if you cancel or do not proceed. This is because, once your slot is confirmed, we reserve writing, design and development capacity for you and may decline other work for that period.",
-      "The balance of ₹55,000 falls due once the included scope and the included revision rounds have been completed, and is payable before deployment, transfer or publication of the website. We will notify you in writing when the completed website is ready for final review and deployment. “Launch” means the date of that notification, whether or not you have then paid, approved or published the website. Where we cannot issue it because you have not provided the domain, hosting or access we asked for, launch is the date we notify you in writing that the website is finished and waiting on you.",
+      "The balance of ₹55,000 falls due once the included scope and the included revision rounds have been completed, and is payable before deployment, transfer or publication of the website. We will notify you in writing when the completed website is ready for final review and deployment. “launch” means the date of that notification, whether or not you have then paid, approved or published the website. Where we cannot issue it because you have not provided the domain, hosting or access we asked for, launch is the date we notify you in writing that the website is finished and waiting on you.",
       "No final files, code repository, credentials, production deployment or transfer of intellectual property rights are provided until the balance reaches us in cleared funds, and no rights in the deliverables pass to you before then; see clause 10.",
       "Invoices are payable within seven (7) days of issue. Amounts unpaid after fourteen (14) days may attract simple interest at 1.5% per month, or the highest rate permitted by law if that is lower. While any amount is overdue we may suspend work, withhold deployment and withhold transfer of the deliverables, and no rights in them pass to you; see clause 10.",
       "Bank charges, gateway fees and, for international Clients, currency conversion costs are payable by you. Where you are required by law to deduct tax at source, you may deduct it from the amount payable and will issue the relevant certificate promptly; the amount deducted counts towards the fee and does not increase what you owe.",
@@ -100,9 +96,10 @@ const CLAUSES: Clause[] = [
       "Delivery is ten (10) working days from the start of the clock described below. Working days exclude weekends and public holidays observed by The Story Shapers in India. The ten working days are a commitment we make on the condition that you meet the response times in this clause. The clock does not run while we are waiting on you.",
       "The clock starts on the first working day after we receive all assets and information listed in the asset checklist issued at kickoff. It does not start on the date the booking fee is paid.",
       "You agree to provide all assets within forty-eight (48) hours of kickoff and feedback at each review round within twenty-four (24) hours. Each working day of delay in providing assets, feedback or approvals extends the delivery date by an equivalent period, and where a delay costs us your production window, until the next window we are able to offer you. Delays exceeding ten (10) working days in aggregate entitle us to reschedule your slot to the next available window, and the ten-working-day delivery commitment then no longer applies to that engagement.",
-      // ⚠️ Lawyer's wording, applied verbatim. It says "the Client" where the rest
-      // of the document says "you" — flagged to Fatema, hers to keep or convert.
-      "The Deliverables will be deemed accepted on the earliest of: (a) written approval; (b) publication or use of any Deliverable by the Client; (c) expiry of three working days after we notify the Client that the Deliverables are ready for final review without the Client identifying a material non-conformity with the agreed Scope Note.",
+      // Lawyer's three-limb deemed-acceptance test, converted into the
+      // document's register (you / deliverables / scope note) with Fatema's
+      // approval, 13 Aug. Substance unchanged from her wording.
+      "The deliverables will be deemed accepted on the earliest of: (a) your written approval; (b) your publication or use of any deliverable; (c) expiry of three working days after we notify you that the deliverables are ready for final review without you identifying a material non-conformity with the agreed scope note.",
       "A subjective preference, change of mind or request for work outside the agreed scope is not a material non-conformity.",
       "Work you have approved, or that has been treated as accepted, is not reopened by a later revision round.",
       "If a project is inactive on your side for thirty (30) consecutive days, we may treat the engagement as suspended, invoice for work completed to date, and require a fresh slot allocation to resume.",
@@ -187,7 +184,7 @@ const CLAUSES: Clause[] = [
     title: "15. Confidentiality and your data",
     body: [
       "Each party will keep the other's non-public business information confidential and use it only for the purposes of this engagement, except where disclosure is required by law. This obligation continues for two (2) years after the engagement ends.",
-      "Information submitted through the application form on this page is collected to assess applications, contact you and administer the Offer. It is stored securely, and shared only with members of The Story Shapers and the service providers we use to run the form and our email. It is not sold, published, used to train any model, or used for unrelated marketing. We keep application data for twelve (12) months from submission unless you become a Client, in which case we keep it for the duration of the engagement and for as long as tax and accounting law requires.",
+      "Information submitted through the application form on the offer page is collected to assess applications, contact you and administer the Offer. It is stored securely, and shared only with members of The Story Shapers and the service providers we use to run the form and our email. It is not sold, published, used to train any model, or used for unrelated marketing. We keep application data for twelve (12) months from submission unless you become a Client, in which case we keep it for the duration of the engagement and for as long as tax and accounting law requires.",
       "You may withdraw your consent at any time, though if you withdraw it before your slot is confirmed we will not be able to process your application. Write to hello@storyshaperscollective.com to withdraw consent, to request access to, correction of, or deletion of your application data, or to raise a concern about how it has been handled. That address is our point of contact for any grievance about personal data, and we will respond within thirty (30) days.",
     ],
   },
@@ -204,7 +201,7 @@ const CLAUSES: Clause[] = [
     body: [
       "Notices under these Terms — including cancellation under clause 12, confidentiality requests and requests to remove our footer credit under clause 11, and data requests under clause 15 — must be in writing and sent by email: to us at hello@storyshaperscollective.com, and to you at the email address given in your application or any address you later notify to us in writing.",
       "A notice is treated as received on the next working day after it is sent, unless the sender receives a delivery failure message.",
-      "Formal legal notice may also be served on us by post at our registered office: The Story Shapers Collective LLP, 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India. A notice sent by post is treated as received on the third working day after it is posted.",
+      "Formal legal notice may also be served on us by post at our registered office: The Story Shapers Collective LLP (LLPIN ACW-3552), 15, Raam Durg, 3rd Main, Jayamahal Extension, Benson Town, Bangalore – 560046, Karnataka, India. A notice sent by post is treated as received on the third working day after it is posted.",
       "Where these Terms require something to be recorded, agreed or confirmed in writing, email is sufficient. A message on WhatsApp, Instagram or any other channel is not.",
     ],
   },
@@ -215,7 +212,7 @@ const CLAUSES: Clause[] = [
       "A failure or delay in enforcing any provision is not a waiver of it, and waiving it on one occasion does not waive it on any other.",
       "Neither party may assign or transfer this agreement without the other's written consent, which will not be unreasonably withheld. Our use of vetted collaborators under clause 16 is not an assignment.",
       "Nothing in these Terms gives any right to anyone who is not a party to them.",
-      "Clauses 5, 8, 10, 11, 12, 14, 15, 16, 17, 18 and 19 survive the end of the engagement, however it ends.",
+      "Clauses 5, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18 and 19 survive the end of the engagement, however it ends.",
     ],
   },
   {
@@ -297,12 +294,13 @@ export default function OfferTermsPage() {
         </div>
 
         <div className="mt-20 border-t border-white/8 pt-8">
-          {/* ⚠️ LLP Act 2008 s.21: this line still needs the LLPIN.
-              See the TODO at the top of this file. */}
+          {/* LLP Act 2008 s.21 disclosure: name, LLPIN, registered office and
+              the limited-liability statement. All four required. */}
           <p className="text-[13px] leading-[1.8] text-white/40">
-            The Story Shapers Collective LLP is registered in India with limited
-            liability. Registered office: 15, Raam Durg, 3rd Main, Jayamahal
-            Extension, Benson Town, Bangalore – 560046, Karnataka, India.
+            The Story Shapers Collective LLP (LLPIN ACW-3552) is registered in
+            India with limited liability. Registered office: 15, Raam Durg, 3rd
+            Main, Jayamahal Extension, Benson Town, Bangalore – 560046,
+            Karnataka, India.
           </p>
           <p className="mt-4 text-[13px] leading-[1.8] text-white/40">
             Questions on any of the above? Ask before you pay, not after —{" "}

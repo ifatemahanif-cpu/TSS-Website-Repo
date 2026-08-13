@@ -153,7 +153,7 @@ export function Hero() {
 
         <div className="flex flex-1 flex-col justify-center py-14 md:py-24 lg:max-w-[600px]">
           <Reveal delay={1}>
-            {/* Carries the closing date — the one line that must not whisper. */}
+            {/* The scarcity strip — the one line that must not whisper. */}
             <p className="o-eyebrow text-white/70">
               INDEPENDENCE DAY OFFER
               <span className="hidden sm:inline"> · </span>
