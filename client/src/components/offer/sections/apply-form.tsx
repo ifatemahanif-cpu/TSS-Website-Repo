@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { ArrowRight, Check, Info, Loader2 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -7,35 +7,20 @@ import { Choices, Field, TextArea, TextInput } from "../field";
 import { Reveal } from "../reveal";
 import { MixedHeading, Section } from "../section";
 
-const STAGES = [
-  "Pre-launch",
-  "Launched, under 6 months",
-  "6–18 months",
-  "18 months+",
-] as const;
 const YES_NO_UNSURE = ["Yes", "No", "Not sure"] as const;
-const ASSETS = ["Yes", "Probably", "No"] as const;
-const LIVE_BY = [
-  "As soon as possible",
-  "This month",
-  "Next month",
-  "Just exploring",
-] as const;
 
+/* The form only has to answer one question: is this a brand we want to be on a
+   call with? Stage, assets in 48h, timeline, decision-maker and what's broken
+   about the current site were all cut. They scope the project, and there is a
+   30-minute call for that. */
 type FormState = {
   name: string;
   brand: string;
   email: string;
   whatsapp: string;
-  instagram: string;
   website: string;
   whatYouDo: string;
-  stage: string;
   needsStore: string;
-  assetsIn48h: string;
-  decisionMaker: string;
-  liveBy: string;
-  whatsBroken: string;
   priceAcknowledged: boolean;
 };
 
@@ -44,33 +29,11 @@ const EMPTY: FormState = {
   brand: "",
   email: "",
   whatsapp: "",
-  instagram: "",
   website: "",
   whatYouDo: "",
-  stage: "",
   needsStore: "",
-  assetsIn48h: "",
-  decisionMaker: "",
-  liveBy: "",
-  whatsBroken: "",
   priceAcknowledged: false,
 };
-
-const REQUIRED: (keyof FormState)[] = [
-  "name",
-  "brand",
-  "email",
-  "whatsapp",
-  "website",
-  "whatYouDo",
-  "stage",
-  "needsStore",
-  "assetsIn48h",
-  "decisionMaker",
-  "liveBy",
-  "whatsBroken",
-  "priceAcknowledged",
-];
 
 function validate(form: FormState) {
   const errors: Partial<Record<keyof FormState, string>> = {};
@@ -81,17 +44,10 @@ function validate(form: FormState) {
   if (form.whatsapp.replace(/\D/g, "").length < 8)
     errors.whatsapp = "Include the country code — we WhatsApp, we don’t call.";
   if (!form.website.trim())
-    errors.website = "A URL, or “we don’t have one yet”.";
+    errors.website = "A link, a handle, or “nothing yet”.";
   if (form.whatYouDo.trim().length < 20)
-    errors.whatYouDo = "Two or three lines. This is the field we actually read.";
-  if (!form.stage) errors.stage = "Pick one.";
+    errors.whatYouDo = "Two or three lines. This is the one we actually read.";
   if (!form.needsStore) errors.needsStore = "Pick one.";
-  if (!form.assetsIn48h) errors.assetsIn48h = "Pick one.";
-  if (form.decisionMaker.trim().length < 2)
-    errors.decisionMaker = "A name and a role.";
-  if (!form.liveBy) errors.liveBy = "Pick one.";
-  if (form.whatsBroken.trim().length < 10)
-    errors.whatsBroken = "A sentence is enough.";
   if (!form.priceAcknowledged)
     errors.priceAcknowledged = "Please tick this before you send the form.";
   return errors;
@@ -161,16 +117,6 @@ export function ApplyForm() {
     if (submitted) setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
-  const filled = useMemo(
-    () =>
-      REQUIRED.filter((key) => {
-        const value = form[key];
-        return typeof value === "boolean" ? value : value.trim().length > 0;
-      }).length,
-    [form],
-  );
-  const progress = Math.round((filled / REQUIRED.length) * 100);
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setSubmitted(true);
@@ -188,7 +134,10 @@ export function ApplyForm() {
     try {
       /* The site's generic submissions endpoint. `data` is a jsonb bag on the
          form_submissions table, so every value has to be a plain string —
-         booleans go in as "Yes"/"No" or the admin viewer renders nothing. */
+         booleans go in as "Yes"/"No" or the admin viewer renders nothing.
+         Keys have to stay on this exact list: the notification email renders
+         `OFFER_FIELDS.filter(key in data)`, so a key it doesn't know is
+         silently dropped from the email. Sending fewer of them is fine. */
       await apiRequest("POST", "/api/forms/submit", {
         formType: "offer",
         data: {
@@ -196,15 +145,9 @@ export function ApplyForm() {
           brand: form.brand.trim(),
           email: form.email.trim(),
           whatsapp: form.whatsapp.trim(),
-          instagram: form.instagram.trim() || "—",
           website: form.website.trim(),
           whatYouDo: form.whatYouDo.trim(),
-          stage: form.stage,
           needsStore: form.needsStore,
-          assetsIn48h: form.assetsIn48h,
-          decisionMaker: form.decisionMaker.trim(),
-          liveBy: form.liveBy,
-          whatsBroken: form.whatsBroken.trim(),
           priceAcknowledged: form.priceAcknowledged ? "Yes" : "No",
           referrer: document.referrer || "direct",
         },
@@ -228,19 +171,6 @@ export function ApplyForm() {
           <Success />
         ) : (
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8">
-            {/* Progress on required fields only. */}
-            <div className="flex items-center gap-4">
-              <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/8">
-                <div
-                  className="h-full bg-magenta-lift transition-all duration-500"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <span className="font-mono text-[11px] tabular-nums text-white/40">
-                {filled}/{REQUIRED.length}
-              </span>
-            </div>
-
             <div className="grid gap-7 sm:grid-cols-2">
               <Field label="Your name" required htmlFor="name" error={errors.name}>
                 <TextInput
@@ -292,24 +222,19 @@ export function ApplyForm() {
                 />
               </Field>
 
-              <Field label="Instagram handle" htmlFor="instagram">
-                <TextInput
-                  id="instagram"
-                  placeholder="@yourbrand — optional"
-                  value={form.instagram}
-                  onChange={(e) => set("instagram", e.target.value)}
-                />
-              </Field>
-
+              {/* Spans the grid: it's the field we look at first, and it
+                  leaves the two-up rows above even. */}
               <Field
-                label="Current website"
+                label="Where can we see the brand?"
+                hint="We look at this before we reply."
                 required
                 htmlFor="website"
                 error={errors.website}
+                className="sm:col-span-2"
               >
                 <TextInput
                   id="website"
-                  placeholder="URL, or “we don’t have one yet”"
+                  placeholder="yourbrand.com, @yourbrand, or “nothing yet”"
                   value={form.website}
                   invalid={Boolean(errors.website)}
                   onChange={(e) => set("website", e.target.value)}
@@ -318,32 +243,18 @@ export function ApplyForm() {
             </div>
 
             <Field
-              label="In two or three lines, what does the brand do / what do you sell?"
+              label="What does the brand do, and what do you sell?"
+              hint="Two or three lines is plenty. This is the one we actually read."
               required
               htmlFor="whatYouDo"
               error={errors.whatYouDo}
             >
               <TextArea
                 id="whatYouDo"
-                placeholder="Plain language beats positioning statements here."
+                placeholder="Plain language beats a positioning statement here."
                 value={form.whatYouDo}
                 invalid={Boolean(errors.whatYouDo)}
                 onChange={(e) => set("whatYouDo", e.target.value)}
-              />
-            </Field>
-
-            <Field
-              label="Where are you in the journey?"
-              required
-              htmlFor="stage"
-              error={errors.stage}
-            >
-              <Choices
-                name="stage"
-                options={STAGES}
-                value={form.stage}
-                invalid={Boolean(errors.stage)}
-                onChange={(v) => set("stage", v)}
               />
             </Field>
 
@@ -372,76 +283,6 @@ export function ApplyForm() {
               )}
             </Field>
 
-            <Field
-              label="Can you get us photos, product information and any existing brand material within 48 hours of kickoff?"
-              required
-              htmlFor="assetsIn48h"
-              error={errors.assetsIn48h}
-            >
-              <Choices
-                name="assetsIn48h"
-                options={ASSETS}
-                value={form.assetsIn48h}
-                invalid={Boolean(errors.assetsIn48h)}
-                onChange={(v) => set("assetsIn48h", v)}
-              />
-            </Field>
-
-            <Field
-              label="Who is the single decision-maker on this project?"
-              hint="Name and role. One person signs off — it keeps 10 working days honest."
-              required
-              htmlFor="decisionMaker"
-              error={errors.decisionMaker}
-            >
-              <TextInput
-                id="decisionMaker"
-                placeholder="e.g. Meera Nair, founder"
-                value={form.decisionMaker}
-                invalid={Boolean(errors.decisionMaker)}
-                onChange={(e) => set("decisionMaker", e.target.value)}
-              />
-            </Field>
-
-            <Field
-              label="When do you want to be live?"
-              required
-              htmlFor="liveBy"
-              error={errors.liveBy}
-            >
-              <Choices
-                name="liveBy"
-                options={LIVE_BY}
-                value={form.liveBy}
-                invalid={Boolean(errors.liveBy)}
-                onChange={(v) => set("liveBy", v)}
-              />
-              {form.liveBy === "Just exploring" && (
-                <p className="mt-2 flex gap-3 rounded-lg border border-white/10 bg-white/4 p-4 text-[13.5px] leading-[1.7] text-white/70">
-                  <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-magenta-lift" />
-                  <span>
-                    Fair enough. We’ll keep you on the list, but the five slots go
-                    to people with a date in mind.
-                  </span>
-                </p>
-              )}
-            </Field>
-
-            <Field
-              label="What’s not working about your current site — or why don’t you have one yet?"
-              required
-              htmlFor="whatsBroken"
-              error={errors.whatsBroken}
-            >
-              <TextArea
-                id="whatsBroken"
-                placeholder="Be blunt. It’s more useful than being polite."
-                value={form.whatsBroken}
-                invalid={Boolean(errors.whatsBroken)}
-                onChange={(e) => set("whatsBroken", e.target.value)}
-              />
-            </Field>
-
             <div className="rounded-2xl border border-white/10 bg-white/3 p-5 sm:p-6">
               <label
                 htmlFor="priceAcknowledged"
@@ -468,8 +309,8 @@ export function ApplyForm() {
               </label>
               <p className="mt-3 pl-[34px] text-[13px] leading-[1.7] text-white/45">
                 Nothing to pay today. If we both say yes on the call, ₹25,000
-                books your slot and the ₹54,000 balance is due the day you go
-                live.
+                books your slot and the ₹54,000 balance is due the day the site
+                is ready to go live.
               </p>
               {errors.priceAcknowledged && (
                 <p role="alert" className="mt-3 pl-[34px] text-[12.5px] text-[#ff9bd0]">
