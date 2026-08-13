@@ -148,3 +148,158 @@ export async function sendNewPostNotification(
 
   console.log(`[email] New post notification: ${sent} sent, ${failed} failed (${subscribers.length} total)`);
 }
+
+
+/** Human labels for the offer form, in the order we want to read them. */
+/* Exported so the Slack notifier shows the same fields in the same order, and
+   so the triage rules below can never drift between the two channels. */
+export const OFFER_FIELDS: Array<[string, string]> = [
+  ["name", "Name"],
+  ["brand", "Brand"],
+  ["email", "Email"],
+  ["whatsapp", "WhatsApp"],
+  ["instagram", "Instagram"],
+  ["website", "Current website"],
+  ["whatYouDo", "What the brand does"],
+  ["stage", "Stage"],
+  ["needsStore", "Needs to sell products directly"],
+  ["assetsIn48h", "Assets within 48h"],
+  ["decisionMaker", "Decision maker"],
+  ["liveBy", "Wants to be live"],
+  ["whatsBroken", "What's not working"],
+  ["priceAcknowledged", "Agreed to terms"],
+  ["referrer", "Referrer"],
+];
+
+/** The qualification read, so nobody has to work it out by eye. */
+export function offerFlags(data: Record<string, string>): string[] {
+  const flags: string[] = [];
+  if (data.needsStore === "Yes")
+    flags.push("NEEDS A STORE — primary disqualifier");
+  if (data.needsStore === "Not sure")
+    flags.push("Unsure about commerce — probe on the call");
+  if (data.assetsIn48h === "No")
+    flags.push("Cannot send assets in 48h — timeline risk");
+  if (data.assetsIn48h === "Probably")
+    flags.push("Hesitant on assets — timeline risk");
+  if (data.liveBy === "Just exploring")
+    flags.push("Just exploring — soft disqualify");
+  return flags;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/**
+ * Notification for any public form submission (offer / join / talk).
+ * Fire-and-forget — the submission is already saved before this is called, so
+ * a SendGrid failure must never fail the request.
+ */
+export async function sendFormNotification(
+  formType: string,
+  data: Record<string, string>,
+): Promise<void> {
+  if (!process.env.SENDGRID_API_KEY || !FROM_EMAIL) {
+    console.warn("[email] SendGrid not configured — skipping form notification");
+    return;
+  }
+
+  const to = (process.env.NOTIFY_EMAIL || FROM_EMAIL)
+    .split(",")
+    .map((address) => address.trim())
+    .filter(Boolean);
+  if (!to.length) return;
+
+  const isOffer = formType === "offer";
+
+  /* Offer submissions get the fixed field order; join/talk just dump whatever
+     keys they sent, in insertion order. */
+  const entries: Array<[string, string]> = isOffer
+    ? OFFER_FIELDS.filter(([key]) => key in data).map(([key, label]) => [
+        label,
+        data[key] || "—",
+      ])
+    : Object.entries(data).map(([key, value]) => [key, value || "—"]);
+
+  const rows = entries
+    .map(
+      ([label, value]) => `<tr>
+        <td style="padding:8px 16px 8px 0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td>
+        <td style="padding:8px 0;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.9);">${escapeHtml(value)}</td>
+      </tr>`,
+    )
+    .join("");
+
+  const flags = isOffer ? offerFlags(data) : [];
+  const flagHtml = flags.length
+    ? `<div style="margin-top:24px;padding:14px 16px;background-color:rgba(123,30,122,0.18);border-left:3px solid #7B1E7A;border-radius:4px;">
+         <p style="margin:0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Flags</p>
+         <ul style="margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.7;color:#FFFFFF;">
+           ${flags.map((flag) => `<li>${escapeHtml(flag)}</li>`).join("")}
+         </ul>
+       </div>`
+    : "";
+
+  const heading = isOffer
+    ? `${escapeHtml(data.brand || "New")} — ${escapeHtml(data.name || "applicant")}`
+    : `New ${escapeHtml(formType)} submission`;
+
+  const label = isOffer
+    ? "New offer application"
+    : `New ${escapeHtml(formType)} submission`;
+
+  const content = `
+    <p style="margin:0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);">${label}</p>
+    <h1 style="margin:10px 0 26px;font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:400;color:#FFFFFF;line-height:1.3;letter-spacing:-0.02em;">
+      ${heading}
+    </h1>
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">${rows}</table>
+    ${flagHtml}
+    <p style="margin:26px 0 0;font-size:12px;line-height:1.6;color:rgba(255,255,255,0.35);">
+      Received ${new Date().toISOString()} · read and reply from the admin dashboard.
+    </p>
+  `;
+
+  /* baseTemplate() carries the newsletter unsubscribe line — strip it, this is
+     an internal notification, not a marketing email. */
+  const html = baseTemplate(content)
+    .replace(
+      /You're receiving this because you subscribed to Notes from the Margins\.<br\/>\s*<a href="\{\{UNSUBSCRIBE_URL\}\}"[^>]*>Unsubscribe<\/a>/,
+      "Internal notification from storyshaperscollective.com",
+    )
+    .replace("{{UNSUBSCRIBE_URL}}", "#");
+
+  const text = entries
+    .map(([labelText, value]) => `${labelText}: ${value}`)
+    .join("\n")
+    .concat(
+      flags.length ? `\n\nFlags:\n${flags.map((f) => `- ${f}`).join("\n")}` : "",
+    );
+
+  const subject = isOffer
+    ? `[Offer] ${data.brand || "New"} — ${data.name || "applicant"}${
+        data.needsStore === "Yes" ? " (needs a store)" : ""
+      }`
+    : `[${formType}] ${data.name || data.email || "New submission"}`;
+
+  try {
+    await sgMail.send({
+      to,
+      from: { email: FROM_EMAIL, name: FROM_NAME },
+      /* Reply goes straight to the applicant. */
+      ...(data.email && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)
+        ? { replyTo: data.email }
+        : {}),
+      subject,
+      text,
+      html,
+    });
+  } catch (error) {
+    console.error("[email] form notification failed:", error);
+  }
+}

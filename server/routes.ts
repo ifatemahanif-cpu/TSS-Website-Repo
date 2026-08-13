@@ -7,11 +7,12 @@ import bcrypt from "bcryptjs";
 import path from "path";
 import express from "express";
 import multer from "multer";
-import { randomUUID } from "crypto";
+import { randomBytes, randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
-import { sendWelcomeEmail, sendNewPostNotification } from "./email";
+import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
+import { sendSlackNotification } from "./slack";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
@@ -57,13 +58,21 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
+  // A literal fallback here would make admin sessions forgeable from the public
+  // repo, so production refuses to boot without a real secret. Development
+  // still gets an ephemeral one so `npm run dev` works with no setup.
+  const sessionSecret = process.env.SESSION_SECRET;
+  if (!sessionSecret && process.env.NODE_ENV === "production") {
+    throw new Error("SESSION_SECRET must be set in production");
+  }
+
   app.use(
     session({
       store: new PgSession({
         conString: process.env.DATABASE_URL,
         createTableIfMissing: true,
       }),
-      secret: process.env.SESSION_SECRET || "story-shapers-cms-secret-key",
+      secret: sessionSecret || randomBytes(32).toString("hex"),
       resave: false,
       saveUninitialized: false,
       cookie: { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" },
@@ -220,7 +229,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   const formSubmissionBody = z.object({
-    formType: z.enum(["join", "talk"]),
+    formType: z.enum(["join", "talk", "offer"]),
     data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
@@ -228,6 +237,14 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const parsed = formSubmissionBody.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
+    // Fire-and-forget: the submission is already saved, so an email failure
+    // must never fail the request or lose the lead.
+    void sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+      console.error("[forms] email notification failed:", error);
+    });
+    void sendSlackNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+      console.error("[forms] slack notification failed:", error);
+    });
     res.json(submission);
   });
 
