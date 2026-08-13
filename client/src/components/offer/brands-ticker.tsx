@@ -15,7 +15,9 @@ function Track() {
     <div aria-hidden className="flex shrink-0 items-center">
       {BRANDS.map((brand) => (
         <span key={brand} className="flex items-center">
-          <span className="whitespace-nowrap font-display text-[17px] text-white/35 sm:text-xl">
+          {/* Hovering already pauses the strip; brightening the names is the
+              reward for stopping on one. */}
+          <span className="o-brand whitespace-nowrap font-display text-[17px] text-white/35 sm:text-xl">
             {brand}
           </span>
           <span className="mx-6 h-1 w-1 rounded-full bg-magenta-lift/50 sm:mx-9" />

@@ -18,6 +18,13 @@
 	color: #fff;
 	font-family: var(--font-body);
 	overflow-x: hidden;
+
+	/* One step up the brand magenta ramp (same hue as --color-magenta-lift,
+	   #942493, lifted for legibility). It carries a single role across the
+	   page: "active / progressing / worth your eye". #942493 itself is only
+	   ~1.9:1 on the navy, so a hairline in it is invisible; this clears 4.5:1
+	   and still reads unmistakably as the brand colour, not a new accent. */
+	--o-accent: #cd42ca;
 }
 
 /* The standalone set a default border colour globally in @layer base; scope
@@ -154,6 +161,159 @@
 	will-change: transform;
 }
 
+/* --- Brand names brighten while the ticker is paused -------------------- */
+.o-brand {
+	transition: color 420ms ease;
+}
+
+/* The marquee already pauses on hover; lifting the names is the reward for
+   stopping, and it keeps the interaction from feeling like a dead strip. */
+.marquee:hover .o-brand {
+	color: rgb(255 255 255 / 0.62);
+}
+
+/* --- Section eyebrow rule ---------------------------------------------- */
+/* Draws itself left-to-right as each section arrives. Same 32px box either
+   way, so nothing reflows — only the scale changes. */
+.o-rule {
+	display: block;
+	flex: none;
+	width: 32px;
+	height: 1px;
+	background: var(--o-accent);
+	opacity: 0.8;
+	transform-origin: left center;
+}
+
+/* --- Number highlight --------------------------------------------------- */
+/* A rule that draws under a phrase when it scrolls in. Used exactly twice, on
+   the two numbers the page asks you to weigh: 45+ years, and ₹79,000. */
+/* inline-block would make the rule's containing box the LINE box, so the offset
+   below would scale with whatever leading the host paragraph happens to use and
+   the rule would float far under the text. inline-flex with the rule positioned
+   against the text's own box keeps it a fixed distance from the glyphs. */
+.o-highlight {
+	position: relative;
+	display: inline-flex;
+	align-items: baseline;
+	white-space: nowrap;
+}
+
+.o-highlight-rule {
+	position: absolute;
+	right: 0;
+	/* Measured from the bottom of the text box, not the line box. */
+	bottom: -0.12em;
+	left: 0;
+	height: 2px;
+	border-radius: 1px;
+	background: var(--o-accent);
+	transform-origin: left center;
+}
+
+/* --- Process rail ------------------------------------------------------- */
+/* The coloured line that runs over the dim rail as you scroll the four steps.
+   Positioning comes from the utility classes on the element; this only owns
+   the paint, so the horizontal and vertical variants share it. */
+.o-rail-fill {
+	background: var(--o-accent);
+}
+
+/* --- Primary CTA -------------------------------------------------------- */
+/* Hover fills the button from the left rather than cross-fading the whole
+   background. Transform only, so it costs nothing, and it gives the click a
+   direction. */
+.o-cta-sweep {
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	background-color: var(--color-magenta-lift, #942493);
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.o-cta:hover .o-cta-sweep,
+.o-cta:focus-visible .o-cta-sweep {
+	transform: scaleX(1);
+}
+
+.o-cta-arrow {
+	transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.o-cta:hover .o-cta-arrow,
+.o-cta:focus-visible .o-cta-arrow {
+	transform: translateX(4px);
+}
+
+/* --- Shared interactive feedback ---------------------------------------- */
+.o-tap,
+.o-lift,
+.o-accent-edge {
+	transition:
+		transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+		border-color 260ms ease,
+		background-color 260ms ease,
+		color 260ms ease;
+}
+
+/* Physical push. Small enough to feel like the button moved under the finger
+   rather than like the page jumped. */
+.o-tap:active {
+	transform: scale(0.97);
+}
+
+.o-lift:hover {
+	transform: translateY(-2px);
+}
+
+/* Must follow :hover — same specificity, so source order decides. */
+.o-lift:active {
+	transform: translateY(-1px) scale(0.96);
+}
+
+/* Beats both the `.offer-page *` default border colour and any border utility
+   on the element, so the hover edge lands in the accent every time. */
+.o-accent-edge:hover {
+	border-color: var(--o-accent);
+	color: #fff;
+}
+
+/* --- Accordion ---------------------------------------------------------- */
+/* The answer arrives rather than the box simply growing. */
+.o-answer {
+	transform: translateY(6px);
+	transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.o-answer[data-open="true"] {
+	transform: none;
+}
+
+.o-plus {
+	color: rgb(255 255 255 / 0.45);
+	transition:
+		transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+		color 260ms ease;
+}
+
+.o-accordion-row:hover .o-plus {
+	color: rgb(255 255 255 / 0.7);
+	transform: scale(1.14);
+}
+
+/* Open is the one state that earns the accent. */
+.o-plus[data-open="true"] {
+	color: var(--o-accent);
+	transform: rotate(45deg);
+}
+
+.o-accordion-row:hover .o-plus[data-open="true"] {
+	color: var(--o-accent);
+	transform: rotate(45deg) scale(1.14);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.marquee-track,
 	.caret,
@@ -162,5 +322,50 @@
 		animation: none !important;
 		transition: none !important;
 		transform: none !important;
+	}
+
+	/* Everything below keeps its end state and loses the travel. The CTA sweep
+	   keeps its transform (it is how the button changes colour) and only drops
+	   the easing, so hover still reads instantly. The scroll-driven pieces
+	   (rail fill, eyebrow rule, highlight underline) are rendered already
+	   complete by their components, so they need nothing here. */
+	.o-brand,
+	.o-cta-sweep,
+	.o-cta-arrow,
+	.o-tap,
+	.o-lift,
+	.o-accent-edge,
+	.o-answer,
+	.o-plus {
+		transition: none !important;
+	}
+
+	.o-tap:active,
+	.o-lift:hover,
+	.o-lift:active,
+	.o-answer {
+		transform: none !important;
+	}
+
+	.o-cta:hover .o-cta-arrow,
+	.o-cta:focus-visible .o-cta-arrow {
+		transform: none !important;
+	}
+
+	.o-accordion-row:hover .o-plus {
+		transform: none !important;
+	}
+
+	.o-plus[data-open="true"],
+	.o-accordion-row:hover .o-plus[data-open="true"] {
+		transform: rotate(45deg) !important;
+	}
+
+	/* The answer panel opens by animating grid-template-rows and the row tints
+	   on hover. Both are honest transitions rather than decoration, so they are
+	   snapped rather than removed: the panel still opens, just instantly. */
+	.o-answer-grid,
+	.o-accordion-row {
+		transition: none !important;
 	}
 }

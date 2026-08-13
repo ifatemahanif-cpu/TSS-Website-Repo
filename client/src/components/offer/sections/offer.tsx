@@ -46,29 +46,30 @@ function List({
 }) {
   const isIn = variant === "in";
   const Icon = isIn ? Check : X;
+  const iconClass = isIn
+    ? "size-[15px] text-magenta-lift"
+    : "size-[15px] text-white/30";
+
+  /* The marks used to scale in on a stagger. Cut: ticking a value proposition
+     down the card is the standard SaaS pricing-table move, and this page has to
+     read as an editorial studio. The card already arrives on its own Reveal. */
+  const rows = items.map(([title, body]) => (
+    <li key={title} className="flex gap-4">
+      <span aria-hidden className="mt-1 block shrink-0">
+        <Icon className={iconClass} />
+      </span>
+      <p className="text-[15px] leading-[1.7] text-white/65">
+        <span className="font-semibold text-white">{title}</span> {body}
+      </p>
+    </li>
+  ));
 
   return (
     <div className="h-full rounded-2xl border border-white/8 bg-white/3 p-7 sm:p-9">
       <p className="o-eyebrow mb-7 text-white/45">
         {isIn ? "WHAT’S IN" : "WHAT’S NOT"}
       </p>
-      <ul className="space-y-6">
-        {items.map(([title, body]) => (
-          <li key={title} className="flex gap-4">
-            <Icon
-              aria-hidden
-              className={
-                isIn
-                  ? "mt-1 size-[15px] shrink-0 text-magenta-lift"
-                  : "mt-1 size-[15px] shrink-0 text-white/30"
-              }
-            />
-            <p className="text-[15px] leading-[1.7] text-white/65">
-              <span className="font-semibold text-white">{title}</span> {body}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <ul className="space-y-6">{rows}</ul>
     </div>
   );
 }

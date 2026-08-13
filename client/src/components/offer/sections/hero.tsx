@@ -142,8 +142,9 @@ export function Hero() {
             <a
               href="#apply"
               /* Sits over the bright screenshot tiles, so it needs a near-opaque
-                 plate rather than a light tint. */
-              className="o-eyebrow rounded-full border border-white/20 bg-navy/90 px-4 py-2 text-white/85 backdrop-blur-sm transition-colors hover:border-magenta-lift/60 hover:text-white"
+                 plate rather than a light tint. o-accent-edge takes the border
+                 to the accent on hover, o-tap gives the press a push. */
+              className="o-eyebrow o-tap o-accent-edge rounded-full border border-white/20 bg-navy/90 px-4 py-2 text-white/85 backdrop-blur-sm"
             >
               APPLY
             </a>

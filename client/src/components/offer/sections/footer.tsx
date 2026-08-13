@@ -40,7 +40,7 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="The Story Shapers on Instagram"
-              className="grid size-10 place-items-center rounded-full border border-white/12 text-white/60 transition-colors hover:border-magenta-lift/60 hover:text-white"
+              className="o-accent-edge o-lift grid size-10 place-items-center rounded-full border border-white/12 text-white/60"
             >
               <Instagram aria-hidden className="size-[17px]" />
             </a>
@@ -49,7 +49,7 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="The Story Shapers on LinkedIn"
-              className="grid size-10 place-items-center rounded-full border border-white/12 text-white/60 transition-colors hover:border-magenta-lift/60 hover:text-white"
+              className="o-accent-edge o-lift grid size-10 place-items-center rounded-full border border-white/12 text-white/60"
             >
               <Linkedin aria-hidden className="size-[17px]" />
             </a>

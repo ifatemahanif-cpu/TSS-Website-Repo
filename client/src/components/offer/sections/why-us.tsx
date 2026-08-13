@@ -1,4 +1,5 @@
 import { BrandsTicker } from "../brands-ticker";
+import { Highlight } from "../highlight";
 import { Reveal } from "../reveal";
 import { MixedHeading, Section } from "../section";
 
@@ -29,8 +30,10 @@ export function WhyUs() {
             <p className="mt-6 text-[16px] leading-[1.8] text-white/80">
               The website is the easy part. Figuring out what it should say
               isn’t. Between us, The Story Shapers has{" "}
-              <strong className="font-semibold text-white">45+ years</strong> of
-              writing, editing and building experience — spent finding the story,
+              <Highlight>
+                <strong className="font-semibold text-white">45+ years</strong>
+              </Highlight>{" "}
+              of writing, editing and building experience — spent finding the story,
               cutting the waffle, asking the annoying questions and making
               complicated things easy to understand.
             </p>

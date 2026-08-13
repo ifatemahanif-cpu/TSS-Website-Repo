@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./reveal";
 
@@ -13,6 +14,8 @@ export function Section({
   className?: string;
   children: ReactNode;
 }) {
+  const reduced = useReducedMotion();
+
   return (
     <section
       id={id}
@@ -25,7 +28,26 @@ export function Section({
         {eyebrow && (
           <Reveal>
             <p className="o-eyebrow mb-8 flex items-center gap-3 text-white/60">
-              <span className="h-px w-8 bg-magenta-lift/60" />
+              {/* The rule strikes out from the left as each section arrives.
+                  It repeats down the whole page, so it reads as the page's
+                  pulse rather than as decoration on any one section. The 32px
+                  box is fixed either way — only the scale animates. */}
+              {reduced ? (
+                <span aria-hidden className="o-rule" />
+              ) : (
+                <motion.span
+                  aria-hidden
+                  className="o-rule"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{
+                    duration: 0.55,
+                    delay: 0.14,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                />
+              )}
               {eyebrow}
             </p>
           </Reveal>
