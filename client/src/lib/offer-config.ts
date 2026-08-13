@@ -27,7 +27,7 @@ export const PRICE = "₹79,000";
 export const BOOKING_FEE = "₹25,000";
 export const BALANCE = "₹54,000";
 export const CLOSES = "31 August 2026";
-export const GOVERNING_CITY = "Mumbai";
+export const GOVERNING_CITY = "Bengaluru";
 
 /* ---------------------------------------------------------------------------
  * TESTIMONIALS
