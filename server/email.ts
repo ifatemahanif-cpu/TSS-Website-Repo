@@ -158,15 +158,9 @@ export const OFFER_FIELDS: Array<[string, string]> = [
   ["brand", "Brand"],
   ["email", "Email"],
   ["whatsapp", "WhatsApp"],
-  ["instagram", "Instagram"],
   ["website", "Current website"],
   ["whatYouDo", "What the brand does"],
-  ["stage", "Stage"],
   ["needsStore", "Needs to sell products directly"],
-  ["assetsIn48h", "Assets within 48h"],
-  ["decisionMaker", "Decision maker"],
-  ["liveBy", "Wants to be live"],
-  ["whatsBroken", "What's not working"],
   ["priceAcknowledged", "Agreed to terms"],
   ["referrer", "Referrer"],
 ];
@@ -178,12 +172,6 @@ export function offerFlags(data: Record<string, string>): string[] {
     flags.push("NEEDS A STORE — primary disqualifier");
   if (data.needsStore === "Not sure")
     flags.push("Unsure about commerce — probe on the call");
-  if (data.assetsIn48h === "No")
-    flags.push("Cannot send assets in 48h — timeline risk");
-  if (data.assetsIn48h === "Probably")
-    flags.push("Hesitant on assets — timeline risk");
-  if (data.liveBy === "Just exploring")
-    flags.push("Just exploring — soft disqualify");
   return flags;
 }
 

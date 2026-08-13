@@ -63,13 +63,13 @@ const ROUTES: RouteDef[] = [
   { route: "/aakanksha" },
   {
     route: "/offer",
-    title: "One website. ₹80,000. Live in 10 working days. | The Story Shapers",
+    title: "One website. ₹80,000. Live in 10 working days. — The Story Shapers",
     description:
-      "Five selected brands this August. A five-page brand website: strategy, copy and build, ₹80,000 all in, live in 10 working days.",
+      "Five selected brands this August. A brand website written, designed and built for ₹80,000 all in, live in 10 working days.",
   },
   {
     route: "/offer/terms",
-    title: "The August website offer — terms | The Story Shapers",
+    title: "The August website offer — terms — The Story Shapers",
     description:
       "The full terms and conditions for The Story Shapers' August website offer: scope, timeline, payment, revisions and cancellation.",
   },
