@@ -71,7 +71,7 @@ const ITEMS: QA[] = [
     /* Terms clause 13 — fourteen days, defects in our build only. */
     a: [
       "We don’t disappear the moment the site launches.",
-      "If something in our build is broken, a link isn’t working or there’s a functional error, tell us within 14 days and we’ll fix it. New pages, new copy, new features or ongoing updates aren’t part of this offer, but we can discuss continued support separately.",
+      "If something in our build is broken, a link isn’t working or there’s a functional error, tell us within 14 days of handover and we’ll fix it. New pages, new copy, new features or ongoing updates aren’t part of this offer, but we can discuss continued support separately.",
     ],
   },
 ];
