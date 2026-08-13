@@ -158,7 +158,7 @@ export function Hero() {
               INDEPENDENCE DAY OFFER
               <span className="hidden sm:inline"> · </span>
               <span className="mt-1.5 block sm:mt-0 sm:inline">
-                FIVE SITES · CLOSES 31 AUGUST
+                FIVE SELECTED BRANDS
               </span>
             </p>
           </Reveal>

@@ -1,7 +1,9 @@
 import { useId, useState } from "react";
 import { Plus } from "lucide-react";
 
-export type QA = { q: string; a: string };
+/** An answer is a paragraph, or several. Several exist because some answers
+ *  open on a short line and then explain — the break is the point. */
+export type QA = { q: string; a: string | string[] };
 
 export function Accordion({ items }: { items: QA[] }) {
   const [open, setOpen] = useState<number | null>(0);
@@ -46,13 +48,17 @@ export function Accordion({ items }: { items: QA[] }) {
             >
               <div className="overflow-hidden">
                 {/* Slides up into place as the row opens, so the answer reads
-                    as arriving rather than as a box being stretched. */}
-                <p
+                    as arriving rather than as a box being stretched. The whole
+                    answer moves as one block, so the translate lives on the
+                    wrapper rather than on each paragraph. */}
+                <div
                   data-open={isOpen}
-                  className="o-answer max-w-[70ch] pb-7 pr-10 text-[15px] leading-[1.75] text-white/70"
+                  className="o-answer max-w-[70ch] space-y-3.5 pb-7 pr-10 text-[15px] leading-[1.75] text-white/70"
                 >
-                  {item.a}
-                </p>
+                  {(Array.isArray(item.a) ? item.a : [item.a]).map((para) => (
+                    <p key={para.slice(0, 40)}>{para}</p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

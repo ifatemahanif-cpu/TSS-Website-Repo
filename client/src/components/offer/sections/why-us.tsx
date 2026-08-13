@@ -34,7 +34,7 @@ export function WhyUs() {
                 <strong className="font-semibold text-white">45+ years</strong>
               </Highlight>{" "}
               of writing, editing and building experience — spent finding the story,
-              cutting the waffle, asking the annoying questions and making
+              cutting the fluff, asking the annoying questions and making
               complicated things easy to understand.
             </p>
           </Reveal>

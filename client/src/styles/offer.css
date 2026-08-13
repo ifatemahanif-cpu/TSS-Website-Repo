@@ -187,7 +187,7 @@
 
 /* --- Number highlight --------------------------------------------------- */
 /* A rule that draws under a phrase when it scrolls in. Used exactly twice, on
-   the two numbers the page asks you to weigh: 45+ years, and ₹79,000. */
+   the two numbers the page asks you to weigh: 45+ years, and ₹80,000. */
 /* inline-block would make the rule's containing box the LINE box, so the offset
    below would scale with whatever leading the host paragraph happens to use and
    the rule would float far under the text. inline-flex with the rule positioned

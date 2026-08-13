@@ -14,11 +14,7 @@ const IN = [
     "Once we have your assets, the clock starts. No three-month timeline.",
   ],
   [
-    "The technical bits.",
-    "Meta tags, OG tags, analytics, compressed images, working forms.",
-  ],
-  [
-    "All for ₹79,000.",
+    "All for ₹80,000.",
     "No mysterious agency maths. No “copywriting billed separately.”",
   ],
 ];
@@ -26,7 +22,6 @@ const IN = [
 const OUT = [
   ["A store.", "No Shopify, no cart, no payments on the site."],
   ["A blog or CMS you edit yourself.", "Different build, different price."],
-  ["A large catalogue.", "Five pages doesn’t hold 40 products."],
   [
     "Custom illustration or photography.",
     "We’ll work with what you have, and tell you honestly if it isn’t enough.",

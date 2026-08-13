@@ -73,9 +73,9 @@ export function StickyCta() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="font-mono text-[10.4px] uppercase tracking-[2.08px] text-white/70">
-            FIVE SITES · CLOSES 31 AUG
+            FIVE SELECTED BRANDS
           </p>
-          <p className="mt-1 font-display text-[15px]">₹79,000 all in</p>
+          <p className="mt-1 font-display text-[15px]">₹80,000 all in</p>
         </div>
         <a
           href="#apply"

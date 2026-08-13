@@ -23,9 +23,9 @@ export const WHATSAPP_URL = WHATSAPP_NUMBER
   ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
   : "";
 
-export const PRICE = "₹79,000";
+export const PRICE = "₹80,000";
 export const BOOKING_FEE = "₹25,000";
-export const BALANCE = "₹54,000";
+export const BALANCE = "₹55,000";
 export const CLOSES = "31 August 2026";
 export const GOVERNING_CITY = "Bengaluru";
 

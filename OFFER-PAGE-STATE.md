@@ -40,6 +40,50 @@ Applied:
     deemed-acceptance answer rewritten to three working days, FAQ "₹54,000 at
     launch" → "before the site goes live", form deposit note likewise.
 
+## LP + FAQ ROUND — 13 Aug, Fatema's changes, APPLIED
+
+- **Price ₹79,000 → ₹80,000** (80th year of Independence), balance ₹54,000 →
+  ₹55,000, booking fee unchanged at ₹25,000. Six places on the LP and three in
+  the terms, plus the `PRICE`/`BALANCE` constants in `offer-config.ts` — note
+  those constants are declared but nothing imports them; the values are
+  hardcoded in the components. Left in sync anyway so they don't rot.
+- **Revisions: two copy, ONE design** — terms clause 7 and the FAQ together.
+- The Offer section: "This August, we're handpicking five selected brands …
+  ₹80,000 all in" (comma added, "selected" added).
+- Section eyebrow "THE AUGUST OFFER" → "THE INDEPENDENCE OFFER".
+- Hero strip and sticky CTA: "FIVE SITES · CLOSES 31 AUG" → "FIVE SELECTED
+  BRANDS". Fine print: "Offer valid till 31st August 2026, limited slots only"
+  → "Limited slots only".
+- Why us: "cutting the waffle" → "cutting the fluff".
+- What's In: "The technical bits" row removed. What's Not: "A large catalogue"
+  row removed.
+- **FAQ replaced wholesale** with her nine questions, wording as written. The
+  accordion now accepts `string | string[]` so her two-beat answers ("That is
+  rather the point." / then the explanation) keep their break instead of being
+  run into one paragraph.
+
+### Open from this round
+
+- **She gave two alternatives joined by "OR"** for the time/feedback question.
+  Used **"How much of my time will this need?"** because it answers the buying
+  objection *and* still carries the single-decision-maker point. The alternative
+  ("Can my whole team give feedback?" … "protects everyone from
+  Version_Final_FINAL_V7") is funnier and more on-voice — a one-line swap in
+  `faq.tsx` if she prefers it.
+- **Two answers dropped out of the replacement set** and nothing else on the
+  page covers them: deemed acceptance at three working days, and what happens
+  to the ₹25,000 if the client cancels. The money one is worth re-adding — the
+  page now never explains the booking fee beyond the note under the form.
+- **31 August still appears in terms clause 2** ("applications close at 23:59
+  IST on 31 August 2026"). Deliberately kept: it is the contractual closing
+  date. Only the LP-facing mentions were removed.
+- **`CLOSES = "31 August 2026"`** in `offer-config.ts` is now unused.
+- **The 80th-year link is implicit.** "THE INDEPENDENCE OFFER" plus ₹80,000
+  only lands if the reader joins the dots. One line would make it land — not
+  added, not asked for.
+- **Fatema has a screenshot** of the filled form and its confirmation message.
+  Not yet supplied, so no change made to the success state.
+
 ### Still open on the terms
 
 - **⚠️ One sentence is MINE, not the lawyer's.** Her note ended mid-sentence at

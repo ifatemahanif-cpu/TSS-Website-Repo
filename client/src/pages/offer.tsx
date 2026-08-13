@@ -21,7 +21,7 @@ export default function OfferPage() {
   useEffect(() => {
     const previous = document.title;
     document.title =
-      "One website. ₹79,000. Live in 10 working days. — The Story Shapers";
+      "One website. ₹80,000. Live in 10 working days. — The Story Shapers";
     return () => {
       document.title = previous;
     };
