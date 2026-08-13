@@ -61,9 +61,9 @@ function Success() {
       </span>
       <h3 className="o-display mt-7 text-[28px] sm:text-[34px]">Got it.</h3>
       <p className="mt-5 max-w-[58ch] text-[15px] leading-[1.8] text-white/80">
-        We read every application ourselves — expect a reply within two working
-        days, either a time for the call or an honest no. If you’d rather not
-        wait, pick a slot yourself.
+        We read every application ourselves. Expect a reply within two working
+        days, either a time for the call or a no. If you’d rather not wait, pick
+        a slot yourself.
       </p>
 
       {/* Calendly is the primary action — booking a slot is the qualified
@@ -92,12 +92,6 @@ function Success() {
           .
         </p>
       ) : null}
-
-      <p className="mt-7 max-w-[52ch] text-[13px] leading-[1.7] text-white/45">
-        Nothing to do until then. If you want to get ahead of it, start pulling
-        together photos, product information and anything you’ve already
-        written — the 10 working days begin the day those land.
-      </p>
     </div>
   );
 }
