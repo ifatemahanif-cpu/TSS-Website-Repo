@@ -68,7 +68,9 @@ Preferred communication style: Simple, everyday language.
 
 ### Admin Dashboard
 - Located at `/admin` (login at `/admin/login`)
-- Default credentials: admin / storyshapers2024 (bcrypt hashed)
+- Admin user is seeded from `ADMIN_SEED_PASSWORD` and only when no admin exists.
+  Never record the password here — this repo is public.
+- Rotate it at `/admin` → Security, which also clears every other session.
 - Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page, Blog Categories, Blog Posts, Authors, Subscribers
 - Blog Posts editor: Author Name + Author Profile (links to authors table), Category, Status, Featured toggle (☆ SET AS FEATURED / ★ FEATURED), SEO fields, video embed in editor
 - Authors tab: Manage author profiles (name, slug, bio, photo upload, LinkedIn, Twitter, Website)
