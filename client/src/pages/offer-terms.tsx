@@ -37,7 +37,7 @@ const CLAUSES: Clause[] = [
   {
     title: "2. The Offer",
     body: [
-      "The Offer comprises: website copywriting; design and development of a website of up to five (5) pages; mobile-responsive implementation; meta and Open Graph tags; analytics installation; image compression; and functional contact or enquiry forms. We test what we deliver on the release versions current at your kickoff date of Chrome, Safari, Firefox and Edge, on desktop, and on current iOS and Android devices.",
+      "The Offer comprises: website copywriting; design and development of a website of up to five (5) pages; mobile-responsive implementation; meta and Open Graph tags; image compression; and functional contact or enquiry forms. We test what we deliver on the release versions current at your kickoff date of Chrome, Safari, Firefox and Edge, on desktop, and on current iOS and Android devices.",
       "“Website copywriting” means writing and editing the copy that appears on the pages we build for you, shaped from the information, materials and answers you supply. Working out what the website should say is part of it, and is what the alignment call and our questions are for.",
       "It does not include: brand strategy, positioning or messaging work produced as a standalone deliverable; naming of any kind, including company, product, service or campaign names; market, category or competitor research; case studies, whitepapers, blog articles or other long-form content; or copy for anything other than the website itself, such as decks, brochures, email campaigns, advertising or social media.",
       "We write from what you give us. Where the information you supply is not enough for us to write a page properly, we will tell you in writing and ask for more; we are not obliged to research, source or invent it, and time spent waiting for it is a delay on your side for the purposes of clause 6. Clause 8 sets out your responsibility for the accuracy of what you supply.",
@@ -68,6 +68,7 @@ const CLAUSES: Clause[] = [
         "brand identity creation, including logo design, palette and type system development;",
         "writing beyond the website copy defined in clause 2, including brand strategy and naming, market or competitor research, case studies and long-form content, and copy for channels other than the website;",
         "search engine optimisation beyond the meta and Open Graph tags described in clause 2;",
+        "analytics, tag management and conversion tracking of any kind, including Google Analytics, Google Tag Manager, Meta Pixel and equivalents;",
         "integrations with third-party systems, such as CRMs, booking or scheduling tools and marketing automation;",
         "migration of an existing website, or of its content, from another platform;",
         "email hosting, mailbox setup and email deliverability configuration;",
