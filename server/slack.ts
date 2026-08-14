@@ -102,15 +102,57 @@ export async function sendSlackNotification(
     blocks,
   };
 
-  const response = await fetch(webhook, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  await postWithRetry(webhook, payload);
+}
 
-  if (!response.ok) {
-    throw new Error(
-      `Slack webhook returned ${response.status}: ${await response.text()}`,
-    );
+/* Slack is a single point of failure: email notifications are off, so a lost
+   webhook call means a lead sits in the database with nobody told. A blip or a
+   rate-limit therefore gets retried.
+
+   The budget is tight on purpose. This call is awaited before the form
+   response is sent — it has to be, or Vercel can freeze the instance and kill
+   it mid-flight — so every second here is a second the applicant stares at a
+   pending button. Worst case is ~6.8s (three 2s attempts plus backoff), which
+   stays clear of the function timeout. The normal case is one attempt, ~200ms.
+
+   Permanent rejections are not retried. A revoked or malformed webhook returns
+   4xx and will return it three times, so it fails on the first. */
+const RETRY_BACKOFF_MS = [250, 500];
+const ATTEMPT_TIMEOUT_MS = 2000;
+
+async function postWithRetry(webhook: string, payload: unknown): Promise<void> {
+  let lastError: Error | undefined;
+
+  for (let attempt = 0; attempt <= RETRY_BACKOFF_MS.length; attempt++) {
+    if (attempt > 0) {
+      await new Promise((r) => setTimeout(r, RETRY_BACKOFF_MS[attempt - 1]));
+      console.warn(`[slack] retrying webhook, attempt ${attempt + 1}`);
+    }
+
+    try {
+      const response = await fetch(webhook, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(ATTEMPT_TIMEOUT_MS),
+      });
+
+      if (response.ok) return;
+
+      const body = await response.text();
+      lastError = new Error(
+        `Slack webhook returned ${response.status}: ${body}`,
+      );
+
+      /* 429 and 5xx are worth another go; every other 4xx is our problem to
+         fix, not the network's, so stop and surface it. */
+      const worthRetrying = response.status === 429 || response.status >= 500;
+      if (!worthRetrying) break;
+    } catch (error) {
+      // Network failure or the per-attempt timeout firing. Both are retryable.
+      lastError = error instanceof Error ? error : new Error(String(error));
+    }
   }
+
+  throw lastError ?? new Error("Slack webhook failed for an unknown reason");
 }
