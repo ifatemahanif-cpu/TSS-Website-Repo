@@ -59,11 +59,11 @@ function Success() {
       <span className="inline-flex size-10 items-center justify-center rounded-full bg-magenta">
         <Check aria-hidden className="size-5 text-white" />
       </span>
-      <h3 className="o-display mt-7 text-[28px] sm:text-[34px]">Got it.</h3>
+      <h3 className="o-display mt-7 text-[28px] sm:text-[34px]">Thank you!</h3>
       <p className="mt-5 max-w-[58ch] text-[15px] leading-[1.8] text-white/80">
-        We read every application ourselves. Expect a reply within two working
-        days, either a time for the call or a no. If you’d rather not wait, pick
-        a slot yourself.
+        We review every application with great care. Allow us two working days
+        to get back to you on yours. If you’d rather not wait, and have more to
+        share, pick a slot to book a 30-minute chat with us!
       </p>
 
       {/* Calendly is the primary action — booking a slot is the qualified
@@ -74,13 +74,13 @@ function Success() {
         rel="noreferrer"
         className="mt-8 inline-flex items-center gap-2 rounded-full bg-magenta px-6 py-3.5 text-[14px] font-medium text-white transition-colors hover:bg-magenta-lift"
       >
-        Book your 30-minute call
+        Let’s talk
         <ArrowRight aria-hidden className="size-4" />
       </a>
 
       {WHATSAPP_URL ? (
         <p className="mt-5 text-[13.5px] leading-[1.7] text-white/55">
-          Prefer to type?{" "}
+          Want an even faster response?{" "}
           <a
             href={WHATSAPP_URL}
             target="_blank"

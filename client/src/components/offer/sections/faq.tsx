@@ -68,10 +68,15 @@ const ITEMS: QA[] = [
   },
   {
     q: "What happens after the website goes live?",
-    /* Terms clause 13 — fourteen days, defects in our build only. */
+    /* Terms clause 13 — fourteen days, defects in our build only. The window
+       runs from "launch", which clause 5 defines as the day we notify you the
+       site is ready, NOT the day it goes public. Said in plain words here so
+       the FAQ can't be read as giving a longer window than the terms do.
+       "Handover" was the old wording and now means the repo transfer in
+       clause 10 — two different things, so it can't be used for both. */
     a: [
       "We don’t disappear the moment the site launches.",
-      "If something in our build is broken, a link isn’t working or there’s a functional error, tell us within 14 days of handover and we’ll fix it. New pages, new copy, new features or ongoing updates aren’t part of this offer, but we can discuss continued support separately.",
+      "If something in our build is broken, a link isn’t working or there’s a functional error, tell us within 14 days of the day we tell you the site is ready, and we’ll fix it. New pages, new copy, new features or ongoing updates aren’t part of this offer, but we can discuss continued support separately.",
     ],
   },
 ];
