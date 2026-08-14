@@ -237,14 +237,21 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const parsed = formSubmissionBody.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
-    // Fire-and-forget: the submission is already saved, so an email failure
-    // must never fail the request or lose the lead.
-    void sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
-      console.error("[forms] email notification failed:", error);
-    });
-    void sendSlackNotification(parsed.data.formType, parsed.data.data).catch((error) => {
-      console.error("[forms] slack notification failed:", error);
-    });
+    // The submission is already saved, so a notification failure must never
+    // fail the request or lose the lead — hence the per-call catch. But both
+    // calls are AWAITED. They used to be fire-and-forget, which works on a
+    // long-running server and silently loses the notification on Vercel: the
+    // serverless instance can be frozen the moment the response is sent,
+    // killing an un-awaited fetch still in flight. Both notifiers return
+    // immediately when their key is unset, so this costs nothing when off.
+    await Promise.allSettled([
+      sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+        console.error("[forms] email notification failed:", error);
+      }),
+      sendSlackNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+        console.error("[forms] slack notification failed:", error);
+      }),
+    ]);
     res.json(submission);
   });
 

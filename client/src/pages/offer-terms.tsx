@@ -37,10 +37,13 @@ const CLAUSES: Clause[] = [
   {
     title: "2. The Offer",
     body: [
-      "The Offer comprises: brand and website copywriting; design and development of a website of up to five (5) pages; mobile-responsive implementation; meta and Open Graph tags; analytics installation; image compression; and functional contact or enquiry forms. We test what we deliver on the release versions current at your kickoff date of Chrome, Safari, Firefox and Edge, on desktop, and on current iOS and Android devices.",
+      "The Offer comprises: website copywriting; design and development of a website of up to five (5) pages; mobile-responsive implementation; meta and Open Graph tags; image compression; and functional contact or enquiry forms. We test what we deliver on the release versions current at your kickoff date of Chrome, Safari, Firefox and Edge, on desktop, and on current iOS and Android devices.",
+      "“Website copywriting” means writing and editing the copy that appears on the pages we build for you, shaped from the information, materials and answers you supply. Working out what the website should say is part of it, and is what the alignment call and our questions are for.",
+      "It does not include: brand strategy, positioning or messaging work produced as a standalone deliverable; naming of any kind, including company, product, service or campaign names; market, category or competitor research; case studies, whitepapers, blog articles or other long-form content; or copy for anything other than the website itself, such as decks, brochures, email campaigns, advertising or social media.",
+      "We write from what you give us. Where the information you supply is not enough for us to write a page properly, we will tell you in writing and ask for more; we are not obliged to research, source or invent it, and time spent waiting for it is a delay on your side for the purposes of clause 6. Clause 8 sets out your responsibility for the accuracy of what you supply.",
       "₹80,000 (Indian Rupees eighty thousand) is the complete professional fee payable to The Story Shapers for the included scope. Third-party costs and excluded services described in these Terms are not included. If our tax registration position changes later, the fee for slots already confirmed does not change.",
       "“Up to five pages” is a ceiling, not a target. If your website needs fewer, the fee is the same, and unused pages cannot be carried forward, exchanged for other work, or given to anyone else.",
-      "The Offer is limited to five (5) Clients and to one website each. Applications close at 23:59 IST on 31 August 2026. That is the date by which a slot must be confirmed, not the date by which websites are delivered. A slot is personal to you and cannot be sold, transferred or shared.",
+      "The Offer is limited to five (5) Clients, and to one website for one brand each. A slot covers a single brand. Where you own or operate more than one brand, business or trading name, each requires its own slot at its own fee, and a single website covering several brands is outside the Offer. Applications close at 23:59 IST on 31 August 2026. That is the date by which a slot must be confirmed, not the date by which websites are delivered. A slot is personal to you and cannot be sold, transferred or shared.",
       "We run a limited number of builds at a time, so slots are scheduled in the order in which booking fees are received. Your kickoff date is confirmed in writing before you pay the booking fee. The ten (10) working days are then counted from the start of the clock described in clause 6, which follows your kickoff.",
       "We reserve the right to decline any application at our discretion, including after the alignment call, and to withdraw or modify the Offer for applications not yet confirmed. Withdrawal or modification will not affect slots already confirmed by payment.",
     ],
@@ -63,7 +66,9 @@ const CLAUSES: Clause[] = [
         "catalogues of products or listings;",
         "custom photography, videography, illustration or 3D work;",
         "brand identity creation, including logo design, palette and type system development;",
+        "writing beyond the website copy defined in clause 2, including brand strategy and naming, market or competitor research, case studies and long-form content, and copy for channels other than the website;",
         "search engine optimisation beyond the meta and Open Graph tags described in clause 2;",
+        "analytics, tag management and conversion tracking of any kind, including Google Analytics, Google Tag Manager, Meta Pixel and equivalents;",
         "integrations with third-party systems, such as CRMs, booking or scheduling tools and marketing automation;",
         "migration of an existing website, or of its content, from another platform;",
         "email hosting, mailbox setup and email deliverability configuration;",
@@ -95,14 +100,17 @@ const CLAUSES: Clause[] = [
     body: [
       "Delivery is ten (10) working days from the start of the clock described below. Working days exclude weekends and public holidays observed by The Story Shapers in India. The ten working days are a commitment we make on the condition that you meet the response times in this clause. The clock does not run while we are waiting on you.",
       "The clock starts on the first working day after we receive all assets and information listed in the asset checklist issued at kickoff. It does not start on the date the booking fee is paid.",
+      "We will confirm to you in writing that the checklist is complete and that the clock has started, and that written confirmation is the record of the start date and of the delivery date it produces. Where something on the checklist is outstanding, we will tell you what is missing, and the clock does not start until it reaches us.",
       "You agree to provide all assets within forty-eight (48) hours of kickoff and feedback at each review round within twenty-four (24) hours. Each working day of delay in providing assets, feedback or approvals extends the delivery date by an equivalent period, and where a delay costs us your production window, until the next window we are able to offer you. Delays exceeding ten (10) working days in aggregate entitle us to reschedule your slot to the next available window, and the ten-working-day delivery commitment then no longer applies to that engagement.",
+      "The ten working days also exclude delay caused by third parties or by matters outside our reasonable control, including domain transfer and DNS propagation, hosting provisioning, platform, payment-gateway or app-store approvals, third-party service outages, and the turnaround times of any provider you have appointed. The delivery date extends by the length of the delay. This is separate from clause 14, which deals with events that prevent performance altogether.",
       // Lawyer's three-limb deemed-acceptance test, converted into the
       // document's register (you / deliverables / scope note) with Fatema's
       // approval, 13 Aug. Substance unchanged from her wording.
       "The deliverables will be deemed accepted on the earliest of: (a) your written approval; (b) your publication or use of any deliverable; (c) expiry of three working days after we notify you that the deliverables are ready for final review without you identifying a material non-conformity with the agreed scope note.",
       "A subjective preference, change of mind or request for work outside the agreed scope is not a material non-conformity.",
-      "Work you have approved, or that has been treated as accepted, is not reopened by a later revision round.",
-      "If a project is inactive on your side for thirty (30) consecutive days, we may treat the engagement as suspended, invoice for work completed to date, and require a fresh slot allocation to resume.",
+      "The engagement runs in stages, identified in the scope note and ordinarily copy, then design, then build. Each stage is approved before the next begins, and the test above applies to each stage as it does to the deliverables as a whole.",
+      "An approved stage is closed. Work you have approved, or that has been treated as accepted, is not reopened by a later revision round. Returning to a closed stage is not a revision, does not draw on the rounds included in clause 7, and is additional work that will be quoted and agreed in writing before we undertake it. The delivery date extends accordingly.",
+      "If a project is inactive on your side for thirty (30) consecutive days, we may treat the engagement as suspended, invoice for work completed to date, and require a fresh slot allocation to resume. Resumption is subject to our availability at the time and to our rates then in force; the Offer price does not survive suspension. If the engagement remains inactive for ninety (90) consecutive days we may treat it as closed by written notice, and clause 12 then applies as though you had cancelled.",
     ],
   },
   {
@@ -143,6 +151,7 @@ const CLAUSES: Clause[] = [
       "Until the balance is paid in full, all copy, design files, code and other deliverables remain our property, and any access granted to you is a limited licence for review purposes only. If the full fee is never paid, no rights pass to you and you may not use, publish, adapt or authorise anyone else to use the deliverables.",
       "Before payment in full, drafts and review versions may be supplied through password-protected, watermarked, restricted or non-production environments. We may restrict or withdraw access to those versions following cancellation or non-payment. You may not copy, reproduce, publish, deploy, adapt, instruct another provider to recreate, or otherwise use any unpaid deliverable or substantial part of it. Review access does not constitute delivery or transfer of ownership.",
       "On receipt of the full fee in cleared funds, we assign to you all right, title and interest in the final delivered copy, design and build — worldwide, for the full term of copyright and any renewals or extensions of it. We claim no rights in the material you supplied to us, which remains yours throughout, subject only to the licences you grant us in clauses 8 and 11.",
+      "On full payment you receive the completed website, deployed to the domain and hosting held in your name under clause 9, together with the copy and design as delivered. The source code repository forms part of what you have paid for: we will transfer it to you on written request, at no additional cost, within a reasonable time of that request. We are not obliged to retain a copy of it more than twelve (12) months after launch. Changes, additions and upgrades to the website after launch are new work under clause 7.",
       "That assignment cannot and does not cover third-party or open-source material used in or by the website, such as fonts, stock imagery, plugins, code libraries and hosted services. Those are not ours to assign and reach you on their own licensors' terms.",
       "We retain ownership of our pre-existing intellectual property, including our methods, frameworks, internal templates, component libraries, tooling and know-how, and of concepts, drafts and routes not selected by you. Nothing in these Terms prevents us from reusing that pre-existing intellectual property on other engagements. Where any of it is embedded in what we deliver, you have a perpetual, worldwide, royalty-free licence to use it as part of your website.",
       "So far as we are aware, the copy, design and code we create for you are our original work and do not infringe anyone else's rights. That statement does not extend to material you supply or to the third-party material described above, and it is subject to the limits in clause 14.",
@@ -258,7 +267,7 @@ export default function OfferTermsPage() {
           <span className="font-body font-light text-white/70">in full.</span>
         </h1>
         <p className="mt-8 font-mono text-[11.5px] uppercase tracking-[1.6px] text-white/35">
-          Last updated 13 August 2026 · The Story Shapers Collective LLP
+          Last updated 14 August 2026 · The Story Shapers Collective LLP
         </p>
 
         <div className="mt-16 space-y-12">
