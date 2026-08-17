@@ -108,6 +108,10 @@
 .story-hero {
   position: relative;
   display: flex;
+  /* A full screen, start to finish. Letting it relax once the story landed
+     closed the gap to the next section, but it also pulled "Your product is
+     clear." up into the hero's view, half-cut at the bottom edge. The hero
+     owns the screen; the next section begins below it. */
   min-height: max(40rem, 100svh);
   align-items: center;
   justify-content: center;
@@ -120,7 +124,7 @@
 
 .story-hero__inner {
   width: 100%;
-  max-width: 72rem;
+  max-width: 86rem;
 }
 
 /* Beats and the finale share this cell so the CTA row never shifts while
@@ -140,8 +144,43 @@
   min-height: 0;
 }
 
-.story-hero__flow[data-cold] {
+/* The offerings and buttons are invisible while the film runs, but they were
+   still holding their place in the layout — which pushed the sentence into the
+   top half of the screen and left a void underneath it. Collapsing the row to
+   zero height lets the sentence sit in the middle of the screen it is standing
+   on; 0fr → 1fr opens it back up at rest without a jump. */
+.story-hero__support {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 800ms cubic-bezier(0.16, 1, 0.3, 1) 900ms;
+}
+
+.story-hero__support[data-resting] {
+  grid-template-rows: 1fr;
+}
+
+.story-hero__support[data-cold] {
   transition-delay: 0s;
+}
+
+/* Clipping is only needed while the row is collapsing. Left on, it shaves the
+   buttons, which sit flush against this edge — and takes their focus ring and
+   hover lift with them. Switched off once the row has finished opening. */
+.story-hero__support-inner {
+  overflow: hidden;
+}
+
+.story-hero__support[data-resting] .story-hero__support-inner {
+  overflow: visible;
+  transition: overflow 0s 1750ms;
+}
+
+.story-hero__support[data-cold] .story-hero__support-inner {
+  transition-delay: 0s;
+}
+
+.story-hero__flow[data-cold] {
+  transition-delay: 0s, 0s;
 }
 
 .story-hero__stage > * {
@@ -150,30 +189,52 @@
 
 .story-hero__flow {
   display: flex;
-  max-width: 24ch;
   flex-wrap: wrap;
   justify-content: center;
   margin: 0 auto;
   column-gap: 0.3em;
   row-gap: 0.06em;
   font-family: 'Libre Baskerville', serif;
-  font-size: clamp(2.3rem, 6.6vw, 4.9rem);
+  /* Sized to fill the screen it is standing on. At the previous cap the film
+     ran at 78px and the sentence occupied 21% of a 900px-tall hero, so most
+     of the screen was empty for the whole story and only filled up once the
+     offerings and buttons arrived at the end. */
+  font-size: clamp(3.3rem, 8.6vw, 6.6rem);
   font-weight: 700;
   line-height: 1.14;
   letter-spacing: -0.035em;
+  /* The last line is nearly half again as big as the film. Growing into that
+     while the words are still gliding made them collide — so the growth waits
+     for the glide to land, and the line swells into its final size. */
+  transition: font-size 620ms cubic-bezier(0.16, 1, 0.3, 1) 820ms,
+    letter-spacing 620ms cubic-bezier(0.16, 1, 0.3, 1) 820ms;
 }
 
 /* The resting state: the residue of the whole film, twice the size. */
 .story-hero__flow[data-resting] {
   max-width: none;
-  font-size: clamp(3.5rem, 11.5vw, 8.4rem);
+  font-size: clamp(4.4rem, 13vw, 9.4rem);
   line-height: 1.06;
   letter-spacing: -0.045em;
 }
 
+/* The glider. Carries nothing but the layout animation. */
 .story-hero__word {
   display: inline-block;
+  transition: color 520ms ease;
+}
+
+/* The word itself: entrance, break-away, blur. Kept off the gliding element
+   so the two transforms cannot fight — see the note in Hero.tsx. */
+.story-hero__word-body {
+  display: inline-block;
   will-change: transform, opacity, filter;
+}
+
+/* A word being carried into the next sentence takes the accent while it
+   travels, so the carry is legible rather than something you have to catch. */
+.story-hero__word[data-carried] {
+  color: #cf81cd;
 }
 
 /* Zero-height full-width spacer: makes the flex row wrap at an authored point. */
@@ -209,10 +270,10 @@
 
 .story-hero__sparkle {
   position: absolute;
-  top: -0.34em;
-  right: -0.18em;
-  width: 0.34em;
-  height: 0.34em;
+  top: -0.24em;
+  right: -0.07em;
+  width: 0.27em;
+  height: 0.27em;
 }
 
 .story-hero__stitch {
