@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/schema";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios";
+type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios" | "security";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
@@ -22,6 +22,7 @@ const tabLabels: Record<Tab, string> = {
   authors: "Authors",
   subscribers: "Subscribers",
   portfolios: "Portfolios",
+  security: "Security",
 };
 
 const inputStyle: React.CSSProperties = {
@@ -107,6 +108,147 @@ function SuccessMessage({ show }: { show: boolean }) {
   );
 }
 
+/* There was no way to change the admin password before this — only log in and
+   log out. The password the repo shipped with is in public git history, so it
+   could never be rotated. */
+function SecurityPanel() {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [status, setStatus] = useState<{ kind: "error" | "ok"; text: string } | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus(null);
+
+    if (newPassword !== confirmPassword) {
+      setStatus({ kind: "error", text: "The two new passwords do not match." });
+      return;
+    }
+    if (newPassword.length < 12) {
+      setStatus({ kind: "error", text: "Use at least 12 characters." });
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const body = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setStatus({ kind: "error", text: body.message || "Could not change the password." });
+        return;
+      }
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setStatus({
+        kind: "ok",
+        text: body.otherSessionsCleared
+          ? "Password changed. Every other signed-in session has been logged out."
+          : "Password changed — but other sessions could not be cleared. Check the logs.",
+      });
+    } catch {
+      setStatus({ kind: "error", text: "Network error. Nothing was changed." });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div style={{ ...cardStyle, maxWidth: "460px" }}>
+      <p style={{ ...labelStyle, marginBottom: "0.75rem" }}>Change admin password</p>
+      <p
+        style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: "0.75rem",
+          lineHeight: 1.6,
+          color: "rgba(255,255,255,0.55)",
+          marginBottom: "1.25rem",
+        }}
+      >
+        This admin panel is on the public domain. Changing the password here also
+        signs out every other session, so anyone already logged in is removed.
+      </p>
+
+      <form onSubmit={submit}>
+        {/* autoComplete hints keep a password manager from filing the new
+            password under the wrong field. */}
+        <div style={{ marginBottom: "0.9rem" }}>
+          <label style={labelStyle} htmlFor="current-password">Current password</label>
+          <input
+            id="current-password"
+            type="password"
+            autoComplete="current-password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            style={inputStyle}
+            data-testid="input-current-password"
+          />
+        </div>
+        <div style={{ marginBottom: "0.9rem" }}>
+          <label style={labelStyle} htmlFor="new-password">New password (12+ characters)</label>
+          <input
+            id="new-password"
+            type="password"
+            autoComplete="new-password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            style={inputStyle}
+            data-testid="input-new-password"
+          />
+        </div>
+        <div style={{ marginBottom: "1.1rem" }}>
+          <label style={labelStyle} htmlFor="confirm-password">Confirm new password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            style={inputStyle}
+            data-testid="input-confirm-password"
+          />
+        </div>
+
+        {status && (
+          <p
+            role="status"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "0.75rem",
+              lineHeight: 1.6,
+              marginBottom: "1rem",
+              color: status.kind === "error" ? "#FF8080" : "#7ED9A5",
+            }}
+            data-testid="text-password-status"
+          >
+            {status.text}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={saving || !currentPassword || !newPassword || !confirmPassword}
+          style={{
+            ...btnPrimary,
+            opacity: saving || !currentPassword || !newPassword || !confirmPassword ? 0.5 : 1,
+          }}
+          data-testid="button-change-password"
+        >
+          {saving ? "CHANGING…" : "CHANGE PASSWORD"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 function SubmissionsViewer() {
   const queryClient = useQueryClient();
   const { data: submissions, isLoading } = useQuery<any[]>({
@@ -150,6 +292,33 @@ function SubmissionsViewer() {
     workstyle: "Work Style",
     company: "Company",
     message: "Message",
+    // /offer application fields
+    brand: "Brand",
+    whatsapp: "WhatsApp",
+    instagram: "Instagram",
+    website: "Current Site",
+    whatYouDo: "What They Do",
+    stage: "Stage",
+    needsStore: "Needs Store",
+    assetsIn48h: "Assets in 48h",
+    decisionMaker: "Decision Maker",
+    liveBy: "Live By",
+    whatsBroken: "What's Broken",
+    priceAcknowledged: "Agreed Terms",
+    referrer: "Referrer",
+  };
+
+  const BADGE: Record<string, { label: string; color: string; bg: string }> = {
+    join: { label: "JOIN", color: "#a78bfa", bg: "rgba(167,139,250,0.12)" },
+    talk: { label: "TALK", color: "#38bdf8", bg: "rgba(56,189,248,0.12)" },
+    offer: { label: "OFFER", color: "#f0abfc", bg: "rgba(240,171,252,0.14)" },
+  };
+
+  const offerFlags = (data: Record<string, string>) => {
+    const flags: string[] = [];
+    if (data.needsStore === "Yes") flags.push("NEEDS A STORE — primary disqualifier");
+    if (data.needsStore === "Not sure") flags.push("Unsure about commerce — probe on the call");
+    return flags;
   };
 
   return (
@@ -192,14 +361,14 @@ function SubmissionsViewer() {
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "0.55rem",
                   letterSpacing: "0.1em",
-                  color: sub.formType === "join" ? "#a78bfa" : "#38bdf8",
-                  backgroundColor: sub.formType === "join" ? "rgba(167,139,250,0.12)" : "rgba(56,189,248,0.12)",
+                  color: (BADGE[sub.formType] ?? BADGE.talk).color,
+                  backgroundColor: (BADGE[sub.formType] ?? BADGE.talk).bg,
                   padding: "0.2rem 0.5rem",
                   borderRadius: "4px",
                   flexShrink: 0,
                 }}
               >
-                {sub.formType === "join" ? "JOIN" : "TALK"}
+                {(BADGE[sub.formType] ?? BADGE.talk).label}
               </span>
               <span style={{
                 fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
@@ -246,6 +415,32 @@ function SubmissionsViewer() {
                     </div>
                   ))}
                 </div>
+                {sub.formType === "offer" && offerFlags(data).length > 0 && (
+                  <div style={{
+                    marginTop: "1rem",
+                    padding: "0.75rem 0.9rem",
+                    backgroundColor: "rgba(123,30,122,0.14)",
+                    borderLeft: "3px solid #7B1E7A",
+                    borderRadius: "4px",
+                  }}>
+                    <span style={{
+                      fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem",
+                      letterSpacing: "0.12em", color: "rgba(255,255,255,0.55)",
+                      textTransform: "uppercase",
+                    }}>
+                      Flags
+                    </span>
+                    <ul style={{
+                      margin: "0.4rem 0 0", paddingLeft: "1.1rem",
+                      fontFamily: "'Inter', sans-serif", fontSize: "0.78rem",
+                      lineHeight: 1.7, color: "#FFFFFF",
+                    }}>
+                      {offerFlags(data).map((flag) => (
+                        <li key={flag}>{flag}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
                   <button
                     onClick={() => markRead(sub.id, !sub.read)}
@@ -2675,7 +2870,10 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios"];
+  /* Kept in step with `tabLabels` by hand — this list drives the sidebar, and
+     `Tab[]` accepts a subset, so leaving one out compiles cleanly and simply
+     makes that panel unreachable. Add to both. */
+  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios", "security"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2815,6 +3013,7 @@ export default function AdminDashboard() {
           {activeTab === "authors" && <AuthorsEditor />}
           {activeTab === "subscribers" && <SubscribersEditor />}
           {activeTab === "portfolios" && <PortfoliosEditor />}
+          {activeTab === "security" && <SecurityPanel />}
         </div>
       </div>
     </div>

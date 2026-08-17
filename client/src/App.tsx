@@ -18,6 +18,8 @@ import Portfolio from "@/pages/portfolio";
 import TeamPage from "@/pages/team";
 import Websites from "@/pages/websites";
 import WebsitesTerms from "@/pages/websites-terms";
+import OfferPage from "@/pages/offer";
+import OfferTermsPage from "@/pages/offer-terms";
 
 const PORTFOLIO_SLUGS = ["fatema", "shaili", "aakanksha"];
 
@@ -43,6 +45,8 @@ function Router() {
         <Route path="/websites" component={Websites} />
         <Route path="/websites/terms" component={WebsitesTerms} />
         <Route path="/blog/:slug" component={BlogPostPage} />
+        <Route path="/offer/terms" component={OfferTermsPage} />
+        <Route path="/offer" component={OfferPage} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin" component={AdminDashboard} />
         {PORTFOLIO_SLUGS.map((slug) => (

@@ -44,9 +44,20 @@ export async function seedDatabase() {
 
   const existingAdmin = await storage.getUserByUsername("admin");
   if (!existingAdmin) {
-    const hashedPassword = await bcrypt.hash("storyshapers2024", 10);
-    await storage.createUser({ username: "admin", password: hashedPassword });
-    console.log("Created default admin user");
+    // This repo is public, so the seed password can only come from the
+    // environment. Without it we skip the admin user rather than create one
+    // with a password anyone can read.
+    const seedPassword = process.env.ADMIN_SEED_PASSWORD;
+    if (!seedPassword) {
+      console.warn(
+        "[seed] ADMIN_SEED_PASSWORD is not set — skipping admin user creation. " +
+          "Set it and re-run to create the admin login.",
+      );
+    } else {
+      const hashedPassword = await bcrypt.hash(seedPassword, 10);
+      await storage.createUser({ username: "admin", password: hashedPassword });
+      console.log("Created default admin user");
+    }
   }
 
   if (!isFullySeeded) {

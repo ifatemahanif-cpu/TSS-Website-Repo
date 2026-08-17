@@ -23,6 +23,9 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUserPassword(id: string, hashedPassword: string): Promise<User | undefined>;
+  /** Clears every persisted login. Returns false if the store is unreachable. */
+  clearAllSessions(): Promise<boolean>;
 
   getSetting(key: string): Promise<any | undefined>;
   upsertSetting(key: string, value: any): Promise<SiteSettings>;
@@ -117,6 +120,30 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db.insert(users).values(insertUser).returning();
     return user;
+  }
+
+  async updateUserPassword(id: string, hashedPassword: string): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ password: hashedPassword })
+      .where(eq(users.id, id))
+      .returning();
+    return user;
+  }
+
+  /* Sessions are persisted by connect-pg-simple in the "session" table, not
+     held in memory, so they outlive both a password change and a redeploy.
+     Rotating the password therefore does NOT evict anyone already logged in —
+     which is exactly the case that matters when the old password has leaked.
+     Clearing the table is what actually ends those logins. */
+  async clearAllSessions(): Promise<boolean> {
+    try {
+      await db.execute(sql`DELETE FROM session`);
+      return true;
+    } catch (error) {
+      console.error("[auth] could not clear sessions:", error);
+      return false;
+    }
   }
 
   async getSetting(key: string): Promise<any | undefined> {

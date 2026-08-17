@@ -1,0 +1,128 @@
+<!doctype html>
+<!--
+  Source for client/public/offer-opengraph.jpg — the share card for /offer.
+
+  Rendered at 1200x630 by `npm run og:offer` (script/render-og.ts), which
+  screenshots this file with headless Chrome. Edit here, re-run, commit the jpg.
+
+  It deliberately reuses the page's own three motifs rather than inventing a
+  layout: the mono eyebrow, the Libre Baskerville display line, and the magenta
+  rule drawn under the price. Unfurls render small, so the price is the one
+  thing sized to survive a thumbnail.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=Inter:wght@300;400&family=JetBrains+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #0c0a3e;
+        color: #fff;
+        font-family: 'Inter', system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 72px 80px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* The page paints a grain overlay over everything; a flat navy reads
+         cheaper than the site does, so carry a trace of it here too. */
+      body::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 0);
+        background-size: 3px 3px;
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 15px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      h1 {
+        font-family: 'Libre Baskerville', Georgia, serif;
+        font-weight: 400;
+        font-size: 70px;
+        line-height: 1.32;
+        letter-spacing: -0.02em;
+        max-width: 20ch;
+      }
+
+      /* Everything after the price drops to the light body face, exactly as
+         the page does under its display lines. */
+      h1 .light {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      /* The drawn rule the page gives its two most important numbers. */
+      .price {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      .price::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -12px;
+        height: 4px;
+        border-radius: 2px;
+        background: #cd42ca;
+      }
+
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 19px;
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      footer .name { color: rgba(255, 255, 255, 0.9); }
+
+      .slots {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+        color: #cd42ca;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">Independence Day Offer</p>
+
+    <h1>
+      One website. <span class="price">₹80,000</span>.<br />
+      <span class="light">Live in 10 working days.</span>
+    </h1>
+
+    <footer>
+      <span class="name">The Story Shapers Collective</span>
+      <span class="slots">Five brands · This August</span>
+    </footer>
+  </body>
+</html>

@@ -32,6 +32,16 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
+
+  /* --- /offer landing page tokens (additive, used only by the offer page) --- */
+  --color-navy: #0c0a3e;
+  --color-navy-lift: #0e0c45;
+  --color-navy-deep: #08062c;
+  --color-magenta: #7b1e7a;
+  --color-magenta-lift: #942493;
+
+  --font-display: 'Libre Baskerville', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
 }
 
 @layer base {

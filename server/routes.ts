@@ -7,11 +7,12 @@ import bcrypt from "bcryptjs";
 import path from "path";
 import express from "express";
 import multer from "multer";
-import { randomUUID } from "crypto";
+import { randomBytes, randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
-import { sendWelcomeEmail, sendNewPostNotification, sendWebsitesApplicationNotification } from "./email";
+import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification, sendWebsitesApplicationNotification } from "./email";
+import { sendSlackNotification } from "./slack";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
@@ -57,13 +58,21 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
+  // A literal fallback here would make admin sessions forgeable from the public
+  // repo, so production refuses to boot without a real secret. Development
+  // still gets an ephemeral one so `npm run dev` works with no setup.
+  const sessionSecret = process.env.SESSION_SECRET;
+  if (!sessionSecret && process.env.NODE_ENV === "production") {
+    throw new Error("SESSION_SECRET must be set in production");
+  }
+
   app.use(
     session({
       store: new PgSession({
         conString: process.env.DATABASE_URL,
         createTableIfMissing: true,
       }),
-      secret: process.env.SESSION_SECRET || "story-shapers-cms-secret-key",
+      secret: sessionSecret || randomBytes(32).toString("hex"),
       resave: false,
       saveUninitialized: false,
       cookie: { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" },
@@ -93,6 +102,55 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const user = await storage.getUser((req.session as any).userId);
     if (!user) return res.status(401).json({ message: "Not authenticated" });
     res.json({ user: { id: user.id, username: user.username } });
+  });
+
+  /* Until now there was no way to change the admin password at all — only
+     login and logout — so the password this repo shipped with could never be
+     rotated. This repo is public, so that password is readable in git history
+     by anyone. */
+  const changePasswordBody = z.object({
+    currentPassword: z.string().min(1, "Enter your current password."),
+    newPassword: z.string().min(12, "Use at least 12 characters."),
+  });
+
+  app.post("/api/auth/change-password", requireAuth, async (req: Request, res: Response) => {
+    const parsed = changePasswordBody.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: parsed.error.issues[0]?.message ?? "Invalid request" });
+    }
+    const { currentPassword, newPassword } = parsed.data;
+
+    const user = await storage.getUser((req.session as any).userId);
+    if (!user) return res.status(401).json({ message: "Not authenticated" });
+
+    // Re-checking the current password matters even though this session is
+    // already authenticated: it is what stops someone riding a hijacked
+    // session from locking the real owner out of her own admin.
+    if (!(await bcrypt.compare(currentPassword, user.password))) {
+      return res.status(401).json({ message: "That is not your current password." });
+    }
+    if (await bcrypt.compare(newPassword, user.password)) {
+      return res.status(400).json({ message: "The new password must be different from the old one." });
+    }
+
+    await storage.updateUserPassword(user.id, await bcrypt.hash(newPassword, 10));
+
+    /* Sessions live in Postgres, so they survive both the password change and
+       a redeploy. If the leaked password was already used, that intruder holds
+       a login that a new password would not touch — so every session is
+       cleared and this one immediately re-established, leaving her signed in
+       and everyone else out. */
+    const otherSessionsCleared = await storage.clearAllSessions();
+
+    req.session.regenerate((error) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Password changed, but the session could not be renewed. Sign in again with the new password.",
+        });
+      }
+      (req.session as any).userId = user.id;
+      res.json({ ok: true, otherSessionsCleared });
+    });
   });
 
   app.post("/api/upload", requireAuth, upload.single("file"), async (req: Request, res: Response) => {
@@ -220,7 +278,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   const formSubmissionBody = z.object({
-    formType: z.enum(["join", "talk", "websites"]),
+    formType: z.enum(["join", "talk", "websites", "offer"]),
     data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
@@ -228,20 +286,44 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const parsed = formSubmissionBody.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
+    // The submission is already saved, so a notification failure must never
+    // fail the request or lose the lead — hence the per-call catch. But the
+    // calls are AWAITED. They used to be fire-and-forget, which works on a
+    // long-running server and silently loses the notification on Vercel: the
+    // serverless instance can be frozen the moment the response is sent,
+    // killing an un-awaited fetch still in flight. Every notifier returns
+    // immediately when its key is unset, so this costs nothing when off.
+    const notifications: Promise<unknown>[] = [
+      sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+        console.error("[forms] email notification failed:", error);
+      }),
+      sendSlackNotification(parsed.data.formType, parsed.data.data).catch((error) => {
+        console.error("[forms] slack notification failed:", error);
+      }),
+    ];
+
     if (parsed.data.formType === "websites") {
-      // Time-boxed five-slot offer: the team must hear about applications
-      // without watching the admin dashboard, and works the pipeline in a
-      // shared sheet. Both are fire-and-forget so neither can fail a submit.
-      sendWebsitesApplicationNotification(parsed.data.data).catch(() => {});
+      // The five-slot offer is time-boxed, and the team works its pipeline in
+      // a shared sheet — so applications go there as well, on the same
+      // awaited footing as everything else.
+      notifications.push(
+        sendWebsitesApplicationNotification(parsed.data.data).catch((error) => {
+          console.error("[forms] websites notification failed:", error);
+        }),
+      );
       const sheetWebhook = process.env.FORMS_SHEET_WEBHOOK_URL;
       if (sheetWebhook) {
-        fetch(sheetWebhook, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(parsed.data.data),
-        }).catch((err) => console.error("[forms] sheet webhook failed:", err?.message));
+        notifications.push(
+          fetch(sheetWebhook, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(parsed.data.data),
+          }).catch((err) => console.error("[forms] sheet webhook failed:", err?.message)),
+        );
       }
     }
+
+    await Promise.allSettled(notifications);
     res.json(submission);
   });
 

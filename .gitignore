@@ -7,3 +7,4 @@ vite.config.ts.*
 api/server.cjs
 .env
 .vercel
+OFFER-PAGE-STATE.md

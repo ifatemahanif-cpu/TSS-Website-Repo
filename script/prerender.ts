@@ -28,6 +28,9 @@ type RouteDef = {
   route: string;
   title?: string;
   description?: string;
+  /** Site-relative path to a per-route share card. Falls back to the
+   *  site-wide /opengraph.jpg, which is a screenshot of the home page. */
+  image?: string;
   lastmod?: string;
 };
 
@@ -72,6 +75,20 @@ const ROUTES: RouteDef[] = [
     title: "Terms and Conditions, Website Offer | The Story Shapers",
     description:
       "The full terms of the Independence Day website offer by The Story Shapers: scope, payment, timeline, revisions and ownership.",
+  },
+  {
+    route: "/offer",
+    title: "One website. ₹80,000. Live in 10 working days. — The Story Shapers",
+    description:
+      "Five selected brands this August. A brand website written, designed and built for ₹80,000 all in, live in 10 working days.",
+    image: "/offer-opengraph.jpg",
+  },
+  {
+    route: "/offer/terms",
+    title: "The August website offer — terms — The Story Shapers",
+    description:
+      "The full terms and conditions for The Story Shapers' August website offer: scope, timeline, payment, revisions and cancellation.",
+    image: "/offer-opengraph.jpg",
   },
 ];
 
@@ -189,7 +206,7 @@ export async function prerender() {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
 
-    for (const { route, title, description } of allRoutes) {
+    for (const { route, title, description, image } of allRoutes) {
       const url = `http://localhost:${PORT}${route}`;
       await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
 
@@ -218,8 +235,9 @@ export async function prerender() {
         route,
         title: title ?? null,
         description: description ?? null,
+        image: image ?? null,
       });
-      await page.evaluate(`(({ route, title, description }) => {
+      await page.evaluate(`(({ route, title, description, image }) => {
         const origin = "https://www.storyshaperscollective.com";
         const canonicalHref = origin + (route === "/" ? "/" : route);
         let canonical = document.querySelector('link[rel="canonical"]');
@@ -246,6 +264,13 @@ export async function prerender() {
             ?.setAttribute("content", description);
           document.querySelector('meta[name="twitter:description"]')
             ?.setAttribute("content", description);
+        }
+
+        if (image) {
+          document.querySelector('meta[property="og:image"]')
+            ?.setAttribute("content", image);
+          document.querySelector('meta[name="twitter:image"]')
+            ?.setAttribute("content", image);
         }
 
         // CMS image fields are site-relative paths; social platforms and
