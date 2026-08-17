@@ -91,6 +91,315 @@
   animation: drift-slow 25s linear infinite alternate;
 }
 
+/* --- Hero: the story, and nothing else --------------------------------
+   One sentence on screen at a time against a clean field. The last line
+   collapses into "We shape stories." and the CTA fades in beneath it. */
+
+.story-hero {
+  position: relative;
+  display: flex;
+  min-height: max(40rem, 100svh);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 6rem 1.5rem;
+  background: #0c0a3e;
+  color: #ffffff;
+  text-align: center;
+}
+
+.story-hero__inner {
+  width: 100%;
+  max-width: 72rem;
+}
+
+/* Beats and the finale share this cell so the CTA row never shifts while
+   lines trade places. */
+/* The stage reserves room for the tallest two-line sentence so the CTA never
+   jumps mid-film. At rest the line is short, so that reservation is released —
+   the four offerings rise up to meet the headline instead of arriving at the
+   bottom of a void. The delay lets the stitch finish drawing first. */
+.story-hero__stage {
+  display: grid;
+  min-height: clamp(17rem, 42vh, 27rem);
+  place-items: center;
+  transition: min-height 800ms cubic-bezier(0.16, 1, 0.3, 1) 900ms;
+}
+
+.story-hero__stage[data-resting] {
+  min-height: 0;
+}
+
+.story-hero__flow[data-cold] {
+  transition-delay: 0s;
+}
+
+.story-hero__stage > * {
+  grid-area: 1 / 1;
+}
+
+.story-hero__flow {
+  display: flex;
+  max-width: 24ch;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  column-gap: 0.3em;
+  row-gap: 0.06em;
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(2.3rem, 6.6vw, 4.9rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+}
+
+/* The resting state: the residue of the whole film, twice the size. */
+.story-hero__flow[data-resting] {
+  max-width: none;
+  font-size: clamp(3.5rem, 11.5vw, 8.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+}
+
+.story-hero__word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+/* Zero-height full-width spacer: makes the flex row wrap at an authored point. */
+.story-hero__break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+/* Doodles are cast members: inline with the words, they reflow, glide and
+   break away exactly like text. */
+.story-hero__doodle {
+  display: inline-flex;
+  align-self: center;
+  will-change: transform, opacity, filter;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.story-hero__doodle-svg {
+  display: block;
+  width: 0.82em;
+  height: 0.82em;
+}
+
+.story-hero__doodle-svg--wide {
+  width: 1.25em;
+}
+
+.story-hero__stories {
+  position: relative;
+  display: inline-block;
+  font-style: italic;
+}
+
+.story-hero__sparkle {
+  position: absolute;
+  top: -0.34em;
+  right: -0.18em;
+  width: 0.34em;
+  height: 0.34em;
+}
+
+.story-hero__stitch {
+  position: absolute;
+  right: 0.06em;
+  bottom: -0.02em;
+  left: 0.04em;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent, #c36cc1 14%, #edb8eb 52%, #c36cc1 86%, transparent);
+  transform-origin: left center;
+  animation: storyHeroStitch 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.25s backwards;
+}
+
+/* The four offerings: numbered, structured, not fine print. */
+.story-hero__offers {
+  display: flex;
+  max-width: 68rem;
+  justify-content: center;
+  gap: clamp(1.25rem, 2.6vw, 2.5rem);
+  margin: clamp(2.75rem, 6vh, 4.25rem) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-hero__offer {
+  flex: 1 1 0;
+  max-width: 15.75rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: left;
+}
+
+.story-hero__offer-number {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: #cf81cd;
+}
+
+.story-hero__offer-label {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.92rem, 1.15vw, 1.06rem);
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+@media (max-width: 52rem) {
+  .story-hero__offers {
+    flex-wrap: wrap;
+    max-width: 30rem;
+  }
+
+  .story-hero__offer {
+    flex: 1 1 calc(50% - 1.25rem);
+    max-width: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .story-hero__offer {
+    flex-basis: 100%;
+  }
+}
+
+.story-hero__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 1rem;
+  margin-top: clamp(2.5rem, 5.5vh, 3.75rem);
+}
+
+/* Secondary reads as the quieter of the two: no fill, no sweep. */
+.story-hero__cta--ghost {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: none;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.story-hero__cta--ghost::before {
+  display: none;
+}
+
+.story-hero__cta--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.42);
+  color: #ffffff;
+}
+
+
+
+.story-hero__cta {
+  position: relative;
+  display: inline-flex;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.95rem 1.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+  transition: border-color 220ms ease, background-color 220ms ease, transform 220ms ease;
+}
+
+.story-hero__cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #7b1e7a;
+  transform: translateX(-102%);
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.story-hero__cta > span {
+  position: relative;
+  z-index: 1;
+}
+
+.story-hero__cta:hover {
+  border-color: #a955a8;
+  transform: translateY(-2px);
+}
+
+.story-hero__cta:hover::before {
+  transform: translateX(0);
+}
+
+.story-hero__flow[data-cold] .story-hero__stitch {
+  animation-delay: 0.3s;
+}
+
+.story-hero__cta:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.story-hero__skip {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  padding: 0.4rem 0.9rem;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.32);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.story-hero__skip:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.story-hero__skip:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 3px;
+}
+
+@keyframes storyHeroStitch {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-hero__cta,
+  .story-hero__cta::before {
+    transition: none;
+  }
+
+  .story-hero__stitch {
+    animation: none;
+  }
+}
+
 @keyframes shimmerSweep {
   0% { background-position: 300% 0; color: transparent; }
   100% { background-position: -300% 0; color: transparent; }
