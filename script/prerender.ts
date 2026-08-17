@@ -65,18 +65,6 @@ const ROUTES: RouteDef[] = [
   { route: "/shaili" },
   { route: "/aakanksha" },
   {
-    route: "/websites",
-    title: "Independence Day Website Offer | The Story Shapers",
-    description:
-      "We write every word and build the whole thing. Live in 10 working days, ₹79,000 all in. Five brands this August. A brand site by The Story Shapers collective.",
-  },
-  {
-    route: "/websites/terms",
-    title: "Terms and Conditions, Website Offer | The Story Shapers",
-    description:
-      "The full terms of the Independence Day website offer by The Story Shapers: scope, payment, timeline, revisions and ownership.",
-  },
-  {
     route: "/offer",
     title: "One website. ₹80,000. Live in 10 working days. — The Story Shapers",
     description:
