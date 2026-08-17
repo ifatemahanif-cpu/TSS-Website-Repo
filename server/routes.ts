@@ -11,7 +11,7 @@ import { randomBytes, randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
-import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification, sendWebsitesApplicationNotification } from "./email";
+import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
 import { sendSlackNotification } from "./slack";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
@@ -278,7 +278,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   const formSubmissionBody = z.object({
-    formType: z.enum(["join", "talk", "websites", "offer"]),
+    formType: z.enum(["join", "talk", "offer"]),
     data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
@@ -301,27 +301,6 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
         console.error("[forms] slack notification failed:", error);
       }),
     ];
-
-    if (parsed.data.formType === "websites") {
-      // The five-slot offer is time-boxed, and the team works its pipeline in
-      // a shared sheet — so applications go there as well, on the same
-      // awaited footing as everything else.
-      notifications.push(
-        sendWebsitesApplicationNotification(parsed.data.data).catch((error) => {
-          console.error("[forms] websites notification failed:", error);
-        }),
-      );
-      const sheetWebhook = process.env.FORMS_SHEET_WEBHOOK_URL;
-      if (sheetWebhook) {
-        notifications.push(
-          fetch(sheetWebhook, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(parsed.data.data),
-          }).catch((err) => console.error("[forms] sheet webhook failed:", err?.message)),
-        );
-      }
-    }
 
     await Promise.allSettled(notifications);
     res.json(submission);
