@@ -1,3 +1,18 @@
+# COPY — /websites (v5: Independence Day Offer, 12 Aug)
+
+Source: `~/Downloads/Independence Day Offer - TSS Website.md` (her copy doc) + `WIREFRAME.md` (frozen structure, 12 Aug). Her copy is on the page close to verbatim. Structural moves this round:
+
+- **Hero absorbs the problem section.** Her "You have a logo. A deck." paragraph + "We can fix that." + the handpicking-five-brands offer line now live in the hero. Facts strip cut. Eyebrow: "Independence Day Offer. Selected 5 brands only. Closes 31 August." CTA: "I need a website (like yesterday)".
+- **Price is ₹79,000** (79th year of independence, per the frozen wireframe). Her doc's leftover "All for ₹75,000" line was updated to 79 everywhere: hero, tick table, price line, FAQ, JSON-LD, OG card, meta description. The hero's asterisk on ₹79,000* links to the terms page.
+- **WHY US = credibility copy + ticker as one section.** Kept 45+ years (the frozen wireframe's number, already applied in the working tree); her doc says 60+, still her call to flip.
+- **WhyFive section cut**; its copy condensed into a "Why only five brands?" FAQ. Two FAQs added: the deposit question and why-five. "Is ₹79,000 the whole number?" updated.
+- **Terms left the page.** Now a standalone legally-written page at /websites/terms (payment, scope, exclusions, extras-billed-separately clause, timeline, silence window, revisions, decision maker, ownership, general). Form checkbox and footer link to it; balance is ₹54,000 at go-live.
+- **Footer** gained "The main site" + "Terms and conditions" links, per her doc.
+
+Numbers still hers to confirm: deposit non-refundable wording, two revision rounds, five-working-day silence window, 24-hour reply promise, "all in" = inclusive of GST or not.
+
+---
+
 # COPY — /websites (v4: Fatema's own copy, used as written)
 
 Fatema supplied the copy for the hero facts, problem, "The website is the easy part", what-you-get, what-we-don't-do, how-it-works and why-only-five sections on 11 Aug. It is on the page close to verbatim. My edits were mechanical only: her "Like we said earlier" callback dropped since the page order changed, the 20-minute call and ₹25,000 deposit split into their own steps to fit the four-node infographic, and the exclusions list kept underneath her "What we don't do" paragraph because her version names the audience rather than the exclusions, and the scope list is what prevents the Shopify conversation later.

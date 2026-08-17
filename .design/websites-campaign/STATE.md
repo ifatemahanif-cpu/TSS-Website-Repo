@@ -1,34 +1,45 @@
-# /websites campaign — state at end of 11 Aug
+# /websites campaign — state at end of 12 Aug (v11: team preview live)
 
-Go-live target: **Thu 14 Aug**. Branch `campaign/websites-august`, committed locally, **not pushed** (visual work waits for Fatema's local review).
+Branch `campaign/websites-august`. v11 in the working tree, **uncommitted** (awaits Fatema's local review; v4 is the last commit). Team preview: https://tss-website-preview.vercel.app/websites. Dev server: `npm run dev:client` → http://localhost:5000/websites and /websites/terms. NOTE: the production build's prerender needs port 5000 free; kill the dev server before `npm run build`.
 
-## Where it stands
+## Structure as of v10 (four rounds of her direction, 12 Aug)
 
-The page is built and working end to end. Fatema supplied her own copy on 11 Aug after rejecting two earlier drafts, and it is on the page close to verbatim. Run `npm run dev:client` and open http://localhost:5000/websites.
+- **Hero**: eyebrow, "Freedom from websites" + typewriter, ONE line ("This August we are handpicking five brands... ₹79,000* all in!"), CTA **"I need a website NOW"**, "Offer valid till 31st August 2026, limited slots only", tiny "*T&C apply" link. Asterisk links to terms. (The "You have a logo. A deck." pitch section that once followed was removed in round 4 as an orphan.)
+- **The website is the easy part.**: ONE paragraph (45+ years), then a **staggered showcase of three real-site scroll recordings** (tuisajewels.com large left, schmancy.in right offset down, humanintheloop.co.in center overlapping by ~72px, each in a browser-chrome card, click-to-pause, posters under reduced motion; assets in `client/public/videos/`, recorder script pattern in `.design/.../og-websites-source.html` era scratchpad), then the brands ticker (hover-pauses).
+- **What you get / What you don't get**: symmetric tick/cross table (animated draw-in marks), no intro para, no price line.
+- **Here's how this works.**: 3 bare steps (round-4 copy, see below), rail from chip 01 to chip 03, chips hung so digits align with the text edge.
+- **Form**: "Book my slot." heading, submit = **"Apply and book my call"** (always enabled; missing checkbox → role=alert "Tick the terms box first."), success screen = "You're in." + **"Book your call" button → `CALENDLY_URL` PLACEHOLDER in websites.tsx that MUST be replaced before launch**.
+- **FAQ**: 9 questions per her round-2 notes (revisions = two rounds TOTAL; refund answer mirrors the terms' three refund cases).
+- **Terms** `/websites/terms`: 12 formal numbered sections, drafted via the local `legal-terms-review` skill (adapted from anthropics/claude-for-legal). Payment gate, deposit logic per Contract Act s.74 framing, client-content warranty/indemnity, IP on full payment, liability cap, dormancy ladder (3.4→10.2 aligned), refunds within 7 working days. **She has NOT reviewed terms yet.**
+- Alignment: every section shares one 1100px container/left rail (her "alignment is all off" complaint; verified by reviewer at x=90/x=1190).
 
-Page order: hero (autocomplete headline + facts strip + "So, your website called") → problem ("You have a logo. A deck." → "We can fix that.") → "The website is the easy part." → brands ticker → get / don't-do table with self-drawing ticks → "Here's how this works." four-node infographic → "Why only five spots?" → application form → FAQ → terms and conditions appendix → footer.
+## Review state
 
-Working: prerender to static HTML + sitemap, Service and FAQPage JSON-LD, campaign OG card at `client/public/og-websites.jpg`, form posting to `/api/forms/submit` with `formType: "websites"` into Postgres and the admin dashboard, SendGrid notification on each application, Meta pixel and GTM as inert slots in `client/index.html` awaiting IDs, reduced-motion fallbacks throughout, typecheck and build clean, no em-dashes.
+Two independent passes ran 12 Aug (her standing rule): round-1 reviewer (22 findings, all fixed or flagged), round-3 expert pass via design-review framing (2 blocking + 7 should-fix, ALL applied: real showcase overlap, FAQ refund contradiction, rail endpoints, asterisk spacing, focus rings + box-shadow, enabled-submit alert pattern, terms 3.4/10.3 fixes, marquee/video pause, cross distribution). Typecheck stays at the 33 pre-existing baseline errors, zero from campaign files.
 
 ## Blocking before launch
 
-1. **60 vs 45 years.** Her copy says "60 years of writing, editing and building experience"; the live site says "45+ years of combined experience" and "three senior marketers". The page currently says 60. One of the two has to change.
-2. **Google Sheet webhook.** Sheet exists (`1KLfkQ63v9DEcxrW97JfmR2-iGJMR4dqXqSV0IlmoMUU`) with headers. Fatema deploys `automation/websites-applications-sheet.gs` as an Apps Script web app, then `FORMS_SHEET_WEBHOOK_URL` gets set on Vercel. Until then applications still reach Postgres and email.
-3. **Fatema's local review**, then push, PR to `full-v1`, merge.
+1. Fatema's review of the page AND the terms (terms unreviewed).
+2. **Real Calendly/booking URL** into `CALENDLY_URL` (websites.tsx).
+3. Her calls: 45+ vs 60+ years; GST — terms say "inclusive of applicable taxes" (clause 2.1) matching "all in", flip if GST is charged on top; jurisdiction assumed **Kolkata** (clause 12.3); "Cadbury's" vs "Cadbury" in ticker; schmancy.in is a visible e-commerce store showcased under an offer that excludes e-commerce (expectation risk); shared Navbar has no mobile menu at all (pre-existing, site-wide).
+4. Attorney pass on the terms (drafted, not legal advice).
+5. Google Sheet webhook (`automation/websites-applications-sheet.gs` + `FORMS_SHEET_WEBHOOK_URL`).
+6. Production build + prerender re-run (port 5000 free), then commit → push → PR to `full-v1`.
 
-## Open, not blocking
+## Motion pass (v10, 12 Aug) — BUILT on her go-ahead
 
-- Real testimonials. The section is built and hidden (`TESTIMONIALS` array in `websites.tsx`). Nothing invented; she asked for manufactured quotes and I declined, so this only goes live with real lines.
-- Terms numbers still unconfirmed: two revision rounds, the five-working-day silence window, the 24-hour reply promise in the success message.
-- Meta pixel and GTM IDs once Business Manager exists.
-- Second wave around 21 Aug: `SLOTS_REMAINING` in `websites.tsx` is a plain constant. Set it to 3 and redeploy. After 31 Aug set it to 0 and the hero eyebrow flips to "slots full".
+She asked (12 Aug, mid-review) how to get spacefs.com-style interaction/movement. Diagnosis of that site: Gatsby/React, NO heavy animation framework — IntersectionObserver reveals, CSS transform scenes, 16 inline product videos, a Rive vector graphic, 2 position:sticky pinned scenes, scattered rotated-card fan with parallax drift. Equivalent grammar here = framer-motion useScroll/useTransform (already a dependency): proposed pass = parallax scatter+rotation on the showcase cards, scroll-linked rail draw on steps, mask/slide heading reveals, magnetic CTA, glow drift. Built: parallax scatter + static rotation on showcase cards (drift md+ only), self-drawing steps rail, masked slide-up heading reveals (0.15em descender reserve), magnetic CTA (motion values, no re-renders), hero glow drift. All reduced-motion guarded; rotation stays under reduce (static property). The 'You have a logo. A deck.' pitch section was REMOVED at her instruction (orphan section). A focused independent pass verified the increment: no blockers; its two should-fixes (descender reserve, mobile drift gating) are applied.
 
-## Process note
+## Round 4 (12 Aug, after her team-share ask)
 
-An independent design reviewer ran on v1 and caught real defects (scrollbars baked into proof captures, selects indistinguishable from inputs, FAQ opening all at once, missing OG image). The v2 re-review died on an API session limit, so I did that pass myself and said so. **Worth running a genuine fresh-eyes review on the current version before launch**, since the page has changed substantially since the last independent look.
+- Steps rewritten to her copy: "Apply using the form below." / "If we are a mutual fit, we get on a 30-minute alignment call to discuss further." / "We book your slot and you send us everything we need to get started." Chips now hang into the margin so the digits sit flush over the text's left edge (her marker-misalignment flag); rail endpoints recalibrated.
+- Footer nav: Home / Instagram (instagram.com/storyshapers_) / LinkedIn (linkedin.com/company/story-shapers) / Terms and conditions, spaced flex row.
+- "When do you want to be live?" REMOVED from the form (her call: timeline follows alignment + 10 days). Form intro now "Twelve questions". NOTE: the Apps Script sheet has a liveWhen column that will now stay empty.
+- FAQ pass run: nine questions consistent with the new steps (only "30-minute" mention is step 2; no stale counts).
 
-## Copy history
+## TEAM PREVIEW — live, unlinked to git
 
-`COPY.md` holds Fatema's v4 copy at the top, the v3 hero options and full terms below it. v1 was rejected as verbose, v2 as generic with a dead hero. The lesson both times: short, specific, purposeful. Nothing vanilla survives.
+**https://tss-website-preview.vercel.app/websites** (+ /websites/terms). Fresh scratch Vercel project `tss-website-preview` in HER account, deployed from the uncommitted working tree; the real site's Vercel project (different account) untouched. No env vars on this project, so FORM SUBMITS WILL ERROR on the preview by design; tell the team not to test the form there. Tear down after review with `vercel remove tss-website-preview` (and delete .vercel/ from the repo clone before committing — it is gitignored, verify).
 
-`REFERENCES.md` holds the design references. A separate research sweep of 20 live productized-offer pages ran on 11 Aug; its key finding is that credible scarcity states the reason before the number, and that fast fixed-price website offers almost never include copywriting, which makes "we write every word" a real wedge rather than a bullet.
+- Second wave ~21 Aug: `SLOTS_REMAINING` → 3; after 31 Aug → 0 (all urgency strings + eyebrow react; form stays live by design, waitlist swap undecided).
+- Testimonials still hidden pending real quotes. Meta pixel + GTM slots await IDs. OG card current at ₹79,000.

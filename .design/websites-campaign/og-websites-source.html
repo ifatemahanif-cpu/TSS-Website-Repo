@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    background-color: #0C0A3E;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Libre Baskerville', serif;
+  }
+  .glow {
+    position: absolute;
+    top: -20%;
+    right: -15%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse at center, rgba(123,30,122,0.30) 0%, rgba(42,40,112,0.20) 45%, transparent 70%);
+    filter: blur(50px);
+  }
+  .inner {
+    position: absolute;
+    inset: 0;
+    padding: 88px 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 19px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  h1 {
+    font-weight: 400;
+    font-size: 84px;
+    letter-spacing: -0.03em;
+    line-height: 1.16;
+    color: #FFFFFF;
+  }
+  h1 .suffix {
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
+  }
+  .facts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 21px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #c084fc;
+    margin-top: 44px;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="inner">
+    <p class="eyebrow">Independence Day Offer &nbsp;&middot;&nbsp; Five Slots</p>
+    <div>
+      <h1>Freedom from websites<br><span class="suffix">that don't tell your story.</span></h1>
+      <p class="facts">&#8377;79,000 all in &nbsp;&middot;&nbsp; Live in 10 working days</p>
+    </div>
+    <p class="brand">The Story Shapers</p>
+  </div>
+</body>
+</html>
