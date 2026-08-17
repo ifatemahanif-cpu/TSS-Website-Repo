@@ -92,6 +92,61 @@ export async function sendWelcomeEmail(email: string, unsubscribeToken: string):
   }
 }
 
+export async function sendWebsitesApplicationNotification(data: Record<string, string>): Promise<void> {
+  if (!process.env.SENDGRID_API_KEY || !FROM_EMAIL) {
+    console.warn("[email] SendGrid not configured — skipping websites application notification");
+    return;
+  }
+
+  const to = process.env.FORMS_NOTIFY_EMAIL || "hello@storyshaperscollective.com";
+  const brand = data.brandName || data.name || "Unknown brand";
+
+  const rows = Object.entries(data)
+    .map(
+      ([key, value]) =>
+        `<tr>
+          <td style="padding:8px 12px 8px 0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);vertical-align:top;white-space:nowrap;">${key}</td>
+          <td style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.85);line-height:1.6;">${String(value).replace(/</g, "&lt;")}</td>
+        </tr>`
+    )
+    .join("");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><title>New application</title></head>
+<body style="margin:0;padding:0;background-color:#0C0A3E;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0C0A3E;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;">
+        <tr><td style="padding-bottom:24px;">
+          <p style="margin:0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.4);">August websites offer</p>
+          <h1 style="margin:8px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:#FFFFFF;letter-spacing:-0.02em;">New application: ${brand.replace(/</g, "&lt;")}</h1>
+        </td></tr>
+        <tr><td style="background-color:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;">
+          <table cellpadding="0" cellspacing="0" width="100%">${rows}</table>
+        </td></tr>
+        <tr><td style="padding-top:20px;">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);">Full submission is in the admin dashboard.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  try {
+    await sgMail.send({
+      to,
+      from: { email: FROM_EMAIL, name: FROM_NAME },
+      subject: `New application: ${brand} (August websites offer)`,
+      html,
+    });
+    console.log(`[email] Websites application notification sent to ${to}`);
+  } catch (err: any) {
+    console.error("[email] Failed to send websites application notification:", err?.response?.body || err?.message);
+  }
+}
+
 export async function sendNewPostNotification(
   subscribers: Array<{ email: string; unsubscribeToken: string }>,
   post: { title: string; slug: string; excerpt: string | null; authorName: string }

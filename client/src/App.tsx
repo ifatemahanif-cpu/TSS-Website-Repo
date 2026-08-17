@@ -16,6 +16,8 @@ import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import Portfolio from "@/pages/portfolio";
 import TeamPage from "@/pages/team";
+import Websites from "@/pages/websites";
+import WebsitesTerms from "@/pages/websites-terms";
 import OfferPage from "@/pages/offer";
 import OfferTermsPage from "@/pages/offer-terms";
 
@@ -40,6 +42,8 @@ function Router() {
         <Route path="/contact" component={Contact} />
         <Route path="/blog" component={Blog} />
         <Route path="/team" component={TeamPage} />
+        <Route path="/websites" component={Websites} />
+        <Route path="/websites/terms" component={WebsitesTerms} />
         <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/offer/terms" component={OfferTermsPage} />
         <Route path="/offer" component={OfferPage} />

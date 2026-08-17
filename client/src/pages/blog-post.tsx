@@ -16,6 +16,11 @@ const ALLOWED_ATTRS = [
   "width", "height", "frameborder", "allowfullscreen", "allow", "loading",
 ];
 
+// Canonical origin for URLs baked into metadata. window.location.href can't be
+// used for these: during build-time prerendering it points at the local
+// snapshot server, and that URL would ship inside the static HTML.
+const SITE_ORIGIN = "https://www.storyshaperscollective.com";
+
 const VIDEO_HOSTS = new Set([
   "youtube.com", "youtube-nocookie.com", "vimeo.com", "player.vimeo.com",
   "www.youtube.com", "www.youtube-nocookie.com", "www.vimeo.com",
@@ -440,7 +445,7 @@ export default function BlogPost() {
     const metaTitle = post.metaTitle || post.title;
     const metaDescription = post.metaDescription || post.excerpt;
     const ogImage = post.ogImage || post.featuredImage;
-    const canonicalUrl = post.canonicalUrl || window.location.href;
+    const canonicalUrl = post.canonicalUrl || `${SITE_ORIGIN}/blog/${post.slug}`;
 
     document.title = metaTitle;
 
@@ -494,7 +499,7 @@ export default function BlogPost() {
       "@type": "BlogPosting",
       headline: post.title,
       description: metaDescription,
-      image: ogImage || undefined,
+      image: ogImage ? (ogImage.startsWith("/") ? SITE_ORIGIN + ogImage : ogImage) : undefined,
       author: { "@type": "Person", name: post.authorName },
       datePublished: post.publishedAt,
       dateModified: post.updatedAt || post.publishedAt,

@@ -6,5 +6,5 @@ vite.config.ts.*
 *.tar.gz
 api/server.cjs
 .env
+.vercel
 OFFER-PAGE-STATE.md
-

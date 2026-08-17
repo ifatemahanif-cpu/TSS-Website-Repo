@@ -11,7 +11,7 @@ import { randomBytes, randomUUID } from "crypto";
 import fs from "fs";
 import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
-import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
+import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification, sendWebsitesApplicationNotification } from "./email";
 import { sendSlackNotification } from "./slack";
 
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
@@ -278,7 +278,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   const formSubmissionBody = z.object({
-    formType: z.enum(["join", "talk", "offer"]),
+    formType: z.enum(["join", "talk", "websites", "offer"]),
     data: z.record(z.string(), z.string()).refine((d) => Object.keys(d).length <= 20, { message: "Too many fields" }),
   });
 
@@ -287,20 +287,43 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     if (!parsed.success) return res.status(400).json({ message: "Invalid submission", errors: parsed.error.flatten() });
     const submission = await storage.createFormSubmission(parsed.data);
     // The submission is already saved, so a notification failure must never
-    // fail the request or lose the lead — hence the per-call catch. But both
+    // fail the request or lose the lead — hence the per-call catch. But the
     // calls are AWAITED. They used to be fire-and-forget, which works on a
     // long-running server and silently loses the notification on Vercel: the
     // serverless instance can be frozen the moment the response is sent,
-    // killing an un-awaited fetch still in flight. Both notifiers return
-    // immediately when their key is unset, so this costs nothing when off.
-    await Promise.allSettled([
+    // killing an un-awaited fetch still in flight. Every notifier returns
+    // immediately when its key is unset, so this costs nothing when off.
+    const notifications: Promise<unknown>[] = [
       sendFormNotification(parsed.data.formType, parsed.data.data).catch((error) => {
         console.error("[forms] email notification failed:", error);
       }),
       sendSlackNotification(parsed.data.formType, parsed.data.data).catch((error) => {
         console.error("[forms] slack notification failed:", error);
       }),
-    ]);
+    ];
+
+    if (parsed.data.formType === "websites") {
+      // The five-slot offer is time-boxed, and the team works its pipeline in
+      // a shared sheet — so applications go there as well, on the same
+      // awaited footing as everything else.
+      notifications.push(
+        sendWebsitesApplicationNotification(parsed.data.data).catch((error) => {
+          console.error("[forms] websites notification failed:", error);
+        }),
+      );
+      const sheetWebhook = process.env.FORMS_SHEET_WEBHOOK_URL;
+      if (sheetWebhook) {
+        notifications.push(
+          fetch(sheetWebhook, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(parsed.data.data),
+          }).catch((err) => console.error("[forms] sheet webhook failed:", err?.message)),
+        );
+      }
+    }
+
+    await Promise.allSettled(notifications);
     res.json(submission);
   });
 

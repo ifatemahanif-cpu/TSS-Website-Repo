@@ -14,11 +14,15 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.storyshaperscollective.com/" />
     <meta property="og:site_name" content="The Story Shapers" />
-    <meta property="og:image" content="https://www.storyshaperscollective.com/opengraph.jpg" />
+    <!-- ?v= is a cache-buster, not decoration. Every social platform caches an
+         unfurl by URL and keeps serving the old picture for weeks after the
+         file behind it changes. Bump the date whenever script/og-home.html is
+         re-rendered, or the card people see stays the previous hero's. -->
+    <meta property="og:image" content="https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-17" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The Story Shapers | Editorial-Led Brand Strategy & Growth" />
     <meta name="twitter:description" content="A senior marketing collective for growing brands: editorial-grade content strategy, brand positioning, go-to-market, SEO/AEO and growth marketing." />
-    <meta name="twitter:image" content="https://www.storyshaperscollective.com/opengraph.jpg" />
+    <meta name="twitter:image" content="https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-17" />
 
     <script type="application/ld+json">
     {
@@ -28,7 +32,7 @@
       "alternateName": "The Story Shapers Collective",
       "url": "https://www.storyshaperscollective.com/",
       "logo": "https://www.storyshaperscollective.com/favicon.png",
-      "image": "https://www.storyshaperscollective.com/opengraph.jpg",
+      "image": "https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-17",
       "description": "The Story Shapers is a senior marketing collective for growing brands: editorial-grade content strategy, brand positioning, go-to-market, SEO/AEO and growth marketing. India-based, working globally.",
       "founder": [
         { "@type": "Person", "name": "Fatema Hanif" },
@@ -47,7 +51,50 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script>
+      // Campaign analytics. IDs arrive when Meta Business Manager is set up;
+      // both blocks are inert while the IDs are empty strings.
+      window.__TSS_META_PIXEL_ID = "";
+      window.__TSS_GTM_ID = "";
+      (function () {
+        var pixelId = window.__TSS_META_PIXEL_ID;
+        if (pixelId) {
+          !(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+              n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+          })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+          window.fbq("init", pixelId);
+          window.fbq("track", "PageView");
+        }
+        var gtmId = window.__TSS_GTM_ID;
+        if (gtmId) {
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+            var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l != "dataLayer" ? "&l=" + l : "";
+            j.async = true;
+            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, "script", "dataLayer", gtmId);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

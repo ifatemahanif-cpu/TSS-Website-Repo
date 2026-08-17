@@ -509,13 +509,17 @@ function SettingsEditor() {
     {
       key: "hero",
       title: "Hero Section",
+      // The animated lines are written into the Hero component, not here. These
+      // are the parts around the film: the headline search engines read, and
+      // the two buttons it rests on.
       fields: [
-        { name: "label", label: "Label", type: "text" },
-        { name: "heading", label: "Heading (HTML allowed)", type: "text" },
-        { name: "subheading", label: "Subheading", type: "textarea" },
-        { name: "ctaText", label: "CTA Button Text", type: "text" },
-        { name: "tickerLabel", label: "Ticker Label", type: "text" },
-        { name: "brands", label: "Brands (comma-separated)", type: "brands" },
+        { name: "heading", label: "Headline, line 1 (for search engines)", type: "text" },
+        { name: "headingLine2", label: "Headline, line 2 (for search engines)", type: "text" },
+        { name: "subheading", label: "Subheading (for search engines)", type: "textarea" },
+        { name: "ctaText", label: "Primary button text", type: "text" },
+        { name: "ctaLink", label: "Primary button link", type: "text" },
+        { name: "secondaryCtaText", label: "Secondary button text", type: "text" },
+        { name: "secondaryCtaLink", label: "Secondary button link", type: "text" },
       ],
     },
     {

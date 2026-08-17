@@ -82,6 +82,7 @@ export function Services() {
   return (
     <section
       ref={sectionRef}
+      id="services"
       className="relative px-2 md:px-4 lg:px-6 py-4"
       style={{ backgroundColor: "#0C0A3E" }}
       data-testid="services-section"

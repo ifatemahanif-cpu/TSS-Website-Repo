@@ -1,0 +1,158 @@
+<!doctype html>
+<!--
+  Source for client/public/opengraph.jpg — the share card for the homepage.
+
+  Rendered at 1200x630 by `npm run og:home` (script/render-og.ts), which
+  screenshots this file with headless Chrome. Edit here, re-run, commit the jpg.
+
+  It is the hero's resting frame, held still: the line the film distils down
+  to, the stitch drawn under "stories.", and the four numbered offerings on
+  their rules. The card is deliberately not a screenshot of the page — a
+  screenshot would carry the animation's half-states and the browser chrome —
+  but it uses the hero's own type, spacing and accent so the two read as one
+  thing when someone clicks through.
+
+  Unfurls render small, so the line is the one element sized to survive a
+  thumbnail; the offerings are there for the people who see it full size.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400&family=JetBrains+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #0c0a3e;
+        color: #fff;
+        font-family: 'Inter', system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 80px 68px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* The site paints a grain over everything; flat navy reads cheaper. */
+      body::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 0);
+        background-size: 3px 3px;
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 15px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.62);
+        text-align: center;
+      }
+
+      /* The hero's resting line: Libre Baskerville 700, tight and centred. */
+      h1 {
+        font-family: 'Libre Baskerville', Georgia, serif;
+        font-weight: 700;
+        font-size: 118px;
+        line-height: 1.06;
+        letter-spacing: -0.045em;
+        text-align: center;
+      }
+
+      /* "stories." carries the film's two marks: the stitch and the sparkle. */
+      .stories {
+        position: relative;
+        display: inline-block;
+        font-style: italic;
+      }
+
+      .stories::after {
+        content: '';
+        position: absolute;
+        right: 0.06em;
+        bottom: -0.02em;
+        left: 0.04em;
+        height: 6px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, transparent, #c36cc1 14%, #edb8eb 52%, #c36cc1 86%, transparent);
+      }
+
+      .sparkle {
+        position: absolute;
+        top: -0.24em;
+        right: -0.07em;
+        width: 0.27em;
+        height: 0.27em;
+        color: #cf81cd;
+      }
+
+      /* The four offerings, on their rules, exactly as the hero rests them. */
+      .offers {
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        list-style: none;
+      }
+
+      .offers li {
+        flex: 1 1 0;
+        max-width: 244px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: left;
+      }
+
+      .offers .n {
+        display: block;
+        margin-bottom: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 2.2px;
+        color: #cf81cd;
+      }
+
+      /* Sized so the longest offering still sits on one line — a single
+         wrapped item throws the row's rhythm off at thumbnail size. */
+      .offers .label {
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 1.35;
+        color: rgba(255, 255, 255, 0.86);
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">The Story Shapers Collective</p>
+
+    <h1>
+      We shape <span class="stories"
+        >stories.<svg class="sparkle" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <path
+            d="M50 6 C54 34 66 46 94 50 C66 54 54 66 50 94 C46 66 34 54 6 50 C34 46 46 34 50 6"
+            fill="currentColor"
+          />
+        </svg></span>
+    </h1>
+
+    <ul class="offers">
+      <li><span class="n">01</span><span class="label">Positioning &amp; Go-to-Market</span></li>
+      <li><span class="n">02</span><span class="label">Content &amp; Authority</span></li>
+      <li><span class="n">03</span><span class="label">Search &amp; AI Discovery</span></li>
+      <li><span class="n">04</span><span class="label">Fractional Leadership</span></li>
+    </ul>
+  </body>
+</html>

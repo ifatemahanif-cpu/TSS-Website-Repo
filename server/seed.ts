@@ -2,11 +2,22 @@ import { db } from "./db";
 import { storage } from "./storage";
 import { siteSettings, teamMembers, services, problems, whatWeDoBlocks, blogCategories, blogPosts, authors } from "@shared/schema";
 import bcrypt from "bcryptjs";
+import { HERO_VERSION, HERO_CONTENT } from "@shared/hero";
 
 export async function seedDatabase() {
   const existingSettings = await storage.getAllSettings();
   const existingKeys = new Set(existingSettings.map((s) => s.key));
   const isFullySeeded = existingSettings.length > 0;
+
+  const existingHero = existingSettings.find((setting) => setting.key === "hero");
+  const existingHeroValue = existingHero?.value as Record<string, unknown> | undefined;
+
+  // Replace, don't merge — see the note in shared/hero.ts. Spreading the old
+  // value forward is what kept retired hero fields alive across rewrites.
+  if (existingHeroValue && existingHeroValue.version !== HERO_VERSION) {
+    await storage.upsertSetting("hero", HERO_CONTENT);
+    console.log(`Migrated the homepage hero to v${HERO_VERSION}`);
+  }
 
   const existingCategories = await storage.getBlogCategories();
   const needsBlogSeed = existingCategories.length === 0;
@@ -50,14 +61,7 @@ export async function seedDatabase() {
   }
 
   if (!isFullySeeded) {
-  await storage.upsertSetting("hero", {
-    label: "The Story Shapers",
-    heading: "Finally. Marketing people who <em>get it.</em>",
-    subheading: "Not an agency. Not a roster of freelancers. A collective of senior marketers who bring clarity and direction to brands that have outgrown tactics and guesswork.",
-    ctaText: "How we work →",
-    tickerLabel: "Brands we've worked with →",
-    brands: ["Art Fervour", "LBB", "Headout", "SOCIAL", "Singapore Tourism Board", "Coca-Cola", "Cadbury's", "Heinz", "Google Pixel"],
-  });
+  await storage.upsertSetting("hero", HERO_CONTENT);
 
   await storage.upsertSetting("problem", {
     label: "THE PROBLEM",
