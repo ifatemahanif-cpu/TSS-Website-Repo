@@ -39,14 +39,22 @@ type Token = {
 const w = (k: string, t: string): Token => ({ k, t });
 const d = (doodle: Token["doodle"]): Token => ({ k: `doodle-${doodle}`, doodle });
 /** Forces the line to wrap here, so breaks are authored rather than accidental. */
-const br = (): Token => ({ k: "br", br: true });
+const br = (n: number): Token => ({ k: `br-${n}`, br: true });
 
+/**
+ * Three authored lines per beat. The type is sized to fill the screen it is
+ * standing on, and at that size these sentences no longer fit on two lines —
+ * left to the browser they broke wherever they ran out of room, orphaning
+ * "Shapers." and "brands" onto lines of their own. Breaking them here instead
+ * keeps a steady three-line block through the whole film and lets each beat
+ * land on the phrase that matters: the brand name, the crew, the promise.
+ */
 const BEATS: Token[][] = [
-  [w("hello", "Hello."), d("smiley"), br(), w("we", "We"), w("are", "are"), w("the", "The"), w("story-name", "Story"), w("shapers", "Shapers.")],
-  [w("we", "We"), w("are", "are"), w("a", "a"), w("senior", "senior-led"), br(), w("marketing", "marketing"), w("collective", "collective."), d("crew")],
-  [w("we", "We"), w("make", "make"), w("growing", "growing"), w("brands", "brands"), br(), w("impossible", "impossible"), w("to", "to"), w("ignore", "ignore."), d("eye")],
-  [w("we", "We"), w("market", "market"), w("brands", "brands"), br(), w("for", "for"), w("who", "who"), w("they", "they"), w("really", "really"), w("are", "are."), d("heart")],
-  [w("who", "Who"), w("they", "they"), w("really", "really"), w("are", "are"), br(), w("is", "is"), w("the", "the"), w("story", "story"), w("we", "we"), w("shape", "shape.")],
+  [w("hello", "Hello."), d("smiley"), br(1), w("we", "We"), w("are", "are"), w("the", "The"), br(2), w("story-name", "Story"), w("shapers", "Shapers.")],
+  [w("we", "We"), w("are", "are"), w("a", "a"), br(1), w("senior", "senior-led"), w("marketing", "marketing"), br(2), w("collective", "collective."), d("crew")],
+  [w("we", "We"), w("make", "make"), br(1), w("growing", "growing"), w("brands", "brands"), br(2), w("impossible", "impossible"), w("to", "to"), w("ignore", "ignore."), d("eye")],
+  [w("we", "We"), w("market", "market"), w("brands", "brands"), br(1), w("for", "for"), w("who", "who"), w("they", "they"), br(2), w("really", "really"), w("are", "are."), d("heart")],
+  [w("who", "Who"), w("they", "they"), w("really", "really"), w("are", "are"), br(1), w("is", "is"), w("the", "the"), w("story", "story"), br(2), w("we", "we"), w("shape", "shape.")],
   [w("we", "We"), w("shape", "shape"), w("story", "stories.")],
 ];
 
@@ -216,6 +224,10 @@ export function Hero() {
   const [phase, setPhase] = useState(initialPhase);
   const [clearing, setClearing] = useState(false);
   const [coldStart] = useState(() => initialPhase() >= REST);
+  // The words travelling through the current cut. They take the accent as the
+  // rest of the sentence breaks apart and hold it until they have landed, so
+  // it reads as the same words being carried forward rather than a new line.
+  const [carried, setCarried] = useState<Set<string>>(() => new Set());
   const resting = phase >= REST;
 
   // Keys that survive the upcoming cut — during clearing, everything else scatters.
@@ -245,7 +257,10 @@ export function Hero() {
     // Hold stage, pause-aware: the clock stops while the tab is hidden.
     let timer = 0;
     const start = () => {
-      timer = window.setTimeout(() => setClearing(true), BEAT_HOLD_MS[phase]);
+      timer = window.setTimeout(() => {
+        setCarried(new Set(BEATS[phase].map((t) => t.k).filter((k) => survivorKeys.has(k))));
+        setClearing(true);
+      }, BEAT_HOLD_MS[phase]);
     };
     const handleVisibility = () => {
       window.clearTimeout(timer);
@@ -259,6 +274,14 @@ export function Hero() {
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [phase, clearing]);
+
+  // Once the carried words have landed, they resolve back to white. Held a
+  // little past the glide so the eye registers where they ended up.
+  useEffect(() => {
+    if (clearing || carried.size === 0) return;
+    const timer = window.setTimeout(() => setCarried(new Set()), 1000);
+    return () => window.clearTimeout(timer);
+  }, [clearing, carried, phase]);
 
   // Scrolling away cuts to the resting line — the page never scrolls against
   // a half-told story. Clicks and keys are deliberately not skips.
@@ -293,33 +316,56 @@ export function Hero() {
               if (token.br) return <span key={token.k} className="story-hero__break" aria-hidden="true" />;
               const DoodleBody = token.doodle ? DOODLES[token.doodle] : null;
               return (
+                /* Two elements, deliberately. The outer one does nothing but
+                   glide: `layout` moves it by transform. The inner one runs
+                   the entrance and the break-away, which also animate
+                   transform. On one element the variant won the transform and
+                   the glide could only move a word sideways — it jumped
+                   between lines instead of travelling, which is exactly where
+                   the cut felt like a jolt. */
                 <motion.span
                   layout
                   key={token.k}
                   className={token.doodle ? "story-hero__doodle" : "story-hero__word"}
-                  variants={wordVariants}
-                  custom={index}
-                  initial="hidden"
-                  animate={clearing && !survivorKeys.has(token.k) ? "gone" : "shown"}
-                  transition={{ layout: { duration: 0.65, ease: EASE_OUT } }}
+                  /* Not at rest: every word of the last line is carried, so
+                     marking them turns the whole payoff pink. It lands white. */
+                  data-carried={!token.doodle && !resting && carried.has(token.k) ? "" : undefined}
+                  transition={{ layout: { duration: 0.78, ease: EASE_OUT } }}
                 >
-                  {DoodleBody ? (
-                    <DoodleBody />
-                  ) : token.k === "story" && resting ? (
-                    <span className="story-hero__stories">
-                      {token.t}
-                      <span className="story-hero__stitch" />
-                      <Sparkle delay={restDelay(1.8, 0.6)} />
-                    </span>
-                  ) : (
-                    token.t
-                  )}
+                  <motion.span
+                    className="story-hero__word-body"
+                    variants={wordVariants}
+                    custom={index}
+                    initial="hidden"
+                    animate={clearing && !survivorKeys.has(token.k) ? "gone" : "shown"}
+                  >
+                    {DoodleBody ? (
+                      <DoodleBody />
+                    ) : token.k === "story" && resting ? (
+                      <span className="story-hero__stories">
+                        {token.t}
+                        <span className="story-hero__stitch" />
+                        <Sparkle delay={restDelay(1.8, 0.6)} />
+                      </span>
+                    ) : (
+                      token.t
+                    )}
+                  </motion.span>
                 </motion.span>
               );
             })}
           </p>
         </div>
 
+        {/* Collapsed to nothing while the film runs. These are invisible then,
+            but they were still holding their place in the layout, which pushed
+            the sentence up into the top half of the screen. */}
+        <div
+          className="story-hero__support"
+          data-resting={resting || undefined}
+          data-cold={coldStart || undefined}
+        >
+          <div className="story-hero__support-inner">
         <ul className="story-hero__offers">
           {OFFERS.map((offer, index) => (
             <motion.li
@@ -363,6 +409,8 @@ export function Hero() {
             <span>{heroData.secondaryCtaText}</span>
           </a>
         </motion.div>
+          </div>
+        </div>
       </div>
 
       {!resting && (
