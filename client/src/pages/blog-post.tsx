@@ -13,7 +13,7 @@ const ALLOWED_TAGS = [
 ];
 const ALLOWED_ATTRS = [
   "href", "src", "alt", "title", "target", "rel", "class", "id",
-  "width", "height", "frameborder", "allowfullscreen", "allow", "loading",
+  "width", "height", "frameborder", "allowfullscreen", "allow", "loading", "decoding",
 ];
 
 // Canonical origin for URLs baked into metadata. window.location.href can't be
@@ -50,6 +50,18 @@ function sanitizeHtml(html: string): string {
     }
   });
 
+  // Posts written before the editor started tagging images have no loading hint,
+  // so every picture in them downloads up front whether or not the reader ever
+  // scrolls that far. Defaulting them here fixes the back catalogue too, without
+  // having to rewrite stored content.
+  DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+    if (node.nodeName === "IMG") {
+      const el = node as Element;
+      if (!el.getAttribute("loading")) el.setAttribute("loading", "lazy");
+      if (!el.getAttribute("decoding")) el.setAttribute("decoding", "async");
+    }
+  });
+
   const clean = DOMPurify.sanitize(html, {
     ALLOWED_TAGS,
     ALLOWED_ATTR: ALLOWED_ATTRS,
@@ -59,8 +71,9 @@ function sanitizeHtml(html: string): string {
     FORBID_TAGS: ["script", "style"],
   });
 
-  // Remove the hook after each call to avoid accumulation
+  // Remove the hooks after each call to avoid accumulation
   DOMPurify.removeHook("uponSanitizeElement");
+  DOMPurify.removeHook("afterSanitizeAttributes");
 
   return clean;
 }

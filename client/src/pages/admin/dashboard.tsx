@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/schema";
+import { uploadImage as uploadImageFile } from "@/lib/image-upload";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
 type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios" | "security";
@@ -894,15 +895,17 @@ function TeamEditor() {
 
   const uploadImage = async (id: number, file: File) => {
     setUploading(id);
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    const { url } = await res.json();
-    setEditData((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], image: url },
-    }));
-    setUploading(null);
+    try {
+      const { url } = await uploadImageFile(file);
+      setEditData((prev) => ({
+        ...prev,
+        [id]: { ...prev[id], image: url },
+      }));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to upload image");
+    } finally {
+      setUploading(null);
+    }
   };
 
   const addMember = async () => {
@@ -1773,15 +1776,10 @@ function BlogPostsEditor() {
   const uploadImage = async (file: File) => {
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      if (!res.ok) {
-        alert("Failed to upload image");
-        return;
-      }
-      const { url } = await res.json();
+      const { url } = await uploadImageFile(file);
       setEditingPost((prev) => prev ? { ...prev, featuredImage: url } : prev);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to upload image");
     } finally {
       setUploading(false);
     }
@@ -2232,12 +2230,10 @@ function AuthorsEditor() {
   const uploadPhoto = async (id: number, file: File) => {
     setUploading(id);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      if (!res.ok) { alert("Upload failed"); return; }
-      const { url } = await res.json();
+      const { url } = await uploadImageFile(file);
       setEditData((prev) => ({ ...prev, [id]: { ...prev[id], photo: url } }));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setUploading(null);
     }
@@ -2475,13 +2471,10 @@ function PortfoliosEditor() {
   const upload = async (file: File, onUrl: (u: string) => void) => {
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const r = await fetch("/api/upload", { method: "POST", body: fd });
-      if (r.ok) {
-        const { url } = await r.json();
-        onUrl(url);
-      }
+      const { url } = await uploadImageFile(file);
+      onUrl(url);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to upload image");
     } finally { setUploading(false); }
   };
 

@@ -5,6 +5,7 @@ import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Node, mergeAttributes } from "@tiptap/core";
 import { useEffect, useCallback, useRef, useState } from "react";
+import { uploadImage } from "@/lib/image-upload";
 
 const VIDEO_HOSTS = ["youtube.com", "youtube-nocookie.com", "vimeo.com", "player.vimeo.com", "www.youtube.com", "www.youtube-nocookie.com"];
 
@@ -85,18 +86,27 @@ const menuBtnActiveStyle: React.CSSProperties = {
   borderColor: "rgba(123,30,122,0.6)",
 };
 
-async function uploadImageFile(file: File): Promise<string | null> {
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    if (!res.ok) return null;
-    const { url } = await res.json();
-    return url || null;
-  } catch {
-    return null;
-  }
-}
+// Body images carry their own dimensions so the browser can reserve space before
+// they load, and default to lazy so a post full of pictures does not download all
+// of them up front. The article's featured image is rendered separately and stays
+// eager, since it is the one the reader sees first.
+const BlogImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      width: { default: null },
+      height: { default: null },
+      loading: { default: "lazy" },
+      decoding: { default: "async" },
+    };
+  },
+});
+
+// Pasting from Google Docs or Word can carry images as inline base64. TipTap would
+// embed those straight into the post body, where they count against the same 4.5 MB
+// ceiling on every save — a few of them and the whole draft stops saving. Uploaded
+// images are referenced by a short URL instead, so they never bloat the document.
+const DATA_URI_IMG = /<img[^>]+src\s*=\s*["']data:[^"']*["'][^>]*>/gi;
 
 function MenuBar({ editor, onPickImage, uploading }: { editor: ReturnType<typeof useEditor>; onPickImage: () => void; uploading: boolean }) {
   if (!editor) return null;
@@ -179,12 +189,13 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: { levels: [2, 3] } }),
       Link.configure({ openOnClick: false, HTMLAttributes: { target: "_blank", rel: "noopener noreferrer" } }),
-      Image.configure({ inline: false, allowBase64: true }),
+      BlogImage.configure({ inline: false, allowBase64: false }),
       Placeholder.configure({ placeholder: "Start writing your blog post..." }),
       VideoEmbed,
     ],
@@ -202,6 +213,15 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           "color: rgba(255,255,255,0.85)",
         ].join(";"),
       },
+      transformPastedHTML: (html) => {
+        const stripped = html.replace(DATA_URI_IMG, "");
+        if (stripped !== html) {
+          setNotice(
+            "Images pasted straight from Google Docs or Word can't be saved with the post, so they were left out. Save them to your computer first, then use Upload IMG or drag them in."
+          );
+        }
+        return stripped;
+      },
       handlePaste: (_view, event) => {
         const items = event.clipboardData?.items;
         if (!items) return false;
@@ -211,7 +231,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
             const file = item.getAsFile();
             if (file) {
               event.preventDefault();
-              handleFileUpload(file);
+              handleFiles([file]);
               return true;
             }
           }
@@ -224,7 +244,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           const imageFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
           if (imageFiles.length > 0) {
             event.preventDefault();
-            imageFiles.forEach((f) => handleFileUpload(f));
+            handleFiles(imageFiles);
             return true;
           }
         }
@@ -233,16 +253,29 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
     },
   });
 
-  const handleFileUpload = useCallback(async (file: File) => {
+  // Uploads run one at a time on purpose. They all insert at the caret, so letting
+  // them finish out of order would scramble the order of a batch of dropped images.
+  const handleFiles = useCallback(async (files: File[]) => {
     if (!editor) return;
     setUploading(true);
-    const url = await uploadImageFile(file);
-    setUploading(false);
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    } else {
-      alert("Failed to upload image.");
+    setNotice(null);
+    const failures: string[] = [];
+
+    for (const file of files) {
+      try {
+        const { url, width, height } = await uploadImage(file);
+        editor
+          .chain()
+          .focus()
+          .insertContent({ type: "image", attrs: { src: url, width: width || null, height: height || null } })
+          .run();
+      } catch (err) {
+        failures.push(err instanceof Error ? err.message : `"${file.name}" could not be uploaded.`);
+      }
     }
+
+    setUploading(false);
+    if (failures.length) setNotice(failures.join(" "));
   }, [editor]);
 
   const onPickImage = useCallback(() => {
@@ -250,10 +283,10 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   }, []);
 
   const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) handleFileUpload(file);
+    const files = Array.from(e.target.files || []);
+    if (files.length) handleFiles(files);
     e.target.value = "";
-  }, [handleFileUpload]);
+  }, [handleFiles]);
 
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
@@ -281,11 +314,48 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         ref={fileInputRef}
         type="file"
         accept="image/*"
+        multiple
         style={{ display: "none" }}
         onChange={onFileChange}
         data-testid="rte-image-file-input"
       />
       <MenuBar editor={editor} onPickImage={onPickImage} uploading={uploading} />
+      {notice && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "0.75rem",
+            padding: "0.6rem 0.75rem",
+            backgroundColor: "rgba(220,120,60,0.12)",
+            borderTop: "1px solid rgba(220,120,60,0.3)",
+            borderBottom: "1px solid rgba(220,120,60,0.3)",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.75rem",
+            lineHeight: 1.5,
+            color: "rgba(255,225,205,0.92)",
+          }}
+          data-testid="rte-notice"
+        >
+          <span style={{ flex: 1 }}>{notice}</span>
+          <button
+            type="button"
+            onClick={() => setNotice(null)}
+            style={{
+              background: "none",
+              border: "none",
+              color: "rgba(255,225,205,0.6)",
+              cursor: "pointer",
+              fontSize: "0.9rem",
+              lineHeight: 1,
+              padding: 0,
+            }}
+            aria-label="Dismiss"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <EditorContent editor={editor} />
       {dragActive && (
         <div
