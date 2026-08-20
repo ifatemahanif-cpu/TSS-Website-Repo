@@ -1,0 +1,65 @@
+/**
+ * Points CMS image URLs at the small static copies the build produces.
+ *
+ * /api/images/<id> serves whatever was originally uploaded — for the older rows
+ * that is a photograph of several megabytes, handed over to fill a card or a
+ * sixty-pixel thumbnail. script/optimize-images.ts writes resized WebP copies to
+ * /img/ during the build, and this is what makes the site ask for those.
+ *
+ * Anything that is not a CMS image URL is returned untouched, so bundled assets
+ * and remote URLs pass straight through.
+ */
+
+/** Widest the image will ever be drawn. "sm" covers cards, thumbnails, avatars. */
+export type ImageSize = "full" | "sm";
+
+const CMS_IMAGE = /^\/api\/images\/(\d+)$/;
+
+export function imageSrc(src: string | null | undefined, size: ImageSize = "full"): string {
+  if (!src) return "";
+  const match = CMS_IMAGE.exec(src);
+  if (!match) return src;
+  return size === "sm" ? `/img/${match[1]}.sm.webp` : `/img/${match[1]}.webp`;
+}
+
+/**
+ * onError handler that falls back to the original API URL.
+ *
+ * A post published since the last build has no static copy yet — the deploy hook
+ * will generate one within a couple of minutes, but its picture has to show in
+ * the meantime. The guard stops a genuinely missing image from looping.
+ */
+export function fallbackToOriginal(src: string | null | undefined) {
+  return (event: { currentTarget: HTMLImageElement }) => {
+    const img = event.currentTarget;
+    if (!src || img.dataset.fellBack === "true") return;
+    img.dataset.fellBack = "true";
+    img.src = src;
+  };
+}
+
+/**
+ * Same fallback for images inside post bodies, which are raw HTML run through
+ * DOMPurify and so cannot carry an inline handler. Called on the rendered
+ * container after the article paints.
+ */
+export function applyBodyImageFallbacks(container: HTMLElement | null) {
+  if (!container) return;
+  for (const img of Array.from(container.querySelectorAll("img"))) {
+    const original = img.dataset.originalSrc;
+    if (!original || img.dataset.fellBack === "true") continue;
+
+    const revert = () => {
+      if (img.dataset.fellBack === "true") return;
+      img.dataset.fellBack = "true";
+      img.src = original;
+    };
+
+    // The browser starts fetching these the moment the HTML is injected, which
+    // is before this runs. One that has already failed by now will never fire
+    // another error event, so listening alone silently misses it — the finished
+    // -but-empty case has to be caught by inspection instead.
+    if (img.complete && img.naturalWidth === 0) revert();
+    else img.addEventListener("error", revert, { once: true });
+  }
+}
