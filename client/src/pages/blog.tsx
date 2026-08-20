@@ -495,11 +495,15 @@ export default function Blog() {
                         overflow: "hidden",
                         cursor: "pointer",
                         display: "grid",
-                        gridTemplateColumns: featuredPost.featuredImage ? "1fr 1fr" : "1fr",
                         minHeight: "340px",
                         transition: "border-color 0.3s",
                       }}
-                      className="hover:border-[rgba(123,30,122,0.5)] md:grid-cols-2 grid-cols-1"
+                      // The column count lives in the class list, not in the
+                      // style object. It was in both, and the inline copy won —
+                      // so the responsive classes below never applied and the
+                      // card stayed two columns on a phone, wrapping the
+                      // headline down a narrow strip beside the picture.
+                      className={`hover:border-[rgba(123,30,122,0.5)] grid-cols-1${featuredPost.featuredImage ? " md:grid-cols-2" : ""}`}
                       data-testid="card-featured-post"
                     >
                       {featuredPost.featuredImage && (
