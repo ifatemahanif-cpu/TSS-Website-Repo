@@ -60,7 +60,12 @@ export default function TeamPage() {
             LOADING…
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
+          // Three across from tablet up, stacked on a phone. The column count
+          // used to be an inline repeat(3, 1fr), which held at every width and
+          // squeezed all three cards into a 390px screen — headlines came out a
+          // word per line. It stays in the class list precisely so it can be
+          // overridden by breakpoint; an inline grid-template-columns cannot be.
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "1.25rem" }}>
             {(members || []).map((member, idx) => (
               <MemberCard key={member.slug} member={member} idx={idx} />
             ))}
@@ -94,10 +99,25 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
   const portrait = (member.hero as HeroBlock).portrait;
   const subtext = (member.hero as HeroBlock).subtext;
 
+  // Where to crop each portrait. The card is 4:3 and the source photos are tall,
+  // so only about half of each image's height survives — which half has to be
+  // chosen per photo or a face ends up sliced.
+  //
+  // Aakanksha's is a full-length shot: her face sits roughly a quarter of the way
+  // down a 3000x4500 frame, and "center center" started the visible window at
+  // exactly that point, cutting her off at the eyes. A Y percentage of 16 opens
+  // the window at about 8% of the image instead, which clears the top of her head.
   const photoPosition =
-    member.slug === "aakanksha" ? "center center" :
+    member.slug === "aakanksha" ? "center 16%" :
     member.slug === "shaili" ? "center calc(50% + 35px)" :
     "center calc(50% + 15px)";
+
+  // Panning alone still left her much further away than the other two, which are
+  // head-and-shoulders: three cards in a row, one of them a full-length shot,
+  // reads as a mistake. Scaling in about her face brings her to the same distance.
+  // The source is 3000x4500, so there is far more resolution here than the card
+  // needs even after the zoom. The card already clips.
+  const photoZoom = member.slug === "aakanksha" ? 1.45 : 1;
 
   return (
     <motion.div
@@ -121,7 +141,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
           <img
             src={portrait}
             alt={member.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: photoPosition }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: photoPosition, transform: `scale(${photoZoom})`, transformOrigin: "center 25%" }}
             data-testid={`img-member-${member.slug}`}
           />
         ) : (
