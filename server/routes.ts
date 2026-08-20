@@ -14,6 +14,27 @@ import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, ins
 import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
 import { sendSlackNotification } from "./slack";
 
+/**
+ * Asks Vercel to rebuild the site.
+ *
+ * Blog articles are prerendered to static HTML during the build, so a post
+ * published between deploys has no page of its own. It falls through to the SPA
+ * shell — the reader gets there eventually, but a crawler that does not run
+ * JavaScript sees nothing, and the article stays invisible to search until
+ * something else triggers a deploy. A rebuild settles it in a couple of minutes.
+ *
+ * Inert until VERCEL_DEPLOY_HOOK_URL is set. Deliberately fire-and-forget: the
+ * post is already saved by the time this runs, and publishing must not fail
+ * because a rebuild could not be started.
+ */
+function requestRebuild(reason: string): void {
+  const hook = process.env.VERCEL_DEPLOY_HOOK_URL;
+  if (!hook) return;
+  fetch(hook, { method: "POST" })
+    .then((res) => console.log(`[deploy-hook] ${reason} -> ${res.status}`))
+    .catch((err) => console.error("[deploy-hook] could not start rebuild:", err));
+}
+
 function coerceBlogPostBody(body: Record<string, unknown>): Record<string, unknown> {
   const coerced = { ...body };
   if (typeof coerced.publishedAt === "string") coerced.publishedAt = new Date(coerced.publishedAt as string);
@@ -584,6 +605,8 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       const post = await storage.createBlogPost({ title: data.title || "Untitled", slug: data.slug || `untitled-${Date.now()}`, ...data });
       if (data.featured) await storage.setFeaturedPost(post.id);
       res.json(post);
+
+      if (data.status === "published") requestRebuild(`new post ${post.slug}`);
     } catch (err: any) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: "Invalid data", errors: err.errors });
       if (err?.message?.includes("unique")) return res.status(409).json({ message: "A post with this slug already exists" });
@@ -616,6 +639,8 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
       // Send new post notifications after responding (non-blocking)
       if (isPublishing) {
+        requestRebuild(`published ${post.slug}`);
+
         storage.getActiveEmailSubscribers().then((subs) => {
           if (subs.length === 0) return;
           return sendNewPostNotification(

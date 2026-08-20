@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "wouter";
+import { imageSrc, fallbackToOriginal, applyBodyImageFallbacks } from "@/lib/image-src";
 import { motion } from "framer-motion";
 import DOMPurify from "dompurify";
 import { Navbar } from "@/components/layout/Navbar";
@@ -14,6 +15,7 @@ const ALLOWED_TAGS = [
 const ALLOWED_ATTRS = [
   "href", "src", "alt", "title", "target", "rel", "class", "id",
   "width", "height", "frameborder", "allowfullscreen", "allow", "loading", "decoding",
+  "fetchpriority",
 ];
 
 // Canonical origin for URLs baked into metadata. window.location.href can't be
@@ -50,16 +52,35 @@ function sanitizeHtml(html: string): string {
     }
   });
 
-  // Posts written before the editor started tagging images have no loading hint,
-  // so every picture in them downloads up front whether or not the reader ever
-  // scrolls that far. Defaulting them here fixes the back catalogue too, without
-  // having to rewrite stored content.
+  // Pictures in the post body. The content is stored as raw HTML, so this is the
+  // only place their loading behaviour can be set.
+  //
+  // Every one of them loads on arrival. This used to mark them all lazy, which is
+  // why an article's images crawled in a frame at a time as you scrolled — but
+  // lazy was never the real cost. The stored files were the originals, several
+  // megabytes each, so a deferred image meant seconds of empty frame. They are
+  // now pointed at the resized copies the build writes, small enough that there
+  // is nothing left to gain by holding any of them back.
+  let imagesSeen = 0;
   DOMPurify.addHook("afterSanitizeAttributes", (node) => {
-    if (node.nodeName === "IMG") {
-      const el = node as Element;
-      if (!el.getAttribute("loading")) el.setAttribute("loading", "lazy");
-      if (!el.getAttribute("decoding")) el.setAttribute("decoding", "async");
+    if (node.nodeName !== "IMG") return;
+    const el = node as Element;
+
+    const original = el.getAttribute("src");
+    const resized = imageSrc(original, "full");
+    if (original && resized !== original) {
+      // Kept so the article still shows its pictures when a post is newer than
+      // the last build and has no static copies yet. See applyBodyImageFallbacks.
+      el.setAttribute("data-original-src", original);
+      el.setAttribute("src", resized);
     }
+
+    // Set rather than defaulted: older posts have loading="lazy" baked into the
+    // stored HTML by the editor, and that has to be overridden, not respected.
+    el.setAttribute("loading", "eager");
+    el.setAttribute("decoding", "async");
+    if (imagesSeen === 0) el.setAttribute("fetchpriority", "high");
+    imagesSeen++;
   });
 
   const clean = DOMPurify.sanitize(html, {
@@ -270,9 +291,13 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
     >
       {author.photo && (
         <img
-          src={author.photo}
+          src={imageSrc(author.photo, "sm")}
+          onError={fallbackToOriginal(author.photo)}
           alt={author.name}
-          style={{ width: "64px", height: "64px", borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(167,139,250,0.3)" }}
+          decoding="async"
+          width={64}
+          height={64}
+          style={{ width: "64px", height: "64px", borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(167,139,250,0.3)", backgroundColor: "rgba(255,255,255,0.06)", color: "transparent" }}
           data-testid="img-author-photo"
         />
       )}
@@ -404,10 +429,18 @@ function RelatedPosts({ slug, categories }: { slug: string; categories: any[] })
               data-testid={`related-post-${post.id}`}
             >
               {post.featuredImage && (
+                // Sixty pixels of thumbnail. The stored file behind one of these
+                // can be nine megabytes, which is why these alone used to cost an
+                // article page more than its own photographs did. The "sm" copy
+                // is a few kilobytes, so it simply loads with everything else.
                 <img
-                  src={post.featuredImage}
+                  src={imageSrc(post.featuredImage, "sm")}
+                  onError={fallbackToOriginal(post.featuredImage)}
                   alt={post.title}
-                  style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "6px", flexShrink: 0 }}
+                  decoding="async"
+                  width={60}
+                  height={60}
+                  style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "6px", flexShrink: 0, backgroundColor: "rgba(255,255,255,0.06)", color: "transparent" }}
                 />
               )}
               <div style={{ flex: 1 }}>
@@ -440,6 +473,14 @@ export default function BlogPost() {
   const { data: post, isLoading, error } = useBlogPost(slug);
   const { data: categories } = useBlogCategories();
   const { data: authors } = useBlogAuthors();
+
+  // Pictures inside the article body are raw HTML, so they cannot carry an
+  // onError prop the way the ones around them do. This wires up the same
+  // fallback once the body has painted.
+  const bodyRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    applyBodyImageFallbacks(bodyRef.current);
+  }, [post?.content]);
 
   const getCategoryName = (categoryId: number | null) => {
     if (!categoryId || !categories) return null;
@@ -611,7 +652,11 @@ export default function BlogPost() {
                   const author = post.authorId ? authorList.find((a) => a.id === post.authorId) : null;
                   return author?.photo ? (
                     <a href="#author" style={{ flexShrink: 0, textDecoration: "none" }}>
-                      <img src={author.photo} alt={author.name} style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(167,139,250,0.3)" }} />
+                      {/* The tinted background holds the circle while the photo
+                          is in flight, and transparent text keeps the name from
+                          spilling across 32 pixels as alt text in the meantime.
+                          Screen readers still get it. */}
+                      <img src={imageSrc(author.photo, "sm")} onError={fallbackToOriginal(author.photo)} alt={author.name} width={32} height={32} style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(167,139,250,0.3)", backgroundColor: "rgba(255,255,255,0.06)", color: "transparent" }} />
                     </a>
                   ) : null;
                 })()}
@@ -635,10 +680,16 @@ export default function BlogPost() {
 
           {post.featuredImage && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-10">
+              {/* The picture at the top of the article. Nothing on the page
+                  matters more, so it is fetched at priority. */}
               <img
-                src={post.featuredImage}
+                src={imageSrc(post.featuredImage, "full")}
+                onError={fallbackToOriginal(post.featuredImage)}
                 alt={post.title}
-                style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.08)" }}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                style={{ width: "100%", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" }}
                 data-testid="img-featured"
               />
             </motion.div>
@@ -649,6 +700,7 @@ export default function BlogPost() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="blog-content"
+            ref={bodyRef}
             style={{ fontFamily: "'Inter', sans-serif", fontSize: "1.05rem", color: "rgba(255, 255, 255, 0.82)", lineHeight: 1.85 }}
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
             data-testid="text-post-content"

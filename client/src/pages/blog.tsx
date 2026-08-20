@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { useBlogPosts, useBlogCategories, useFeaturedPost, useCmsSettings } from "@/hooks/use-cms";
+import { imageSrc, fallbackToOriginal } from "@/lib/image-src";
 import type { BlogPost } from "@shared/schema";
 
 function SubscribeModule() {
@@ -176,11 +177,20 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
           data-testid={`card-blog-post-${post.id}`}
         >
           {post.featuredImage && (
-            <div style={{ width: "100%", height: "180px", overflow: "hidden" }}>
+            // The tint holds the card's picture area while a deferred image is
+            // still coming, so a card below the fold reads as loading rather
+            // than as a hole in the grid.
+            <div style={{ width: "100%", height: "180px", overflow: "hidden", backgroundColor: "rgba(255,255,255,0.05)" }}>
+              {/* Every card loads on arrival. These fill a 180px box, and the
+                  "sm" copy is a few kilobytes, so the whole grid costs less than
+                  one of the original files did. Nothing is deferred and nothing
+                  pops in as you scroll. */}
               <img
-                src={post.featuredImage}
+                src={imageSrc(post.featuredImage, "sm")}
+                onError={fallbackToOriginal(post.featuredImage)}
                 alt={post.title}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                decoding="async"
+                style={{ width: "100%", height: "100%", objectFit: "cover", color: "transparent" }}
                 data-testid={`img-blog-post-${post.id}`}
               />
             </div>
@@ -494,9 +504,15 @@ export default function Blog() {
                     >
                       {featuredPost.featuredImage && (
                         <div style={{ overflow: "hidden", maxHeight: "400px" }}>
+                          {/* The one picture on this page that is on screen the
+                              moment it opens. It gets told to go first. */}
                           <img
-                            src={featuredPost.featuredImage}
+                            src={imageSrc(featuredPost.featuredImage, "full")}
+                            onError={fallbackToOriginal(featuredPost.featuredImage)}
                             alt={featuredPost.title}
+                            loading="eager"
+                            fetchPriority="high"
+                            decoding="async"
                             style={{ width: "100%", height: "100%", objectFit: "cover" }}
                             data-testid="img-featured-hero"
                           />

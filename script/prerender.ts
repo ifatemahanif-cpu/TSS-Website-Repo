@@ -1,7 +1,8 @@
 import express from "express";
 import path from "path";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, readFile, writeFile } from "fs/promises";
 import { existsSync } from "fs";
+import { optimizeImages } from "./optimize-images";
 
 /**
  * Prerenders the public routes of the built SPA to static HTML so that
@@ -129,6 +130,35 @@ function buildSitemap(routes: RouteDef[]): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`;
 }
 
+/**
+ * Writes the SPA fallback shell that Vercel's catch-all rewrite points at.
+ *
+ * Every URL without a matching static file falls through that rewrite, and the
+ * commonest one is an article published since the last build — prerendering
+ * happens here, at build time, so a new post has no file of its own yet.
+ *
+ * The rewrite used to land on index.html. But the snapshot loop below overwrites
+ * index.html with a full picture of the *home page*, so those readers were served
+ * the entire home page, watched it paint, and then watched React throw it away
+ * once the router read the URL they actually asked for. That is the flash.
+ *
+ * app.html is the untouched Vite shell instead: same stylesheet, same scripts, an
+ * empty #root. Nothing paints that then has to be taken back. The canonical and
+ * og:url tags are stripped on the way out — left in, they would tell a crawler
+ * that a brand new article is the home page.
+ *
+ * Called before prerendering rather than inside it, and deliberately outside the
+ * catch that lets prerendering fail soft: if this file is ever missing, every
+ * deep link on the site 404s.
+ */
+export async function writeFallbackShell() {
+  const shell = (await readFile(path.join(DIST, "index.html"), "utf-8"))
+    .replace(/[ \t]*<link rel="canonical"[^>]*>\n?/i, "")
+    .replace(/[ \t]*<meta property="og:url"[^>]*>\n?/i, "");
+  await writeFile(path.join(DIST, "app.html"), shell, "utf-8");
+  console.log("[prerender] app.html written (SPA fallback shell)");
+}
+
 async function getBrowser() {
   if (process.platform === "darwin") {
     const puppeteer = await import("puppeteer-core");
@@ -193,6 +223,18 @@ export async function prerender() {
     browser = await getBrowser();
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
+
+    // Before snapshotting anything, build the small static copies of the CMS
+    // images. Done first on purpose: the pages rendered below then load those
+    // instead of the multi-megabyte originals, so prerendering is faster too.
+    await page.goto(`http://localhost:${PORT}/`, { waitUntil: "domcontentloaded", timeout: 60000 });
+    try {
+      await optimizeImages(page, `http://localhost:${PORT}`, DIST);
+    } catch (err) {
+      // A failure here costs speed, not correctness — the client falls back to
+      // /api/images/<id> for anything without a static copy.
+      console.warn("[images] optimisation pass failed, serving originals:", err);
+    }
 
     for (const { route, title, description, image } of allRoutes) {
       const url = `http://localhost:${PORT}${route}`;

@@ -1,7 +1,7 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
 import { rm, readFile, cp } from "fs/promises";
-import { prerender } from "./prerender";
+import { prerender, writeFallbackShell } from "./prerender";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -41,6 +41,12 @@ async function buildAll() {
 
   console.log("copying attached_assets to dist/public/assets...");
   await cp("attached_assets", "dist/public/assets", { recursive: true });
+
+  // Outside the try below on purpose. Prerendering is allowed to fail and let
+  // the site ship as a plain SPA, but the catch-all rewrite points at this file
+  // either way — if it goes missing, every deep link 404s.
+  console.log("writing SPA fallback shell...");
+  await writeFallbackShell();
 
   console.log("prerendering public routes...");
   try {
