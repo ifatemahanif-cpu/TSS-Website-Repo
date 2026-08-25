@@ -1,0 +1,134 @@
+import { Link } from "wouter";
+import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
+import { CONTACT, mailto } from "@/lib/contact";
+
+const NAVY = "#0C0A3E";
+const MONO = "ui-monospace, monospace";
+
+/**
+ * The homepage footer.
+ *
+ * What it replaced was a centred logo, the email, and a copyright line — which
+ * put the same address 240px under the close, where the close had just printed
+ * it. Two prints of one address, one of them with nothing else around it, reads
+ * as an accident rather than as a footer.
+ *
+ * This is a footer's actual job: where else to go. The close is the invitation;
+ * this is the map. The address appears once more here, but now inside a column
+ * of things you can do rather than on its own as a repeat.
+ *
+ * The in-page links go to acts by id, which is what makes them useful on a page
+ * that is one long score — "The Shapers" and "The work" have no routes of their
+ * own, and on this page they do not need any.
+ */
+export function Footer() {
+  return (
+    <footer
+      data-ground="dark"
+      data-bg={NAVY}
+      style={{
+        backgroundColor: NAVY,
+        color: "#FFFFFF",
+        borderTop: "1px solid rgba(255,255,255,0.12)",
+      }}
+      className="px-[clamp(1.5rem,5vw,5rem)] pt-[clamp(3rem,8vh,5.5rem)] pb-[clamp(2rem,5vh,3rem)]"
+      data-testid="footer"
+    >
+      <div className="mx-auto w-full max-w-[78rem]">
+        <div className="grid grid-cols-2 gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="col-span-2 md:col-span-1">
+            <img
+              src={logoImg}
+              alt="The Story Shapers"
+              style={{ height: "30px", width: "auto", filter: "invert(1) brightness(2)" }}
+              data-testid="img-footer-logo"
+            />
+            <p
+              className="mt-[1.4rem] mb-0 max-w-[24rem]"
+              style={{ fontSize: "0.95rem", lineHeight: 1.6, color: "rgba(255,255,255,0.62)" }}
+            >
+              A senior-led, full-service marketing collective. You work with the
+              people who do the work.
+            </p>
+          </div>
+
+          <div>
+            <K>The site</K>
+            <ul className="m-0 grid list-none gap-[0.6rem] p-0">
+              <Item href="/our-story">Our Story</Item>
+              <Item href="#act-peak">The Shapers</Item>
+              <Item href="#act-proof">The work</Item>
+              <Item href="/blog">Blog</Item>
+              <Item href="/join">Join the collective</Item>
+            </ul>
+          </div>
+
+          <div>
+            <K>Start something</K>
+            <ul className="m-0 grid list-none gap-[0.6rem] p-0">
+              <Item href={mailto}>{CONTACT.email}</Item>
+              <Item href="#act-close">Tell us your story</Item>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-wrap justify-between gap-x-[1.4rem] gap-y-[0.6rem] pt-[1.4rem]"
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.12)",
+            fontSize: "0.8rem",
+            color: "rgba(255,255,255,0.52)",
+          }}
+        >
+          <span>© 2026 The Story Shapers</span>
+          <span>Shaped in India, read everywhere.</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function K({ children }: { children: string }) {
+  return (
+    <div
+      className="mb-4"
+      style={{
+        fontFamily: MONO,
+        fontSize: "0.66rem",
+        letterSpacing: "0.2em",
+        textTransform: "uppercase",
+        color: "rgba(255,255,255,0.5)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Item({ href, children }: { href: string; children: string }) {
+  const style = {
+    color: "rgba(255,255,255,0.84)",
+    textDecoration: "none",
+    fontSize: "0.94rem",
+  } as const;
+  const className = "transition-colors duration-200 hover:text-[#cf81cd]";
+
+  /* wouter for real routes, a plain anchor for the in-page ones and mailto —
+     routing "#act-peak" through the router navigates to a path that does not
+     exist and the reader lands on a 404 instead of three screens up */
+  const internal = href.startsWith("/");
+
+  return (
+    <li>
+      {internal ? (
+        <Link href={href} className={className} style={style}>
+          {children}
+        </Link>
+      ) : (
+        <a href={href} className={className} style={style}>
+          {children}
+        </a>
+      )}
+    </li>
+  );
+}

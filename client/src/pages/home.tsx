@@ -5,8 +5,23 @@ import { Team } from "@/components/home/Team";
 import { Work } from "@/components/home/Work";
 import { Services } from "@/components/home/Services";
 import { CTA } from "@/components/home/CTA";
-import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
+import { Footer } from "@/components/home/Footer";
 
+/**
+ * THE HOMEPAGE, AS A SCORE.
+ *
+ * Six acts in order, and the order is the argument:
+ *
+ *   the Shaping   a sentence cuts itself down to what it means
+ *   the turn      the belief underneath the work, on near-black
+ *   the peak      the three people, on the only light ground
+ *   the work      five cases, panned sideways, with the proof in them
+ *   what we do    the offer, as three stages and eighteen things
+ *   the close     the page stops moving and starts responding
+ *
+ * Every one of them is an <Act> and publishes its own ground so the fixed nav
+ * can pick its ink. Nothing here decides anything; the acts do.
+ */
 export default function Home() {
   return (
     <div style={{ backgroundColor: "#0C0A3E" }} className="min-h-screen">
@@ -24,62 +39,7 @@ export default function Home() {
         <Work />
         <Services />
         <CTA />
-        <footer
-          className="relative overflow-hidden"
-          style={{
-            backgroundColor: "#0C0A3E",
-            borderTop: "1px solid rgba(255,255,255,0.1)",
-            padding: "3rem 2rem",
-            textAlign: "center",
-            color: "#FFFFFF",
-          }}
-          data-testid="footer"
-        >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
-              backgroundSize: "28px 28px",
-            }}
-          />
-          <div className="relative z-[1]">
-            <img
-              src={logoImg}
-              alt="The Story Shapers"
-              style={{
-                height: "32px",
-                width: "auto",
-                filter: "invert(1) brightness(2)",
-                marginBottom: "1rem",
-                display: "inline-block",
-              }}
-              data-testid="img-footer-logo"
-            />
-            <a
-              href="mailto:hello@storyshaperscollective.com"
-              style={{
-                fontFamily: "'Switzer', sans-serif",
-                fontSize: "0.85rem",
-                color: "rgba(255,255,255,0.6)",
-                textDecoration: "none",
-                display: "block",
-                marginBottom: "1.5rem",
-              }}
-              data-testid="link-footer-email"
-            >
-              hello@storyshaperscollective.com
-            </a>
-            <p
-              style={{
-                fontFamily: "'Switzer', sans-serif",
-                fontSize: "0.75rem",
-                opacity: 0.4,
-              }}
-            >
-              © 2026 The Story Shapers. All rights reserved.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );
