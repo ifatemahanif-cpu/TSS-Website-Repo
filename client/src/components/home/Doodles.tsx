@@ -118,6 +118,40 @@ export function CrewDoodle({ className = "" }: { className?: string }) {
 }
 
 /**
+ * The work rail's eye. "Impossible to ignore" was a promise; this is the act
+ * where it cashes.
+ *
+ * Draws on entry for the same reason the crew does: the rail is a PINNED act,
+ * so its progress is 0 for the whole time the section climbs into view and a
+ * scroll-driven stroke would be a hole in the header until the stage locks. The
+ * lid arrives before the pupil, which is the order an eye opens in.
+ */
+export function EyeDoodle({ className = "" }: { className?: string }) {
+  const ref = useRef<SVGSVGElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15%" });
+  const reduced = useReducedMotion();
+
+  const lids = drawOnEntry(inView, reduced, 0);
+  const pupil = drawOnEntry(inView, reduced, 0.5);
+
+  return (
+    <motion.svg
+      ref={ref}
+      className={className}
+      viewBox="0 0 150 100"
+      fill="none"
+      aria-hidden="true"
+      animate={{ y: [0, -3, 0] }}
+      transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+    >
+      <motion.path d="M15 50 C40 16 110 16 135 50" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...lids} />
+      <motion.path d="M15 50 C40 84 110 84 135 50" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...lids} />
+      <motion.circle cx="75" cy="50" r="13" stroke={ACCENT} strokeWidth="5" strokeLinecap="round" transform="rotate(-90 75 50)" {...pupil} />
+    </motion.svg>
+  );
+}
+
+/**
  * The close's heart. One stroke, so it has no sequence to get wrong — it draws
  * itself and then keeps a slow beat.
  *

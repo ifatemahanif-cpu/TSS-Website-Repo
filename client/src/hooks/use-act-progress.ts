@@ -1,5 +1,5 @@
 import { useScroll, useReducedMotion, useMotionValue, type MotionValue } from "framer-motion";
-import { useRef, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 
 /**
  * Scroll progress across one PINNED act, 0 at its first frame and 1 at its last.
@@ -100,4 +100,33 @@ export function useFlowProgress(
  */
 export function useActRef() {
   return useRef<HTMLElement | null>(null);
+}
+
+/**
+ * True below `rem` rem of viewport width, live.
+ *
+ * The work rail is a lateral pan on a desktop and an ordinary vertical stack on
+ * a phone, and which one it is has to be a render decision rather than a CSS
+ * one — the pan changes the section's HEIGHT and whether it pins at all, which
+ * no media query can reach.
+ *
+ * The prototype engine read that once, at mount, and could not respond to a
+ * resize without re-mounting an act whose progress was already spent. React
+ * re-renders, so this one follows the window. Starts false so the server and
+ * the first client paint agree: the prerendered HTML has no viewport, and a
+ * desktop layout collapsing to a phone one is a less alarming first frame than
+ * the reverse.
+ */
+export function useNarrow(rem: number): boolean {
+  const [narrow, setNarrow] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${rem}rem)`);
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, [rem]);
+
+  return narrow;
 }

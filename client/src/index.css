@@ -756,3 +756,34 @@
     grid-column: span 3 !important;
   }
 }
+
+
+/* =========================================================================
+   THE BRANDS MARQUEE  (the work rail's footnote)
+
+   In CSS rather than framer for two reasons: an infinite linear loop is what
+   keyframes are for, and `animation-play-state` gives hover-to-pause for one
+   line, which no JS animation does as cheaply. The React side owns everything
+   ELSE about this strip — with motion off, or on a phone, it never renders the
+   marquee at all and becomes an ordinary wrapped list, so there is no
+   prefers-reduced-motion block here to keep in step with it.
+   ========================================================================= */
+@keyframes mqRun {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee__track { animation: mqRun 42s linear infinite; }
+.marquee:hover .marquee__track { animation-play-state: paused; }
+.marquee:hover .marquee__b { color: rgba(255, 255, 255, 0.8); }
+/* the ends fade into the ground so the loop point never shows */
+.marquee::before,
+.marquee::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: clamp(2rem, 6vw, 5rem);
+  pointer-events: none;
+  z-index: 2;
+}
+.marquee::before { left: 0; background: linear-gradient(to right, #0C0A3E, transparent); }
+.marquee::after { right: 0; background: linear-gradient(to left, #0C0A3E, transparent); }

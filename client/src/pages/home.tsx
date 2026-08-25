@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
 import { Team } from "@/components/home/Team";
+import { Work } from "@/components/home/Work";
 import { Services } from "@/components/home/Services";
 import { CTA } from "@/components/home/CTA";
 import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
@@ -20,6 +21,7 @@ export default function Home() {
             case rail does that job now, with evidence. Origin.tsx is left in
             the tree rather than deleted until the rework merges. */}
         <Team />
+        <Work />
         <Services />
         <CTA />
         <footer
