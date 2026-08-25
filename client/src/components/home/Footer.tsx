@@ -35,8 +35,12 @@ export function Footer() {
       data-testid="footer"
     >
       <div className="mx-auto w-full max-w-[78rem]">
-        <div className="grid grid-cols-2 gap-[clamp(2rem,5vw,4rem)] md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="col-span-2 md:col-span-1">
+        {/* One column on a phone. Two 150px columns at 375px could not hold
+            hello@storyshaperscollective.com, which ran straight off the right
+            of the screen — and a footer is exactly where a long address is
+            most likely to be the widest thing on the page. */}
+        <div className="grid grid-cols-1 gap-[clamp(2rem,5vw,4rem)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="sm:col-span-2 lg:col-span-1">
             <img
               src={logoImg}
               alt="The Story Shapers"
@@ -110,6 +114,12 @@ function Item({ href, children }: { href: string; children: string }) {
     color: "rgba(255,255,255,0.84)",
     textDecoration: "none",
     fontSize: "0.94rem",
+    /* `anywhere`, not `break-word`. The address is one unbreakable token, and a
+       grid track sizes itself to its MIN-CONTENT — which under break-word is
+       still the whole string, so the column refused to shrink and the email ran
+       off the right of a 768px screen. `anywhere` is the one value that also
+       lowers min-content. */
+    overflowWrap: "anywhere",
   } as const;
   const className = "transition-colors duration-200 hover:text-[#cf81cd]";
 
@@ -119,7 +129,7 @@ function Item({ href, children }: { href: string; children: string }) {
   const internal = href.startsWith("/");
 
   return (
-    <li>
+    <li className="min-w-0">
       {internal ? (
         <Link href={href} className={className} style={style}>
           {children}
