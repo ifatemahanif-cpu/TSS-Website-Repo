@@ -485,3 +485,55 @@ Merge order note from the earlier review still stands for this one: it
 conflicts in four files (`Navbar.tsx`, `use-cms.ts`, `dashboard.tsx`,
 `routes.ts`) and is cheaper to rebase onto the rework than to merge the
 rework into it.
+
+
+---
+
+# PICKING THIS UP TOMORROW — 25 Aug, end of day
+
+Nothing is merged and nothing is deployed. `home-rework` is 30 commits ahead
+of `origin/full-v1`, pushed to `fork/home-rework`, and in sync.
+
+## The merge, when you come back to it
+
+It is a **fast-forward and cannot conflict** — `full-v1` is a direct ancestor.
+The three branches that used to complicate it are gone (reviewed and removed
+25 Aug; the FAQ survives as tag `parked/tier3-faq`), so `home-rework` is now
+the only branch with unmerged work. The repo's own habit is a PR from
+`ifatemahanif-cpu:home-rework` into `TSSGh2026:full-v1`, which is how #20 went
+in. **Merging into full-v1 is what deploys to production.**
+
+## Do this before or alongside the deploy
+
+**Rotate the admin password.** `storyshapers2024` has been readable on a public
+repo and is still in git history, so treat it as compromised. `/admin` →
+Security changes it and clears every other session. Removing the line from
+replit.md (merged in from fix/security-tab-nav) stopped the bleeding; it did
+not close the hole.
+
+## Still open, and still yours
+
+- **Review item #8, the CMS divergence** — the peak's bios and the case studies
+  are constants in the repo rather than CMS rows. Untouched on purpose.
+- **Whether to narrow the CMS to blog + forms.** /our-story, /join and /contact
+  are entirely CMS-driven, so this is a decision about which pages you can edit
+  without a developer, not a cleanup.
+- **Shaili's portrait is upscaled 1.02–1.06x** on /shaili and /team. Predates
+  all of this; her source is 960x1280 and needs about 1020. Only a larger
+  photograph fixes it — upscaling adds no detail.
+- The two client-website card images (permissions), the `body::after` noise
+  texture, and the LBB card's low-contrast brand label.
+- Two untracked files, not mine, left alone: `.design/hero-codex-backup/`,
+  `script/shrink-images.ts`.
+
+## Where the verification scripts live
+
+`~/scrollcraft/builds/ssc-home-rework/live/`, and `live/README.md` says which
+one answers which question. Added on 25 Aug: `cue.mjs`, `cuephase.mjs`,
+`ctawrap.mjs`, `footermap.mjs`, `footerlinks.mjs`, `footershot.mjs`,
+`weight.mjs`, `imgneed.mjs`, `built.mjs`, `srcs.mjs`, `shots25.mjs`.
+
+`built.mjs` is the one to reach for first now — it is the only check that sees
+the site as built with the real API, which is what the dev server cannot do.
+Start the server it needs with the snippet in this file's git history, or run
+`npm run build` and serve `dist/public` with `/api` proxied to production.
