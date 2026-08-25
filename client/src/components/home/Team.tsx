@@ -1,874 +1,390 @@
-import { useRef, useEffect, useState, useCallback } from "react";
-import { Link } from "wouter";
-import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
-import { SectionLabel } from "./SectionAnimations";
-import { GradientBlobs, teamBlobs } from "./GradientBlobs";
-import { useCmsSettings, useCmsTeam } from "@/hooks/use-cms";
-import teamFatema from "@assets/54b8c761-3071-4f74-8057-1840518e15a6_1772266999973.jpg";
-import teamShaili from "@assets/Shaili-brand-deck_1772267064740.jpeg";
-import teamAakanksha from "@assets/IMG_20260302_230326_1772542685201.jpg";
+import { motion, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
+import { Act } from "./Act";
+import { CrewDoodle } from "./Doodles";
+import fatemaPanel from "@/assets/shapers/fatema-panel.jpg";
+import shailiPanel from "@/assets/shapers/shaili-panel.jpg";
+import aakankshaPanel from "@/assets/shapers/aakanksha-panel.jpg";
+import fatemaFace from "@/assets/shapers/fatema-face.jpg";
+import shailiFace from "@/assets/shapers/shaili-face.jpg";
+import aakankshaFace from "@/assets/shapers/aakanksha-face.jpg";
 
-const defaultImageMap: Record<string, string> = {
-  "Fatema Hanif": teamFatema,
-  "Shaili Contractor": teamShaili,
-  "Aakanksha Singh Devi": teamAakanksha,
-};
+const BONE = "#F4F1EA";
+const NAVY = "#0C0A3E";
+const ACCENT_DEEP = "#7b1e7a";
 
-const KNOWN_PORTFOLIO_SLUGS = new Set(["fatema", "shaili", "aakanksha"]);
+/**
+ * THE PEAK — three people, met one at a time, then together.
+ *
+ * The only light ground on the page and the only faces on it. Everything before
+ * this is type on navy; the cut to bone is the loudest thing the page does, and
+ * it is spent on the one claim the business actually rests on.
+ *
+ * WHY THE PANELS WIPE AND DO NOT FADE
+ *
+ * Fading two full-screen layers through each other put a two-eyed portrait on
+ * the screen with "Shaili Contractor" and "Aakanksha Singh Devi" on one baseline
+ * and both bios interleaved — a fifth of a thumb swipe, sitting on the climax of
+ * the page. Making the layers opaque does NOT fix it: a layer that is fading in
+ * is translucent while it does so, whatever is painted on it, so the one beneath
+ * still reads through. Any opacity cross-fade between two full-bleed layers
+ * shows both.
+ *
+ * A clip wipe never does. Every pixel belongs to exactly one panel at every
+ * moment, and an edge travelling across the frame suits a typographic poster
+ * better than a dissolve anyway.
+ *
+ * THE STACK IS THE MECHANISM
+ *
+ * Four opaque layers that only ever rise: intro at z-1, the three panels at z-2,
+ * the convergence at z-4. The intro is COVERED rather than cross-faded — fading
+ * it out under a half-opaque panel put its sentence through Fatema's name.
+ *
+ * WHERE THE COPY LIVES
+ *
+ * Here, not in the CMS. The CMS team records carry `whatSheBrings` and
+ * `decisionsLed`, and the lines below are a rewrite of both that Fatema approved
+ * on the study — wiring this to the CMS today would put the older, longer copy
+ * back on the page. The portraits are the same story: these are purpose-cut at
+ * 4:5 with a chosen focus point, and the CMS holds one 2MB uncropped JPEG and
+ * one 800x800. Re-wiring is a decision for after the rework lands, and it needs
+ * the CMS rows updated first.
+ */
 
-function getPortfolioSlug(memberName: string): string | null {
-  if (!memberName) return null;
-  const firstName = memberName.trim().split(/\s+/)[0]?.toLowerCase() || "";
-  return KNOWN_PORTFOLIO_SLUGS.has(firstName) ? firstName : null;
-}
-
-const hardcodedTeam = [
+const SHAPERS = [
   {
     name: "Fatema Hanif",
-    image: teamFatema,
-    decisionsLed: "Positioning · Go-to-market · Creator programs · Multi-market expansion",
-    contextsNavigated: "",
-    brandsLabel: "Brands",
-    brands: "Headout · Singapore Tourism Board · Coca-Cola · LBB · Art Fervour · SOCIAL",
-    whatSheBrings: [
-      "Specialises in making sure brand strategy and business reality point in the same direction. She has built marketing functions from scratch, scaled creator programs across markets, and driven brand transformations for startups and global companies.",
-    ],
+    panel: fatemaPanel,
+    face: fatemaFace,
+    does: "Positioning, go-to-market, creator programs and multi-market expansion. Builds marketing functions from scratch and makes brand strategy and business reality point the same way.",
+    brands:
+      "Headout · Singapore Tourism Board · Coca-Cola · LBB · Art Fervour · SOCIAL",
   },
   {
     name: "Shaili Contractor",
-    image: teamShaili,
-    decisionsLed: "Content strategy · Brand narrative · Editorial systems",
-    contextsNavigated: "",
-    brandsLabel: "Brands",
+    panel: shailiPanel,
+    face: shailiFace,
+    does: "Content strategy, brand narrative and editorial systems. Moves teams off scattered, ad-hoc content and onto structured storytelling that compounds into recall.",
     brands: "Heinz · Google Pixel · Bajaj · General Mills · LBB · Headout",
-    whatSheBrings: [
-      "Builds content systems that create compounding brand equity — not just output. She moves teams from scattered, ad-hoc content to structured storytelling that builds recall and credibility over time.",
-    ],
   },
   {
-    name: "Aakanksha Singh Devi",
-    image: teamAakanksha,
-    decisionsLed: "Brand narrative · Voice · Editorial positioning",
-    contextsNavigated: "",
-    brandsLabel: "Brands",
-    brands: "LBB · Headout · Cadbury's · Singapore Tourism Board · Columbia Asia",
-    whatSheBrings: [
-      "Makes brands sound like themselves — clearly, consistently, at every stage of growth. She moves teams from inconsistent messaging to a coherent voice that holds across every channel.",
-    ],
+    name: "Aakanksha Singh Devi",
+    panel: aakankshaPanel,
+    face: aakankshaFace,
+    does: "Brand narrative, voice and editorial positioning. Makes brands sound like themselves, consistently, at every stage of growth.",
+    brands:
+      "LBB · Headout · Cadbury's · Singapore Tourism Board · Columbia Asia",
   },
 ];
 
-const cardColors = [
-  { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
-  { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
-  { bg: "#0C0A3E", text: "#FFFFFF", accent: "#2A2870", overlayDark: false },
+/**
+ * intro | 01 | 02 | 03 | all three.
+ *
+ * Slots OVERLAP by one fade length, and each rises over its own first fade and
+ * is covered over its own last. Butted up with a hold at full, two panels sat at
+ * opacity 1 together and the later one simply covered the earlier: a hard cut
+ * wearing a crossfade's clothes.
+ */
+const FADE = 0.05;
+const SLOTS: [number, number][] = [
+  [-0.2, 0.12],
+  [0.07, 0.34],
+  [0.29, 0.56],
+  [0.51, 0.79],
+  [0.74, 1.3],
 ];
 
-type TeamMember = {
-  name: string;
-  image: string;
-  decisionsLed: string;
-  contextsNavigated: string;
-  brandsLabel: string;
-  brands: string;
-  whatSheBrings: string[];
-};
-
 export function Team() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const [frontCardIndex, setFrontCardIndex] = useState<number | null>(null);
-
-  const { data: settings } = useCmsSettings();
-  const { data: cmsTeamData } = useCmsTeam();
-
-  const teamSettings = settings?.team;
-
-  const team: TeamMember[] = cmsTeamData
-    ? cmsTeamData.map((m: any) => ({
-        name: m.name,
-        image: m.image?.startsWith("/") ? m.image : (defaultImageMap[m.name] || m.image),
-        decisionsLed: m.decisionsLed || "",
-        contextsNavigated: "",
-        brandsLabel: "Brands",
-        brands: m.brands || "",
-        whatSheBrings: m.whatSheBrings || [],
-      }))
-    : hardcodedTeam;
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  useEffect(() => {
-    if (expandedIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [expandedIndex]);
-
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const fanProgress = useTransform(scrollYProgress, [0.15, 0.55], [0, 1]);
-
-  const desktopFanConfigs = [
-    { rotate: -10, x: -240, y: 20 },
-    { rotate: 0, x: 0, y: -10 },
-    { rotate: 10, x: 240, y: 20 },
-  ];
-
-  const tabletFanConfigs = [
-    { rotate: -8, x: -190, y: 15 },
-    { rotate: 0, x: 0, y: -8 },
-    { rotate: 8, x: 190, y: 15 },
-  ];
-
-  const handleCardClick = useCallback((index: number) => {
-    setExpandedIndex(index);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setExpandedIndex(null);
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#0C0A3E" }}
-      data-testid="team-section"
+    <Act
+      id="act-peak"
+      kind="pin"
+      span={3.4}
+      ground="light"
+      bg={BONE}
+      stagePad=""
+      stageClassName="overflow-hidden"
     >
-      <div
-        className="relative overflow-hidden"
-        style={{
-          backgroundColor: "#0E0C45",
-          borderRadius: "20px",
-          minHeight: "auto",
-          padding: "clamp(2rem, 4vw, 4rem)",
-        }}
-      >
-        <GradientBlobs blobs={teamBlobs} />
-        <div className="max-w-[1400px] mx-auto relative z-[1]">
-          {isMobile ? (
-            <>
-              <div className="mb-6">
-                <SectionLabel isInView={isInView} testId="text-team-label">{teamSettings?.label ?? "The Shapers"}</SectionLabel>
-                <h2
-                  className="mb-4"
-                  style={{
-                    color: "#FFFFFF",
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.03em",
-                  }}
-                  data-testid="text-team-heading"
-                >
-                  <span
-                    style={{
-                      fontFamily: "'Zodiak', serif",
-                      fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {teamSettings?.headingLine1 ?? "Three senior marketers."}{" "}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Switzer', sans-serif",
-                      fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
-                      fontWeight: 300,
-                      fontStyle: "italic",
-                      opacity: 0.75,
-                    }}
-                  >
-                    {teamSettings?.headingLine2 ?? "45+ years of combined experience."}
-                  </span>
-                </h2>
-                <div className="space-y-4">
-                  <p
-                    style={{
-                      fontFamily: "'Switzer', sans-serif",
-                      fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                      color: "rgba(255, 255, 255, 0.85)",
-                      lineHeight: 1.8,
-                    }}
-                    data-testid="text-team-intro-1"
-                  >
-                    {teamSettings?.intro ?? "We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise."}
-                  </p>
-                </div>
-              </div>
-              <MobileCards onCardClick={handleCardClick} team={team} />
-            </>
-          ) : (
-            <div className="flex items-start gap-8 lg:gap-12">
-              <div className="w-[42%] shrink-0 sticky" style={{ top: "clamp(2rem, 4vw, 4rem)" }}>
-                <SectionLabel isInView={isInView} testId="text-team-label">{teamSettings?.label ?? "The Shapers"}</SectionLabel>
-                <h2
-                  className="mb-5"
-                  style={{
-                    color: "#FFFFFF",
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.03em",
-                  }}
-                  data-testid="text-team-heading"
-                >
-                  <span
-                    style={{
-                      fontFamily: "'Zodiak', serif",
-                      fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {teamSettings?.headingLine1 ?? "Three senior marketers."}{" "}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Switzer', sans-serif",
-                      fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
-                      fontWeight: 300,
-                      fontStyle: "italic",
-                      opacity: 0.75,
-                    }}
-                  >
-                    {teamSettings?.headingLine2 ?? "45+ years of combined experience."}
-                  </span>
-                </h2>
-                <div className="space-y-4">
-                  <p
-                    style={{
-                      fontFamily: "'Switzer', sans-serif",
-                      fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
-                      color: "rgba(255, 255, 255, 0.85)",
-                      lineHeight: 1.8,
-                    }}
-                    data-testid="text-team-intro-1"
-                  >
-                    {teamSettings?.intro ?? "We've owned revenue targets, built teams, and fixed broken brand systems inside fast-scaling companies. We know what it takes to execute — not just advise."}
-                  </p>
-                </div>
-                <div className="mt-6">
-                  <span
-                    style={{
-                      fontFamily: "'Switzer', sans-serif",
-                      fontSize: "0.55rem",
-                      color: "rgba(255, 255, 255, 0.5)",
-                      letterSpacing: "0.15em",
-                    }}
-                  >
-                    DRAG OR CLICK A CARD
-                  </span>
-                </div>
-              </div>
+      {(progress) => <Peak progress={progress} />}
+    </Act>
+  );
+}
 
-              <div className="flex-1 flex items-center justify-center">
-                <DesktopFanCards
-                  fanProgress={fanProgress}
-                  desktopFanConfigs={desktopFanConfigs}
-                  tabletFanConfigs={tabletFanConfigs}
-                  onCardClick={handleCardClick}
-                  frontCardIndex={frontCardIndex}
-                  setFrontCardIndex={setFrontCardIndex}
-                  team={team}
-                />
-              </div>
-            </div>
-          )}
-        </div>
+function Peak({ progress }: { progress: MotionValue<number> }) {
+  const reduced = useReducedMotion();
+
+  /* THE PEAK HAS TO STOP BEING A PEAK WITH MOTION OFF.
+     Four absolutely-positioned layers inside a 100svh box that wipe past each
+     other: with no wipe and no pin they sit on top of one another and only the
+     last is ever visible. Three portraits and three bios would not exist at all
+     for anyone browsing with reduced motion, which is most of the section. */
+  if (reduced) {
+    return (
+      <div className="w-full" style={{ backgroundColor: BONE, color: NAVY }}>
+        <Intro stacked />
+        {SHAPERS.map((s, i) => (
+          <ShaperPanel key={s.name} shaper={s} index={i} progress={progress} stacked />
+        ))}
+        <Convergence progress={progress} stacked />
       </div>
-      <AnimatePresence>
-        {expandedIndex !== null && (
-          <TeamModal
-            member={team[expandedIndex]}
-            index={expandedIndex}
-            colors={cardColors[expandedIndex]}
-            onClose={handleClose}
-          />
-        )}
-      </AnimatePresence>
-    </section>
-  );
-}
-
-function TeamModal({
-  member,
-  index,
-  colors,
-  onClose,
-}: {
-  member: TeamMember;
-  index: number;
-  colors: (typeof cardColors)[0];
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [onClose]);
-
-  const modalBg = "#0C0A3E";
-  const modalText = "#FFFFFF";
-  const modalAccent = "rgba(255, 255, 255, 0.5)";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 1000,
-        backgroundColor: "rgba(12, 10, 62, 0.85)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "1rem",
-      }}
-      onClick={onClose}
-      data-testid={`modal-team-${index}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 30 }}
-        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundColor: modalBg,
-          color: modalText,
-          borderRadius: "20px",
-          border: `1px solid rgba(255, 255, 255, 0.15)`,
-          maxWidth: "900px",
-          width: "100%",
-          maxHeight: "90vh",
-          overflowY: "auto",
-          boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
-        }}
-      >
-        <div className="flex flex-col md:flex-row">
-          <div
-            className="md:w-2/5 relative"
-            style={{
-              minHeight: "300px",
-              maxHeight: "500px",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              src={member.image}
-              alt={member.name}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "top center",
-                borderRadius: "20px 20px 0 0",
-              }}
-              className="md:!rounded-l-[20px] md:!rounded-r-none"
-            />
-            <div
-              className="md:hidden"
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: `linear-gradient(180deg, transparent 50%, ${modalBg} 100%)`,
-                borderRadius: "20px 20px 0 0",
-              }}
-            />
-          </div>
-
-          <div
-            className="md:w-3/5 p-6 md:p-8 flex flex-col"
-          >
-            <div className="flex items-start justify-between mb-5">
-              <div>
-                <span
-                  style={{
-                    fontFamily: "'Switzer', sans-serif",
-                    fontSize: "0.6rem",
-                    color: modalAccent,
-                    opacity: 0.7,
-                    letterSpacing: "0.2em",
-                  }}
-                >
-                  SHAPER
-                </span>
-                <h3
-                  className="mt-2"
-                  style={{
-                    fontFamily: "'Switzer', sans-serif",
-                    fontSize: "clamp(0.85rem, 1.3vw, 1.05rem)",
-                    fontWeight: 600,
-                    lineHeight: 1.5,
-                  }}
-                  data-testid={`modal-team-name-${index}`}
-                >
-                  {member.name}
-                </h3>
-              </div>
-              <button
-                onClick={onClose}
-                style={{
-                  fontFamily: "'Switzer', sans-serif",
-                  fontSize: "0.65rem",
-                  color: "rgba(255, 255, 255, 0.7)",
-                  opacity: 0.7,
-                  background: "none",
-                  border: `1px solid rgba(255, 255, 255, 0.2)`,
-                  borderRadius: "6px",
-                  padding: "0.4rem 0.75rem",
-                  cursor: "pointer",
-                  letterSpacing: "0.1em",
-                }}
-                data-testid={`button-close-modal-${index}`}
-              >
-                CLOSE ×
-              </button>
-            </div>
-
-            <ModalSection label="What she brings" accent={modalAccent}>
-              {member.whatSheBrings.map((line, idx) => (
-                <p
-                  key={idx}
-                  style={{
-                    fontFamily: "'Switzer', sans-serif",
-                    fontSize: "clamp(0.85rem, 1vw, 0.95rem)",
-                    lineHeight: 1.8,
-                    opacity: 0.85,
-                    marginBottom: idx < member.whatSheBrings.length - 1 ? "0.5rem" : 0,
-                  }}
-                >
-                  {line}
-                </p>
-              ))}
-            </ModalSection>
-
-            <ModalSection label="Decisions led" accent={modalAccent}>
-              <p
-                style={{
-                  fontFamily: "'Switzer', sans-serif",
-                  fontSize: "0.85rem",
-                  lineHeight: 1.7,
-                  opacity: 0.85,
-                }}
-              >
-                {member.decisionsLed}
-              </p>
-            </ModalSection>
-
-            <ModalSection label={member.brandsLabel} accent={modalAccent}>
-              <p
-                style={{
-                  fontFamily: "'Switzer', sans-serif",
-                  fontSize: "0.8rem",
-                  lineHeight: 1.6,
-                  opacity: 0.8,
-                }}
-              >
-                {member.brands}
-              </p>
-            </ModalSection>
-
-            {getPortfolioSlug(member.name) && (
-              <Link
-                href={`/${getPortfolioSlug(member.name)}`}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                  fontFamily: "'Switzer', sans-serif",
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "#FFFFFF",
-                  backgroundColor: "#7B1E7A",
-                  padding: "0.7rem 1rem",
-                  borderRadius: "6px",
-                  textDecoration: "none",
-                  marginTop: "0.5rem",
-                }}
-                data-testid={`link-portfolio-${index}`}
-              >
-                View portfolio →
-              </Link>
-            )}
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function ModalSection({
-  label,
-  accent,
-  children,
-  last = false,
-}: {
-  label: string;
-  accent: string;
-  children: React.ReactNode;
-  last?: boolean;
-}) {
-  return (
-    <div style={{ marginBottom: last ? 0 : "1.25rem" }}>
-      <span
-        className="block mb-2"
-        style={{
-          fontFamily: "'Switzer', sans-serif",
-          fontSize: "0.55rem",
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
-          color: accent,
-          opacity: 0.7,
-        }}
-      >
-        {label}
-      </span>
-      {children}
-    </div>
-  );
-}
-
-function DesktopFanCards({
-  fanProgress,
-  desktopFanConfigs,
-  tabletFanConfigs,
-  onCardClick,
-  frontCardIndex,
-  setFrontCardIndex,
-  team,
-}: {
-  fanProgress: any;
-  desktopFanConfigs: { rotate: number; x: number; y: number }[];
-  tabletFanConfigs: { rotate: number; x: number; y: number }[];
-  onCardClick: (index: number) => void;
-  frontCardIndex: number | null;
-  setFrontCardIndex: (index: number | null) => void;
-  team: TeamMember[];
-}) {
-  const [isTablet, setIsTablet] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const check = () => setIsTablet(window.innerWidth < 1024);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  const configs = isTablet ? tabletFanConfigs : desktopFanConfigs;
+    );
+  }
 
   return (
     <div
-      ref={containerRef}
-      className="relative flex items-center justify-center"
-      style={{ height: "500px", perspective: "1200px" }}
+      className="relative h-svh w-full overflow-hidden"
+      style={{ backgroundColor: BONE, color: NAVY }}
     >
-      {team.map((member, i) => {
-        const config = configs[i];
-        const stackOffset = (i - 1) * 6;
-        const baseZ = team.length - i;
-        const zIndex = frontCardIndex === i ? 10 : baseZ;
-
-        return (
-          <FanCard
-            key={i}
-            member={member}
-            index={i}
-            fanProgress={fanProgress}
-            targetRotate={config.rotate}
-            targetX={config.x}
-            targetY={config.y}
-            stackOffset={stackOffset}
-            zIndex={zIndex}
-            onCardClick={onCardClick}
-            isFront={frontCardIndex === i}
-            onBringToFront={() => setFrontCardIndex(i)}
-            containerRef={containerRef}
-          />
-        );
-      })}
+      <Intro />
+      {SHAPERS.map((s, i) => (
+        <ShaperPanel key={s.name} shaper={s} index={i} progress={progress} />
+      ))}
+      <Convergence progress={progress} />
     </div>
   );
 }
 
-function FanCard({
-  member,
-  index,
-  fanProgress,
-  targetRotate,
-  targetX,
-  targetY,
-  stackOffset,
-  zIndex,
-  onCardClick,
-  isFront,
-  onBringToFront,
-  containerRef,
-}: {
-  member: TeamMember;
-  index: number;
-  fanProgress: any;
-  targetRotate: number;
-  targetX: number;
-  targetY: number;
-  stackOffset: number;
-  zIndex: number;
-  onCardClick: (index: number) => void;
-  isFront: boolean;
-  onBringToFront: () => void;
-  containerRef: React.RefObject<HTMLDivElement | null>;
-}) {
-  const colors = cardColors[index];
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
-  const wasDraggedRef = useRef(false);
-
-  const rotateZ = useTransform(fanProgress, [0, 1], [0, targetRotate]);
-  const x = useTransform(fanProgress, [0, 1], [0, targetX]);
-  const y = useTransform(fanProgress, [0, 1], [stackOffset, targetY]);
-  const scale = useTransform(fanProgress, [0, 1], [0.95, 1]);
-  const cardOpacity = useTransform(
-    fanProgress,
-    [0, 0.2 + index * 0.15, 0.4 + index * 0.15],
-    [index === 0 ? 1 : 0.3, index === 0 ? 1 : 0.8, 1]
-  );
-
-  const cardW = "clamp(220px, 18vw, 280px)";
-  const cardH = "clamp(320px, 42vh, 400px)";
-
-  const overlayGradient = `linear-gradient(180deg, transparent 20%, rgba(12,10,62,0.6) 60%, rgba(12,10,62,0.92) 100%)`;
-
+/**
+ * Rises and then HOLDS. Its opacity ramp completes before progress reaches 0 —
+ * `(0 + 0.20) / 0.05` is already 4 — so in practice it is simply on from the
+ * first frame, and panel 01 covers it. Kept as a constant rather than a
+ * transform because pretending otherwise would suggest there is a fade here to
+ * tune, and there is not.
+ */
+function Intro({ stacked }: { stacked?: boolean }) {
   return (
-    <motion.div
-      className="absolute group"
-      style={{
-        x,
-        y,
-        rotateZ,
-        scale,
-        opacity: cardOpacity,
-        zIndex,
-        width: cardW,
-        height: cardH,
-        transformOrigin: "center bottom",
-        cursor: "grab",
-        borderRadius: "16px",
-        overflow: "hidden",
-        border: isFront ? `2px solid rgba(255, 255, 255, 0.35)` : `1px solid rgba(255, 255, 255, 0.15)`,
-        boxShadow: isFront ? "0 30px 80px rgba(0,0,0,0.6)" : "0 20px 60px rgba(0,0,0,0.4)",
-      }}
-      drag
-      dragConstraints={containerRef}
-      dragElastic={0.15}
-      dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
-      onDragStart={(_, info) => {
-        dragStartRef.current = { x: info.point.x, y: info.point.y };
-        wasDraggedRef.current = false;
-        onBringToFront();
-      }}
-      onDrag={(_, info) => {
-        if (dragStartRef.current) {
-          const dx = Math.abs(info.point.x - dragStartRef.current.x);
-          const dy = Math.abs(info.point.y - dragStartRef.current.y);
-          if (dx > 5 || dy > 5) {
-            wasDraggedRef.current = true;
-          }
-        }
-      }}
-      onDragEnd={() => {
-        dragStartRef.current = null;
-      }}
-      onClick={() => {
-        if (!wasDraggedRef.current) {
-          onCardClick(index);
-        }
-        wasDraggedRef.current = false;
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onCardClick(index);
-        }
-      }}
-      tabIndex={0}
-      role="button"
-      aria-label={`Drag or click to read more about ${member.name}`}
-      data-testid={`card-team-${index}`}
-      whileHover={{ scale: 1.03 }}
-      whileDrag={{ scale: 1.08, cursor: "grabbing" }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    <div
+      className={
+        (stacked
+          ? "static px-6 py-[clamp(3rem,9vh,5.5rem)] sm:px-10 lg:px-20 "
+          : "absolute inset-0 z-[1] px-6 sm:px-10 lg:px-20 ") +
+        "grid place-items-center"
+      }
+      style={{ backgroundColor: BONE }}
     >
-      <img
-        src={member.image}
-        alt={member.name}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: overlayGradient,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "1.5rem",
-        }}
-      >
-        <h3
+      <div className="grid w-full max-w-[46rem] justify-items-center">
+        {/* draws on entry, not on act progress — see Doodles.tsx */}
+        <CrewDoodle className="mb-8 w-[clamp(12rem,26vw,21rem)]" />
+        <div
+          className="mb-[1.4rem]"
           style={{
             fontFamily: "'Switzer', sans-serif",
-            fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
-            fontWeight: 600,
-            color: "#FFFFFF",
-            lineHeight: 1.5,
-            marginBottom: "0.5rem",
+            fontSize: "0.7rem",
+            fontWeight: 500,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: ACCENT_DEEP,
           }}
-          data-testid={`text-team-name-${index}`}
         >
-          {member.name}
-        </h3>
-        <span
-          className="inline-block transition-all duration-300 group-hover:translate-x-1"
+          The Shapers
+        </div>
+        {/* 30rem broke this into six lines of three words and it read as a poem
+            rather than as a claim. Wide enough for three. */}
+        <p
+          className="m-0 max-w-[42rem] text-center"
           style={{
-            fontFamily: "'Switzer', sans-serif",
-            fontSize: "0.55rem",
-            color: "rgba(255, 255, 255, 0.6)",
-            opacity: 0.7,
-            letterSpacing: "0.1em",
+            fontFamily: "'Zodiak', Georgia, serif",
+            fontSize: "clamp(1.7rem, 3.2vw, 2.7rem)",
+            lineHeight: 1.2,
+            letterSpacing: "-0.02em",
+            textWrap: "balance",
           }}
+          data-testid="text-peak-intro"
         >
-          READ MORE →
-        </span>
+          We've built teams and fixed broken brand systems from inside
+          fast-scaling companies.
+        </p>
       </div>
-    </motion.div>
-  );
-}
-
-function MobileCards({ onCardClick, team }: { onCardClick: (index: number) => void; team: TeamMember[] }) {
-  return (
-    <div className="flex flex-col gap-5 mt-4">
-      {team.map((member, i) => {
-        const colors = cardColors[i];
-        return (
-          <MobileCard
-            key={i}
-            member={member}
-            index={i}
-            colors={colors}
-            onCardClick={onCardClick}
-          />
-        );
-      })}
     </div>
   );
 }
 
-function MobileCard({
-  member,
+function ShaperPanel({
+  shaper,
   index,
-  colors,
-  onCardClick,
+  progress,
+  stacked,
 }: {
-  member: TeamMember;
+  shaper: (typeof SHAPERS)[number];
   index: number;
-  colors: (typeof cardColors)[0];
-  onCardClick: (index: number) => void;
+  progress: MotionValue<number>;
+  stacked?: boolean;
 }) {
-  const overlayGradient = `linear-gradient(180deg, transparent 20%, rgba(12,10,62,0.6) 60%, rgba(12,10,62,0.92) 100%)`;
+  const [start, end] = SLOTS[index + 1];
+
+  const v = useTransform(progress, [start, start + FADE], [0, 1], { clamp: true });
+  const clipPath = useTransform(v, (q) => `inset(0 ${((1 - q) * 100).toFixed(2)}% 0 0)`);
+  const opacity = useTransform(v, (q) => (q > 0 ? 1 : 0));
+  /* a slow push in across the panel's whole life, so a held portrait is never
+     completely static */
+  const scale = useTransform(progress, [start, end], [1.06, 1], { clamp: true });
+
+  return (
+    <motion.article
+      className={
+        (stacked
+          ? "static border-t border-[rgba(12,10,62,0.14)] "
+          : "absolute inset-0 z-[2] ") +
+        "grid grid-cols-1 lg:grid-cols-[minmax(0,42%)_minmax(0,58%)]"
+      }
+      style={{
+        backgroundColor: BONE,
+        ...(stacked ? null : { opacity, clipPath }),
+      }}
+      data-testid={`panel-shaper-${index + 1}`}
+    >
+      <div
+        className={
+          (stacked ? "aspect-[4/5] " : "h-[36svh] sm:h-[42svh] lg:h-svh ") +
+          "relative overflow-hidden"
+        }
+        style={{ backgroundColor: "#ded8cc" }}
+      >
+        <motion.img
+          src={shaper.panel}
+          alt={shaper.name}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover"
+          style={{
+            filter: "grayscale(1) contrast(1.04)",
+            ...(stacked ? null : { scale }),
+          }}
+        />
+      </div>
+
+      <div className="grid content-start px-[1.35rem] py-[1.6rem] sm:px-6 sm:py-8 lg:content-center lg:px-[clamp(2rem,5vw,5rem)] lg:py-12">
+        <div
+          style={{
+            fontFamily: "'Switzer', sans-serif",
+            fontSize: "0.74rem",
+            fontWeight: 500,
+            letterSpacing: "0.2em",
+            color: ACCENT_DEEP,
+          }}
+        >
+          {`0${index + 1} / 03`}
+        </div>
+        <h3
+          className="mt-[0.9rem] mb-0"
+          style={{
+            fontFamily: "'Zodiak', Georgia, serif",
+            fontWeight: 400,
+            fontSize: "clamp(2rem, 4.6vw, 3.9rem)",
+            lineHeight: 1.02,
+            letterSpacing: "-0.03em",
+          }}
+          data-testid={`text-shaper-name-${index + 1}`}
+        >
+          {shaper.name}
+        </h3>
+        <p
+          className="mt-[1.1rem] max-w-[26rem] sm:mt-[1.4rem]"
+          style={{
+            fontFamily: "'Switzer', sans-serif",
+            fontSize: "clamp(0.98rem, 1.35vw, 1.18rem)",
+            lineHeight: 1.48,
+            color: "#3a3556",
+          }}
+        >
+          {shaper.does}
+        </p>
+        <div
+          className="mt-[1.3rem] max-w-[26rem] border-t border-[rgba(12,10,62,0.16)] pt-[0.9rem] sm:mt-8 sm:pt-[1.1rem]"
+          style={{
+            fontFamily: "'Switzer', sans-serif",
+            fontSize: "0.88rem",
+            lineHeight: 1.65,
+            color: "#5a5473",
+          }}
+        >
+          {/* #8a84a0 measured 3.16:1 at 10.9px on bone against 4.5:1 required,
+              and washed out badly enough to read as a printing fault rather
+              than as restraint. */}
+          <b
+            className="mb-[0.45rem] block font-normal"
+            style={{
+              fontFamily: "'Switzer', sans-serif",
+              fontSize: "0.68rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#6e6885",
+            }}
+          >
+            Has done it for
+          </b>
+          {shaper.brands}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function Convergence({
+  progress,
+  stacked,
+}: {
+  progress: MotionValue<number>;
+  stacked?: boolean;
+}) {
+  const [start] = SLOTS[4];
+  const v = useTransform(progress, [start, start + FADE], [0, 1], { clamp: true });
+  const clipPath = useTransform(v, (q) => `inset(0 ${((1 - q) * 100).toFixed(2)}% 0 0)`);
+  const opacity = useTransform(v, (q) => (q > 0 ? 1 : 0));
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.12 }}
+      className={
+        (stacked
+          ? "static px-6 py-[clamp(3rem,9vh,5.5rem)] sm:px-10 lg:px-20 "
+          : "absolute inset-0 z-[4] px-6 sm:px-10 lg:px-20 ") +
+        "grid place-items-center"
+      }
       style={{
-        height: "420px",
-        cursor: "pointer",
-        borderRadius: "16px",
-        overflow: "hidden",
-        border: `1px solid rgba(255, 255, 255, 0.15)`,
-        position: "relative",
+        backgroundColor: BONE,
+        ...(stacked ? null : { opacity, clipPath }),
       }}
-      onClick={() => onCardClick(index)}
-      role="button"
-      tabIndex={0}
-      aria-label={`Read more about ${member.name}`}
-      data-testid={`card-team-mobile-${index}`}
+      data-testid="panel-shapers-all"
     >
-      <img
-        src={member.image}
-        alt={member.name}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: overlayGradient,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "1.5rem",
-        }}
-      >
-        <h3
+      <div className="w-full max-w-[62rem] text-center">
+        <div className="mb-[2.4rem] flex justify-center gap-[clamp(1rem,2.4vw,2rem)]">
+          {/* Every one of these is cut to frame at 4:5 already. No
+              object-position: a second framing decision applied on top of the
+              first is how a crop ends up right on one screen and wrong on the
+              next. */}
+          {SHAPERS.map((s) => (
+            <div
+              key={s.name}
+              className="h-[clamp(6.4rem,11.5vw,9.6rem)] w-[clamp(5rem,9vw,7.5rem)] overflow-hidden rounded-[2px]"
+            >
+              <img
+                src={s.face}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+                style={{ filter: "grayscale(1) contrast(1.04)" }}
+              />
+            </div>
+          ))}
+        </div>
+        {/* the second break is phone-only: at 375px "briefed." fell to a line of
+            its own, and text-wrap:balance cannot reflow across an explicit <br>.
+            The space after it is what a wide screen reads. */}
+        <p
+          className="m-0"
           style={{
-            fontFamily: "'Switzer', sans-serif",
-            fontSize: "0.9rem",
-            fontWeight: 600,
-            color: "#FFFFFF",
-            lineHeight: 1.5,
-            marginBottom: "0.5rem",
+            fontFamily: "'Zodiak', Georgia, serif",
+            fontSize: "clamp(1.9rem, 4vw, 3.2rem)",
+            lineHeight: 1.16,
+            letterSpacing: "-0.025em",
           }}
-          data-testid={`text-team-name-mobile-${index}`}
+          data-testid="text-peak-line"
         >
-          {member.name}
-        </h3>
-        <span
-          style={{
-            fontFamily: "'Switzer', sans-serif",
-            fontSize: "0.55rem",
-            color: "rgba(255, 255, 255, 0.6)",
-            opacity: 0.7,
-          }}
-        >
-          READ MORE →
-        </span>
+          You work with us directly.
+          <br />
+          Not someone
+          <br className="sm:hidden" /> we've briefed.
+        </p>
       </div>
     </motion.div>
   );

@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
-import { Origin } from "@/components/home/Origin";
 import { Team } from "@/components/home/Team";
 import { Services } from "@/components/home/Services";
 import { CTA } from "@/components/home/CTA";
@@ -14,7 +13,12 @@ export default function Home() {
       <main>
         <Hero />
         <ProblemFraming />
-        <Origin />
+        {/* Origin — "What changes when we show up" — is gone, Fatema's call on
+            25 Aug. It described the work rather than showing it, and it is the
+            same species as every other explanatory section she cut off the
+            study: the second fold, both standfirsts, the hand-off line. The
+            case rail does that job now, with evidence. Origin.tsx is left in
+            the tree rather than deleted until the rework merges. */}
         <Team />
         <Services />
         <CTA />

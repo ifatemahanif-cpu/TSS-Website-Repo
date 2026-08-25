@@ -52,6 +52,7 @@ export function Act({
   className = "",
   stageClassName = "",
   stageMinH = "min-h-svh",
+  stagePad = "px-6 py-20 sm:px-10 lg:px-20",
   children,
 }: {
   id: string;
@@ -72,6 +73,14 @@ export function Act({
    * one element is a specificity coin toss.
    */
   stageMinH?: string;
+  /**
+   * The peak passes `""` — its four layers are absolutely positioned and
+   * full-bleed, so a stage that reserves gutters would inset the photographs.
+   * A prop rather than a className for the same reason as stageMinH: competing
+   * padding utilities on one element resolve by stylesheet order, not by the
+   * order they were written in.
+   */
+  stagePad?: string;
   children: (progress: MotionValue<number>) => ReactNode;
 }) {
   const ref = useRef<HTMLElement | null>(null);
@@ -104,7 +113,7 @@ export function Act({
         className={
           (isPinned ? "sticky top-0 " : "") +
           `flex ${stageMinH} w-full items-center justify-center ` +
-          "px-6 py-20 sm:px-10 lg:px-20 " +
+          `${stagePad} ` +
           stageClassName
         }
       >
