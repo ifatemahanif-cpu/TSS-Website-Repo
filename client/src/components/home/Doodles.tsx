@@ -1,19 +1,21 @@
-import { useEffect, useRef, type MutableRefObject } from "react";
+import { useRef } from "react";
 import {
   motion,
   useInView,
-  useMotionValue,
   useReducedMotion,
   useTransform,
   type MotionValue,
 } from "framer-motion";
 
 /**
- * The four line characters — smiley, crew, eye, heart.
+ * The three line characters — crew, eye, heart.
  *
- * The homepage already has a set of these inside Hero.tsx, drawn on a timer,
- * because the hero there is a timed film. Hero.tsx keeps its own copies until
- * its own act is rebuilt, at which point there is one set and this is it.
+ * There was a fourth, a smiley, and it was the hero's wink. Fatema cut it on
+ * 25 Aug: once the sentence had settled on "We shape stories." a face arriving
+ * after the full stop was a second punchline on a line that already had one.
+ * See the note at the top of Hero.tsx. It was also the only doodle driven by a
+ * value pushed in rather than read off an act's progress, so its removal is why
+ * this file no longer imports `useMotionValue` or `MutableRefObject`.
  *
  * TWO WAYS TO DRAW, AND WHICH ONE DEPENDS ON THE ACT
  *
@@ -26,7 +28,6 @@ import {
  *
  * Each one sits in the act where its meaning lives, which is the rule that
  * stopped them being sprinkled:
- *   smiley  "Hello."                  -> the wink after the Shaping lands
  *   crew    "senior-led collective"   -> opens the peak, becomes the faces
  *   eye     "impossible to ignore"    -> the work, where that promise cashes
  *   heart   "for who they really are" -> the close, the human invitation
@@ -114,71 +115,6 @@ export function CrewDoodle({ className = "" }: { className?: string }) {
       <motion.path d="M57 82 C61 61 89 61 93 82" stroke={ACCENT_DEEP} strokeWidth="5" strokeLinecap="round" {...b} />
       <motion.circle cx="118" cy="46" r="12" stroke="currentColor" strokeWidth="5" strokeLinecap="round" transform="rotate(-90 118 46)" {...c} />
       <motion.path d="M100 88 C104 68 132 68 136 88" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...c} />
-    </motion.svg>
-  );
-}
-
-/**
- * The hero's wink, and the only doodle driven by a value PUSHED IN rather than
- * read off an act's progress.
- *
- * The hero paints imperatively — twenty-two word widths and a font size per
- * frame, which through React would be twenty-two components re-rendering for
- * the length of a three-screen act. So it owns the clock, and hands this one a
- * setter through `draw`. Everything else in this file subscribes to its own act.
- *
- * The four strokes land in sequence rather than together, so it reads as drawn
- * rather than faded in: outline, two eyes, then the smile. Once complete it
- * blinks on a timer, which is idle life and not narrative — a wink you have to
- * scroll is not a wink.
- */
-export function SmileyDoodle({
-  draw,
-}: {
-  draw: MutableRefObject<((q: number) => void) | null>;
-}) {
-  const reduced = useReducedMotion();
-  const p = useMotionValue(reduced ? 1 : 0);
-
-  useEffect(() => {
-    draw.current = (q) => p.set(q);
-    return () => {
-      draw.current = null;
-    };
-  }, [draw, p]);
-
-  /* the engine's sequencing, kept exactly: four units over 1.7 of nominal time,
-     each starting a fifth of the way after the last */
-  const N = 4;
-  const SPAN = 1.7 / (N + 1.2);
-  const at = (u: number) => u / (N + 1.2);
-
-  const a = useStroke(p, at(0), at(0) + SPAN);
-  const b = useStroke(p, at(1), at(1) + SPAN);
-  const c = useStroke(p, at(2), at(2) + SPAN);
-  const d = useStroke(p, at(3), at(3) + SPAN);
-
-  return (
-    <motion.svg
-      viewBox="0 0 100 100"
-      fill="none"
-      aria-hidden="true"
-      className="block h-auto w-full"
-      style={{ overflow: "visible" }}
-    >
-      <motion.path
-        d="M50 9 C74 8 92 26 91 50 C90 75 74 92 50 91 C26 90 9 74 9 50 C9 26 27 10 50 9"
-        stroke="rgba(255,255,255,0.9)" strokeWidth="5" strokeLinecap="round" style={a}
-      />
-      <motion.path d="M36 40 L36 48" stroke="rgba(255,255,255,0.9)" strokeWidth="5" strokeLinecap="round" style={b} />
-      <motion.path
-        d="M64 40 L64 48"
-        stroke="rgba(255,255,255,0.9)" strokeWidth="5" strokeLinecap="round"
-        style={{ ...c, transformBox: "view-box", transformOrigin: "64px 44px" }}
-        animate={reduced ? undefined : { scaleY: [1, 1, 0.12, 1, 1] }}
-        transition={{ duration: 2.8, times: [0, 0.55, 0.62, 0.7, 1], repeat: Infinity, delay: 1 }}
-      />
-      <motion.path d="M31 61 C39 73 61 74 70 60" stroke={ACCENT} strokeWidth="5" strokeLinecap="round" style={d} />
     </motion.svg>
   );
 }

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useMotionValueEvent, useReducedMotion, type MotionValue } from "framer-motion";
 import { Act, ActWrap } from "./Act";
-import { SmileyDoodle } from "./Doodles";
 import { useNarrow } from "@/hooks/use-act-progress";
 import { useCmsSettings } from "@/hooks/use-cms";
 import { currentHero } from "@shared/hero";
@@ -98,9 +97,14 @@ const WORDS: Word[] = [
 const CUT_LEN = 0.07;
 const SETTLE = 0.78;
 const LAST = 18;
-/** 0.46em of drawing plus 0.16em of air, in EM of the display size — so the
- *  wink scales with the payoff instead of being a fixed blob beside 138px type */
-const WINK_EM = 0.62;
+/* THE WINK IS GONE — Fatema, 25 Aug: it felt out of place once the sentence had
+   settled on "We shape stories." It was a drawn smiley that opened after the
+   full stop, sized in em so it scaled with the payoff. The reason it did not
+   land is the same one that moved it off its own line and into the sentence in
+   the first place: the act's last frame is a sentence that has just finished
+   cutting itself down to three words, and a face arriving afterwards is a
+   second punchline on a line that already had one. The stitch under "stories"
+   is the mark that beat lands on. */
 /** The three words that survive — We / shape / stories — are at full strength
  *  from the first frame; the nineteen that get cut open at 55%. So the opening
  *  frame is not a wall, it is already legible as "We shape stories" with the
@@ -134,10 +138,8 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
   const strikeRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const textRef = useRef<HTMLSpanElement>(null);
   const stitchRef = useRef<HTMLElement>(null);
-  const winkRef = useRef<HTMLSpanElement>(null);
   const tailRef = useRef<HTMLDivElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
-  const winkDraw = useRef<((q: number) => void) | null>(null);
 
   /** per-word widths in em at both weights, measured once */
   const m = useRef({ em: [] as number[], emBold: [] as number[], emFinal: 0, EM0: 1 });
@@ -150,9 +152,6 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
     if (!flow) return;
     const words = wordRefs.current;
     flow.style.fontSize = `${BASE}px`;
-    /* the wink is a flex item in the line, so it has to be out of the way while
-       the words are measured or it steals width from the last row */
-    if (winkRef.current) winkRef.current.style.width = "0px";
 
     /* Measured at BOTH weights. The sentence opens at 700 and steps to 400 at
        the payoff, and Zodiak Bold is materially wider — sized from the regular
@@ -249,11 +248,6 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
       aliveEm += base * (1 - gone) + sp;
     });
 
-    /* the wink is part of the line, so it is part of the width budget too —
-       leave it out and the payoff is sized for a row it does not fit in */
-    const wink = clamp01((p - SETTLE - 0.05) / 0.09);
-    aliveEm += WINK_EM * wink;
-
     /* Type size follows the WORD COUNT, not scroll position. Tied to p alone it
        hits display size with seventeen words standing and bursts off screen.
 
@@ -278,16 +272,6 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
        measured 73% of the stage against a 62% budget. */
     fs = Math.max(Math.min(fs, (window.innerHeight * 0.68) / ((rows + 0.7) * 1.2)), 20);
     flow.style.fontSize = `${fs}px`;
-
-    /* WINK_EM is drawing + air; the box gets the drawing, the margin the air */
-    if (winkRef.current) {
-      winkRef.current.style.width = `${(WINK_EM - 0.16) * wink * fs}px`;
-      winkRef.current.style.marginLeft = `${0.16 * wink * fs}px`;
-      winkRef.current.style.opacity = String(wink);
-    }
-    /* the wink draws as its box opens, not after — it is punctuation on the
-       line now, and punctuation that arrives late reads as an afterthought */
-    winkDraw.current?.(clamp01((p - SETTLE - 0.06) / 0.1));
 
     if (textRef.current) textRef.current.textContent = p > SETTLE ? "stories." : "stories";
     if (stitchRef.current) {
@@ -412,21 +396,6 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
                 }}
               />
             </span>
-
-            {/* The wink, immediately after the payoff word so it is part of the
-                sentence rather than a thing sitting under it. Fatema's note on
-                the version that floated above the line was that the composition
-                read as a thing in a gap. */}
-            {i === LAST && (
-              <span
-                ref={winkRef}
-                aria-hidden="true"
-                className="inline-block align-baseline"
-                style={{ width: 0, opacity: 0 }}
-              >
-                <SmileyDoodle draw={winkDraw} />
-              </span>
-            )}
           </span>
         ))}
       </p>
