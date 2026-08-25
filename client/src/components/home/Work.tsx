@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   motion,
   useReducedMotion,
@@ -18,6 +18,18 @@ const SERIF = "'Zodiak', Georgia, serif";
 /** the engine's `data-sc-pan="0.04"`: 4% more travel than the rail's overhang,
  *  so the last card clears the right edge rather than resting against it */
 const PAN_EXTRA = 1.04;
+
+/**
+ * The case behind a `#case-lbb` hash, or null for anything else.
+ *
+ * Checked against the real list rather than pattern-matched, so a hash naming a
+ * case that no longer exists opens nothing instead of opening a dialog with no
+ * contents — and so the footer's `#act-peak` and the rest are simply not ours.
+ */
+function caseIdFromHash(hash: string): string | null {
+  const id = hash.startsWith("#case-") ? hash.slice(6) : null;
+  return id && ORDERED_CASES.some((c) => c.id === id) ? id : null;
+}
 
 /**
  * ACT 5 — THE WORK. Five cases, panned sideways.
@@ -49,18 +61,94 @@ export function Work() {
   const [openId, setOpenId] = useState<string | null>(null);
   const lastFocus = useRef<HTMLButtonElement | null>(null);
 
+  /* Did WE push the history entry the reader is standing on? Somebody who
+     arrived on a shared /#case-lbb link is standing on the entry that brought
+     them to the site, and calling back() on that takes them off it. */
+  const pushed = useRef(false);
+
+  /* True only for a case that was open before the reader ever touched the rail
+     — see landOn in CaseReader. Cleared the moment they open one themselves. */
+  const [cold, setCold] = useState(false);
+
   const open = useCallback((id: string, from: HTMLButtonElement) => {
     lastFocus.current = from;
+    setCold(false);
     setOpenId(id);
+    if (window.location.hash !== `#case-${id}`) {
+      window.history.pushState(null, "", `#case-${id}`);
+      pushed.current = true;
+    }
   }, []);
 
-  const close = useCallback(() => {
+  const close = useCallback((opts?: { to?: string }) => {
     setOpenId(null);
+
+    /* LEAVING FOR SOMEWHERE ELSE IS NOT THE SAME AS GOING BACK.
+       back() restores the scroll position of the entry it returns to, which
+       silently undid the scroll the reader had just made towards the close act
+       — measured landing at 6480, the rail, instead of 9720. So a close with a
+       destination replaces the case's entry rather than stepping off it, and
+       does not hand focus back to a card the reader is no longer looking at. */
+    if (opts?.to) {
+      pushed.current = false;
+      if (window.location.hash.startsWith("#case-")) {
+        window.history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+      return;
+    }
+
     /* preventScroll matters: focusing the card scroll-anchors it into view and
        overrides the reader's own scroll restore. Measured 1035px of drift on
        desktop and a full viewport on a phone, which lands the reader in a
        different act from the one they opened the case from. */
     lastFocus.current?.focus({ preventScroll: true });
+
+    if (pushed.current) {
+      /* back(), not a second pushState. The close button and the Back gesture
+         then mean the same thing and run the same code, instead of being two
+         paths that have to be kept in step — and the reader does not accumulate
+         one entry per case opened, which would turn Back into a walk back
+         through everything they had looked at. */
+      pushed.current = false;
+      window.history.back();
+    } else if (window.location.hash.startsWith("#case-")) {
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
+    }
+  }, []);
+
+  /* THE HASH IS THE TRUTH, and this reads it.
+     Fires on Back and Forward and nothing else — clicking an in-page anchor
+     raises hashchange rather than popstate, so the footer's #act-* links do not
+     come through here. */
+  useEffect(() => {
+    const onPop = () => {
+      const id = caseIdFromHash(window.location.hash);
+      setOpenId(id);
+      pushed.current = !!id;
+      if (!id) lastFocus.current?.focus({ preventScroll: true });
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  /* A shared link, opened cold. The rail goes on screen BEFORE the reader does,
+     because CaseReader captures scrollY on mount and restores it on unmount —
+     so this is what closing the case will land on. Without it the reader closes
+     onto the top of a page they have never seen. */
+  useEffect(() => {
+    const id = caseIdFromHash(window.location.hash);
+    if (!id) return;
+    document.getElementById("act-proof")?.scrollIntoView({ block: "start" });
+    setCold(true);
+    setOpenId(id);
   }, []);
 
   const openCase = ORDERED_CASES.find((c) => c.id === openId) ?? null;
@@ -81,7 +169,16 @@ export function Work() {
         )}
       </Act>
 
-      {openCase && <CaseReader caseStudy={openCase} onClose={close} />}
+      {openCase && (
+        /* keyed so each case gets a fresh mount, and with it a fresh capture of
+           where the page was when it opened */
+        <CaseReader
+          key={openCase.id}
+          caseStudy={openCase}
+          onClose={close}
+          landOn={cold ? "act-proof" : undefined}
+        />
+      )}
     </>
   );
 }

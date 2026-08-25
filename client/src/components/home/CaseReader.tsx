@@ -38,9 +38,14 @@ const SERIF = "'Zodiak', Georgia, serif";
 export function CaseReader({
   caseStudy,
   onClose,
+  landOn,
 }: {
   caseStudy: Case & { n: string };
-  onClose: () => void;
+  onClose: (opts?: { to?: string }) => void;
+  /** An element id to land on when this closes, instead of the position the
+   *  page was at when it opened. Set for a case opened cold from a shared
+   *  link — see the note on goToRef. */
+  landOn?: string;
 }) {
   const panelRef = useRef<HTMLElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -48,6 +53,18 @@ export function CaseReader({
   /* Captured on mount and restored on unmount rather than read at close time:
      by the time the close handler runs the browser may already have moved it. */
   const scrollYRef = useRef(0);
+
+  /* Where to land INSTEAD of the captured position.
+     Two things set it. The link at the foot of the case, which wants to go to
+     the close act rather than back to the rail — routed through the cleanup
+     rather than done in the click handler because the cleanup's scrollTo runs
+     last and wins, so the link's old href="#act-close" put the reader on the
+     close for one frame before the restore dragged them back.
+     And `landOn`, for a case opened cold from a shared link: there the captured
+     position is measured before the page's images have loaded, so restoring it
+     put a phone 1255px below where the work act had settled. An id resolved at
+     close time is measured against the layout that actually exists by then. */
+  const goToRef = useRef<string | null>(landOn ?? null);
 
   useEffect(() => {
     scrollYRef.current = window.scrollY;
@@ -62,9 +79,24 @@ export function CaseReader({
     return () => {
       html.style.overflow = prevOverflow;
       html.style.scrollbarGutter = prevGutter;
-      window.scrollTo(0, scrollYRef.current);
+      const target = goToRef.current
+        ? document.getElementById(goToRef.current)
+        : null;
+      if (target) target.scrollIntoView({ block: "start" });
+      else window.scrollTo(0, scrollYRef.current);
     };
   }, []);
+
+  /* Closing towards an act rather than back to the card. Both halves are told
+     at once: the cleanup below does the scrolling, the parent skips the back()
+     that would undo it. */
+  const closeTo = useCallback(
+    (id: string) => {
+      goToRef.current = id;
+      onClose({ to: id });
+    },
+    [onClose],
+  );
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -117,7 +149,7 @@ export function CaseReader({
       <div
         className="absolute inset-0 backdrop-blur-[3px] motion-safe:animate-in motion-safe:fade-in motion-safe:duration-200"
         style={{ backgroundColor: "rgba(6,4,26,0.72)" }}
-        onClick={onClose}
+        onClick={() => onClose()}
       />
 
       <article
@@ -132,7 +164,7 @@ export function CaseReader({
             of four sampled positions. 46px, over the 44px touch minimum. */}
         <button
           type="button"
-          onClick={onClose}
+          onClick={() => onClose()}
           aria-label="Close"
           className="fixed right-[clamp(1rem,2.4vw,1.8rem)] top-[clamp(1rem,2.4vw,1.8rem)] z-[3] grid h-[2.875rem] w-[2.875rem] place-items-center rounded-full text-[1.4rem] leading-none transition-colors duration-200 hover:bg-[rgba(12,10,62,0.07)] focus-visible:outline-2 focus-visible:outline-offset-2"
           style={{
@@ -355,7 +387,13 @@ export function CaseReader({
 
         <a
           href="#act-close"
-          onClick={onClose}
+          onClick={(e) => {
+            /* the hash is handled here, not by the browser: letting the anchor
+               navigate pushes an #act-close entry on top of this case's own,
+               and Back would then reopen the case the reader just left */
+            e.preventDefault();
+            closeTo("act-close");
+          }}
           className="mt-[2rem] inline-flex transition-colors duration-200"
           style={{
             color: NAVY,
