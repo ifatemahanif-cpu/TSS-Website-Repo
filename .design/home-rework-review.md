@@ -402,3 +402,86 @@ smallest is `fix/security-tab-nav` (clean either way) and the largest is
 `tier3-faq`, whose FAQ tab has to be re-attached to a dashboard that now has
 two sections instead of five. None of it is hard; all of it is easier before
 home-rework lands than after.
+
+
+---
+
+# THE THREE OPEN BRANCHES, REVIEWED
+
+Asked: are they adding real value, and if so merge them. Reviewed each against
+the current tree rather than against its own commit message. **None of the
+three should be merged**, and the reasons are different in each case.
+
+## `feat/offer-page` — nothing to merge
+
+Its one commit, "admin: let the password be changed, and evict old sessions",
+has the SAME `git patch-id` as `20c2caa` on `fix/admin-password`, which is
+already merged into `full-v1`. The change-password endpoint, the Security tab
+and `clearAllSessions()` are all in `home-rework` today.
+
+What the branch actually carries is a base **86 files behind**: merging it
+would reinstate `/api/cms/team`, `/api/cms/problems`, `/api/cms/whatwedo`, the
+deleted Origin/WhatChanges/GradientBlobs/SectionAnimations components and the
+pre-rework hero. It is a stale duplicate. **Delete it.**
+
+## `perf/lazy-below-fold-images` (PR #18) — superseded, and merging it regresses
+
+Three separate reasons, any one of them sufficient:
+
+1. **It would undo a decision that already shipped.** PR #19 fixed this
+   problem properly — build-time WebP at `script/optimize-images.ts` — and
+   then turned lazy-loading OFF across the blog on purpose, because the bytes
+   had come down first. Verified on production today: `/blog` is 0.45 MB with
+   `lazy: 0`. Re-adding lazy is moving backwards.
+2. **Half of it patches deleted code.** Its `Team.tsx` hunks target
+   `TeamModal`, `FanCard` and `MobileCard`. The rework replaced all three, and
+   the components that replaced them already carry `loading="lazy"`.
+3. **Its stated evidence no longer holds.** "The prerender timed out after
+   five routes" was a symptom of the byte problem, which PR #19 fixed.
+
+### But it is pointing at something real, and the footer rework made it worse
+
+`collectImageIds` in `script/optimize-images.ts` gathers blog posts and
+authors only. Portfolios were never covered — a known, accepted gap while
+those pages had one internal link each. Measured on production today:
+
+| page | images on arrival | weight | biggest single |
+|---|---|---|---|
+| `/team` | 5 | **4.71 MB** | 2.51 MB |
+| `/aakanksha` | 4 | **2.82 MB** | 2.51 MB |
+| `/fatema` | 14 | **2.12 MB** | 2.07 MB |
+| `/shaili` | 3 | 0.13 MB | 0.10 MB |
+| `/blog` | 11 | 0.45 MB | 0.16 MB |
+
+`/team` is now the heaviest page on the site, and the footer rework took the
+three portfolios from 1 internal link to 18. **Lazy is not the fix here
+either** — on `/team` the three cards are in the first screen, so deferring
+them defers nothing. The fix is the one that worked for the blog: extend
+`collectImageIds` to portfolio summaries. Not done, not asked for, flagged.
+
+## `tier3-faq` — real value, genuinely not mergeable today
+
+The page is well built and the eight answers are substantive. Two blockers,
+neither of them code:
+
+1. **The copy is unapproved and it names clients.** Its own commit says
+   "Parked pending copy approval". The answers name SOCIAL, Headout, Art
+   Fervour, LBB and Kelly & Crew, claim "15 to 20 years" each, cite a 90-day
+   Art Fervour sprint, and list Singapore Tourism Board, Coca-Cola and Google
+   Pixel. The phrasing is careful — "between us" reads as career history
+   rather than SSC engagements — but these are public claims about named
+   companies and they are Fatema's to approve, not mine to ship.
+2. **It needs a table created in production first**, by hand, before merge:
+   `CREATE TABLE faqs (...)`. Merging without it means `/faq` in the nav
+   pointing at a page whose CMS read fails.
+
+One rationale has also decayed. The branch is labelled "Tier 3 SEO" and its
+headline feature is FAQPage JSON-LD, but Google restricted FAQ rich results to
+authoritative government and health sites in Aug 2023, so this will not
+produce rich snippets for SSC. The live argument for the page is AEO — answer
+engines quote clean Q&A — which is a real argument, just not the one on the tin.
+
+Merge order note from the earlier review still stands for this one: it
+conflicts in four files (`Navbar.tsx`, `use-cms.ts`, `dashboard.tsx`,
+`routes.ts`) and is cheaper to rebase onto the rework than to merge the
+rework into it.
