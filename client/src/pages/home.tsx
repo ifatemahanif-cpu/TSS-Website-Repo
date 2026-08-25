@@ -83,8 +83,7 @@ export default function Home() {
             25 Aug. It described the work rather than showing it, and it is the
             same species as every other explanatory section she cut off the
             study: the second fold, both standfirsts, the hand-off line. The
-            case rail does that job now, with evidence. Origin.tsx is left in
-            the tree rather than deleted until the rework merges. */}
+            case rail does that job now, with evidence. */}
         <Team />
         <Work />
         <Services />

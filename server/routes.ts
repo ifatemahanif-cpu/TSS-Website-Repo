@@ -28,11 +28,11 @@ import { sendSlackNotification } from "./slack";
  * impossibility here: no route below names a parameter twice, so every
  * `req.params.x` in this file is a string and always has been.
  *
- * Declared once rather than coerced at each of the twenty-nine call sites,
- * because the fact being recorded is a fact about the ROUTES, not about any
- * individual `parseInt`. The cost is that adding a route with a repeated
- * parameter name would make this alias a lie — so don't, and if you must, take
- * that route's handler off this alias rather than widening it back.
+ * Declared once rather than coerced at every call site, because the fact being
+ * recorded is a fact about the ROUTES, not about any individual `parseInt`. The
+ * cost is that adding a route with a repeated parameter name would make this
+ * alias a lie — so don't, and if you must, take that route's handler off this
+ * alias rather than widening it back.
  */
 type Request = ExpressRequest<Record<string, string>>;
 
@@ -232,26 +232,6 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json(result);
   });
 
-  app.get("/api/cms/team", async (_req: Request, res: Response) => {
-    res.json(await storage.getTeamMembers());
-  });
-
-  app.post("/api/cms/team", requireAuth, async (req: Request, res: Response) => {
-    res.json(await storage.createTeamMember(req.body));
-  });
-
-  app.put("/api/cms/team/:id", requireAuth, async (req: Request, res: Response) => {
-    const member = await storage.updateTeamMember(parseInt(req.params.id), req.body);
-    if (!member) return res.status(404).json({ message: "Not found" });
-    res.json(member);
-  });
-
-  app.delete("/api/cms/team/:id", requireAuth, async (req: Request, res: Response) => {
-    const deleted = await storage.deleteTeamMember(parseInt(req.params.id));
-    if (!deleted) return res.status(404).json({ message: "Not found" });
-    res.json({ message: "Deleted" });
-  });
-
   app.get("/api/cms/services", async (_req: Request, res: Response) => {
     res.json(await storage.getServices());
   });
@@ -272,53 +252,6 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json({ message: "Deleted" });
   });
 
-  app.get("/api/cms/problems", async (_req: Request, res: Response) => {
-    res.json(await storage.getProblems());
-  });
-
-  app.post("/api/cms/problems", requireAuth, async (req: Request, res: Response) => {
-    res.json(await storage.createProblem(req.body));
-  });
-
-  app.put("/api/cms/problems/:id", requireAuth, async (req: Request, res: Response) => {
-    const problem = await storage.updateProblem(parseInt(req.params.id), req.body);
-    if (!problem) return res.status(404).json({ message: "Not found" });
-    res.json(problem);
-  });
-
-  app.delete("/api/cms/problems/:id", requireAuth, async (req: Request, res: Response) => {
-    const deleted = await storage.deleteProblem(parseInt(req.params.id));
-    if (!deleted) return res.status(404).json({ message: "Not found" });
-    res.json({ message: "Deleted" });
-  });
-
-  app.get("/api/cms/whatwedo", async (_req: Request, res: Response) => {
-    res.json(await storage.getWhatWeDoBlocks());
-  });
-
-  app.post("/api/cms/whatwedo", requireAuth, async (req: Request, res: Response) => {
-    res.json(await storage.createWhatWeDoBlock(req.body));
-  });
-
-  app.put("/api/cms/whatwedo/:id", requireAuth, async (req: Request, res: Response) => {
-    const block = await storage.updateWhatWeDoBlock(parseInt(req.params.id), req.body);
-    if (!block) return res.status(404).json({ message: "Not found" });
-    res.json(block);
-  });
-
-  app.delete("/api/cms/whatwedo/:id", requireAuth, async (req: Request, res: Response) => {
-    const deleted = await storage.deleteWhatWeDoBlock(parseInt(req.params.id));
-    if (!deleted) return res.status(404).json({ message: "Not found" });
-    res.json({ message: "Deleted" });
-  });
-
-  app.get("/api/cms/pages/:pageKey", async (req: Request, res: Response) => {
-    res.json(await storage.getPageSections(req.params.pageKey));
-  });
-
-  app.put("/api/cms/pages/:pageKey/:sectionKey", requireAuth, async (req: Request, res: Response) => {
-    res.json(await storage.upsertPageSection(req.params.pageKey, req.params.sectionKey, req.body));
-  });
 
   const formSubmissionBody = z.object({
     formType: z.enum(["join", "talk", "offer"]),
