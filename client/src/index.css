@@ -815,3 +815,39 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-cue::after { animation: none; top: 0; }
 }
+
+
+/* =========================================================================
+   THE HERO'S OPENING SIZE, BEFORE THE JAVASCRIPT ARRIVES
+
+   Hero.tsx sizes the sentence imperatively — paint() measures the words and
+   writes an exact px font-size onto this paragraph, because "fill nine rows of
+   whatever is left of the sentence" is not a thing CSS can be asked. Inline
+   px always wins over this rule, so on a live page these numbers are never
+   used.
+
+   They are used for the second or two before that: the prerendered HTML on a
+   cold phone, and the SPA shell. The prerender snapshots at 1440x900, so
+   without a rule here that first paint drew 71px words on a 375px screen —
+   54px of sideways overflow and a hero three screens tall, which then
+   collapsed the moment React hydrated. script/prerender.ts strips the inline
+   size from the snapshot so this shows through instead.
+
+   THE BREAKPOINT IS 40rem BECAUSE rowsOpen() IN Hero.tsx BREAKS AT 40rem.
+   Below it the sentence opens over nine rows, above it over 5.4, and the
+   settled size steps DOWN as the viewport gets wider at that seam — which is
+   why this cannot be one clamp. The vw figures are fitted to what paint()
+   actually computes (measured: 31.1px at 375, 39.2px at 768, 71.1px at 1440),
+   so hydration's correction is a rounding error rather than a relayout. If
+   rowsOpen() or the caps in paint() change, re-measure and refit.
+   ========================================================================= */
+.hero-flow {
+  font-size: 8.3vw;
+}
+@media (min-width: 40rem) {
+  .hero-flow {
+    /* 4.45rem is where paint()'s own fill term stops growing, because the
+       container hits max-w-[78rem] and stops widening with the viewport. */
+    font-size: min(4.95vw, 4.45rem);
+  }
+}

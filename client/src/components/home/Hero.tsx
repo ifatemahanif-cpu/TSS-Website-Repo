@@ -339,7 +339,9 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
       <p
         ref={flowRef}
         aria-hidden="true"
-        className="m-0 flex w-full flex-wrap items-baseline justify-center"
+        /* hero-flow carries the pre-hydration font-size only; paint() writes an
+           exact px size inline and inline wins. See index.css. */
+        className="hero-flow m-0 flex w-full flex-wrap items-baseline justify-center"
         style={{
           fontFamily: "'Zodiak', Georgia, serif",
           fontWeight: 700,

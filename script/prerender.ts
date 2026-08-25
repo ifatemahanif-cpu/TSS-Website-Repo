@@ -259,6 +259,30 @@ export async function prerender() {
       })()`);
       await new Promise((r) => setTimeout(r, 800));
 
+      // UNBAKE THE ONE MEASUREMENT THAT ONLY HOLDS AT THIS VIEWPORT.
+      //
+      // Everything above snapshots a page rendered at 1440x900, which is fine
+      // for markup and fine for anything sized in rem, em, svh or %. The hero
+      // is the exception: it measures its own words and writes a px font-size
+      // onto the flow paragraph, so the file we are about to serve to every
+      // device carried "71.122px" — and a 375px phone drew that, overflowing
+      // sideways by 54px and standing three screens tall until React hydrated
+      // and collapsed it.
+      //
+      // Removing the property lets the .hero-flow rule in index.css take over,
+      // which is viewport-relative and lands within a rounding error of what
+      // paint() will compute a moment later. The word widths are all in `em`,
+      // so they follow whatever size applies and are left exactly as rendered.
+      //
+      // Narrow on purpose: one property, one element, addressed through the DOM
+      // rather than by rewriting the serialized HTML. If another component ever
+      // writes px from a measurement, it needs its own line here — there is no
+      // general way to tell a measured px from an intentional one.
+      await page.evaluate(`(() => {
+        const flow = document.querySelector('#act-shape p[aria-hidden="true"]');
+        if (flow) flow.style.removeProperty("font-size");
+      })()`);
+
       // Per-route head: canonical always, title/description where the SPA
       // doesn't manage them itself
       const headParams = JSON.stringify({
