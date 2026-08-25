@@ -35,8 +35,11 @@ const FACES = [
  * half the weight of the first. Three corrections, none of which invented copy:
  *
  *   1. the heart moved INSIDE the sentence, after the full stop, sized in `em`.
- *      Floating above a centred block it read as a thing in a gap — the same
- *      composition she called odd about the hero's wink.
+ *      Floating above a centred block it read as a thing in a gap, which was
+ *      also her note on the hero's wink before that one was cut outright.
+ *      This one stays: the hero's sentence had just finished cutting itself to
+ *      three words and a face after the full stop was a second punchline. This
+ *      heading is an invitation, and the heart is the warmth on an ask.
  *   2. the heading came up to within striking distance of the hero.
  *   3. `.close__who` under a hairline: the peak's three faces at 2.6rem, then
  *      the direct routes. The faces carry no caption on purpose; the peak
@@ -95,12 +98,25 @@ function Close({ progress }: { progress: MotionValue<number> }) {
             fontSize: "clamp(1.05rem, 1.5vw, 1.35rem)",
             lineHeight: 1.55,
             color: "rgba(255,255,255,0.66)",
+            /* BALANCED, like the heading above it, and measured rather than
+               eyeballed. Left to the default wrap this broke "feels / off" at
+               1440 — the two words the whole ask rests on, split across a line
+               — and at 1024 and 768 it broke "tell / you" and left "you what we
+               see." stranded as a four-word tail. Balance breaks after "Show
+               us" at every width from 414 up and holds one shape. */
+            textWrap: "balance",
             maxWidth: "34rem",
             margin: "clamp(1.6rem, 3vh, 2.4rem) auto clamp(2.4rem, 4.5vh, 3.4rem)",
           }}
+          /* "Show us", not "Tell us". Fatema, 25 Aug: the block was tell-tell-
+             tell — the heading, then twice more in one sentence, and the third
+             one turned a warm invitation into a tic. The middle one is the one
+             that gives, because "we'll tell you what we see" is the offer and
+             the heading is the ask. Two now, at the two ends, which reads as
+             give-and-get rather than as a stutter. */
           data-testid="text-cta-p1"
         >
-          We're always up for a good one. Tell us where it feels off, and we'll
+          We're always up for a good one. Show us where it feels off, and we'll
           tell you what we see.
         </motion.p>
 
