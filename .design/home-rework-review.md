@@ -272,6 +272,40 @@ the merge, as this doc said to.
 - `readerhash.mjs` — Back, Forward, cold shared link, unknown id, entry count.
 - `footer.mjs` — footer presence per page and cross-page anchor landings.
 
+---
+
+# CMS CLEANUP — 25 Aug 2026 (`c44e8f7`)
+
+Fatema's call: retire what is dead, keep the data, leave the narrowing to blog
+and forms as a separate decision.
+
+## What the CMS drives now
+
+**Live and load-bearing.** Blog posts / categories / authors; form submissions
+and subscribers; portfolios (read by BOTH the three personal pages and /team's
+cards); the homepage services stages; the hero's search copy (version-gated at
+v4); and the full text of /our-story, /join, /contact and the /blog header.
+
+**Retired.** Admin: Problem Section, What We Do, Team Members, and the Site
+Settings blocks for problem / origin / team / cta. Two further fields went for
+the same reason — the hero's secondary button (gone since v4) and the services
+subheading. Server: CRUD for problems, whatwedo, team, and /api/cms/pages, which
+had endpoints, no UI and no readers even before the rework. The seed no longer
+writes any of it. Deleted: Origin, WhatChanges, GradientBlobs,
+SectionAnimations.
+
+**Deliberately still present.** The tables and their storage methods. Nothing
+points at them, so the cleanup is one revert from working again and no copy has
+been thrown away. Dropping tables is a separate decision that takes the data.
+
+## The thing to know before narrowing further
+
+/our-story, /join and /contact are ENTIRELY CMS-driven — /join reads about
+fifteen keys, /contact eleven including both forms' success messages. So
+"blog and forms only" is not a cleanup, it is a decision about which pages
+Fatema can edit without a developer. Unresolved.
+
+
 ## Still open for Fatema
 
 - **#8, the CMS divergence** — untouched, still hers to call.
