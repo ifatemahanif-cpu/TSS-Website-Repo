@@ -61,13 +61,22 @@ export function useActProgress(
 
 /**
  * The same number for an act that does NOT pin — the turn, the services list,
- * the close. These are ordinary-height sections, so progress has to be measured
- * against the viewport rather than against a pin.
+ * the close. These are ordinary-height sections, so progress is measured against
+ * the viewport rather than against a pin.
  *
- * 0 as the section's top reaches the bottom of the screen, 1 once its bottom has
- * passed the middle. That window is deliberately generous: a flow act's job is
- * to have finished arriving by the time the reader is looking at it, not to
- * animate under their eyes.
+ * 0 the moment the section's top touches the BOTTOM of the screen; 1 once its
+ * bottom has passed the top. A full sweep of the section's visible life, which
+ * puts p = 0.5 exactly where the section is centred.
+ *
+ * THAT NUMBER IS NOT A TASTE DECISION. It is the prototype engine's definition,
+ * which is `p = (y + vh - top) / (height + vh)`, and every window in every
+ * flowing act is a pair of constants read off that curve — the close's heart at
+ * 0.26, the turn's wipe from 0.28 to 0.52, the services rows from 0.26 up in
+ * steps of 0.085. Narrow this window and the constants keep working in the sense
+ * that nothing crashes; they just fire while the act is still climbing into
+ * view, and the reader arrives to find it already over. That is exactly the
+ * failure the turn's wipe was built to fix, so it is worth being blunt about:
+ * if you change this offset, you have retimed the whole page.
  */
 export function useFlowProgress(
   ref: RefObject<HTMLElement | null>,
@@ -77,7 +86,7 @@ export function useFlowProgress(
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.92", "end 0.55"],
+    offset: ["start end", "end start"],
   });
 
   return reduced ? settled : scrollYProgress;

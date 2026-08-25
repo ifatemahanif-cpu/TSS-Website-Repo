@@ -124,6 +124,41 @@ export function Act({
 }
 
 /**
+ * The kicker over an act's heading. Accent, small, wide-tracked — the only
+ * place the accent is used as ink rather than as a mark, and the thing that
+ * tells you a new act has started before you have read a word of it.
+ */
+export function ActLabel({
+  className = "",
+  style,
+  children,
+  ...rest
+}: {
+  className?: string;
+  children: ReactNode;
+} & React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={className}
+      /* merged, not spread over: `{...rest}` carrying a caller's `style` would
+         replace this object wholesale and take the typeface with it */
+      style={{
+        fontFamily: "'Switzer', sans-serif",
+        fontSize: "0.72rem",
+        fontWeight: 600,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: "#cf81cd",
+        ...style,
+      }}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
  * The 78rem column every act's content sits in, so the page has one measure and
  * not six. Acts that need to break out of it (the work rail pans full-bleed)
  * simply do not use it.

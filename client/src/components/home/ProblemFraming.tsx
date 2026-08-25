@@ -1,148 +1,105 @@
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { SectionLabel, SectionHeading } from "./SectionAnimations";
-import { GradientBlobs, problemBlobs } from "./GradientBlobs";
-import { useCmsSettings, useCmsProblems } from "@/hooks/use-cms";
+import { motion, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
+import { Act, ActLabel, ActWrap } from "./Act";
+import { Stitch } from "./Stitch";
 
-const hardcodedProblems = [
-  { id: "01", text: "You're doing marketing. You just can't explain why any of it's working." },
-  { id: "02", text: "Your website says one thing. Your pitch deck says another. Your team says a third." },
-  { id: "03", text: "Content goes out every week. You couldn't point to a single lead it brought in." },
-  { id: "04", text: "You have a strategy doc somewhere. Nobody's opened it since the offsite." },
-];
+const BLACK = "#06041A";
 
+/**
+ * THE TURN — the hinge of the page, and the only act that is one sentence
+ * correcting another.
+ *
+ * WHAT THIS REPLACED, AND WHY
+ *
+ * Four rounded pills of symptoms ("Content goes out every week. You couldn't
+ * point to a single lead it brought in.") on the house navy. They were true and
+ * they were well observed, and four of them in a row is a diagnosis — the page
+ * spent its hinge listing what is wrong with the reader's business. The claim
+ * underneath all four is one line long, and stated once it is a belief rather
+ * than an audit.
+ *
+ * The ground drops to near-black here, the only time on the page it goes darker
+ * than navy. The act is a held breath, and it is followed by the cut to bone.
+ *
+ * NOTE FOR WHOEVER WIRES THE CMS BACK UP
+ *
+ * The old section read `settings.problem` and the `problems` table. Nothing on
+ * the homepage reads either any more. Both are still served and still edited
+ * from the admin, so the honest version is: editing them changes nothing until
+ * someone points something at them again. The two lines below cannot come from
+ * a text field as they stand, because one of them carries a stitch under a
+ * single word — that is markup, not copy.
+ *
+ * THE SECOND LINE IS WIPED, NOT FADED
+ *
+ * Both lines used to arrive on a 700ms fade triggered on intersection, which is
+ * finished before most readers reach the act — so the hinge of the page was, in
+ * practice, two static lines on a black screen, and Fatema could see no motion
+ * in it because there was none left to see. The correction now arrives by being
+ * written over the top of the thing it corrects, at exactly the speed the
+ * reader scrolls.
+ */
 export function ProblemFraming() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  return (
+    <Act id="act-turn" kind="flow" ground="dark" bg={BLACK}>
+      {(progress) => <Turn progress={progress} />}
+    </Act>
+  );
+}
 
-  const { data: settings } = useCmsSettings();
-  const { data: cmsProblems } = useCmsProblems();
+const LINE: React.CSSProperties = {
+  margin: 0,
+  fontFamily: "'Zodiak', Georgia, serif",
+  fontSize: "clamp(2.4rem, 6.2vw, 5.2rem)",
+  lineHeight: 1.1,
+  letterSpacing: "-0.028em",
+};
 
-  const problemSettings = settings?.problem;
-  const problemItems = cmsProblems
-    ? cmsProblems.map((p: any) => ({ id: p.displayId, text: p.text }))
-    : hardcodedProblems;
+function Turn({ progress }: { progress: MotionValue<number> }) {
+  const reduced = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
+  const label = useTransform(progress, [0.08, 0.15], [0, 1], { clamp: true });
+  const before = useTransform(progress, [0.14, 0.24], [0, 1], { clamp: true });
+
+  /* cubic ease-out on the wipe: linear, an edge crossing five words at constant
+     speed reads as a loading bar. Eased, it arrives. */
+  const wipe = useTransform(progress, [0.28, 0.52], [0, 1], { clamp: true });
+  const clipPath = useTransform(wipe, (v) => {
+    const e = 1 - Math.pow(1 - v, 3);
+    return `inset(0 ${((1 - e) * 100).toFixed(2)}% 0 0)`;
   });
 
-  const contentY = useTransform(scrollYProgress, [0.2, 0.85], [0, -80]);
-  const contentScale = useTransform(scrollYProgress, [0.3, 0.85], [1, 0.96]);
-  const contentOpacity = useTransform(scrollYProgress, [0.5, 0.85], [1, 0]);
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative px-2 md:px-4 lg:px-6"
-      style={{
-        backgroundColor: "#0C0A3E",
-        paddingBottom: "0",
-        paddingTop: "0",
-        position: "relative",
-        zIndex: 1,
-      }}
-      data-testid="problem-framing-section"
-    >
-      <div
-        className="relative overflow-hidden"
-        style={{
-          backgroundColor: "#0C0A3E",
-          color: "#FFFFFF",
-          borderRadius: "20px",
-          padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
-          paddingBottom: "clamp(6rem, 10vw, 10rem)",
-          marginTop: "0",
-          marginBottom: "-6rem",
-        }}
+    <ActWrap className="max-w-[64rem]">
+      <ActLabel className="mb-[clamp(1.4rem,3vh,2.2rem)]">
+        <motion.span className="block" style={{ opacity: reduced ? 1 : label }}>
+          A core belief
+        </motion.span>
+      </ActLabel>
+
+      {/* 0.38, not the 0.34 it started at: 0.34 measured 2.94:1 on a phone and
+          large text needs 3:1, so it missed by a hair. The device survives —
+          the second line is 20:1, so this still reads as said under the
+          breath. */}
+      <motion.p
+        style={{ ...LINE, color: "rgba(255,255,255,0.38)", opacity: reduced ? 1 : before }}
+        data-testid="text-turn-before"
       >
-        <GradientBlobs blobs={problemBlobs} />
-        <motion.div
-          className="max-w-[1100px] mx-auto relative z-[1]"
-          style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <SectionLabel isInView={isInView}>{problemSettings?.label ?? "THE PROBLEM"}</SectionLabel>
+        Most marketing problems aren't execution problems.
+      </motion.p>
 
-            <SectionHeading isInView={isInView} testId="text-problem-heading">
-              <span dangerouslySetInnerHTML={{ __html: problemSettings?.heading ?? "Your product is clear.<br />Your marketing isn't." }} />
-            </SectionHeading>
-
-            <p
-              style={{
-                fontFamily: "'Switzer', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.8,
-                fontStyle: "italic",
-                marginBottom: "2.5rem",
-              }}
-              data-testid="text-problem-subheading"
-            >{problemSettings?.subheading ?? "These are the patterns we see again and again."} </p>
-          </motion.div>
-
-          <div className="flex flex-wrap gap-4">
-            {problemItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 25,
-                  delay: 0.2 + index * 0.1,
-                }}
-                whileHover={{
-                  scale: 1.03,
-                  backgroundColor: "rgba(255, 255, 255, 0.06)",
-                  borderColor: "rgba(255, 255, 255, 0.2)",
-                  boxShadow: "0 4px 20px rgba(123, 30, 122, 0.15)",
-                  y: -2,
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="flex gap-4 items-center rounded-full border cursor-default"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.03)",
-                  borderColor: "rgba(255, 255, 255, 0.1)",
-                  padding: "1rem 2rem",
-                  transition: "background-color 0.2s, border-color 0.2s, box-shadow 0.2s",
-                }}
-                data-testid={`problem-item-${item.id}`}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Switzer', sans-serif",
-                    fontSize: "0.85rem",
-                    opacity: 0.5,
-                    flexShrink: 0,
-                  }}
-                  data-testid={`text-problem-number-${item.id}`}
-                >
-                  {item.id}
-                </span>
-                <p
-                  style={{
-                    fontFamily: "'Switzer', sans-serif",
-                    fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
-                    lineHeight: 1.4,
-                    opacity: 0.9,
-                    fontWeight: 400,
-                  }}
-                  data-testid={`text-problem-content-${item.id}`}
-                >
-                  {item.text}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </section>
+      <motion.p
+        style={{
+          ...LINE,
+          marginTop: "0.24em",
+          fontWeight: 700,
+          color: "#FFFFFF",
+          ...(reduced ? null : { clipPath }),
+        }}
+        data-testid="text-turn-after"
+      >
+        They're <Stitch progress={progress} from={0.5} to={0.62}>story</Stitch>{" "}
+        problems.
+      </motion.p>
+    </ActWrap>
   );
 }
