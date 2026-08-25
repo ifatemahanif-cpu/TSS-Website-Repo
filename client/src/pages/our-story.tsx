@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { useCmsSettings } from "@/hooks/use-cms";
@@ -506,6 +507,7 @@ export default function OurStory() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

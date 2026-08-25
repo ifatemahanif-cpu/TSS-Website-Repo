@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Footer } from "@/components/layout/Footer";
 import { Link, useParams } from "wouter";
 import { imageSrc, fallbackToOriginal, applyBodyImageFallbacks } from "@/lib/image-src";
 import { motion } from "framer-motion";
@@ -596,6 +597,9 @@ export default function BlogPost() {
             &larr; BACK TO BLOG
           </Link>
         </div>
+        {/* the deadest end on the site: an article that is not there, offering
+            one link back. This is where a map is worth most. */}
+        <Footer />
       </div>
     );
   }
@@ -751,6 +755,7 @@ export default function BlogPost() {
           margin: 1.5rem 0;
         }
       `}</style>
+      <Footer />
     </div>
   );
 }

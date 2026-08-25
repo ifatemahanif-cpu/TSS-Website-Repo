@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Footer } from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
@@ -201,6 +202,12 @@ export default function Contact() {
           }}
         >
           <div className="max-w-[800px] mx-auto">
+            {/* The page had no h1 anywhere — it opens on a back link and then
+                two numbered cards, so its two headings were both h2 under
+                nothing. Named rather than styled, because what the page needs
+                is a title and not a hero; the same thing the homepage does with
+                its own h1 behind the film. */}
+            <h1 className="sr-only">Contact The Story Shapers</h1>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -603,6 +610,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { useEffect } from "react";
-import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
 
 const BG = "#0C0A3E";
 const ACCENT = "#7B1E7A";
@@ -73,24 +73,7 @@ export default function TeamPage() {
         )}
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ backgroundColor: BG, borderTop: `1px solid ${BORDER}`, padding: "3rem 2rem", textAlign: "center", color: "#FFFFFF" }}>
-        <div style={{ position: "relative" }}>
-          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1.2px, transparent 1.2px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-          <div style={{ position: "relative", zIndex: 1 }}>
-            <img src={logoImg} alt="The Story Shapers" style={{ height: "44px", width: "auto", filter: "invert(1) brightness(2)", marginBottom: "1rem" }} />
-            <p style={{ fontFamily: "'Zodiak', serif", fontStyle: "italic", fontSize: "0.85rem", color: MUTED, marginBottom: "1.25rem" }}>
-              Brand strategy. Content leadership. Editorial thinking.
-            </p>
-            <Link href="/" style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: MUTED, textDecoration: "none" }} data-testid="link-footer-home">
-              ← Back to homepage
-            </Link>
-            <p style={{ marginTop: "2rem", fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)" }}>
-              © {new Date().getFullYear()} The Story Shapers. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

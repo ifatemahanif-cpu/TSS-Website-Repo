@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
@@ -704,6 +705,7 @@ export default function Blog() {
           <SubscribeModule />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

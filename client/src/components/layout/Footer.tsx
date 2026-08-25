@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import logoImg from "@assets/FullLogo_Transparent_NoBuffer_1772265926648.png";
 import { CONTACT, mailto } from "@/lib/contact";
 
@@ -6,7 +6,7 @@ const NAVY = "#0C0A3E";
 const MONO = "ui-monospace, monospace";
 
 /**
- * The homepage footer.
+ * The site footer.
  *
  * What it replaced was a centred logo, the email, and a copyright line — which
  * put the same address 240px under the close, where the close had just printed
@@ -17,11 +17,22 @@ const MONO = "ui-monospace, monospace";
  * this is the map. The address appears once more here, but now inside a column
  * of things you can do rather than on its own as a repeat.
  *
- * The in-page links go to acts by id, which is what makes them useful on a page
- * that is one long score — "The Shapers" and "The work" have no routes of their
- * own, and on this page they do not need any.
+ * ON EVERY PAGE, NOT JUST THE HOMEPAGE. It began as home-only, which left
+ * /our-story, /blog, /join, /contact and every article ending in nothing at all
+ * — and on a phone, where the bar had no menu either, that was a page with no
+ * way off it.
+ *
+ * Which makes the in-page links the one thing to be careful about. "The
+ * Shapers" and "The work" are acts on the homepage rather than routes of their
+ * own, so they are `#act-peak` while you are standing on it and `/#act-peak`
+ * when you are not. Home reads that hash on arrival — see pages/home.tsx.
  */
 export function Footer() {
+  const [location] = useLocation();
+  const onHome = location === "/";
+  /* a bare hash scrolls; a hash on a path navigates first and then scrolls */
+  const act = (id: string) => (onHome ? `#${id}` : `/#${id}`);
+
   return (
     <footer
       data-ground="dark"
@@ -60,8 +71,8 @@ export function Footer() {
             <K>The site</K>
             <ul className="m-0 grid list-none gap-[0.6rem] p-0">
               <Item href="/our-story">Our Story</Item>
-              <Item href="#act-peak">The Shapers</Item>
-              <Item href="#act-proof">The work</Item>
+              <Item href={act("act-peak")}>The Shapers</Item>
+              <Item href={act("act-proof")}>The work</Item>
               <Item href="/blog">Blog</Item>
               <Item href="/join">Join the collective</Item>
             </ul>
@@ -71,7 +82,7 @@ export function Footer() {
             <K>Start something</K>
             <ul className="m-0 grid list-none gap-[0.6rem] p-0">
               <Item href={mailto}>{CONTACT.email}</Item>
-              <Item href="#act-close">Tell us your story</Item>
+              <Item href={act("act-close")}>Tell us your story</Item>
             </ul>
           </div>
         </div>

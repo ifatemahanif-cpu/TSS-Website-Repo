@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { ProblemFraming } from "@/components/home/ProblemFraming";
@@ -5,7 +6,7 @@ import { Team } from "@/components/home/Team";
 import { Work } from "@/components/home/Work";
 import { Services } from "@/components/home/Services";
 import { CTA } from "@/components/home/CTA";
-import { Footer } from "@/components/home/Footer";
+import { Footer } from "@/components/layout/Footer";
 
 /**
  * THE HOMEPAGE, AS A SCORE.
@@ -22,7 +23,56 @@ import { Footer } from "@/components/home/Footer";
  * Every one of them is an <Act> and publishes its own ground so the fixed nav
  * can pick its ink. Nothing here decides anything; the acts do.
  */
+
+/**
+ * Arriving at an act by name — `/#act-peak` from any other page's footer.
+ *
+ * Not left to the browser, and not done once. Every act is sized in `svh` and
+ * set in a webfont, so the offset of the fourth one is not known until the
+ * fonts have swapped in and each stage has taken its real height. A single
+ * scroll on mount lands short by however much the page grew afterwards.
+ *
+ * So it scrolls, then scrolls again when the fonts report ready, and gives up
+ * the moment the reader touches anything — a page that keeps yanking itself
+ * back is worse than one that lands a few hundred pixels off.
+ *
+ * `#case-*` is not ours: Work.tsx opens the reader on those, and its own scroll
+ * handling is what puts the rail behind it.
+ */
+function useActHash() {
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id || id.startsWith("case-")) return;
+
+    let cancelled = false;
+    const stop = () => {
+      cancelled = true;
+    };
+    window.addEventListener("wheel", stop, { passive: true, once: true });
+    window.addEventListener("touchstart", stop, { passive: true, once: true });
+    window.addEventListener("keydown", stop, { once: true });
+
+    const land = () => {
+      if (cancelled) return;
+      document.getElementById(id)?.scrollIntoView({ block: "start" });
+    };
+
+    land();
+    const t = window.setTimeout(land, 120);
+    document.fonts?.ready.then(() => requestAnimationFrame(land));
+
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("wheel", stop);
+      window.removeEventListener("touchstart", stop);
+      window.removeEventListener("keydown", stop);
+    };
+  }, []);
+}
+
 export default function Home() {
+  useActHash();
+
   return (
     <div style={{ backgroundColor: "#0C0A3E" }} className="min-h-screen">
       <Navbar />
