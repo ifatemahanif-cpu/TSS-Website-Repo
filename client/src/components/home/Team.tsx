@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
 import { Act } from "./Act";
+import { useNarrow } from "@/hooks/use-act-progress";
 import { CrewDoodle } from "./Doodles";
 import fatemaPanel from "@/assets/shapers/fatema-panel.jpg";
 import shailiPanel from "@/assets/shapers/shaili-panel.jpg";
@@ -119,11 +120,15 @@ const SLOTS: [number, number][] = [
 ];
 
 export function Team() {
+  /* shorter on a phone, for the reason set out on the hero's span: a pinned
+     act's span is scroll cost, not content */
+  const narrow = useNarrow(40);
+
   return (
     <Act
       id="act-peak"
       kind="pin"
-      span={3.4}
+      span={narrow ? 2.7 : 3.4}
       ground="light"
       bg={BONE}
       stagePad=""

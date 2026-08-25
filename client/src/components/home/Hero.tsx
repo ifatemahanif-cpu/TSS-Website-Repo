@@ -1,430 +1,463 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useMotionValueEvent, useReducedMotion, type MotionValue } from "framer-motion";
+import { Act, ActWrap } from "./Act";
+import { SmileyDoodle } from "./Doodles";
+import { useNarrow } from "@/hooks/use-act-progress";
 import { useCmsSettings } from "@/hooks/use-cms";
 import { currentHero } from "@shared/hero";
 
-/**
- * The hero is a six-beat film. Every word is a token with a stable key, and a
- * cut runs in two explicit stages so nothing ever crosses mid-air:
- *
- *   clearing — the words that won't survive scatter (survivors hold still)
- *   swap     — ONE re-render: scattered words leave the tree while invisible,
- *              survivors glide to their place in the new sentence across the
- *              emptied stage, and the new words rise in after the glide.
- *
- * A single swap means layout is measured exactly once per cut — the earlier
- * approach let each scattered word unmount as its exit finished, and every
- * one of those unmounts re-measured the glide mid-flight. The final beat is
- * the residue of everything — "We shape stories." — styled twice the size.
- *
- * The copy is the chain Fatema approved; survivors per cut:
- *   1 → 2  We are        2 → 3  We           3 → 4  We · brands
- *   4 → 5  who they really are · we          5 → ∎  we · shape · story
- *
- * Doodles (smiley, crew, heart, eye) are inline tokens too, so they reflow
- * and break away exactly like words.
- */
-
-const EASE_OUT = [0.16, 1, 0.3, 1] as const;
-const EASE_IN = [0.7, 0, 0.84, 0] as const;
-const ACCENT = "#cf81cd";
-
-type Token = {
-  k: string;
-  t?: string;
-  doodle?: "smiley" | "crew" | "heart" | "eye";
-  br?: true;
-};
-
-const w = (k: string, t: string): Token => ({ k, t });
-const d = (doodle: Token["doodle"]): Token => ({ k: `doodle-${doodle}`, doodle });
-/** Forces the line to wrap here, so breaks are authored rather than accidental. */
-const br = (n: number): Token => ({ k: `br-${n}`, br: true });
+const NAVY = "#0C0A3E";
 
 /**
- * Three authored lines per beat. The type is sized to fill the screen it is
- * standing on, and at that size these sentences no longer fit on two lines —
- * left to the browser they broke wherever they ran out of room, orphaning
- * "Shapers." and "brands" onto lines of their own. Breaking them here instead
- * keeps a steady three-line block through the whole film and lets each beat
- * land on the phrase that matters: the brand name, the crew, the promise.
+ * ACT 1 — THE SHAPING.
+ *
+ * Every word of the final line is already in the first line. Nothing is added,
+ * only removed, which is the service performed instead of claimed:
+ *
+ *   We are a full-service, senior-led marketing collective that helps ambitious
+ *   companies shape brand strategy, positioning, content and go-to-market
+ *   stories that genuinely land.
+ *
+ *                              ↓ scroll
+ *
+ *   We shape stories.
+ *
+ * WHAT THIS REPLACED
+ *
+ * A timed six-beat film: two headlines that swapped themselves on a clock,
+ * whether or not anybody was watching, and were finished before most readers
+ * had stopped moving. This one is welded to the scrollbar, so it runs at the
+ * reader's speed, backwards if they scroll up, and not at all if they leave.
+ *
+ * WHY THIS PAINTS IMPERATIVELY
+ *
+ * Every frame rewrites the font size, the width of twenty-two words, and the
+ * scale of twenty-two strikethroughs. Through React that is 22 components
+ * re-rendering per animation frame for the length of a three-screen act. So
+ * progress is subscribed to directly and the writes go to refs. Nothing here
+ * re-renders while you scroll it.
  */
-const BEATS: Token[][] = [
-  [w("hello", "Hello."), d("smiley"), br(1), w("we", "We"), w("are", "are"), w("the", "The"), br(2), w("story-name", "Story"), w("shapers", "Shapers.")],
-  [w("we", "We"), w("are", "are"), w("a", "a"), br(1), w("senior", "senior-led"), w("marketing", "marketing"), br(2), w("collective", "collective."), d("crew")],
-  [w("we", "We"), w("make", "make"), br(1), w("growing", "growing"), w("brands", "brands"), br(2), w("impossible", "impossible"), w("to", "to"), w("ignore", "ignore."), d("eye")],
-  [w("we", "We"), w("market", "market"), w("brands", "brands"), br(1), w("for", "for"), w("who", "who"), w("they", "they"), br(2), w("really", "really"), w("are", "are."), d("heart")],
-  [w("who", "Who"), w("they", "they"), w("really", "really"), w("are", "are"), br(1), w("is", "is"), w("the", "the"), w("story", "story"), br(2), w("we", "we"), w("shape", "shape.")],
-  [w("we", "We"), w("shape", "shape"), w("story", "stories.")],
-];
-
-/** How we shape them — the four offerings, numbered in the order they arrive. */
-const OFFERS = [
-  "Positioning & Go-to-Market",
-  "Content & Authority",
-  "Search & AI Discovery",
-  "Fractional Leadership",
-];
-
-const REST = BEATS.length - 1;
-const BEAT_HOLD_MS = [3800, 3400, 3600, 3600, 3200];
-/** How long the scatter stage runs before the swap. */
-const CLEAR_MS = 520;
-
-/**
- * Play from the top on every load. Straight to the resting frame only for:
- * headless Chrome (the build prerenders the DOM and needs the finished line),
- * reduced-motion users, and background tabs (frozen animation frames would
- * strand words mid-entrance).
- */
-function initialPhase() {
-  if (typeof window === "undefined") return REST;
-  if (navigator.webdriver) return REST;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return REST;
-  if (document.hidden) return REST;
-  return 0;
-}
-
-const stripHtml = (value: string) => value.replace(/<[^>]*>/g, "");
-
-const wordVariants = {
-  hidden: { opacity: 0, y: "0.6em", filter: "blur(10px)" },
-  shown: (index: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.6, delay: 0.55 + 0.055 * index, ease: EASE_OUT },
-  }),
-  // Breakaway: fragments scatter in alternating directions.
-  gone: (index: number) => ({
-    opacity: 0,
-    y: index % 2 === 0 ? "-0.5em" : "0.4em",
-    x: (index % 2 === 0 ? -1 : 1) * (6 + index * 2),
-    rotate: index % 2 === 0 ? -3 : 4,
-    filter: "blur(8px)",
-    transition: { duration: 0.45, delay: 0.02 * index, ease: EASE_IN },
-  }),
-};
-
-const draw = (delay: number, duration = 0.7) => ({
-  initial: { pathLength: 0 },
-  animate: { pathLength: 1 },
-  transition: { duration, delay, ease: EASE_OUT },
-});
-
-/* --- The cast: hand-drawn line characters ------------------------------- */
-
-function Smiley() {
-  return (
-    <motion.svg
-      className="story-hero__doodle-svg"
-      viewBox="0 0 100 100"
-      fill="none"
-      animate={{ rotate: [-5, 4, -5] }}
-      transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <motion.path d="M50 9 C74 8 92 26 91 50 C90 75 74 92 50 91 C26 90 9 74 9 50 C9 26 27 10 50 9" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(0.55, 0.8)} />
-      <motion.path d="M36 40 L36 48" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(1.15, 0.25)} />
-      {/* The wink: this eye squeezes shut and pops back open. */}
-      <motion.g style={{ originX: 0.64, originY: 0.44 }} animate={{ scaleY: [1, 1, 0.12, 1, 1] }} transition={{ duration: 2.8, times: [0, 0.55, 0.62, 0.7, 1], repeat: Infinity, delay: 1 }}>
-        <motion.path d="M64 40 L64 48" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(1.25, 0.25)} />
-      </motion.g>
-      <motion.path d="M31 61 C39 73 61 74 70 60" stroke={ACCENT} strokeWidth="5" strokeLinecap="round" {...draw(1.35, 0.45)} />
-    </motion.svg>
-  );
-}
-
-function Crew() {
-  return (
-    <motion.svg
-      className="story-hero__doodle-svg story-hero__doodle-svg--wide"
-      viewBox="0 0 150 100"
-      fill="none"
-      animate={{ y: [0, -3, 0] }}
-      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 1.6 }}
-    >
-      {/* Three of us — the middle one in pink, sketched in one by one. */}
-      <motion.circle cx="32" cy="46" r="12" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(0.6, 0.5)} />
-      <motion.path d="M14 88 C18 68 46 68 50 88" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(0.75, 0.4)} />
-      <motion.circle cx="75" cy="38" r="12" stroke={ACCENT} strokeWidth="5" strokeLinecap="round" {...draw(0.95, 0.5)} />
-      <motion.path d="M57 82 C61 61 89 61 93 82" stroke={ACCENT} strokeWidth="5" strokeLinecap="round" {...draw(1.1, 0.4)} />
-      <motion.circle cx="118" cy="46" r="12" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(1.3, 0.5)} />
-      <motion.path d="M100 88 C104 68 132 68 136 88" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(1.45, 0.4)} />
-    </motion.svg>
-  );
-}
-
-function Heart() {
-  return (
-    <motion.svg
-      className="story-hero__doodle-svg"
-      viewBox="0 0 100 100"
-      fill="none"
-      animate={{ scale: [1, 1.14, 1, 1.1, 1] }}
-      transition={{ duration: 1.5, times: [0, 0.25, 0.5, 0.72, 1], delay: 1.5, repeat: Infinity, repeatDelay: 1.2 }}
-    >
-      <motion.path
-        d="M50 86 C22 62 10 44 17 30 C24 16 43 18 50 32 C57 18 76 16 83 30 C90 44 78 62 50 86"
-        stroke={ACCENT}
-        strokeWidth="5"
-        strokeLinecap="round"
-        {...draw(0.7, 0.8)}
-      />
-    </motion.svg>
-  );
-}
-
-/** A wide-open eye for "impossible to ignore" — it blinks, then stares. */
-function Eye() {
-  return (
-    <motion.svg className="story-hero__doodle-svg story-hero__doodle-svg--wide" viewBox="0 0 150 100" fill="none">
-      <motion.g
-        style={{ originX: 0.5, originY: 0.5 }}
-        animate={{ scaleY: [1, 1, 0.06, 1, 1] }}
-        transition={{ duration: 3, times: [0, 0.6, 0.67, 0.74, 1], repeat: Infinity, delay: 1.8 }}
-      >
-        <motion.path d="M15 50 C40 16 110 16 135 50" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(0.9, 0.5)} />
-        <motion.path d="M15 50 C40 84 110 84 135 50" stroke="currentColor" strokeWidth="5" strokeLinecap="round" {...draw(1.05, 0.5)} />
-        <motion.circle cx="75" cy="50" r="13" stroke={ACCENT} strokeWidth="5" strokeLinecap="round" {...draw(1.25, 0.4)} />
-      </motion.g>
-    </motion.svg>
-  );
-}
-
-/** The final flourish above "stories." once the line has settled. */
-function Sparkle({ delay }: { delay: number }) {
-  return (
-    <motion.svg
-      className="story-hero__sparkle"
-      viewBox="0 0 100 100"
-      fill="none"
-      initial={{ scale: 0.4, rotate: -18, opacity: 0 }}
-      animate={{ scale: 1, rotate: 0, opacity: 1 }}
-      transition={{ duration: 0.6, delay, ease: EASE_OUT }}
-    >
-      <motion.path
-        d="M50 8 C55 36 64 45 92 50 C64 55 55 64 50 92 C45 64 36 55 8 50 C36 45 45 36 50 8"
-        stroke={ACCENT}
-        strokeWidth="5"
-        strokeLinecap="round"
-        {...draw(delay, 0.6)}
-      />
-    </motion.svg>
-  );
-}
-
-const DOODLES = { smiley: Smiley, crew: Crew, heart: Heart, eye: Eye } as const;
-
 export function Hero() {
+  /* A pinned act's span is how much SCROLL its animation costs, not how much it
+     contains, so it is where a phone can give length back without losing a
+     beat. The page is 13.9 viewport-heights on a 375x660 screen with the
+     desktop spans; the two pinned acts hand 1.1 of that back between them. */
+  const narrow = useNarrow(40);
+
+  return (
+    <Act
+      id="act-shape"
+      kind="pin"
+      span={narrow ? 2.4 : 2.8}
+      ground="dark"
+      bg={NAVY}
+      /* the cue is pinned to the bottom of the STAGE, so it travels with the
+         sticky frame rather than with the section's 2.8-viewport box */
+      stageClassName="relative"
+    >
+      {(progress) => <Shaping progress={progress} />}
+    </Act>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   THE SENTENCE
+
+   `cut` is WHEN a word is struck out, and the order is authored rather than
+   left to right: the sentence loses its qualifiers before it loses its clauses,
+   so what is on screen is a shorter sentence at every stage rather than a
+   half-eaten one.
+   ------------------------------------------------------------------------- */
+type Word = { t: string; cut?: number; final?: boolean };
+
+const WORDS: Word[] = [
+  { t: "We" },
+  { t: "are", cut: 0.66 },
+  { t: "a", cut: 0.52 },
+  { t: "full-service,", cut: 0.06 },
+  { t: "senior-led", cut: 0.54 },
+  { t: "marketing", cut: 0.56 },
+  { t: "collective", cut: 0.58 },
+  { t: "that", cut: 0.38 },
+  { t: "helps", cut: 0.4 },
+  { t: "ambitious", cut: 0.09 },
+  { t: "companies", cut: 0.42 },
+  { t: "shape" },
+  { t: "brand", cut: 0.2 },
+  { t: "strategy,", cut: 0.22 },
+  { t: "positioning,", cut: 0.24 },
+  { t: "content", cut: 0.26 },
+  { t: "and", cut: 0.28 },
+  { t: "go-to-market", cut: 0.3 },
+  { t: "stories", final: true },
+  { t: "that", cut: 0.68 },
+  { t: "genuinely", cut: 0.12 },
+  { t: "land.", cut: 0.7 },
+];
+
+const CUT_LEN = 0.07;
+const SETTLE = 0.78;
+const LAST = 18;
+/** 0.46em of drawing plus 0.16em of air, in EM of the display size — so the
+ *  wink scales with the payoff instead of being a fixed blob beside 138px type */
+const WINK_EM = 0.62;
+/** The three words that survive — We / shape / stories — are at full strength
+ *  from the first frame; the nineteen that get cut open at 55%. So the opening
+ *  frame is not a wall, it is already legible as "We shape stories" with the
+ *  qualifiers set around it, and the scroll then removes exactly what the eye
+ *  had already deprioritised. It makes the mechanic legible BEFORE it runs
+ *  rather than only in hindsight. */
+const DOOMED = 0.55;
+const ROWS_END = 1;
+const BASE = 40;
+
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+
+/**
+ * How many lines the sentence is allowed to occupy at rest.
+ *
+ * The two numbers move in opposite directions and that is not a mistake. A
+ * block's height goes as rows SQUARED, so this is the one number that fills the
+ * frame. On a 1440 screen the old budget put the block at 57% and it read as a
+ * wall — Fatema's first reaction was a huge block of text with nothing to look
+ * at. On a 375 one the SAME budget puts the sentence at 24px and 35% of the
+ * screen, a caption rather than a poster, because a phone fits three words to a
+ * line. Measured: 5.4 gives 57% at 1440, and 9 gives 59% at 375.
+ */
+const rowsOpen = () => (window.innerWidth < 40 * 16 ? 9 : 5.4);
+
+function Shaping({ progress }: { progress: MotionValue<number> }) {
+  const reduced = useReducedMotion();
+
+  const flowRef = useRef<HTMLParagraphElement>(null);
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const strikeRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const stitchRef = useRef<HTMLElement>(null);
+  const winkRef = useRef<HTMLSpanElement>(null);
+  const tailRef = useRef<HTMLDivElement>(null);
+  const cueRef = useRef<HTMLDivElement>(null);
+  const winkDraw = useRef<((q: number) => void) | null>(null);
+
+  /** per-word widths in em at both weights, measured once */
+  const m = useRef({ em: [] as number[], emBold: [] as number[], emFinal: 0, EM0: 1 });
+
   const { data: settings } = useCmsSettings();
-  // Falls back to HERO_CONTENT whenever the stored row belongs to an older
-  // hero, so a retired version's copy can never surface on this one.
-  const heroData = currentHero(settings?.hero);
+  const hero = currentHero(settings?.hero);
 
-  const [phase, setPhase] = useState(initialPhase);
-  const [clearing, setClearing] = useState(false);
-  const [coldStart] = useState(() => initialPhase() >= REST);
-  // The words travelling through the current cut. They take the accent as the
-  // rest of the sentence breaks apart and hold it until they have landed, so
-  // it reads as the same words being carried forward rather than a new line.
-  const [carried, setCarried] = useState<Set<string>>(() => new Set());
-  const resting = phase >= REST;
+  const measure = useCallback(() => {
+    const flow = flowRef.current;
+    if (!flow) return;
+    const words = wordRefs.current;
+    flow.style.fontSize = `${BASE}px`;
+    /* the wink is a flex item in the line, so it has to be out of the way while
+       the words are measured or it steals width from the last row */
+    if (winkRef.current) winkRef.current.style.width = "0px";
 
-  // Keys that survive the upcoming cut — during clearing, everything else scatters.
-  const survivorKeys = new Set(BEATS[Math.min(phase + 1, REST)].map((token) => token.k));
-  // On a warm arrival the resting frame assembles in order: glide settles
-  // (~1.1s), stitch draws, support lines fade up, CTA lands last.
-  const restDelay = (warm: number, cold: number) => (coldStart ? cold : warm);
+    /* Measured at BOTH weights. The sentence opens at 700 and steps to 400 at
+       the payoff, and Zodiak Bold is materially wider — sized from the regular
+       measurement, the opening line runs past its row budget and the last word
+       on each line clips. */
+    flow.style.fontWeight = "700";
+    const emBold = words.map((el) => {
+      if (!el) return 0;
+      el.style.width = "auto";
+      return el.getBoundingClientRect().width / BASE;
+    });
+    flow.style.fontWeight = "400";
+    const em = words.map((el) => {
+      if (!el) return 0;
+      el.style.width = "auto";
+      return el.getBoundingClientRect().width / BASE;
+    });
 
-  const heading = stripHtml(heroData.heading);
-  const headingLine2 = stripHtml(heroData.headingLine2);
-
-  // Advance the film. The clock pauses while the tab is hidden — browsers
-  // freeze animation frames there but not timers, and without this the beats
-  // would pile up invisibly and unwind all at once on return.
-  useEffect(() => {
-    if (phase >= REST) return;
-
-    // Clearing stage: short and uninterruptible — swap once the stage is empty.
-    if (clearing) {
-      const timer = window.setTimeout(() => {
-        setClearing(false);
-        setPhase((current) => current + 1);
-      }, CLEAR_MS);
-      return () => window.clearTimeout(timer);
+    /* the payoff word gains a full stop; measured without it the period is
+       clipped straight off the end of the line */
+    let emFinal = em[LAST];
+    const lastEl = words[LAST];
+    const textEl = textRef.current;
+    if (lastEl && textEl) {
+      lastEl.style.overflow = "visible";
+      textEl.textContent = "stories.";
+      lastEl.style.width = "auto";
+      emFinal = lastEl.getBoundingClientRect().width / BASE;
+      textEl.textContent = "stories";
     }
 
-    // Hold stage, pause-aware: the clock stops while the tab is hidden.
-    let timer = 0;
-    const start = () => {
-      timer = window.setTimeout(() => {
-        setCarried(new Set(BEATS[phase].map((t) => t.k).filter((k) => survivorKeys.has(k))));
-        setClearing(true);
-      }, BEAT_HOLD_MS[phase]);
-    };
-    const handleVisibility = () => {
-      window.clearTimeout(timer);
-      if (!document.hidden) start();
-    };
+    words.forEach((el, i) => {
+      if (el) el.style.width = `${em[i]}em`;
+    });
 
-    if (!document.hidden) start();
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => {
-      window.clearTimeout(timer);
-      document.removeEventListener("visibilitychange", handleVisibility);
-    };
-  }, [phase, clearing]);
+    /* the full sentence's width, which is what "how much is left" is measured
+       against in paint() */
+    const EM0 = WORDS.reduce((s, _w, i) => s + (emBold[i] || em[i]) + 0.3, 0);
+    m.current = { em, emBold, emFinal, EM0 };
+  }, []);
 
-  // Once the carried words have landed, they resolve back to white. Held a
-  // little past the glide so the eye registers where they ended up.
+  const paint = useCallback((p: number) => {
+    const flow = flowRef.current;
+    if (!flow) return;
+    const { em, emBold, emFinal, EM0 } = m.current;
+    if (!em.length) return;
+
+    /* the sentence is BOLD until it has been cut down, then steps to regular:
+       the edit is visible in the weight as well as in the word count. Zodiak
+       has nothing between 400 and 700, so it steps rather than ramps — and it
+       steps on SETTLE, where the full stop and the stitch arrive anyway, so it
+       reads as one event. */
+    const heavy = p <= SETTLE;
+    flow.style.fontWeight = heavy ? "700" : "400";
+
+    let aliveEm = 0;
+    WORDS.forEach((wd, i) => {
+      const el = wordRefs.current[i];
+      const strike = strikeRefs.current[i];
+      if (!el || !strike) return;
+      const base = heavy ? emBold[i] || em[i] : em[i];
+
+      if (wd.cut === undefined) {
+        const w = wd.final && emFinal && p > SETTLE ? emFinal : base;
+        el.style.opacity = "1";
+        el.style.width = `${w}em`;
+        el.style.marginRight = "0.3em";
+        strike.style.transform = "scaleX(0)";
+        aliveEm += w + 0.3;
+        return;
+      }
+
+      const k = clamp01((p - wd.cut) / CUT_LEN);
+      const mark = clamp01(k / 0.45);
+      const gone = clamp01((k - 0.45) / 0.55);
+      /* the space holds to the end so the neighbour never slides into a
+         half-clipped word */
+      const sp = 0.3 * (1 - Math.pow(gone, 3));
+      strike.style.transform = `scaleX(${mark})`;
+      el.style.opacity = String(DOOMED * (1 - 0.35 * mark) * Math.pow(1 - gone, 1.9));
+      el.style.width = `${base * (1 - gone)}em`;
+      el.style.marginRight = `${sp}em`;
+      aliveEm += base * (1 - gone) + sp;
+    });
+
+    /* the wink is part of the line, so it is part of the width budget too —
+       leave it out and the payoff is sized for a row it does not fit in */
+    const wink = clamp01((p - SETTLE - 0.05) / 0.09);
+    aliveEm += WINK_EM * wink;
+
+    /* Type size follows the WORD COUNT, not scroll position. Tied to p alone it
+       hits display size with seventeen words standing and bursts off screen.
+
+       Rows follow how much text is LEFT for the same reason: a block's height
+       goes as rows squared over the text remaining, so rows proportional to
+       sqrt(remaining) holds the block at constant mass while the sentence is
+       cut. What you watch is the removal, not the paragraph bouncing between
+       560px and 98px on the way down. Only the last stretch pulls it to a
+       single display line for the payoff. */
+    const C = (flow.getBoundingClientRect().width || window.innerWidth) * 0.92;
+    const toOne = clamp01((p - 0.55) / (SETTLE - 0.55));
+    let rows = Math.max(1, rowsOpen() * Math.sqrt(clamp01(aliveEm / EM0)));
+    rows = rows * (1 - toOne) + ROWS_END * toOne;
+
+    let fs = Math.min(
+      Math.max((C * rows) / Math.max(aliveEm, 0.5), 20),
+      Math.min(0.115 * window.innerWidth, 8.6 * 16),
+    );
+    /* a height guard, because the width formula alone does not know how tall
+       the stage is. `rows` is a TARGET and real wrapping overshoots it by most
+       of a line, so the divisor carries that slack — without it the block
+       measured 73% of the stage against a 62% budget. */
+    fs = Math.max(Math.min(fs, (window.innerHeight * 0.68) / ((rows + 0.7) * 1.2)), 20);
+    flow.style.fontSize = `${fs}px`;
+
+    /* WINK_EM is drawing + air; the box gets the drawing, the margin the air */
+    if (winkRef.current) {
+      winkRef.current.style.width = `${(WINK_EM - 0.16) * wink * fs}px`;
+      winkRef.current.style.marginLeft = `${0.16 * wink * fs}px`;
+      winkRef.current.style.opacity = String(wink);
+    }
+    /* the wink draws as its box opens, not after — it is punctuation on the
+       line now, and punctuation that arrives late reads as an afterthought */
+    winkDraw.current?.(clamp01((p - SETTLE - 0.06) / 0.1));
+
+    if (textRef.current) textRef.current.textContent = p > SETTLE ? "stories." : "stories";
+    if (stitchRef.current) {
+      stitchRef.current.style.transform = `scaleX(${clamp01((p - SETTLE) / 0.07)})`;
+    }
+
+    const tail = clamp01((p - SETTLE - 0.08) / 0.08);
+    if (tailRef.current) {
+      tailRef.current.style.opacity = String(tail);
+      /* The row is 0fr or 1fr, never in between. Growing it in step with the
+         fade read as a button sliced in half by an invisible edge — the
+         overflow:hidden that makes 0fr collapse was clipping the control at
+         every frame. Height snaps; the arrival is the opacity and the rise. */
+      tailRef.current.style.gridTemplateRows = tail > 0 ? "1fr" : "0fr";
+      tailRef.current.style.transform = `translateY(${(1 - tail) * 14}px)`;
+    }
+
+    /* the scroll cue is gone before the first word is struck out. It exists to
+       say "this moves", and once it has moved it is a leftover. */
+    if (cueRef.current) {
+      const c = 1 - clamp01((p - 0.005) / 0.05);
+      cueRef.current.style.opacity = String(c);
+      cueRef.current.style.visibility = c > 0.01 ? "visible" : "hidden";
+    }
+  }, []);
+
+  /* Measured before paint, and re-measured when the fonts land: measured
+     against a fallback face every width is wrong, and the sentence would be
+     sized for a typeface that is never on the screen. */
+  useLayoutEffect(() => {
+    measure();
+    paint(reduced ? 1 : progress.get());
+
+    const onResize = () => {
+      measure();
+      paint(reduced ? 1 : progress.get());
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+    document.fonts?.ready.then(onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [measure, paint, progress, reduced]);
+
+  useMotionValueEvent(progress, "change", (p) => {
+    if (!reduced) paint(p);
+  });
+
   useEffect(() => {
-    if (clearing || carried.size === 0) return;
-    const timer = window.setTimeout(() => setCarried(new Set()), 1000);
-    return () => window.clearTimeout(timer);
-  }, [clearing, carried, phase]);
-
-  // Scrolling away cuts to the resting line — the page never scrolls against
-  // a half-told story. Clicks and keys are deliberately not skips.
-  useEffect(() => {
-    if (phase >= REST) return;
-
-    const skip = () => {
-      setClearing(false);
-      setPhase(REST);
-    };
-    window.addEventListener("wheel", skip, { passive: true });
-    window.addEventListener("touchmove", skip, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", skip);
-      window.removeEventListener("touchmove", skip);
-    };
-  }, [phase]);
+    if (reduced) paint(1);
+  }, [reduced, paint]);
 
   return (
-    <section className="story-hero" data-testid="hero-section">
-      {/* The real headline, for crawlers and screen readers. The film is
-          presentation on top of it. */}
+    <ActWrap>
+      {/* The film is a paragraph of spans that resize themselves; this is the
+          sentence a search engine and a screen reader get. */}
       <h1 className="sr-only" data-testid="text-hero-heading">
-        {heading} {headingLine2}
+        {hero.heading} {hero.headingLine2}
       </h1>
-      <p className="sr-only">{heroData.subheading}</p>
+      <p className="sr-only">{hero.subheading}</p>
 
-      <div className="story-hero__inner">
-        <div className="story-hero__stage" data-resting={resting || undefined} aria-hidden="true">
-          <p className="story-hero__flow" data-resting={resting || undefined} data-cold={coldStart || undefined}>
-            {BEATS[Math.min(phase, REST)].map((token, index) => {
-              if (token.br) return <span key={token.k} className="story-hero__break" aria-hidden="true" />;
-              const DoodleBody = token.doodle ? DOODLES[token.doodle] : null;
-              return (
-                /* Two elements, deliberately. The outer one does nothing but
-                   glide: `layout` moves it by transform. The inner one runs
-                   the entrance and the break-away, which also animate
-                   transform. On one element the variant won the transform and
-                   the glide could only move a word sideways — it jumped
-                   between lines instead of travelling, which is exactly where
-                   the cut felt like a jolt. */
-                <motion.span
-                  layout
-                  key={token.k}
-                  className={token.doodle ? "story-hero__doodle" : "story-hero__word"}
-                  /* Not at rest: every word of the last line is carried, so
-                     marking them turns the whole payoff pink. It lands white. */
-                  data-carried={!token.doodle && !resting && carried.has(token.k) ? "" : undefined}
-                  transition={{ layout: { duration: 0.78, ease: EASE_OUT } }}
-                >
-                  <motion.span
-                    className="story-hero__word-body"
-                    variants={wordVariants}
-                    custom={index}
-                    initial="hidden"
-                    animate={clearing && !survivorKeys.has(token.k) ? "gone" : "shown"}
-                  >
-                    {DoodleBody ? (
-                      <DoodleBody />
-                    ) : token.k === "story" && resting ? (
-                      <span className="story-hero__stories">
-                        {token.t}
-                        <span className="story-hero__stitch" />
-                        <Sparkle delay={restDelay(1.8, 0.6)} />
-                      </span>
-                    ) : (
-                      token.t
-                    )}
-                  </motion.span>
-                </motion.span>
-              );
-            })}
-          </p>
-        </div>
-
-        {/* Collapsed to nothing while the film runs. These are invisible then,
-            but they were still holding their place in the layout, which pushed
-            the sentence up into the top half of the screen. */}
-        <div
-          className="story-hero__support"
-          data-resting={resting || undefined}
-          data-cold={coldStart || undefined}
-        >
-          <div className="story-hero__support-inner">
-        <ul className="story-hero__offers">
-          {OFFERS.map((offer, index) => (
-            <motion.li
-              key={offer}
-              className="story-hero__offer"
-              initial={{ opacity: 0, y: 18 }}
-              animate={resting ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{
-                duration: 0.55,
-                delay: resting ? restDelay(1.4, 0.3) + index * 0.15 : 0,
-                ease: EASE_OUT,
+      <p
+        ref={flowRef}
+        aria-hidden="true"
+        className="m-0 flex w-full flex-wrap items-baseline justify-center"
+        style={{
+          fontFamily: "'Zodiak', Georgia, serif",
+          fontWeight: 700,
+          lineHeight: 1.14,
+          letterSpacing: "-0.022em",
+          rowGap: "0.08em",
+          columnGap: 0,
+          color: "#FFFFFF",
+        }}
+      >
+        {WORDS.map((wd, i) => (
+          <span key={`${wd.t}-${i}`}>
+            <span
+              ref={(el) => {
+                wordRefs.current[i] = el;
               }}
+              className="relative mr-[0.3em] inline-block overflow-hidden whitespace-nowrap"
             >
-              <span className="story-hero__offer-number">{String(index + 1).padStart(2, "0")}</span>
-              <span className="story-hero__offer-label">{offer}</span>
-            </motion.li>
-          ))}
-        </ul>
+              <span className="inline-block">
+                {wd.final ? (
+                  <span className="relative inline-block italic">
+                    <span ref={textRef}>stories</span>
+                    {/* the same mark the turn draws under "story", three
+                        screens later. Two moments, one claim. */}
+                    <i
+                      ref={stitchRef}
+                      aria-hidden="true"
+                      className="absolute bottom-[-0.01em] left-[0.03em] right-[0.34em] block h-[3px] rounded-[3px]"
+                      style={{
+                        transformOrigin: "left center",
+                        transform: "scaleX(0)",
+                        background:
+                          "linear-gradient(90deg, transparent, #c36cc1 14%, #edb8eb 52%, #c36cc1 86%, transparent)",
+                      }}
+                    />
+                  </span>
+                ) : (
+                  wd.t
+                )}
+              </span>
+              <span
+                ref={(el) => {
+                  strikeRefs.current[i] = el;
+                }}
+                aria-hidden="true"
+                className="pointer-events-none absolute left-0 top-[52%] block h-[0.05em] w-full rounded-[2px]"
+                style={{
+                  backgroundColor: "#cf81cd",
+                  transformOrigin: "left center",
+                  transform: "scaleX(0)",
+                }}
+              />
+            </span>
 
-        <motion.div
-          className="story-hero__cta-row"
-          initial={{ opacity: 0, y: 18 }}
-          animate={resting ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ duration: 0.7, delay: resting ? restDelay(2.25, 0.75) : 0, ease: EASE_OUT }}
-        >
-          <a
-            href={heroData.ctaLink}
-            className="story-hero__cta"
-            tabIndex={resting ? undefined : -1}
-            data-testid="button-talk-to-strategist"
-          >
-            <span>{heroData.ctaText}</span>
-          </a>
+            {/* The wink, immediately after the payoff word so it is part of the
+                sentence rather than a thing sitting under it. Fatema's note on
+                the version that floated above the line was that the composition
+                read as a thing in a gap. */}
+            {i === LAST && (
+              <span
+                ref={winkRef}
+                aria-hidden="true"
+                className="inline-block align-baseline"
+                style={{ width: 0, opacity: 0 }}
+              >
+                <SmileyDoodle draw={winkDraw} />
+              </span>
+            )}
+          </span>
+        ))}
+      </p>
 
+      {/* The whole tail: one button. No positioning sentence, no four pillars,
+          no second link. The film has just said what this is, and anything
+          printed underneath it is the film explaining itself — a poster that
+          explains itself is a poster that did not work. */}
+      <div
+        ref={tailRef}
+        className="grid text-center"
+        style={{ gridTemplateRows: "0fr", opacity: 0 }}
+      >
+        {/* overflow:hidden is what makes the 0fr row collapse, and it was also
+            clipping 10px off the CTA's 48px hit area. The padding buys that
+            back; the equal negative margin nets it to zero in the track. The
+            gap above has to live on the CHILD — a margin on the grid item
+            itself is outside the content box min-height:0 zeroes, so it kept
+            sizing the track and the collapsed tail was still 33px tall. */}
+        <div className="min-h-0 overflow-hidden pb-[14px] mb-[-14px]">
           <a
-            href={heroData.secondaryCtaLink}
-            className="story-hero__cta story-hero__cta--ghost"
-            tabIndex={resting ? undefined : -1}
-            data-testid="button-see-our-work"
+            href={hero.ctaLink}
+            className="group relative mt-[clamp(2rem,5vh,3.5rem)] inline-flex min-h-12 items-center gap-[0.6rem] rounded-full px-[2.1rem] py-[1.05rem] no-underline transition-[background-color,transform] duration-200 hover:bg-[#e0a0de] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white"
+            style={{
+              backgroundColor: "#cf81cd",
+              color: NAVY,
+              fontFamily: "'Switzer', sans-serif",
+              fontSize: "1.02rem",
+              fontWeight: 600,
+              letterSpacing: "0.005em",
+            }}
+            data-testid="button-hero-cta"
           >
-            <span>{heroData.secondaryCtaText}</span>
+            {hero.ctaText}
+            <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+              →
+            </span>
           </a>
-        </motion.div>
-          </div>
         </div>
       </div>
 
-      {!resting && (
-        <button
-          type="button"
-          className="story-hero__skip"
-          onClick={() => {
-            setClearing(false);
-            setPhase(REST);
-          }}
-        >
-          Skip
-        </button>
-      )}
-    </section>
+      {/* The scroll cue. The opening frame is a sentence sitting still and
+          nothing on it says it is about to be edited. A hairline travelling down
+          its own track says "this moves" without adding a word of subtext. */}
+      <div
+        ref={cueRef}
+        aria-hidden="true"
+        className="hero-cue absolute bottom-[clamp(1.6rem,4vh,2.8rem)] left-1/2 h-[clamp(2.2rem,5vh,3.4rem)] w-px -translate-x-1/2 overflow-hidden"
+        style={{ backgroundColor: "rgba(255,255,255,0.18)" }}
+      />
+    </ActWrap>
   );
 }

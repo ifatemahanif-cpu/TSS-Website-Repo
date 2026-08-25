@@ -787,3 +787,31 @@
 }
 .marquee::before { left: 0; background: linear-gradient(to right, #0C0A3E, transparent); }
 .marquee::after { right: 0; background: linear-gradient(to left, #0C0A3E, transparent); }
+
+
+/* =========================================================================
+   THE HERO'S SCROLL CUE
+
+   A hairline travelling down its own track. The opening frame is a sentence
+   sitting still and nothing on it says it is about to be edited; this says
+   "this moves" without adding a word of subtext. It is gone before the first
+   word is struck out — that fade is driven by the act's progress in Hero.tsx,
+   and only the travel lives here, because an infinite loop is what keyframes
+   are for.
+   ========================================================================= */
+@keyframes cueRun {
+  0%        { top: -42%; }
+  55%, 100% { top: 100%; }
+}
+.hero-cue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 42%;
+  background: #cf81cd;
+  animation: cueRun 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cue::after { animation: none; top: 0; }
+}
