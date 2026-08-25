@@ -194,7 +194,10 @@ function Intro({ stacked }: { stacked?: boolean }) {
       <div className="grid w-full max-w-[46rem] justify-items-center">
         {/* draws on entry, not on act progress — see Doodles.tsx */}
         <CrewDoodle className="mb-8 w-[clamp(12rem,26vw,21rem)]" />
-        <div
+        {/* the act's heading. It was a div, which left the peak contributing
+            three h3s — the Shapers' names — with no h2 above them anywhere on
+            the page. Same size, same weight, same colour. */}
+        <h2
           className="mb-[1.4rem]"
           style={{
             fontFamily: "'Switzer', sans-serif",
@@ -203,10 +206,13 @@ function Intro({ stacked }: { stacked?: boolean }) {
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             color: ACCENT_DEEP,
+            /* an h2 arrives with the serif face and a UA margin, and this label
+               is neither */
+            margin: 0,
           }}
         >
           The Shapers
-        </div>
+        </h2>
         {/* 30rem broke this into six lines of three words and it read as a poem
             rather than as a claim. Wide enough for three. */}
         <p

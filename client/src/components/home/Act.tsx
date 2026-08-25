@@ -132,13 +132,19 @@ export function ActLabel({
   className = "",
   style,
   children,
+  as: Tag = "div",
   ...rest
 }: {
   className?: string;
   children: ReactNode;
+  /** `h2` where this kraut-label IS the section's heading — the turn, whose
+   *  argument is set in two paragraphs beneath it, so without this the act
+   *  contributes no heading at all to the document outline. A div everywhere a
+   *  real heading already exists, which is why it is opt-in. */
+  as?: "div" | "h2";
 } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
+    <Tag
       className={className}
       /* merged, not spread over: `{...rest}` carrying a caller's `style` would
          replace this object wholesale and take the typeface with it */
@@ -148,13 +154,15 @@ export function ActLabel({
         fontWeight: 600,
         letterSpacing: "0.22em",
         textTransform: "uppercase",
+        /* an h2 would otherwise arrive with the serif face and a UA margin */
+        margin: 0,
         color: "#cf81cd",
         ...style,
       }}
       {...rest}
     >
       {children}
-    </div>
+    </Tag>
   );
 }
 

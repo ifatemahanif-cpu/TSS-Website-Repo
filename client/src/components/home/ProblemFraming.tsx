@@ -70,7 +70,9 @@ function Turn({ progress }: { progress: MotionValue<number> }) {
 
   return (
     <ActWrap className="max-w-[64rem]">
-      <ActLabel className="mb-[clamp(1.4rem,3vh,2.2rem)]">
+      {/* the act's heading, and the only one it has: the belief itself is set
+          in two paragraphs so that the second can wipe over the first */}
+      <ActLabel as="h2" className="mb-[clamp(1.4rem,3vh,2.2rem)]">
         <motion.span className="block" style={{ opacity: reduced ? 1 : label }}>
           A core belief
         </motion.span>
