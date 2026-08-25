@@ -1,4 +1,9 @@
-import type { Express, Request, Response, NextFunction } from "express";
+import type {
+  Express,
+  Request as ExpressRequest,
+  Response,
+  NextFunction,
+} from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import session from "express-session";
@@ -13,6 +18,23 @@ import { z } from "zod";
 import { insertBlogCategorySchema, insertBlogPostSchema, insertAuthorSchema, insertTeamMemberPortfolioSchema } from "@shared/schema";
 import { sendWelcomeEmail, sendNewPostNotification, sendFormNotification } from "./email";
 import { sendSlackNotification } from "./slack";
+
+/**
+ * A request whose route parameters are single strings.
+ *
+ * Express 5 widened `req.params` to `{ [key: string]: string | string[] }`,
+ * because a pattern MAY name the same parameter twice — `/:id/:id` hands back
+ * both matches as an array. That is a real possibility in general and an
+ * impossibility here: no route below names a parameter twice, so every
+ * `req.params.x` in this file is a string and always has been.
+ *
+ * Declared once rather than coerced at each of the twenty-nine call sites,
+ * because the fact being recorded is a fact about the ROUTES, not about any
+ * individual `parseInt`. The cost is that adding a route with a repeated
+ * parameter name would make this alias a lie — so don't, and if you must, take
+ * that route's handler off this alias rather than widening it back.
+ */
+type Request = ExpressRequest<Record<string, string>>;
 
 /**
  * Asks Vercel to rebuild the site.
