@@ -1,112 +1,275 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "wouter";
-import { SectionLabel, SectionHeading } from "./SectionAnimations";
-import { GradientBlobs, ctaBlobs } from "./GradientBlobs";
-import { useCmsSettings } from "@/hooks/use-cms";
+import { Act, ActWrap } from "./Act";
+import { HeartDoodle } from "./Doodles";
+import { CONTACT, mailto, whatsappHref } from "@/lib/contact";
+import fatemaFace from "@/assets/shapers/fatema-face.jpg";
+import shailiFace from "@/assets/shapers/shaili-face.jpg";
+import aakankshaFace from "@/assets/shapers/aakanksha-face.jpg";
 
+const ACCENT = "#cf81cd";
+const NAVY = "#0C0A3E";
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const FACES = [
+  { src: fatemaFace, name: "Fatema" },
+  { src: shailiFace, name: "Shaili" },
+  { src: aakankshaFace, name: "Aakanksha" },
+];
+
+/**
+ * THE CLOSE — the page stops moving and starts responding.
+ *
+ * Three doors, deliberately: the button goes to the form, for people who would
+ * rather be asked the right questions, and the two routes under the rule are for
+ * people who just want to send a message. It used to be one door dressed as two
+ * — a button that quietly opened a mail client, above a footer carrying the same
+ * address.
+ *
+ * WHY THIS FRAME IS SHAPED THE WAY IT IS
+ *
+ * Fatema's note on the study: it looked empty. It was, measurably — 358px of
+ * content in a 900px stage, 40% of its own frame, with the heading at 70px
+ * against the hero's settled 128px. The last frame of the film was reading at
+ * half the weight of the first. Three corrections, none of which invented copy:
+ *
+ *   1. the heart moved INSIDE the sentence, after the full stop, sized in `em`.
+ *      Floating above a centred block it read as a thing in a gap — the same
+ *      composition she called odd about the hero's wink.
+ *   2. the heading came up to within striking distance of the hero.
+ *   3. `.close__who` under a hairline: the peak's three faces at 2.6rem, then
+ *      the direct routes. The faces carry no caption on purpose; the peak
+ *      introduced them three screens earlier, so at this size they are a
+ *      signature rather than a second team section.
+ *
+ * The stage is 76svh rather than a full screen, so the footer's top edge is
+ * inside the frame and the last thing you see has a bottom to it.
+ */
 export function CTA() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  return (
+    <Act id="act-close" kind="flow" ground="dark" bg={NAVY} stageMinH="min-h-[76svh]">
+      {(progress) => <Close progress={progress} />}
+    </Act>
+  );
+}
 
-  const { data: settings } = useCmsSettings();
-  const ctaSettings = settings?.cta;
+function Close({ progress }: { progress: MotionValue<number> }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative px-2 md:px-4 lg:px-6 py-4 overflow-hidden"
-      style={{ backgroundColor: "#0C0A3E" }}
-      data-testid="cta-section"
-    >
-      <div
-        className="relative"
-        style={{
-          backgroundColor: "#0E0C45",
-          color: "#FFFFFF",
-          borderRadius: "20px",
-          padding: "clamp(3rem, 5vw, 5rem) clamp(2rem, 5vw, 5rem)",
-          overflow: "hidden"
-        }}
-      >
-        <GradientBlobs blobs={ctaBlobs} />
+    <ActWrap className="max-w-[60rem] text-center">
+      <div ref={ref}>
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: EASE }}
+          style={{
+            fontFamily: "'Zodiak', serif",
+            fontWeight: 400,
+            fontSize: "clamp(2.9rem, 7.4vw, 6.4rem)",
+            lineHeight: 1.05,
+            letterSpacing: "-0.02em",
+            textWrap: "balance",
+            color: "#FFFFFF",
+            margin: 0,
+          }}
+          data-testid="text-cta-heading"
+        >
+          Tell us your story.
+          {/* sized in em because it punctuates a sentence now, so it has to
+              scale with the type rather than with the viewport */}
+          <HeartDoodle
+            progress={progress}
+            className="inline-block w-[0.56em] translate-y-[-0.04em] ml-[0.2em] align-baseline"
+          />
+        </motion.h2>
 
-        <div className="max-w-[900px] mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <SectionLabel isInView={isInView} testId="text-cta-label">{ctaSettings?.label ?? "Let's Talk"}</SectionLabel>
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+          style={{
+            fontFamily: "'Switzer', sans-serif",
+            fontSize: "clamp(1.05rem, 1.5vw, 1.35rem)",
+            lineHeight: 1.55,
+            color: "rgba(255,255,255,0.66)",
+            maxWidth: "34rem",
+            margin: "clamp(1.6rem, 3vh, 2.4rem) auto clamp(2.4rem, 4.5vh, 3.4rem)",
+          }}
+          data-testid="text-cta-p1"
+        >
+          We're always up for a good one. Tell us where it feels off, and we'll
+          tell you what we see.
+        </motion.p>
 
-            <div className="flex flex-col items-center mb-6">
-              <div 
-                className="w-12 h-[1px] mb-6 opacity-30" 
-                style={{ backgroundColor: "#FFFFFF" }}
-              />
-              <SectionHeading
-                isInView={isInView}
-                testId="text-cta-heading"
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.22, ease: EASE }}
+        >
+          <BigCta />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.36, ease: EASE }}
+          className="mx-auto flex max-w-[42rem] flex-col items-center gap-4 border-t border-white/15 pt-[clamp(2rem,4.5vh,3rem)] mt-[clamp(2.4rem,5.5vh,3.6rem)] sm:flex-row sm:gap-[clamp(0.9rem,2vw,1.3rem)]"
+        >
+          <span className="inline-flex shrink-0" aria-hidden="true">
+            {FACES.map((f, i) => (
+              <img
+                key={f.name}
+                src={f.src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="h-[2.6rem] w-[2.6rem] rounded-full object-cover"
                 style={{
-                  fontSize: "clamp(1.8rem, 4vw, 3rem)",
-                  lineHeight: 1.15,
-                  marginBottom: "0",
+                  border: `2px solid ${NAVY}`,
+                  boxShadow: "0 0 0 1px rgba(255,255,255,0.18)",
+                  marginLeft: i === 0 ? 0 : "-0.78rem",
                 }}
-              >
-                {ctaSettings?.heading ?? "Not sure where to start?"}
-              </SectionHeading>
-              <div 
-                className="w-12 h-[1px] mt-6 opacity-30" 
-                style={{ backgroundColor: "#FFFFFF" }}
               />
-            </div>
-          </motion.div>
+            ))}
+          </span>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: "'Switzer', sans-serif",
-              fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-              lineHeight: 1.8,
-              opacity: 0.85,
-              marginBottom: "2.5rem",
-            }}
-            data-testid="text-cta-p1"
-          >
-            {ctaSettings?.paragraph ?? "Tell us where things feel off. We'll tell you what we see and where to begin."}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Link
-              href={ctaSettings?.buttonLink ?? "/contact#talk"}
-              className="inline-block transition-all duration-200"
+          <span className="text-center sm:text-left">
+            <span
+              className="block"
               style={{
                 fontFamily: "'Switzer', sans-serif",
-                fontSize: "0.9rem",
-                fontWeight: 500,
-                color: "#FFFFFF",
-                backgroundColor: "#7B1E7A",
-                border: "1px solid #7B1E7A",
-                borderRadius: "8px",
-                padding: "0.9rem 2.5rem",
-                textDecoration: "none",
-                letterSpacing: "0.02em",
+                fontSize: "0.95rem",
+                lineHeight: 1.5,
+                color: "rgba(255,255,255,0.62)",
               }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#9B3E9A"; e.currentTarget.style.borderColor = "#9B3E9A"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#7B1E7A"; e.currentTarget.style.borderColor = "#7B1E7A"; }}
-              data-testid="button-get-recommendation"
+              data-testid="text-cta-direct"
             >
-              {ctaSettings?.buttonText ?? "Get our recommendation →"}
-            </Link>
-          </motion.div>
-        </div>
+              Or reach us directly.
+            </span>
+
+            {/* Stacked below 34rem, separator hidden with them: wrapped, the
+                middle dot stranded on the end of the first line like a typo,
+                and it was only ever standing in for the word "or". */}
+            <span className="mt-0.5 flex flex-col items-center sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-[0.85rem]">
+              <Route href={mailto} testId="link-cta-email">
+                {CONTACT.email}
+              </Route>
+              {whatsappHref && (
+                <>
+                  <span
+                    aria-hidden="true"
+                    className="hidden sm:inline"
+                    style={{ color: "rgba(255,255,255,0.34)" }}
+                  >
+                    ·
+                  </span>
+                  <Route
+                    href={whatsappHref}
+                    external
+                    testId="link-cta-whatsapp"
+                  >
+                    {CONTACT.whatsappLabel}
+                  </Route>
+                </>
+              )}
+            </span>
+          </span>
+        </motion.div>
       </div>
-    </section>
+    </ActWrap>
+  );
+}
+
+/**
+ * The page's two calls to action match, and they are the only filled blocks on
+ * it. Chrome stays outlined; asking for the conversation does not — an outlined
+ * pill on the last frame of a film was the least committed moment on the page.
+ *
+ * The bloom follows the pointer. Touch fires neither pointermove nor hover, so
+ * on a phone the last frame had nothing happening on it at all; there it rests
+ * lit and centred, and presses down instead.
+ */
+function BigCta() {
+  const gx = useMotionValue(0);
+  const gy = useMotionValue(0);
+
+  return (
+    <Link
+      href={CONTACT.form}
+      className="group relative isolate inline-flex items-center gap-[0.7rem] overflow-hidden rounded-full transition-transform duration-150 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white active:scale-[0.975]"
+      style={{
+        padding: "1.25rem 2.4rem",
+        backgroundColor: ACCENT,
+        color: NAVY,
+        fontFamily: "'Switzer', sans-serif",
+        fontSize: "1.02rem",
+        fontWeight: 600,
+        textDecoration: "none",
+      }}
+      onPointerMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        gx.set(e.clientX - r.left);
+        gy.set(e.clientY - r.top);
+      }}
+      data-testid="button-start-a-conversation"
+    >
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute -z-10 h-64 w-64 rounded-full opacity-45 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100"
+        style={{
+          left: gx,
+          top: gy,
+          x: "-50%",
+          y: "-50%",
+          background:
+            "radial-gradient(circle, rgba(255,255,255,0.55), transparent 62%)",
+        }}
+      />
+      Start a conversation <span aria-hidden="true">→</span>
+    </Link>
+  );
+}
+
+function Route({
+  href,
+  external,
+  testId,
+  children,
+}: {
+  href: string;
+  external?: boolean;
+  testId?: string;
+  children: React.ReactNode;
+}) {
+  const style: React.CSSProperties = {
+    fontFamily: "'Switzer', sans-serif",
+    fontSize: "0.98rem",
+    fontWeight: 500,
+    color: "#FFFFFF",
+    textDecoration: "none",
+    padding: "0.4rem 0",
+    borderBottom: "1px solid rgba(255,255,255,0.32)",
+  };
+  const className =
+    "inline-block transition-colors duration-200 hover:border-b-[#cf81cd] focus-visible:border-b-[#cf81cd] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+
+  return external ? (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener"
+      className={className}
+      style={style}
+      data-testid={testId}
+    >
+      {children}
+    </a>
+  ) : (
+    <a href={href} className={className} style={style} data-testid={testId}>
+      {children}
+    </a>
   );
 }
