@@ -177,11 +177,22 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
     const lastEl = words[LAST];
     const textEl = textRef.current;
     if (lastEl && textEl) {
+      /* PUT THE OVERFLOW BACK, and this is not tidiness.
+         An inline-block takes its baseline from the bottom margin edge when its
+         overflow is anything but visible, and from its own last line of text
+         when it is visible. Every other word here is overflow-hidden, so a
+         `visible` left behind on this one aligned it by a different rule than
+         its neighbours and dropped "stories." 26.8px below "We shape" — the
+         payoff word hanging off the end of the settled line.
+         Restoring it puts the drop at 0. The box is still wide enough for the
+         full stop, because the width measured below is the auto width. */
+      const prevOverflow = lastEl.style.overflow;
       lastEl.style.overflow = "visible";
       textEl.textContent = "stories.";
       lastEl.style.width = "auto";
       emFinal = lastEl.getBoundingClientRect().width / BASE;
       textEl.textContent = "stories";
+      lastEl.style.overflow = prevOverflow;
     }
 
     words.forEach((el, i) => {
@@ -369,7 +380,13 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
                     <i
                       ref={stitchRef}
                       aria-hidden="true"
-                      className="absolute bottom-[-0.01em] left-[0.03em] right-[0.34em] block h-[3px] rounded-[3px]"
+                      /* bottom-0, not the -0.01em it sat at. That 1.2px of
+                         overhang was invisible only while the word span had a
+                         stray overflow:visible on it; with the span clipping
+                         again it took 1.2px off a 3px mark and the stitch drew
+                         thin. 0.01em is a hundredth of the type size, so
+                         nothing moves that the eye can find. */
+                      className="absolute bottom-0 left-[0.03em] right-[0.34em] block h-[3px] rounded-[3px]"
                       style={{
                         transformOrigin: "left center",
                         transform: "scaleX(0)",
