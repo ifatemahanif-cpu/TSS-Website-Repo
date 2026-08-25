@@ -50,11 +50,31 @@ const ACCENT_DEEP = "#7b1e7a";
  * the CMS rows updated first.
  */
 
+/**
+ * `focus` is the vertical object-position of the panel photograph, and it is not
+ * a taste knob — it is the only thing standing between the phone layout and a
+ * headless torso.
+ *
+ * The phone picture box is landscape and the photographs are 4:5, so
+ * object-cover fills the width and crops the height — and left to itself it
+ * crops from the CENTRE, which is a band through the middle of a standing
+ * portrait. Aakanksha's arrived as her waist, Shaili's cut at the eyes.
+ *
+ * The three photographs are framed differently enough that no single value
+ * serves all of them: Shaili's and Aakanksha's heads start at the top of their
+ * frames, Fatema's a fifth of the way down.
+ *
+ * It costs nothing on a wide screen. At lg the box is 42% x 100svh, TALLER than
+ * 4:5, so the crop runs horizontally and the vertical value is inert.
+ */
 const SHAPERS = [
   {
     name: "Fatema Hanif",
     panel: fatemaPanel,
     face: fatemaFace,
+    /* seated and further back, with the whole top fifth of the frame above her
+       head — the only one that has to be pushed down to fill the box */
+    focus: "50% 30%",
     does: "Positioning, go-to-market, creator programs and multi-market expansion. Builds marketing functions from scratch and makes brand strategy and business reality point the same way.",
     brands:
       "Headout · Singapore Tourism Board · Coca-Cola · LBB · Art Fervour · SOCIAL",
@@ -63,6 +83,8 @@ const SHAPERS = [
     name: "Shaili Contractor",
     panel: shailiPanel,
     face: shailiFace,
+    /* a close-up that starts at the top of the frame */
+    focus: "50% 0%",
     does: "Content strategy, brand narrative and editorial systems. Moves teams off scattered, ad-hoc content and onto structured storytelling that compounds into recall.",
     brands: "Heinz · Google Pixel · Bajaj · General Mills · LBB · Headout",
   },
@@ -70,6 +92,9 @@ const SHAPERS = [
     name: "Aakanksha Singh Devi",
     panel: aakankshaPanel,
     face: aakankshaFace,
+    /* standing, full-length — the middle of this frame is her waist, so the
+       crop takes the top of the frame and stops at her hands */
+    focus: "50% 0%",
     does: "Brand narrative, voice and editorial positioning. Makes brands sound like themselves, consistently, at every stage of growth.",
     brands:
       "LBB · Headout · Cadbury's · Singapore Tourism Board · Columbia Asia",
@@ -224,7 +249,13 @@ function ShaperPanel({
         (stacked
           ? "static border-t border-[rgba(12,10,62,0.14)] "
           : "absolute inset-0 z-[2] ") +
-        "grid grid-cols-1 lg:grid-cols-[minmax(0,42%)_minmax(0,58%)]"
+        /* content-center: two auto rows in a full-screen box get the slack
+           SHARED between them, so a tall phone grew both the picture row and
+           the text row and left bone holes above the name and under the client
+           list. Centred, the pair keeps its natural height and the slack goes
+           to the margins, where it reads as air. No effect at lg, which is one
+           row of two columns. */
+        "grid content-center grid-cols-1 lg:grid-cols-[minmax(0,42%)_minmax(0,58%)]"
       }
       style={{
         backgroundColor: BONE,
@@ -232,9 +263,35 @@ function ShaperPanel({
       }}
       data-testid={`panel-shaper-${index + 1}`}
     >
+      {/* THE PHONE PHOTOGRAPH IS INSET, AND BOTH INSETS ARE LOAD-BEARING.
+          Down the top, because the nav is fixed, 65px and never hides, so a
+          picture that starts at the top of the stage spends its first quarter
+          behind a bar — which is most of a head. In from the sides, because
+          full-bleed is what forces the crop: cover scales a 4:5 portrait to the
+          box's WIDTH, so at 375px the image lands 469px tall and a 218px box
+          keeps under half of it. A narrower plate zooms less and therefore
+          shows MORE of the person. Full-bleed column again at lg, where the box
+          is taller than 4:5 and the crop runs harmlessly across the sides. */}
+      <div
+        /* The 65px is padding rather than part of the centring on purpose: the
+           plate centres in what is LEFT of the row, so it can never drift up
+           under the nav however short the screen gets. */
+        className={
+          (stacked
+            ? ""
+            : "flex items-center justify-center px-[1.35rem] pt-[65px] " +
+              "sm:justify-start sm:px-6 lg:block lg:px-0 lg:pt-0 ") +
+          "relative"
+        }
+        style={{ backgroundColor: BONE }}
+      >
       <div
         className={
-          (stacked ? "aspect-[4/5] " : "h-[36svh] sm:h-[42svh] lg:h-svh ") +
+          (stacked
+            ? "aspect-[4/5] "
+            : "h-[33svh] w-[76%] max-w-[19rem] " +
+              "sm:h-[42svh] sm:w-full sm:max-w-[22rem] " +
+              "lg:h-svh lg:w-full lg:max-w-none ") +
           "relative overflow-hidden"
         }
         style={{ backgroundColor: "#ded8cc" }}
@@ -246,13 +303,23 @@ function ShaperPanel({
           decoding="async"
           className="h-full w-full object-cover"
           style={{
+            objectPosition: shaper.focus,
+            /* the push-in grows from the focal point rather than from the middle
+               of the box. Around the centre, 1.06 lifts the top edge by 3% of
+               the frame, which on a top-anchored crop takes the top of the head
+               off for the first half of the panel's life. */
+            transformOrigin: shaper.focus,
             filter: "grayscale(1) contrast(1.04)",
             ...(stacked ? null : { scale }),
           }}
         />
       </div>
+      </div>
 
-      <div className="grid content-start px-[1.35rem] py-[1.6rem] sm:px-6 sm:py-8 lg:content-center lg:px-[clamp(2rem,5vw,5rem)] lg:py-12">
+      {/* the paddings and gaps here are tighter than they look like they need to
+          be, and they are what pays for the photograph: nav 65 + picture 218 +
+          this block has to clear 660svh on the shortest phone still in use */}
+      <div className="grid content-start px-[1.35rem] py-[1.1rem] sm:px-6 sm:py-8 lg:content-center lg:px-[clamp(2rem,5vw,5rem)] lg:py-12">
         <div
           style={{
             fontFamily: "'Switzer', sans-serif",
@@ -265,7 +332,7 @@ function ShaperPanel({
           {`0${index + 1} / 03`}
         </div>
         <h3
-          className="mt-[0.9rem] mb-0"
+          className="mt-[0.6rem] mb-0 sm:mt-[0.9rem]"
           style={{
             fontFamily: "'Zodiak', Georgia, serif",
             fontWeight: 400,
@@ -278,22 +345,22 @@ function ShaperPanel({
           {shaper.name}
         </h3>
         <p
-          className="mt-[1.1rem] max-w-[26rem] sm:mt-[1.4rem]"
+          className="mt-[0.85rem] max-w-[26rem] sm:mt-[1.4rem]"
           style={{
             fontFamily: "'Switzer', sans-serif",
             fontSize: "clamp(0.98rem, 1.35vw, 1.18rem)",
-            lineHeight: 1.48,
+            lineHeight: 1.44,
             color: "#3a3556",
           }}
         >
           {shaper.does}
         </p>
         <div
-          className="mt-[1.3rem] max-w-[26rem] border-t border-[rgba(12,10,62,0.16)] pt-[0.9rem] sm:mt-8 sm:pt-[1.1rem]"
+          className="mt-[1rem] max-w-[26rem] border-t border-[rgba(12,10,62,0.16)] pt-[0.7rem] sm:mt-8 sm:pt-[1.1rem]"
           style={{
             fontFamily: "'Switzer', sans-serif",
             fontSize: "0.88rem",
-            lineHeight: 1.65,
+            lineHeight: 1.55,
             color: "#5a5473",
           }}
         >
