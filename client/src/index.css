@@ -798,10 +798,25 @@
    word is struck out — that fade is driven by the act's progress in Hero.tsx,
    and only the travel lives here, because an infinite loop is what keyframes
    are for.
+
+   THE MARK MAY NEVER REST OUTSIDE THE TRACK, and that is the whole rule.
+
+   It used to: `55%, 100% { top: 100% }` parked it below the track's clipping
+   edge for the back half of every cycle. Measured at twelve phases of the 2.2s
+   loop, SEVEN of them drew nothing but the static 18%-white hairline — 58% of
+   the time the cue was a motionless grey line under the headline, which is
+   indistinguishable from a rendering fault. It is what Fatema saw, and asking
+   "is that a glitch" is the correct reading of a line that does not move.
+
+   So the travel is continuous now and the rest is gone. The mark fades in as
+   it enters and out as it leaves, so the loop seam is a dissolve rather than a
+   jump, and at every instant there is something in the track going down.
    ========================================================================= */
 @keyframes cueRun {
-  0%        { top: -42%; }
-  55%, 100% { top: 100%; }
+  0%   { top: -42%; opacity: 0; }
+  22%  { top: 0%;   opacity: 1; }
+  78%  { top: 58%;  opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 .hero-cue::after {
   content: "";
@@ -810,7 +825,7 @@
   width: 1px;
   height: 42%;
   background: #cf81cd;
-  animation: cueRun 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: cueRun 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-cue::after { animation: none; top: 0; }
