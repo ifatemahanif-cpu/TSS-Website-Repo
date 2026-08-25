@@ -313,3 +313,92 @@ Fatema can edit without a developer. Unresolved.
   asset, the `body::after` noise texture, and the LBB card's low-contrast brand
   label.
 - The LOW/cleanup list above, after the merge.
+
+
+---
+
+# 25 AUG, LATER — THREE NOTES FROM FATEMA, AND THE MERGE REVIEW
+
+## 1. "Is that vertical line a hint or a glitch?"
+
+Both, and the measurement is what settled it. `@keyframes cueRun` parked the
+running mark at `top: 100%` — below the track's clipping edge — from 55% of
+the cycle to the end. Frozen at twelve phases of the 2.2s loop, SEVEN drew
+nothing but the static 18%-white track. **58% of the time the cue was a
+motionless grey line**, which is what she saw, and asking whether it is a
+glitch is the correct reading of a line that does not move.
+
+Travel is continuous now, with the mark fading in and out at the two ends so
+the loop seam dissolves. Re-measured at 8%, and that one phase IS the seam.
+`live/cuephase.mjs` pins the animation at a known phase, so this is repeatable
+rather than a matter of when the shutter fell.
+
+## 2. The wink is cut
+
+Her call, and it took a real defect with it. The smiley was a flex item in the
+line and therefore part of the width budget, so its box opening after SETTLE
+stole room from the payoff:
+
+| | p=0.78 | p=0.85 | p=0.95 | p=1.0 |
+|---|---|---|---|---|
+| 1440, before | 130px | 128 | 122 | 122 |
+| 1440, after | 130px | 130 | 130 | 130 |
+| 375, before | 34px | 34 | 32 | 32 |
+| 375, after | 34px | 34 | 34 | 34 |
+
+The sentence was **shrinking after it had already landed**. Nobody would have
+named it; everybody would have felt the last beat go slightly slack.
+
+`SmileyDoodle` deleted with it — no other importer, and it was the only doodle
+driven by a pushed-in value, hence the two dropped imports in Doodles.tsx.
+
+## 3. "It's a lot of tell-tell-tell"
+
+The middle one gave way: "Show us where it feels off, and we'll tell you what
+we see." The heading keeps its "Tell" and the offer keeps its "tell", so the
+two that remain sit at the ends as give-and-get.
+
+Measuring the new line exposed a wrap that had been broken all along —
+default wrapping split "feels / off" at 1440 and "tell / you" at 1024 and 768,
+stranding "you what we see." as a four-word tail. `text-wrap: balance` fixes
+all three and holds one shape from 414 up. Six widths, `live/ctawrap.mjs`.
+
+## THE MERGE REVIEW
+
+**home-rework into full-v1 cannot conflict.** `full-v1` is a direct ancestor
+of `home-rework`, so the merge is a fast-forward: 22 commits, zero conflicts,
+nothing to resolve. `full-v1` is also level with `origin/full-v1` (0/0 after a
+fresh fetch), so nothing has landed upstream to be behind.
+
+**The production data survives it.** `server/seed.ts` contains no delete,
+truncate or drop, and every write is guarded on the key being absent. The
+`problem`/`origin`/`team`/`cta` settings rows and the `problems`,
+`whatWeDoBlocks` and `teamMembers` tables stay exactly as they are in the live
+database — they simply stop being reachable through the app. The cleanup is
+one revert from working against real data, which was the point of leaving the
+tables in place.
+
+**Green:** `tsc` clean, `npm run build` clean, sitemap still 23 URLs, all nine
+routes render with one h1 and no overflow, no horizontal overflow at twelve
+widths from 320 to 1920, pre-hydration hero correct at four sizes, and the
+four-combination sweep reports no page or console errors.
+
+### What WILL be a problem, and it is not this merge
+
+Three of the four other open branches conflict with `home-rework` — not
+because of anything wrong with them, but because the rework rebuilt the files
+they touch. Dry-run merged with `git merge-tree`:
+
+| branch | conflicts in | why |
+|---|---|---|
+| `fix/security-tab-nav` | **none** | clean |
+| `feat/offer-page` | `dashboard.tsx` | three admin tabs were deleted around what it edits |
+| `perf/lazy-below-fold-images` (PR #18) | `Team.tsx`, `blog.tsx`, `blog-post.tsx`, `team.tsx` | it adds `loading="lazy"` to a homepage Team that no longer exists in that shape |
+| `tier3-faq` | `Navbar.tsx`, `use-cms.ts`, `dashboard.tsx`, `routes.ts` | the mobile menu rebuilt the navbar; the CMS cleanup removed hooks, tabs and endpoints |
+
+**The order matters and it is one-way.** Merging home-rework first makes each
+of those a rebase on a moved file. Merging them first makes them free. The
+smallest is `fix/security-tab-nav` (clean either way) and the largest is
+`tier3-faq`, whose FAQ tab has to be re-attached to a dashboard that now has
+two sections instead of five. None of it is hard; all of it is easier before
+home-rework lands than after.
