@@ -118,7 +118,7 @@ export function Services() {
             </SectionHeading>
             <p
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
                 opacity: 0.8,
@@ -176,7 +176,7 @@ export function Services() {
                 <div className="flex items-start gap-4 mb-3">
                   <span
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "1.4rem",
                       fontWeight: 700,
                       letterSpacing: "-0.02em",
@@ -190,7 +190,7 @@ export function Services() {
                   </span>
                   <h3
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(0.95rem, 1.1vw, 1.05rem)",
                       fontWeight: 600,
                       letterSpacing: "0.02em",
@@ -204,7 +204,7 @@ export function Services() {
 
                 <p
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(0.82rem, 0.95vw, 0.9rem)",
                     lineHeight: 1.65,
                     opacity: 0.7,
@@ -227,7 +227,7 @@ export function Services() {
                     <span
                       key={itemIdx}
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontFamily: "'Switzer', sans-serif",
                         fontSize: "0.7rem",
                         letterSpacing: "0.04em",
                         padding: "0.35rem 0.75rem",

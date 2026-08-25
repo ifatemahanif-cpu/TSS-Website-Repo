@@ -18,11 +18,11 @@
          unfurl by URL and keeps serving the old picture for weeks after the
          file behind it changes. Bump the date whenever script/og-home.html is
          re-rendered, or the card people see stays the previous hero's. -->
-    <meta property="og:image" content="https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-17" />
+    <meta property="og:image" content="https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-25" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The Story Shapers | Editorial-Led Brand Strategy & Growth" />
     <meta name="twitter:description" content="A senior marketing collective for growing brands: editorial-grade content strategy, brand positioning, go-to-market, SEO/AEO and growth marketing." />
-    <meta name="twitter:image" content="https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-17" />
+    <meta name="twitter:image" content="https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-25" />
 
     <script type="application/ld+json">
     {
@@ -32,7 +32,7 @@
       "alternateName": "The Story Shapers Collective",
       "url": "https://www.storyshaperscollective.com/",
       "logo": "https://www.storyshaperscollective.com/favicon.png",
-      "image": "https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-17",
+      "image": "https://www.storyshaperscollective.com/opengraph.jpg?v=2026-08-25",
       "description": "The Story Shapers is a senior marketing collective for growing brands: editorial-grade content strategy, brand positioning, go-to-market, SEO/AEO and growth marketing. India-based, working globally.",
       "founder": [
         { "@type": "Person", "name": "Fatema Hanif" },
@@ -49,9 +49,14 @@
     </script>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Zodiak and Switzer are self-hosted; the @font-face rules live in
+         index.css and the files in /public/fonts. Preloading the two faces the
+         first screen actually uses, because a stylesheet-declared font is not
+         discovered until the CSS has parsed, and `font-display: block` means
+         that gap is invisible text rather than fallback text. The other five
+         weights load when something needs them. -->
+    <link rel="preload" href="/fonts/zodiak-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/switzer-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
     <script>
       // Campaign analytics. IDs arrive when Meta Business Manager is set up;

@@ -15,7 +15,7 @@ function highlightBrands(text: string): ReactNode {
         key={i}
         style={{
           fontStyle: "normal",
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Switzer', sans-serif",
           fontWeight: 600,
           letterSpacing: "0.02em",
           opacity: 1,
@@ -58,7 +58,7 @@ const hardcodedBlocks = [
 ];
 
 const readStoryCtaStyle = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.7rem",
   letterSpacing: "0.05em",
   color: "#FFFFFF",
@@ -148,7 +148,7 @@ function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; des
         <div className="flex-grow">
           <div
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "2.5rem",
               fontWeight: 700,
               lineHeight: 1,
@@ -162,7 +162,7 @@ function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; des
 
           <h3
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "1.25rem",
               fontWeight: 600,
               color: "#FFFFFF",
@@ -176,7 +176,7 @@ function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; des
 
           <p
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.95rem",
               lineHeight: 1.6,
               color: "rgba(255, 255, 255, 0.8)",
@@ -197,7 +197,7 @@ function WhatWeDoBlock({ block, index, isInView }: { block: { title: string; des
           >
             <div
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.9rem",
                 lineHeight: 1.7,
                 fontStyle: "italic",
@@ -295,7 +295,7 @@ export function Origin() {
 
             <p
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
                 opacity: 0.8,

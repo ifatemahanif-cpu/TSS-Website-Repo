@@ -29,7 +29,7 @@ export function WhatChanges() {
             <span
               className="block mb-6"
               style={{
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
@@ -42,7 +42,7 @@ export function WhatChanges() {
 
             <h2
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Zodiak', serif",
                 fontSize: "clamp(1.8rem, 4vw, 3rem)",
                 lineHeight: 1.15,
                 letterSpacing: "-0.03em",
@@ -64,7 +64,7 @@ export function WhatChanges() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
                 opacity: 0.75,
@@ -79,7 +79,7 @@ export function WhatChanges() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
                 opacity: 0.75,
@@ -94,7 +94,7 @@ export function WhatChanges() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Zodiak', serif",
                 fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
                 lineHeight: 1.7,
                 fontStyle: "italic",

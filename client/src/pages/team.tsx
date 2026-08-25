@@ -37,15 +37,15 @@ export default function TeamPage() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: BG, color: "#FFFFFF", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }} data-testid="page-team">
+    <div style={{ backgroundColor: BG, color: "#FFFFFF", minHeight: "100vh", fontFamily: "'Switzer', sans-serif" }} data-testid="page-team">
       <Navbar />
 
       {/* HERO */}
       <section style={{ padding: "9rem 1.5rem 5rem", maxWidth: "860px", margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED, marginBottom: "1.5rem" }}>
+        <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED, marginBottom: "1.5rem" }}>
           The Collective
         </div>
-        <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", lineHeight: 1.1, fontWeight: 400, letterSpacing: "-0.02em", marginBottom: "1.5rem" }}>
+        <h1 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", lineHeight: 1.1, fontWeight: 400, letterSpacing: "-0.02em", marginBottom: "1.5rem" }}>
           Meet the team.
         </h1>
         <p style={{ fontSize: "1.05rem", lineHeight: 1.7, color: MUTED, maxWidth: "560px", margin: "0 auto" }}>
@@ -56,7 +56,7 @@ export default function TeamPage() {
       {/* MEMBER CARDS */}
       <section style={{ padding: "0 1.5rem 7rem", maxWidth: "1100px", margin: "0 auto" }}>
         {isLoading ? (
-          <div style={{ textAlign: "center", color: MUTED, fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.2em", padding: "4rem 0" }}>
+          <div style={{ textAlign: "center", color: MUTED, fontFamily: "'Switzer', sans-serif", fontSize: "0.7rem", letterSpacing: "0.2em", padding: "4rem 0" }}>
             LOADING…
           </div>
         ) : (
@@ -79,13 +79,13 @@ export default function TeamPage() {
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1.2px, transparent 1.2px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
           <div style={{ position: "relative", zIndex: 1 }}>
             <img src={logoImg} alt="The Story Shapers" style={{ height: "44px", width: "auto", filter: "invert(1) brightness(2)", marginBottom: "1rem" }} />
-            <p style={{ fontFamily: "'Libre Baskerville', serif", fontStyle: "italic", fontSize: "0.85rem", color: MUTED, marginBottom: "1.25rem" }}>
+            <p style={{ fontFamily: "'Zodiak', serif", fontStyle: "italic", fontSize: "0.85rem", color: MUTED, marginBottom: "1.25rem" }}>
               Brand strategy. Content leadership. Editorial thinking.
             </p>
-            <Link href="/" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: MUTED, textDecoration: "none" }} data-testid="link-footer-home">
+            <Link href="/" style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: MUTED, textDecoration: "none" }} data-testid="link-footer-home">
               ← Back to homepage
             </Link>
-            <p style={{ marginTop: "2rem", fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)" }}>
+            <p style={{ marginTop: "2rem", fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.3)" }}>
               © {new Date().getFullYear()} The Story Shapers. All rights reserved.
             </p>
           </div>
@@ -151,11 +151,11 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
 
       {/* Content */}
       <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1 }}>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED }}>
+        <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED }}>
           {member.name}
         </div>
 
-        <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.15rem", lineHeight: 1.25, fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }} data-testid={`text-member-name-${member.slug}`}>
+        <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.15rem", lineHeight: 1.25, fontWeight: 400, letterSpacing: "-0.01em", margin: 0 }} data-testid={`text-member-name-${member.slug}`}>
           {(member.hero as HeroBlock).headlineLine1 || member.name}
           {(member.hero as HeroBlock).headlineLine2 && (
             <>
@@ -182,7 +182,7 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
             style={{
               display: "inline-flex",
               alignItems: "center",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.55rem",
               letterSpacing: "0.18em",
               textTransform: "uppercase",

@@ -6,19 +6,26 @@
   screenshots this file with headless Chrome. Edit here, re-run, commit the jpg.
 
   It deliberately reuses the page's own three motifs rather than inventing a
-  layout: the mono eyebrow, the Libre Baskerville display line, and the magenta
+  layout: the tracked eyebrow, the Zodiak display line, and the magenta
   rule drawn under the price. Unfurls render small, so the price is the one
   thing sized to survive a thumbnail.
 -->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=Inter:wght@300;400&family=JetBrains+Mono:wght@500&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Zodiak and Switzer, read straight off disk. The card renders from a
+         file:// URL, so a relative path into client/public/fonts works and the
+         render stops depending on Google Fonts being reachable — which is the
+         same reason this script was kept out of the build. -->
+    <style>
+      @font-face { font-family: 'Zodiak';  src: url('../client/public/fonts/zodiak-400-normal.woff2')  format('woff2'); font-weight: 400; font-style: normal; }
+      @font-face { font-family: 'Zodiak';  src: url('../client/public/fonts/zodiak-400-italic.woff2')  format('woff2'); font-weight: 400; font-style: italic; }
+      @font-face { font-family: 'Zodiak';  src: url('../client/public/fonts/zodiak-700-normal.woff2')  format('woff2'); font-weight: 700; font-style: normal; }
+      @font-face { font-family: 'Zodiak';  src: url('../client/public/fonts/zodiak-700-italic.woff2')  format('woff2'); font-weight: 700; font-style: italic; }
+      @font-face { font-family: 'Switzer'; src: url('../client/public/fonts/switzer-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; }
+      @font-face { font-family: 'Switzer'; src: url('../client/public/fonts/switzer-500-normal.woff2') format('woff2'); font-weight: 500; font-style: normal; }
+      @font-face { font-family: 'Switzer'; src: url('../client/public/fonts/switzer-600-normal.woff2') format('woff2'); font-weight: 600; font-style: normal; }
+    </style>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -27,7 +34,7 @@
         height: 630px;
         background: #0c0a3e;
         color: #fff;
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: 'Switzer', system-ui, sans-serif;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -49,7 +56,7 @@
       }
 
       .eyebrow {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'Switzer', sans-serif;
         font-weight: 500;
         font-size: 15px;
         letter-spacing: 3px;
@@ -58,7 +65,7 @@
       }
 
       h1 {
-        font-family: 'Libre Baskerville', Georgia, serif;
+        font-family: 'Zodiak', Georgia, serif;
         font-weight: 400;
         font-size: 70px;
         line-height: 1.32;
@@ -69,7 +76,7 @@
       /* Everything after the price drops to the light body face, exactly as
          the page does under its display lines. */
       h1 .light {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: 'Switzer', system-ui, sans-serif;
         font-weight: 300;
         color: rgba(255, 255, 255, 0.72);
       }
@@ -103,7 +110,7 @@
       footer .name { color: rgba(255, 255, 255, 0.9); }
 
       .slots {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'Switzer', sans-serif;
         font-weight: 500;
         font-size: 14px;
         letter-spacing: 2.4px;

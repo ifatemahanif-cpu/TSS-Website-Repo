@@ -175,7 +175,7 @@ export function Team() {
                 >
                   <span
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
                       fontWeight: 400,
                     }}
@@ -184,7 +184,7 @@ export function Team() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
@@ -197,7 +197,7 @@ export function Team() {
                 <div className="space-y-4">
                   <p
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
                       color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.8,
@@ -225,7 +225,7 @@ export function Team() {
                 >
                   <span
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
                       fontWeight: 400,
                     }}
@@ -234,7 +234,7 @@ export function Team() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
@@ -247,7 +247,7 @@ export function Team() {
                 <div className="space-y-4">
                   <p
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(0.8rem, 1.1vw, 0.95rem)",
                       color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.8,
@@ -260,7 +260,7 @@ export function Team() {
                 <div className="mt-6">
                   <span
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.55rem",
                       color: "rgba(255, 255, 255, 0.5)",
                       letterSpacing: "0.15em",
@@ -399,7 +399,7 @@ function TeamModal({
               <div>
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.6rem",
                     color: modalAccent,
                     opacity: 0.7,
@@ -411,7 +411,7 @@ function TeamModal({
                 <h3
                   className="mt-2"
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(0.85rem, 1.3vw, 1.05rem)",
                     fontWeight: 600,
                     lineHeight: 1.5,
@@ -424,7 +424,7 @@ function TeamModal({
               <button
                 onClick={onClose}
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.65rem",
                   color: "rgba(255, 255, 255, 0.7)",
                   opacity: 0.7,
@@ -446,7 +446,7 @@ function TeamModal({
                 <p
                   key={idx}
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(0.85rem, 1vw, 0.95rem)",
                     lineHeight: 1.8,
                     opacity: 0.85,
@@ -461,7 +461,7 @@ function TeamModal({
             <ModalSection label="Decisions led" accent={modalAccent}>
               <p
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.85rem",
                   lineHeight: 1.7,
                   opacity: 0.85,
@@ -474,7 +474,7 @@ function TeamModal({
             <ModalSection label={member.brandsLabel} accent={modalAccent}>
               <p
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.8rem",
                   lineHeight: 1.6,
                   opacity: 0.8,
@@ -491,7 +491,7 @@ function TeamModal({
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.4rem",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.6rem",
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
@@ -530,7 +530,7 @@ function ModalSection({
       <span
         className="block mb-2"
         style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.55rem",
           letterSpacing: "0.2em",
           textTransform: "uppercase",
@@ -741,7 +741,7 @@ function FanCard({
       >
         <h3
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "clamp(0.8rem, 1vw, 0.9rem)",
             fontWeight: 600,
             color: "#FFFFFF",
@@ -755,7 +755,7 @@ function FanCard({
         <span
           className="inline-block transition-all duration-300 group-hover:translate-x-1"
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.55rem",
             color: "rgba(255, 255, 255, 0.6)",
             opacity: 0.7,
@@ -848,7 +848,7 @@ function MobileCard({
       >
         <h3
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.9rem",
             fontWeight: 600,
             color: "#FFFFFF",
@@ -861,7 +861,7 @@ function MobileCard({
         </h3>
         <span
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.55rem",
             color: "rgba(255, 255, 255, 0.6)",
             opacity: 0.7,

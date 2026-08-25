@@ -76,7 +76,7 @@ function SectionDivider() {
       <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
       <span
         style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.5rem",
           color: "rgba(255, 255, 255, 0.25)",
           letterSpacing: "0.3em",
@@ -137,7 +137,7 @@ export default function Join() {
                 href="/"
                 className="inline-flex items-center gap-2 mb-12 group"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.65rem",
                   color: "rgba(255, 255, 255, 0.6)",
                   letterSpacing: "0.15em",
@@ -161,7 +161,7 @@ export default function Join() {
               <span
                 className="block mb-4"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.7rem",
                   color: "rgba(255, 255, 255, 0.5)",
                   letterSpacing: "0.3em",
@@ -182,7 +182,7 @@ export default function Join() {
               >
                 <span
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
                     fontWeight: 400,
                   }}
@@ -192,7 +192,7 @@ export default function Join() {
                 <br className="hidden md:block" />
                 <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
@@ -223,7 +223,7 @@ export default function Join() {
                   key={idx}
                   className="mb-8"
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                     color: "rgba(255, 255, 255, 0.85)",
                     lineHeight: 1.8,
@@ -236,7 +236,7 @@ export default function Join() {
               <p
                 className="mb-4"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
                   color: "#FFFFFF",
                   lineHeight: 1.8,
@@ -259,7 +259,7 @@ export default function Join() {
               >
                 <span
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 400,
                   }}
@@ -268,7 +268,7 @@ export default function Join() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
@@ -288,7 +288,7 @@ export default function Join() {
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.08, duration: 0.3 }}
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(0.85rem, 1vw, 0.92rem)",
                       color: "#FFFFFF",
                       fontWeight: 500,
@@ -326,7 +326,7 @@ export default function Join() {
                       <span
                         className="shrink-0 mt-1"
                         style={{
-                          fontFamily: "'JetBrains Mono', monospace",
+                          fontFamily: "'Switzer', sans-serif",
                           fontSize: "0.55rem",
                           color: "rgba(255, 255, 255, 0.5)",
                           letterSpacing: "0.1em",
@@ -338,7 +338,7 @@ export default function Join() {
                         <p
                           className="mb-2"
                           style={{
-                            fontFamily: "'Inter', sans-serif",
+                            fontFamily: "'Switzer', sans-serif",
                             fontSize: "clamp(0.92rem, 1.2vw, 1.02rem)",
                             color: "#FFFFFF",
                             fontWeight: 600,
@@ -349,7 +349,7 @@ export default function Join() {
                         </p>
                         <p
                           style={{
-                            fontFamily: "'Inter', sans-serif",
+                            fontFamily: "'Switzer', sans-serif",
                             fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
                             color: "rgba(255, 255, 255, 0.8)",
                             lineHeight: 1.8,
@@ -375,7 +375,7 @@ export default function Join() {
               >
                 <span
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 400,
                   }}
@@ -384,7 +384,7 @@ export default function Join() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
@@ -398,7 +398,7 @@ export default function Join() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 1.8,
@@ -425,7 +425,7 @@ export default function Join() {
                     <p
                       className="mb-2"
                       style={{
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Switzer', sans-serif",
                         fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
                         color: "#FFFFFF",
                         fontWeight: 600,
@@ -436,7 +436,7 @@ export default function Join() {
                     </p>
                     <p
                       style={{
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Switzer', sans-serif",
                         fontSize: "clamp(0.82rem, 1vw, 0.9rem)",
                         color: "rgba(255, 255, 255, 0.8)",
                         lineHeight: 1.8,
@@ -460,7 +460,7 @@ export default function Join() {
               >
                 <span
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 400,
                   }}
@@ -469,7 +469,7 @@ export default function Join() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
@@ -483,7 +483,7 @@ export default function Join() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.92rem, 1.2vw, 1.02rem)",
                   color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
@@ -521,7 +521,7 @@ export default function Join() {
                     >
                       <span
                         style={{
-                          fontFamily: "'JetBrains Mono', monospace",
+                          fontFamily: "'Switzer', sans-serif",
                           fontSize: "0.5rem",
                           color: "rgba(255, 255, 255, 0.6)",
                           letterSpacing: "0.05em",
@@ -535,7 +535,7 @@ export default function Join() {
                       <p
                         className="mb-1.5"
                         style={{
-                          fontFamily: "'Inter', sans-serif",
+                          fontFamily: "'Switzer', sans-serif",
                           fontSize: "clamp(0.95rem, 1.2vw, 1.05rem)",
                           color: "#FFFFFF",
                           fontWeight: 600,
@@ -546,7 +546,7 @@ export default function Join() {
                       </p>
                       <p
                         style={{
-                          fontFamily: "'Inter', sans-serif",
+                          fontFamily: "'Switzer', sans-serif",
                           fontSize: "clamp(0.85rem, 1.05vw, 0.95rem)",
                           color: "rgba(255, 255, 255, 0.8)",
                           lineHeight: 1.8,
@@ -562,7 +562,7 @@ export default function Join() {
               <p
                 className="mb-4"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.9rem, 1.15vw, 1rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 1.8,
@@ -583,7 +583,7 @@ export default function Join() {
               >
                 <span
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 400,
                   }}
@@ -592,7 +592,7 @@ export default function Join() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
@@ -606,7 +606,7 @@ export default function Join() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                   color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 1.8,
@@ -619,7 +619,7 @@ export default function Join() {
                 <Link
                   href="/contact#join"
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.7rem",
                     letterSpacing: "0.15em",
                     color: "#FFFFFF",

@@ -52,7 +52,7 @@ export default function Home() {
             <a
               href="mailto:hello@storyshaperscollective.com"
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.85rem",
                 color: "rgba(255,255,255,0.6)",
                 textDecoration: "none",
@@ -65,7 +65,7 @@ export default function Home() {
             </a>
             <p
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.75rem",
                 opacity: 0.4,
               }}

@@ -75,7 +75,7 @@ export function ProblemFraming() {
 
             <p
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
                 opacity: 0.8,
@@ -117,7 +117,7 @@ export function ProblemFraming() {
               >
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.85rem",
                     opacity: 0.5,
                     flexShrink: 0,
@@ -128,7 +128,7 @@ export function ProblemFraming() {
                 </span>
                 <p
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
                     lineHeight: 1.4,
                     opacity: 0.9,

@@ -8,3 +8,6 @@ api/server.cjs
 .env
 .vercel
 OFFER-PAGE-STATE.md
+
+# design review screenshots — regenerable, not source
+.design/shots/

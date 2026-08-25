@@ -54,7 +54,7 @@ export default function AdminLogin() {
       >
         <h1
           style={{
-            fontFamily: "'Libre Baskerville', serif",
+            fontFamily: "'Zodiak', serif",
             fontSize: "1.5rem",
             color: "#FFFFFF",
             marginBottom: "0.5rem",
@@ -65,7 +65,7 @@ export default function AdminLogin() {
         </h1>
         <p
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.85rem",
             color: "rgba(255,255,255,0.6)",
             textAlign: "center",
@@ -83,7 +83,7 @@ export default function AdminLogin() {
               borderRadius: "8px",
               padding: "0.75rem 1rem",
               marginBottom: "1.5rem",
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.85rem",
               color: "#ff6b6b",
             }}
@@ -97,7 +97,7 @@ export default function AdminLogin() {
           <div style={{ marginBottom: "1rem" }}>
             <label
               style={{
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.6rem",
                 color: "rgba(255,255,255,0.6)",
                 letterSpacing: "0.2em",
@@ -113,7 +113,7 @@ export default function AdminLogin() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.9rem",
                 color: "#FFFFFF",
                 backgroundColor: "rgba(255,255,255,0.04)",
@@ -129,7 +129,7 @@ export default function AdminLogin() {
           <div style={{ marginBottom: "1.5rem" }}>
             <label
               style={{
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.6rem",
                 color: "rgba(255,255,255,0.6)",
                 letterSpacing: "0.2em",
@@ -145,7 +145,7 @@ export default function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.9rem",
                 color: "#FFFFFF",
                 backgroundColor: "rgba(255,255,255,0.04)",
@@ -162,7 +162,7 @@ export default function AdminLogin() {
             type="submit"
             disabled={loading}
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.7rem",
               letterSpacing: "0.15em",
               color: "#FFFFFF",

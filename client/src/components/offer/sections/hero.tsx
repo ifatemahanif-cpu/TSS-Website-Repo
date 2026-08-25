@@ -164,7 +164,13 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={2}>
-            <h1 className="o-display mt-8 text-[36px] leading-[1.08] sm:text-[46px] md:text-[54px]">
+            {/* `text-wrap: balance` because the display face changed underneath
+                this line. Zodiak sets narrower than Libre Baskerville did, so
+                "Freedom from websites that" newly fits across two lines and
+                dropped "that" onto a line of its own. Balancing lets the line
+                find its own break instead of pinning one that was only ever
+                right for the old metrics. */}
+            <h1 className="o-display mt-8 text-[36px] leading-[1.08] text-balance sm:text-[46px] md:text-[54px]">
               Freedom from websites that{" "}
               {/* Own line, fixed height — the cycler never reflows the line above. */}
               <span className="mt-1 block min-h-[2.2em] sm:min-h-[1.12em]">

@@ -16,7 +16,7 @@ export function SectionLabel({
     <span
       className={`block mb-6 relative inline-flex ${className}`}
       style={{
-        fontFamily: "'JetBrains Mono', monospace",
+        fontFamily: "'Switzer', sans-serif",
         fontSize: "0.65rem",
         letterSpacing: "0.2em",
         textTransform: "uppercase",
@@ -66,7 +66,7 @@ export function SectionHeading({
   return (
     <h2
       style={{
-        fontFamily: "'Libre Baskerville', serif",
+        fontFamily: "'Zodiak', serif",
         fontSize: "clamp(2rem, 5vw, 3.5rem)",
         lineHeight: 1.1,
         letterSpacing: "-0.03em",

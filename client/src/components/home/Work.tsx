@@ -12,7 +12,7 @@ function highlightBrands(text: string): ReactNode {
         key={i}
         style={{
           fontStyle: "normal",
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Switzer', sans-serif",
           fontWeight: 600,
           letterSpacing: "0.02em",
           opacity: 1,
@@ -69,7 +69,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
           position: "absolute",
           top: "clamp(1.5rem, 3vw, 2.5rem)",
           right: 0,
-          fontFamily: "'Libre Baskerville', serif",
+          fontFamily: "'Zodiak', serif",
           fontSize: "clamp(5rem, 10vw, 9rem)",
           fontWeight: 400,
           opacity: 0.03,
@@ -85,7 +85,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
       <div className="flex items-baseline gap-3 mb-5">
         <span
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.6rem",
             letterSpacing: "0.15em",
             color: "rgba(255, 255, 255, 0.35)",
@@ -96,7 +96,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
         </span>
         <h3
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "clamp(0.72rem, 0.95vw, 0.82rem)",
             fontWeight: 600,
             letterSpacing: "0.1em",
@@ -112,7 +112,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
       <p
         className="max-w-[750px]"
         style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "clamp(0.95rem, 1.2vw, 1.08rem)",
           lineHeight: 1.8,
           color: "rgba(255, 255, 255, 0.85)",
@@ -141,7 +141,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
         <span
           className="block mb-2"
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.5rem",
             letterSpacing: "0.15em",
             textTransform: "uppercase",
@@ -152,7 +152,7 @@ function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index:
         </span>
         <p
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
             lineHeight: 1.8,
             fontStyle: "italic",
@@ -195,7 +195,7 @@ export function Work() {
             <span
               className="block mb-6"
               style={{
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.65rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
@@ -207,7 +207,7 @@ export function Work() {
 
             <h2
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Zodiak', serif",
                 fontSize: "clamp(2rem, 5vw, 3.5rem)",
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
@@ -224,7 +224,7 @@ export function Work() {
 
             <p
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                 lineHeight: 1.8,
                 opacity: 0.75,

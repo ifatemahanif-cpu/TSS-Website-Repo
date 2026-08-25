@@ -27,7 +27,7 @@ const tabLabels: Record<Tab, string> = {
 };
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.85rem",
   color: "#FFFFFF",
   backgroundColor: "rgba(255,255,255,0.04)",
@@ -45,7 +45,7 @@ const textareaStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.55rem",
   color: "rgba(255,255,255,0.5)",
   letterSpacing: "0.15em",
@@ -63,7 +63,7 @@ const cardStyle: React.CSSProperties = {
 };
 
 const btnPrimary: React.CSSProperties = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.6rem",
   letterSpacing: "0.1em",
   color: "#FFFFFF",
@@ -98,7 +98,7 @@ function SuccessMessage({ show }: { show: boolean }) {
   return (
     <span
       style={{
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Switzer', sans-serif",
         fontSize: "0.75rem",
         color: "#4ade80",
         marginLeft: "0.75rem",
@@ -167,7 +167,7 @@ function SecurityPanel() {
       <p style={{ ...labelStyle, marginBottom: "0.75rem" }}>Change admin password</p>
       <p
         style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.75rem",
           lineHeight: 1.6,
           color: "rgba(255,255,255,0.55)",
@@ -222,7 +222,7 @@ function SecurityPanel() {
           <p
             role="status"
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.75rem",
               lineHeight: 1.6,
               marginBottom: "1rem",
@@ -259,7 +259,7 @@ function SubmissionsViewer() {
 
   if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
   if (!submissions || submissions.length === 0) {
-    return <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No form submissions yet.</p>;
+    return <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No form submissions yet.</p>;
   }
 
   const markRead = async (id: number, read: boolean) => {
@@ -359,7 +359,7 @@ function SubmissionsViewer() {
               )}
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.55rem",
                   letterSpacing: "0.1em",
                   color: (BADGE[sub.formType] ?? BADGE.talk).color,
@@ -372,20 +372,20 @@ function SubmissionsViewer() {
                 {(BADGE[sub.formType] ?? BADGE.talk).label}
               </span>
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem",
                 color: "#FFFFFF", flex: 1,
                 fontWeight: sub.read ? 400 : 600,
               }}>
                 {data.name || "—"}
               </span>
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.75rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem",
                 color: "rgba(255,255,255,0.4)",
               }}>
                 {data.email || ""}
               </span>
               <span style={{
-                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem",
                 color: "rgba(255,255,255,0.3)", flexShrink: 0,
               }}>
                 {formatDate(sub.createdAt)}
@@ -401,14 +401,14 @@ function SubmissionsViewer() {
                   {Object.entries(data).map(([key, value]) => (
                     <div key={key} style={{ display: "contents" }}>
                       <span style={{
-                        fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                        fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem",
                         letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)",
                         textTransform: "uppercase", paddingTop: "0.15rem",
                       }}>
                         {fieldLabels[key] || key}
                       </span>
                       <span style={{
-                        fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
+                        fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem",
                         color: "#FFFFFF", whiteSpace: "pre-wrap", wordBreak: "break-word",
                       }}>
                         {value || "—"}
@@ -425,7 +425,7 @@ function SubmissionsViewer() {
                     borderRadius: "4px",
                   }}>
                     <span style={{
-                      fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem",
+                      fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem",
                       letterSpacing: "0.12em", color: "rgba(255,255,255,0.55)",
                       textTransform: "uppercase",
                     }}>
@@ -433,7 +433,7 @@ function SubmissionsViewer() {
                     </span>
                     <ul style={{
                       margin: "0.4rem 0 0", paddingLeft: "1.1rem",
-                      fontFamily: "'Inter', sans-serif", fontSize: "0.78rem",
+                      fontFamily: "'Switzer', sans-serif", fontSize: "0.78rem",
                       lineHeight: 1.7, color: "#FFFFFF",
                     }}>
                       {offerFlags(data).map((flag) => (
@@ -579,7 +579,7 @@ function SettingsEditor() {
         <div key={section.key} style={cardStyle}>
           <h3
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.95rem",
               fontWeight: 600,
               color: "#FFFFFF",
@@ -1214,7 +1214,7 @@ function OurStoryEditor() {
           )}
         </div>
       ))}
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -1401,7 +1401,7 @@ function JoinPageEditor() {
         <input style={inputStyle} value={formData.howToJoinButton || ""} onChange={(e) => update("howToJoinButton", e.target.value)} />
       </div>
 
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -1460,7 +1460,7 @@ function BlogPageEditor() {
         <textarea style={{ ...inputStyle, minHeight: "70px" }} value={formData.subtext || ""} onChange={(e) => update("subtext", e.target.value)} placeholder="Because good brands are built on thinking, not just things to post." data-testid="input-blog-subtext" />
       </div>
 
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -1539,7 +1539,7 @@ function ContactPageEditor() {
           )}
         </div>
       ))}
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -2100,7 +2100,7 @@ function BlogPostsEditor() {
       </div>
 
       {posts.length === 0 ? (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No blog posts yet. Create your first post above.</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No blog posts yet. Create your first post above.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           {posts.map((post) => (
@@ -2119,7 +2119,7 @@ function BlogPostsEditor() {
             >
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.55rem",
                   letterSpacing: "0.1em",
                   color: post.status === "published" ? "#4ade80" : "#fbbf24",
@@ -2133,22 +2133,22 @@ function BlogPostsEditor() {
                 {post.status}
               </span>
               {post.featured && (
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "#fbbf24", flexShrink: 0 }} title="Featured post">★</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", color: "#fbbf24", flexShrink: 0 }} title="Featured post">★</span>
               )}
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.85rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem",
                 color: "#FFFFFF", flex: 1, fontWeight: 500,
               }}>
                 {post.title}
               </span>
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.75rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem",
                 color: "rgba(255,255,255,0.4)", flexShrink: 0,
               }}>
                 {getCategoryName(post.categoryId)}
               </span>
               <span style={{
-                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem",
                 color: "rgba(255,255,255,0.3)", flexShrink: 0,
               }}>
                 {formatDate(post.publishedAt || post.createdAt)}
@@ -2335,7 +2335,7 @@ function SubscribersEditor() {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>
+        <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>
           <span style={{ color: "#4ade80", fontWeight: 600 }}>{active.length}</span> active · {inactive.length} unsubscribed
         </p>
         <a
@@ -2354,7 +2354,7 @@ function SubscribersEditor() {
       </div>
 
       {subscribers.length === 0 ? (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No subscribers yet.</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No subscribers yet.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
           {subscribers.map((sub) => (
@@ -2370,16 +2370,16 @@ function SubscribersEditor() {
               }}
               data-testid={`subscriber-row-${sub.id}`}
             >
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.08em", color: sub.status === "active" ? "#4ade80" : "rgba(255,255,255,0.3)", backgroundColor: sub.status === "active" ? "rgba(74,222,128,0.1)" : "rgba(255,255,255,0.05)", padding: "0.15rem 0.45rem", borderRadius: "4px", flexShrink: 0, textTransform: "uppercase" }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.08em", color: sub.status === "active" ? "#4ade80" : "rgba(255,255,255,0.3)", backgroundColor: sub.status === "active" ? "rgba(74,222,128,0.1)" : "rgba(255,255,255,0.05)", padding: "0.15rem 0.45rem", borderRadius: "4px", flexShrink: 0, textTransform: "uppercase" }}>
                 {sub.status}
               </span>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "#FFFFFF", flex: 1 }} data-testid={`text-subscriber-email-${sub.id}`}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "#FFFFFF", flex: 1 }} data-testid={`text-subscriber-email-${sub.id}`}>
                 {sub.email}
               </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>
                 {sub.source}
               </span>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", flexShrink: 0 }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", flexShrink: 0 }}>
                 {formatDate(sub.createdAt)}
               </span>
               {sub.status === "active" && (
@@ -2500,7 +2500,7 @@ function PortfoliosEditor() {
 
   if (editing) {
     const sectionHeader: React.CSSProperties = {
-      fontFamily: "'JetBrains Mono', monospace",
+      fontFamily: "'Switzer', sans-serif",
       fontSize: "0.65rem",
       letterSpacing: "0.2em",
       color: "#FFAEDA",
@@ -2530,7 +2530,7 @@ function PortfoliosEditor() {
         </button>
 
         <div style={cardStyle}>
-          <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.1rem", color: "#fff", marginBottom: "1rem" }}>
+          <h3 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.1rem", color: "#fff", marginBottom: "1rem" }}>
             {editing.name} <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem" }}>/{editing.slug}</span>
           </h3>
 
@@ -2635,7 +2635,7 @@ function PortfoliosEditor() {
           {(editing.caseStudies?.items || []).map((c: any, i: number) => (
             <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.75rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>CASE #{i + 1}</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>CASE #{i + 1}</span>
                 <button style={btnDanger} onClick={() => removeArrayItem("caseStudies", "items", i)}>REMOVE</button>
               </div>
               <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Tag (e.g. Headout · Content Leadership)" value={c.tag || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "tag", e.target.value)} />
@@ -2685,7 +2685,7 @@ function PortfoliosEditor() {
           {(editing.testimonials || []).map((t: any, i: number) => (
             <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>QUOTE #{i + 1}</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>QUOTE #{i + 1}</span>
                 <button style={btnDanger} onClick={() => removeTopArrayItem("testimonials", i)}>REMOVE</button>
               </div>
               <textarea style={{ ...textareaStyle, marginBottom: "0.4rem" }} placeholder="Quote" value={t.quote || ""} onChange={(e) => updateTopArray("testimonials", i, "quote", e.target.value)} />
@@ -2753,7 +2753,7 @@ function PortfoliosEditor() {
           {(editing.workWithMe?.cards || []).map((card: any, i: number) => (
             <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>OFFER #{i + 1}</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>OFFER #{i + 1}</span>
                 <button style={btnDanger} onClick={() => removeArrayItem("workWithMe", "cards", i)}>REMOVE</button>
               </div>
               <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Eyebrow (e.g. Start here)" value={card.eyebrow || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "eyebrow", e.target.value)} />
@@ -2805,15 +2805,15 @@ function PortfoliosEditor() {
   return (
     <div>
       {(portfolios || []).length === 0 ? (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No portfolios yet.</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No portfolios yet.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           {(portfolios || []).map((p: any) => (
             <div key={p.id} style={{ ...cardStyle, marginBottom: 0, display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }} onClick={() => startEdit(p)} data-testid={`portfolio-row-${p.slug}`}>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.95rem", color: "#FFFFFF", flex: 1, fontWeight: 500 }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.95rem", color: "#FFFFFF", flex: 1, fontWeight: 500 }}>
                 {p.name}
               </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.4)" }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.4)" }}>
                 /{p.slug}
               </span>
               <button onClick={(e) => { e.stopPropagation(); startEdit(p); }} style={{ ...btnPrimary, fontSize: "0.55rem" }} data-testid={`button-edit-portfolio-${p.slug}`}>
@@ -2856,7 +2856,7 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif" }}>Loading...</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif" }}>Loading...</p>
       </div>
     );
   }
@@ -2886,7 +2886,7 @@ export default function AdminDashboard() {
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
           <h1
             style={{
-              fontFamily: "'Libre Baskerville', serif",
+              fontFamily: "'Zodiak', serif",
               fontSize: "1rem",
               color: "#FFFFFF",
             }}
@@ -2897,7 +2897,7 @@ export default function AdminDashboard() {
             href="/"
             target="_blank"
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.55rem",
               color: "rgba(255,255,255,0.4)",
               textDecoration: "none",
@@ -2910,7 +2910,7 @@ export default function AdminDashboard() {
         <button
           onClick={handleLogout}
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.55rem",
             color: "rgba(255,255,255,0.5)",
             background: "none",
@@ -2943,7 +2943,7 @@ export default function AdminDashboard() {
                 display: "block",
                 width: "100%",
                 textAlign: "left",
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.8rem",
                 color: activeTab === tab ? "#FFFFFF" : "rgba(255,255,255,0.5)",
                 backgroundColor: activeTab === tab ? "rgba(123,30,122,0.2)" : "transparent",
@@ -2965,7 +2965,7 @@ export default function AdminDashboard() {
                   backgroundColor: "#7B1E7A",
                   color: "#FFFFFF",
                   fontSize: "0.55rem",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   padding: "0.1rem 0.4rem",
                   borderRadius: "10px",
                   minWidth: "18px",
@@ -2982,7 +2982,7 @@ export default function AdminDashboard() {
         <div style={{ flex: 1, padding: "1.5rem", maxWidth: "800px" }}>
           <h2
             style={{
-              fontFamily: "'Libre Baskerville', serif",
+              fontFamily: "'Zodiak', serif",
               fontSize: "1.25rem",
               color: "#FFFFFF",
               marginBottom: "1.5rem",

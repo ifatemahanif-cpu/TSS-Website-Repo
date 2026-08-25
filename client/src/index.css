@@ -1,12 +1,41 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* =========================================================================
+   THE TYPEFACES
+
+   Zodiak for display, Switzer for everything else. Self-hosted from
+   /public/fonts rather than fetched from Google, which is what the three
+   previous faces did: Libre Baskerville for display, Inter for body, JetBrains
+   Mono for the small tracked labels. All 156KB of woff2 sits in the repo, so
+   there is no third-party request in the critical path and no FOUT from a
+   stylesheet that has to resolve a DNS lookup first.
+
+   `font-display: block` on purpose, not `swap`. The homepage's opening move is
+   a sentence sized to fill the screen; swapping a fallback for Zodiak halfway
+   through that would reflow every word mid-film. A short invisible beat is the
+   cheaper artefact.
+
+   Only two families now. The mono was never doing a mono's job here — every
+   use was a 0.55–0.65rem label with 0.1–0.25em of tracking, which is Switzer's
+   job. The one place that genuinely wants fixed pitch is `.blog-content pre`,
+   and that now takes the system mono stack: no download, and it is the face a
+   reader's own editor uses.
+   ========================================================================= */
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-400-normal.woff2')  format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-400-italic.woff2')  format('woff2'); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-700-normal.woff2')  format('woff2'); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-700-italic.woff2')  format('woff2'); font-weight: 700; font-style: italic; font-display: block; }
+@font-face { font-family: 'Switzer'; src: url('/fonts/switzer-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Switzer'; src: url('/fonts/switzer-500-normal.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: 'Switzer'; src: url('/fonts/switzer-600-normal.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: block; }
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Libre Baskerville', serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Switzer', sans-serif;
+  --font-serif: 'Zodiak', serif;
+  --font-mono: 'Switzer', sans-serif;
 
   --color-background: #0C0A3E; 
   --color-foreground: #FFFFFF;
@@ -40,8 +69,8 @@
   --color-magenta: #7b1e7a;
   --color-magenta-lift: #942493;
 
-  --font-display: 'Libre Baskerville', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Zodiak', Georgia, serif;
+  --font-body: 'Switzer', system-ui, sans-serif;
 }
 
 @layer base {
@@ -78,11 +107,11 @@
   }
 
   .serif-display {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Zodiak', serif;
   }
   
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Switzer', sans-serif;
   }
 
 }
@@ -194,7 +223,7 @@
   margin: 0 auto;
   column-gap: 0.3em;
   row-gap: 0.06em;
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   /* Sized to fill the screen it is standing on. At the previous cap the film
      ran at 78px and the sentence occupied 21% of a 900px-tall hero, so most
      of the screen was empty for the whole story and only filled up once the
@@ -310,7 +339,7 @@
 .story-hero__offer-number {
   display: block;
   margin-bottom: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   color: #cf81cd;
@@ -321,7 +350,7 @@
    the ratio was 1:9. Size does the lifting, not weight: Inter at 600 on
    navy starts to look like navigation chrome instead of editorial support. */
 .story-hero__offer-label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Switzer', sans-serif;
   font-size: clamp(1rem, 1.35vw, 1.2rem);
   font-weight: 500;
   line-height: 1.4;
@@ -402,7 +431,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.055);
   color: #ffffff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Switzer', sans-serif;
   /* 14.4px was app-chrome size — the pill had more padding than label. */
   font-size: 1rem;
   font-weight: 500;
@@ -453,7 +482,7 @@
   border: 0;
   background: none;
   color: rgba(255, 255, 255, 0.32);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.6rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -517,7 +546,7 @@
 }
 
 .blog-content h2 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.4rem;
   color: #FFFFFF;
   margin-top: 2.5rem;
@@ -527,7 +556,7 @@
 }
 
 .blog-content h3 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.15rem;
   color: #FFFFFF;
   margin-top: 2rem;
@@ -594,12 +623,14 @@
   padding: 1rem;
   overflow-x: auto;
   margin-bottom: 1.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  /* the one place on the site that genuinely wants fixed pitch, so it keeps a
+     real mono — the system stack, so nothing is downloaded for it */
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
   font-size: 0.85rem;
 }
 
 .blog-content code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.08);
   padding: 0.15rem 0.35rem;
@@ -615,7 +646,7 @@
 }
 
 .tiptap h2 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: #FFFFFF;
@@ -623,7 +654,7 @@
 }
 
 .tiptap h3 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: #FFFFFF;
@@ -674,13 +705,13 @@
   border-radius: 6px;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.82rem;
   overflow-x: auto;
 }
 
 .tiptap code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.08);
   padding: 0.15rem 0.35rem;

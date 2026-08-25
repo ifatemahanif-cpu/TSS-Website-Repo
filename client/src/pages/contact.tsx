@@ -18,7 +18,7 @@ function SectionDivider() {
       <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
       <span
         style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.5rem",
           color: "rgba(255, 255, 255, 0.25)",
           letterSpacing: "0.3em",
@@ -32,7 +32,7 @@ function SectionDivider() {
 }
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.9rem",
   color: "#FFFFFF",
   backgroundColor: "rgba(255, 255, 255, 0.04)",
@@ -45,7 +45,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.6rem",
   color: "rgba(255, 255, 255, 0.65)",
   letterSpacing: "0.2em",
@@ -210,7 +210,7 @@ export default function Contact() {
                 href="/"
                 className="inline-flex items-center gap-2 mb-12 group"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.65rem",
                   color: "rgba(255, 255, 255, 0.6)",
                   letterSpacing: "0.15em",
@@ -247,7 +247,7 @@ export default function Contact() {
                 >
                   <span
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.5rem",
                       color: "rgba(255, 255, 255, 0.5)",
                       fontWeight: 600,
@@ -265,7 +265,7 @@ export default function Contact() {
                 >
                   <span
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
                       fontWeight: 400,
                     }}
@@ -274,7 +274,7 @@ export default function Contact() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
@@ -289,7 +289,7 @@ export default function Contact() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.7)",
                   lineHeight: 2,
@@ -313,7 +313,7 @@ export default function Contact() {
                 >
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "1.1rem",
                       color: "#FFFFFF",
                       marginBottom: "0.5rem",
@@ -323,7 +323,7 @@ export default function Contact() {
                   </p>
                   <p
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.85rem",
                       color: "rgba(255, 255, 255, 0.7)",
                     }}
@@ -385,13 +385,13 @@ export default function Contact() {
                     </div>
 
                     {error && (
-                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "#f87171", marginBottom: "0.75rem" }}>{error}</p>
+                      <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem", color: "#f87171", marginBottom: "0.75rem" }}>{error}</p>
                     )}
                     <button
                       type="submit"
                       disabled={joinSubmitting}
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontFamily: "'Switzer', sans-serif",
                         fontSize: "0.7rem",
                         letterSpacing: "0.15em",
                         color: "#FFFFFF",
@@ -439,7 +439,7 @@ export default function Contact() {
                 >
                   <span
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.5rem",
                       color: "rgba(255, 255, 255, 0.5)",
                       fontWeight: 600,
@@ -457,7 +457,7 @@ export default function Contact() {
                 >
                   <span
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
                       fontWeight: 400,
                     }}
@@ -466,7 +466,7 @@ export default function Contact() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "clamp(1.3rem, 2.5vw, 1.8rem)",
                       fontWeight: 300,
                       fontStyle: "italic",
@@ -481,7 +481,7 @@ export default function Contact() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.7)",
                   lineHeight: 2,
@@ -505,7 +505,7 @@ export default function Contact() {
                 >
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "1.1rem",
                       color: "#FFFFFF",
                       marginBottom: "0.5rem",
@@ -515,7 +515,7 @@ export default function Contact() {
                   </p>
                   <p
                     style={{
-                      fontFamily: "'Inter', sans-serif",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.85rem",
                       color: "rgba(255, 255, 255, 0.7)",
                     }}
@@ -569,13 +569,13 @@ export default function Contact() {
                     </div>
 
                     {error && (
-                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "#f87171", marginBottom: "0.75rem" }}>{error}</p>
+                      <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem", color: "#f87171", marginBottom: "0.75rem" }}>{error}</p>
                     )}
                     <button
                       type="submit"
                       disabled={talkSubmitting}
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontFamily: "'Switzer', sans-serif",
                         fontSize: "0.7rem",
                         letterSpacing: "0.15em",
                         color: "#FFFFFF",

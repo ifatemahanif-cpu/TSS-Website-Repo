@@ -67,7 +67,7 @@ export function CTA() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
               lineHeight: 1.8,
               opacity: 0.85,
@@ -87,7 +87,7 @@ export function CTA() {
               href={ctaSettings?.buttonLink ?? "/contact#talk"}
               className="inline-block transition-all duration-200"
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.9rem",
                 fontWeight: 500,
                 color: "#FFFFFF",
