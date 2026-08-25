@@ -54,7 +54,7 @@ Preferred communication style: Simple, everyday language.
 - **email_subscribers** — email (unique), status (active/unsubscribed enum), unsubscribeToken, source, createdAt
 
 ### API Endpoints
-- Public read: `GET /api/cms/settings`, `/api/cms/services`, `/api/cms/portfolios`
+- Public read: `GET /api/cms/settings`, `/api/cms/services`, `/api/portfolios/summaries`, `/api/cms/portfolios/:slug`
 - Public blog: `GET /api/blog/posts` (pagination + category filter), `GET /api/blog/posts/:slug`, `GET /api/blog/posts/:slug/related`, `GET /api/blog/categories`, `GET /api/blog/authors`, `GET /api/blog/featured`
 - Public subscribe: `POST /api/subscribers`, `GET /api/subscribers/unsubscribe?token=...`
 - Public submit: `POST /api/forms/submit` (Zod-validated: formType enum + data record)

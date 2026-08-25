@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { imageSrc, fallbackToOriginal } from "@/lib/image-src";
 import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
@@ -122,7 +123,13 @@ function MemberCard({ member, idx }: { member: PortfolioSummary; idx: number }) 
       <div style={{ width: "100%", aspectRatio: "4/3", overflow: "hidden", flexShrink: 0 }}>
         {portrait ? (
           <img
-            src={portrait}
+            /* "lg" and not "full": this card crops to 4:3 and then zooms into
+               Aakanksha's by 1.45, so what it is short of is WIDTH, and a
+               longest-edge cap caps the height of a tall photograph. See
+               lib/image-src.ts. fallbackToOriginal covers a portrait uploaded
+               since the last build, which has no static copy yet. */
+            src={imageSrc(portrait, "lg")}
+            onError={fallbackToOriginal(portrait)}
             alt={member.name}
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: photoPosition, transform: `scale(${photoZoom})`, transformOrigin: "center 25%" }}
             data-testid={`img-member-${member.slug}`}

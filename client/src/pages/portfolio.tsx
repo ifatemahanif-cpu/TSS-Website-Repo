@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { imageSrc, fallbackToOriginal } from "@/lib/image-src";
 import { motion, AnimatePresence } from "framer-motion";
 import DOMPurify from "dompurify";
 import { Navbar } from "@/components/layout/Navbar";
@@ -157,7 +158,7 @@ export default function PortfolioPage() {
           {hero.portrait && (
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}
               style={{ aspectRatio: "4/5", overflow: "hidden", borderRadius: "16px", border: `1px solid ${BORDER}`, backgroundColor: CARD }}>
-              <img src={hero.portrait} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-hero-portrait" />
+              <img src={imageSrc(hero.portrait, "lg")} onError={fallbackToOriginal(hero.portrait)} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-hero-portrait" />
             </motion.div>
           )}
         </div>
@@ -176,7 +177,7 @@ export default function PortfolioPage() {
               style={{ display: "flex", gap: "3rem", paddingRight: "3rem", flexShrink: 0 }}>
               {[...brands.items, ...brands.items].map((b, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.6rem", whiteSpace: "nowrap", color: MUTED, fontSize: "1rem" }} data-testid={`text-brand-${i}`}>
-                  {b.logo && <img src={b.logo} alt="" style={{ width: 18, height: 18, objectFit: "contain", opacity: 0.8 }} />}
+                  {b.logo && <img src={imageSrc(b.logo, "sm")} onError={fallbackToOriginal(b.logo)} alt="" style={{ width: 18, height: 18, objectFit: "contain", opacity: 0.8 }} />}
                   <span>{b.name}</span>
                 </div>
               ))}
@@ -214,7 +215,7 @@ export default function PortfolioPage() {
                   >
                     {c.image && (
                       <div style={{ width: "100%", aspectRatio: "16/6", overflow: "hidden", borderBottom: `1px solid ${BORDER}` }}>
-                        <img src={c.image} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid={`img-case-${i}`} />
+                        <img src={imageSrc(c.image, "full")} onError={fallbackToOriginal(c.image)} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid={`img-case-${i}`} />
                       </div>
                     )}
                     <div style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -250,7 +251,7 @@ export default function PortfolioPage() {
                       </p>
                       <footer style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
                         {t.avatar ? (
-                          <img src={t.avatar} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
+                          <img src={imageSrc(t.avatar, "sm")} onError={fallbackToOriginal(t.avatar)} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
                         ) : (
                           <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", color: "#fff" }}>
                             {(t.name || "").split(" ").map((n) => n[0]).slice(0, 2).join("")}
@@ -340,11 +341,11 @@ export default function PortfolioPage() {
             {about.photo && (
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div style={{ aspectRatio: "4/5", overflow: "hidden", borderRadius: "12px", border: `1px solid ${BORDER}` }}>
-                  <img src={about.photo} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-photo" />
+                  <img src={imageSrc(about.photo, "lg")} onError={fallbackToOriginal(about.photo)} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-photo" />
                 </div>
                 {about.secondaryPhoto && (
                   <div style={{ aspectRatio: "4/3", overflow: "hidden", borderRadius: "12px", border: `1px solid ${BORDER}` }}>
-                    <img src={about.secondaryPhoto} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-secondary" />
+                    <img src={imageSrc(about.secondaryPhoto, "lg")} onError={fallbackToOriginal(about.secondaryPhoto)} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-secondary" />
                   </div>
                 )}
               </div>
@@ -498,7 +499,7 @@ export default function PortfolioPage() {
                     )}
                     {c.image && (
                       <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", borderRadius: "8px", marginBottom: "1.5rem", border: `1px solid ${BORDER}` }}>
-                        <img src={c.image} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        <img src={imageSrc(c.image, "full")} onError={fallbackToOriginal(c.image)} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     )}
                     {c.whatIBuilt && (

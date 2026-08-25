@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { existsSync } from "fs";
-import { optimizeImages } from "./optimize-images";
+import { optimizeImages, optimizeStaticAssets } from "./optimize-images";
 
 /**
  * Prerenders the public routes of the built SPA to static HTML so that
@@ -234,6 +234,16 @@ export async function prerender() {
       // A failure here costs speed, not correctness — the client falls back to
       // /api/images/<id> for anything without a static copy.
       console.warn("[images] optimisation pass failed, serving originals:", err);
+    }
+
+    // And the other kind: the plain files copied out of attached_assets/, whose
+    // URLs are seeded into the portfolios table as "/assets/<name>". Same
+    // filename, same format, resized in place — see optimize-images.ts. Its own
+    // try/catch because a failure here is likewise only a slower page.
+    try {
+      await optimizeStaticAssets(page, DIST);
+    } catch (err) {
+      console.warn("[assets] resize pass failed, serving originals:", err);
     }
 
     for (const { route, title, description, image } of allRoutes) {
