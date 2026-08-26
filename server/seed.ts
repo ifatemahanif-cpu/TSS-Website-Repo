@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { storage } from "./storage";
-import { services, blogCategories, blogPosts, authors } from "@shared/schema";
+import { blogCategories, blogPosts, authors } from "@shared/schema";
 import bcrypt from "bcryptjs";
 import { HERO_VERSION, HERO_CONTENT } from "@shared/hero";
 
@@ -63,55 +63,18 @@ export async function seedDatabase() {
   if (!isFullySeeded) {
   await storage.upsertSetting("hero", HERO_CONTENT);
 
-  await storage.upsertSetting("services", {
-    label: "Services",
-    heading: "How we work with you.",
-  });
+  /* THE SERVICES SEED WAS REMOVED ON 26 AUG.
 
-  await db.insert(services).values([
-    {
-      serviceId: "clarity",
-      title: "Clarity & Direction",
-      subtitle: "When your team can't agree on what the brand stands for.",
-      items: ["Brand audits", "Positioning", "Messaging architecture", "Go-to-market frameworks"],
-      sortOrder: 0,
-    },
-    {
-      serviceId: "website",
-      title: "Website, Messaging & Discoverability",
-      subtitle: "When the product has evolved but the website hasn't — and good work isn't showing up where it should.",
-      items: ["Core messaging", "Conversion copy", "Landing pages", "SEO"],
-      sortOrder: 1,
-    },
-    {
-      serviceId: "content",
-      title: "Content Systems",
-      subtitle: "When content exists but nothing compounds.",
-      items: ["Content strategy", "Editorial calendars", "Storytelling frameworks", "Repurposing systems"],
-      sortOrder: 2,
-    },
-    {
-      serviceId: "campaigns",
-      title: "Brand & Campaign Strategy",
-      subtitle: "When launches spike and fade instead of building on each other.",
-      items: ["Campaign architecture", "Integrated planning", "Launch messaging", "Always-on systems"],
-      sortOrder: 3,
-    },
-    {
-      serviceId: "leadership",
-      title: "Senior Marketing Leadership",
-      subtitle: "When you need experienced judgment without a full-time hire.",
-      items: ["Strategic planning", "Quarterly reviews", "Decision support", "Team playbooks"],
-      sortOrder: 4,
-    },
-    {
-      serviceId: "ai",
-      title: "AI-Assisted Systems",
-      subtitle: "When AI is making you faster at producing the wrong things.",
-      items: ["Content workflows", "Insight automation", "Monitoring systems", "Operational efficiency"],
-      sortOrder: 5,
-    },
-  ]);
+     It wrote settings.services plus six rows — "Clarity & Direction",
+     "Website, Messaging & Discoverability", "AI-Assisted Systems" — an offer
+     that had not been on the site for months, and by then differed from the
+     live rows in every title, subtitle and item. Nothing reads any of it now:
+     the homepage section is three constants in Services.tsx.
+
+     It only ever ran on a fresh database, which is precisely what made it
+     dangerous — the one moment nobody is watching is a first deploy, and it
+     would have published a retired offer. The rows already in the database
+     are untouched. */
   } // end !isFullySeeded
 
   if (!existingKeys.has("ourStory")) {

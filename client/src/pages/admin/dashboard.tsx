@@ -5,12 +5,11 @@ import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/sc
 import { uploadImage as uploadImageFile } from "@/lib/image-upload";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios" | "security";
+type Tab = "submissions" | "settings" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios" | "security";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
   settings: "Site Settings",
-  services: "Services",
   ourstory: "Our Story",
   joinpage: "Join Page",
   contactpage: "Contact Page",
@@ -520,14 +519,9 @@ function SettingsEditor() {
         { name: "ctaLink", label: "Primary button link", type: "text" },
       ],
     },
-    {
-      key: "services",
-      title: "Services Section",
-      fields: [
-        { name: "label", label: "Section Label", type: "text" },
-        { name: "heading", label: "Heading", type: "text" },
-      ],
-    },
+    /* The "Services Section" block (settings.services: label + heading) was
+       removed on 26 Aug. Both strings are constants in Services.tsx now, so
+       editing them here changed nothing on the page. */
   ];
 
   return (
@@ -590,110 +584,10 @@ function SettingsEditor() {
   );
 }
 
-function ServicesEditor() {
-  const queryClient = useQueryClient();
-  const { data: servicesList = [], isLoading } = useQuery<any[]>({
-    queryKey: ["/api/cms/services"],
-  });
-  const [editData, setEditData] = useState<Record<number, any>>({});
-  const [saving, setSaving] = useState<number | null>(null);
-  const [saved, setSaved] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (servicesList.length) {
-      const map: Record<number, any> = {};
-      servicesList.forEach((s) => (map[s.id] = { ...s }));
-      setEditData(map);
-    }
-  }, [servicesList]);
-
-  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
-
-  const saveService = async (id: number) => {
-    setSaving(id);
-    await fetch(`/api/cms/services/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editData[id]),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/services"] });
-    setSaving(null);
-    setSaved(id);
-    setTimeout(() => setSaved(null), 2000);
-  };
-
-  const deleteService = async (id: number) => {
-    if (!confirm("Delete this service?")) return;
-    await fetch(`/api/cms/services/${id}`, { method: "DELETE" });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/services"] });
-  };
-
-  const addService = async () => {
-    await fetch("/api/cms/services", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        serviceId: `service-${Date.now()}`,
-        title: "New Service",
-        subtitle: "Service description",
-        items: ["Item 1"],
-        sortOrder: servicesList.length,
-      }),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/services"] });
-  };
-
-  const updateField = (id: number, field: string, value: any) => {
-    setEditData((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], [field]: value },
-    }));
-  };
-
-  return (
-    <div>
-      {servicesList.map((s: any) => (
-        <div key={s.id} style={cardStyle}>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Title</label>
-            <input
-              type="text"
-              value={editData[s.id]?.title || ""}
-              onChange={(e) => updateField(s.id, "title", e.target.value)}
-              style={inputStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Subtitle</label>
-            <textarea
-              value={editData[s.id]?.subtitle || ""}
-              onChange={(e) => updateField(s.id, "subtitle", e.target.value)}
-              style={textareaStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Items (one per line)</label>
-            <textarea
-              value={(editData[s.id]?.items || []).join("\n")}
-              onChange={(e) =>
-                updateField(s.id, "items", e.target.value.split("\n").filter(Boolean))
-              }
-              style={textareaStyle}
-            />
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <SaveButton onClick={() => saveService(s.id)} saving={saving === s.id} />
-            <SuccessMessage show={saved === s.id} />
-            <button onClick={() => deleteService(s.id)} style={btnDanger}>DELETE</button>
-          </div>
-        </div>
-      ))}
-      <button onClick={addService} style={btnPrimary} data-testid="button-add-service">
-        + ADD SERVICE
-      </button>
-    </div>
-  );
-}
+/* ServicesEditor was removed on 26 Aug. The homepage section it fed reads
+   constants in Services.tsx now, so an editor here would have written to a
+   table nothing renders — worse than no editor, because it looks like it
+   works. The rows, the table and the storage methods all survive. */
 
 function OurStoryEditor() {
   const queryClient = useQueryClient();
@@ -2430,7 +2324,7 @@ export default function AdminDashboard() {
   /* Kept in step with `tabLabels` by hand — this list drives the sidebar, and
      `Tab[]` accepts a subset, so leaving one out compiles cleanly and simply
      makes that panel unreachable. Add to both. */
-  const tabs: Tab[] = ["submissions", "settings", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios", "security"];
+  const tabs: Tab[] = ["submissions", "settings", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios", "security"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2557,7 +2451,6 @@ export default function AdminDashboard() {
 
           {activeTab === "submissions" && <SubmissionsViewer />}
           {activeTab === "settings" && <SettingsEditor />}
-          {activeTab === "services" && <ServicesEditor />}
           {activeTab === "ourstory" && <OurStoryEditor />}
           {activeTab === "joinpage" && <JoinPageEditor />}
           {activeTab === "contactpage" && <ContactPageEditor />}
