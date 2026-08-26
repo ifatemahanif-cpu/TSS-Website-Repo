@@ -438,14 +438,33 @@ function Shaping({ progress }: { progress: MotionValue<number> }) {
       </div>
 
       {/* The scroll cue. The opening frame is a sentence sitting still and
-          nothing on it says it is about to be edited. A hairline travelling down
-          its own track says "this moves" without adding a word of subtext. */}
+          nothing on it says it is about to be edited. A chevron that breathes
+          says "this moves, and downward" without adding a word of subtext — the
+          hairline it replaced could say the first half of that but never the
+          second, which is what made it read as an artefact. The breath itself
+          is in index.css; the fade-out is driven by progress above. */}
       <div
         ref={cueRef}
         aria-hidden="true"
-        className="hero-cue absolute bottom-[clamp(1.6rem,4vh,2.8rem)] left-1/2 h-[clamp(2.2rem,5vh,3.4rem)] w-px -translate-x-1/2 overflow-hidden"
-        style={{ backgroundColor: "rgba(255,255,255,0.18)" }}
-      />
+        /* 2.2rem floor, not the 1.6rem the hairline used. On a 375x660 phone
+           the stage runs past the fold, and at 1.6rem the chevron's bottom
+           landed at 664 against a 660 viewport — clipping the POINT, which is
+           the only part of an arrow that says which way to go. The old hairline
+           survived the same 4px because it was 35px tall and had nothing at its
+           tip worth reading. Larger viewports are unaffected: 4vh overtakes the
+           floor by 390x844 and the 2.8rem ceiling is unchanged. */
+        className="hero-cue absolute bottom-[clamp(2.2rem,4vh,2.8rem)] left-1/2 -translate-x-1/2"
+      >
+        <svg width="22" height="13" viewBox="0 0 22 13" fill="none">
+          <path
+            d="M1.5 1.5 L11 11 L20.5 1.5"
+            stroke="#FFFFFF"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
     </ActWrap>
   );
 }
