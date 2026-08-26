@@ -265,6 +265,29 @@ export async function optimizeImages(page: Page, origin: string, dist: string): 
    the whole thing from scratch.
    --------------------------------------------------------------------------- */
 
+/* ---------------------------------------------------------------------------
+   A FILE ALREADY <= WIDE_WIDTH IS LEFT EXACTLY AS IT ARRIVED, AND ONE FILE
+   DEPENDS ON THAT.
+
+   attached_assets/54b8c761-…jpg — Fatema's portrait — is deliberately checked in
+   at exactly 1600px wide, pre-resized and pre-sharpened, so this pass skips it
+   and its pixels reach the browser untouched.
+
+   That is not fussiness. The canvas downscale below is a single drawImage from
+   3024px to 1600px, and measured against a Lanczos resample of the same source
+   it loses about 21% of the image's fine detail — enough that the portrait read
+   as visibly hazy next to the other two Shapers. Both obvious repairs were
+   tried and are WORSE, not better: imageSmoothingQuality "high" and stepped
+   halving each land at 68% of the source's detail against this path's 79%.
+   Chrome's high-quality filter is a smoother low-pass; it is more correct and
+   it looks softer. Do not "fix" the resize — it has already been measured.
+
+   So the repair lives in the file: resized with Lanczos and sharpened offline,
+   then encoded at q82 to land on 297KB, which is the 285KB it replaced. If that
+   file is ever re-exported ABOVE 1600px wide, this pass will grab it and quietly
+   undo all of that. The 3024x4032 master is in git history.
+   --------------------------------------------------------------------------- */
+
 /** Re-encodable raster formats, mapped to the mime the canvas must emit back. */
 const STATIC_TYPES: Record<string, string> = {
   ".jpg": "image/jpeg",
