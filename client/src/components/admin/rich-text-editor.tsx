@@ -67,7 +67,7 @@ const VideoEmbed = Node.create({
 });
 
 const menuBtnStyle: React.CSSProperties = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.6rem",
   letterSpacing: "0.05em",
   padding: "0.35rem 0.5rem",
@@ -207,7 +207,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           "min-height: 300px",
           "padding: 1rem",
           "outline: none",
-          "font-family: 'Inter', sans-serif",
+          "font-family: 'Switzer', sans-serif",
           "font-size: 0.9rem",
           "line-height: 1.7",
           "color: rgba(255,255,255,0.85)",
@@ -330,7 +330,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
             backgroundColor: "rgba(220,120,60,0.12)",
             borderTop: "1px solid rgba(220,120,60,0.3)",
             borderBottom: "1px solid rgba(220,120,60,0.3)",
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.75rem",
             lineHeight: 1.5,
             color: "rgba(255,225,205,0.92)",
@@ -367,7 +367,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
             justifyContent: "center",
             pointerEvents: "none",
             color: "rgba(255,255,255,0.7)",
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.7rem",
             letterSpacing: "0.1em",
             textTransform: "uppercase",

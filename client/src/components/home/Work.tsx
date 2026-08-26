@@ -1,253 +1,613 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import { Act, ActLabel } from "./Act";
+import { EyeDoodle } from "./Doodles";
+import { CaseReader } from "./CaseReader";
+import { useNarrow } from "@/hooks/use-act-progress";
+import { ORDERED_CASES, BRANDS, type Case } from "@/data/cases";
 
-const brandNames = ["SOCIAL", "Art Fervour", "LBB", "Headout"];
+const NAVY = "#0C0A3E";
+const MONO = "ui-monospace, monospace";
+const SERIF = "'Zodiak', Georgia, serif";
 
-function highlightBrands(text: string): ReactNode {
-  const regex = new RegExp(`(${brandNames.join("|")})`, "g");
-  const parts = text.split(regex);
-  return parts.map((part, i) =>
-    brandNames.includes(part) ? (
-      <span
-        key={i}
-        style={{
-          fontStyle: "normal",
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 600,
-          letterSpacing: "0.02em",
-          opacity: 1,
-          color: "#FFFFFF",
-        }}
-      >
-        {part}
-      </span>
-    ) : (
-      <span key={i}>{part}</span>
-    )
-  );
+/** the engine's `data-sc-pan="0.04"`: 4% more travel than the rail's overhang,
+ *  so the last card clears the right edge rather than resting against it */
+const PAN_EXTRA = 1.04;
+
+/**
+ * The case behind a `#case-lbb` hash, or null for anything else.
+ *
+ * Checked against the real list rather than pattern-matched, so a hash naming a
+ * case that no longer exists opens nothing instead of opening a dialog with no
+ * contents — and so the footer's `#act-peak` and the rest are simply not ours.
+ */
+function caseIdFromHash(hash: string): string | null {
+  const id = hash.startsWith("#case-") ? hash.slice(6) : null;
+  return id && ORDERED_CASES.some((c) => c.id === id) ? id : null;
 }
 
-const blocks = [
-  {
-    label: "We start with clarity, not campaigns",
-    principle: "Most marketing problems aren't execution problems. They're story problems. The brand doesn't know what it stands for — so everything downstream is guesswork. We fix that first.",
-    caseStudy: "At SOCIAL (Impressario Entertainment & Hospitality) — the brand had scaled to 55+ outlets but couldn't explain what held it together. We mapped 10 years of evolution to find what stayed true versus what drifted. That became the spine for every decision that followed.",
-  },
-  {
-    label: "The people you meet do the work",
-    principle: "No handoffs. No juniors learning on your brief. Each of us works with two or three brands at a time. You get senior thinking applied directly to your business. That's it.",
-    caseStudy: "At Art Fervour, we didn't advise from the sidelines. We embedded 20–25 hours a week for 90 days. Restructured the team. Rebuilt social strategy. The founder's decision load dropped from 70% to 25%. The story got structure, so it could unfold without constant authorship.",
-  },
-  {
-    label: "We leave scaffolding, not dependency",
-    principle: "Strategy that lives in a deck is decoration. We build systems — the workflows, the playbooks, the editorial rhythms — that your team keeps running long after we step back.",
-    caseStudy: "At LBB, we built content infrastructure for lean editorial teams across multiple cities. Repeatable formats. Clear calendars. An editorial backbone that didn't collapse after two busy weeks.",
-  },
-  {
-    label: "We turn noise into signal",
-    principle: "More content isn't the answer. The right content is. We cut what's not working, sharpen what is, and design systems that make less do more.",
-    caseStudy: "At Headout, we scaled the creator program from under 50 to 1,000+ collaborations per quarter. In three months. Not by adding more people — by designing a smarter narrative system.",
-  },
-];
-
-function WorkBlock({ block, index, isInView }: { block: typeof blocks[0]; index: number; isInView: boolean }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: 0.15 + index * 0.12, ease: [0.16, 1, 0.3, 1] }}
-      style={{
-        paddingTop: "clamp(2.5rem, 4vw, 3.5rem)",
-        paddingBottom: "clamp(2.5rem, 4vw, 3.5rem)",
-        borderBottom: index < blocks.length - 1 ? "1px solid rgba(255, 255, 255, 0.08)" : "none",
-        position: "relative",
-      }}
-      data-testid={`card-work-${index}`}
-    >
-      <span
-        style={{
-          position: "absolute",
-          top: "clamp(1.5rem, 3vw, 2.5rem)",
-          right: 0,
-          fontFamily: "'Libre Baskerville', serif",
-          fontSize: "clamp(5rem, 10vw, 9rem)",
-          fontWeight: 400,
-          opacity: 0.03,
-          lineHeight: 1,
-          letterSpacing: "-0.05em",
-          pointerEvents: "none",
-          userSelect: "none",
-        }}
-      >
-        0{index + 1}
-      </span>
-
-      <div className="flex items-baseline gap-3 mb-5">
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.6rem",
-            letterSpacing: "0.15em",
-            color: "rgba(255, 255, 255, 0.35)",
-            flexShrink: 0,
-          }}
-        >
-          0{index + 1}
-        </span>
-        <h3
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(0.72rem, 0.95vw, 0.82rem)",
-            fontWeight: 600,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "rgba(255, 255, 255, 0.7)",
-            lineHeight: 1.4,
-          }}
-        >
-          {block.label}
-        </h3>
-      </div>
-
-      <p
-        className="max-w-[750px]"
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: "clamp(0.95rem, 1.2vw, 1.08rem)",
-          lineHeight: 1.8,
-          color: "rgba(255, 255, 255, 0.85)",
-          marginBottom: "1.5rem",
-        }}
-      >
-        {block.principle}
-      </p>
-
-      <motion.div
-        whileHover={{
-          y: -3,
-          backgroundColor: "rgba(255, 255, 255, 0.05)",
-          borderColor: "rgba(255, 255, 255, 0.15)",
-          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
-        }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.025)",
-          border: "1px solid rgba(255, 255, 255, 0.07)",
-          borderRadius: "12px",
-          padding: "clamp(1.25rem, 2vw, 1.75rem)",
-          cursor: "default",
-        }}
-      >
-        <span
-          className="block mb-2"
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.5rem",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "rgba(255, 255, 255, 0.4)",
-          }}
-        >
-          Case Study
-        </span>
-        <p
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(0.85rem, 1.1vw, 0.95rem)",
-            lineHeight: 1.8,
-            fontStyle: "italic",
-            color: "rgba(255, 255, 255, 0.6)",
-          }}
-          data-testid={`text-case-study-${index}`}
-        >
-          {highlightBrands(block.caseStudy)}
-        </p>
-      </motion.div>
-    </motion.div>
-  );
-}
-
+/**
+ * ACT 5 — THE WORK. Five cases, panned sideways.
+ *
+ * A card is a BUTTON: the whole thing opens the case, so the hit area is the
+ * card and not a link buried at the bottom of it. Three things on it, and no
+ * synopsis — a picture, one number, and the tension. A card that asks you to
+ * read a summary before you decide to read the case is asking twice.
+ *
+ * The standfirst that used to sit under the heading is gone, Fatema's call on
+ * 25 Aug. It explained what the cards were about to do, and the cards do it.
+ *
+ * ON A PHONE THE RAIL STOPS BEING A RAIL.
+ *
+ * The card pitch is 328px against a 375px screen and the pan is linear with no
+ * snapping, so where a card comes to rest is purely a function of where a thumb
+ * stops — measured mid-word truncation at every sampled position ("no consistent
+ * answe", "brand togethe", "Unde"). These numbers are the credibility payload of
+ * the page and they cannot need a lucky thumb. Below 40rem it becomes an
+ * ordinary vertical stack, and so does reduced motion, where a 2865px row inside
+ * a 1440px stage left cards three to five reachable only through a horizontal
+ * scrollbar nobody had been told about.
+ */
 export function Work() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const narrow = useNarrow(40);
+  const reduced = useReducedMotion();
+  const stacked = narrow || !!reduced;
+
+  const [openId, setOpenId] = useState<string | null>(null);
+  const lastFocus = useRef<HTMLButtonElement | null>(null);
+
+  /* Did WE push the history entry the reader is standing on? Somebody who
+     arrived on a shared /#case-lbb link is standing on the entry that brought
+     them to the site, and calling back() on that takes them off it. */
+  const pushed = useRef(false);
+
+  /* True only for a case that was open before the reader ever touched the rail
+     — see landOn in CaseReader. Cleared the moment they open one themselves. */
+  const [cold, setCold] = useState(false);
+
+  const open = useCallback((id: string, from: HTMLButtonElement) => {
+    lastFocus.current = from;
+    setCold(false);
+    setOpenId(id);
+    if (window.location.hash !== `#case-${id}`) {
+      window.history.pushState(null, "", `#case-${id}`);
+      pushed.current = true;
+    }
+  }, []);
+
+  const close = useCallback((opts?: { to?: string }) => {
+    setOpenId(null);
+
+    /* LEAVING FOR SOMEWHERE ELSE IS NOT THE SAME AS GOING BACK.
+       back() restores the scroll position of the entry it returns to, which
+       silently undid the scroll the reader had just made towards the close act
+       — measured landing at 6480, the rail, instead of 9720. So a close with a
+       destination replaces the case's entry rather than stepping off it, and
+       does not hand focus back to a card the reader is no longer looking at. */
+    if (opts?.to) {
+      pushed.current = false;
+      if (window.location.hash.startsWith("#case-")) {
+        window.history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+      return;
+    }
+
+    /* preventScroll matters: focusing the card scroll-anchors it into view and
+       overrides the reader's own scroll restore. Measured 1035px of drift on
+       desktop and a full viewport on a phone, which lands the reader in a
+       different act from the one they opened the case from. */
+    lastFocus.current?.focus({ preventScroll: true });
+
+    if (pushed.current) {
+      /* back(), not a second pushState. The close button and the Back gesture
+         then mean the same thing and run the same code, instead of being two
+         paths that have to be kept in step — and the reader does not accumulate
+         one entry per case opened, which would turn Back into a walk back
+         through everything they had looked at. */
+      pushed.current = false;
+      window.history.back();
+    } else if (window.location.hash.startsWith("#case-")) {
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
+    }
+  }, []);
+
+  /* THE HASH IS THE TRUTH, and this reads it.
+     Fires on Back and Forward and nothing else — clicking an in-page anchor
+     raises hashchange rather than popstate, so the footer's #act-* links do not
+     come through here. */
+  useEffect(() => {
+    const onPop = () => {
+      const id = caseIdFromHash(window.location.hash);
+      setOpenId(id);
+      pushed.current = !!id;
+      if (!id) lastFocus.current?.focus({ preventScroll: true });
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  /* A shared link, opened cold. The rail goes on screen BEFORE the reader does,
+     because CaseReader captures scrollY on mount and restores it on unmount —
+     so this is what closing the case will land on. Without it the reader closes
+     onto the top of a page they have never seen. */
+  useEffect(() => {
+    const id = caseIdFromHash(window.location.hash);
+    if (!id) return;
+    document.getElementById("act-proof")?.scrollIntoView({ block: "start" });
+    setCold(true);
+    setOpenId(id);
+  }, []);
+
+  const openCase = ORDERED_CASES.find((c) => c.id === openId) ?? null;
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#0C0A3E" }}
-      data-testid="work-section"
-    >
-      <div
-        style={{
-          backgroundColor: "#0E0C45",
-          color: "#FFFFFF",
-          borderRadius: "20px",
-          padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
-        }}
+    <>
+      <Act
+        id="act-proof"
+        kind={stacked ? "flow" : "pin"}
+        span={2.6}
+        ground="dark"
+        bg={NAVY}
+        stagePad={stacked ? "px-6 py-16 sm:px-10" : "py-20"}
+        stageClassName="relative overflow-hidden"
       >
-        <div className="max-w-[1100px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span
-              className="block mb-6"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                opacity: 0.5,
-              }}
-            >
-              How We're Different
-            </span>
+        {(progress) => (
+          <Rail progress={progress} stacked={stacked} onOpen={open} openId={openId} />
+        )}
+      </Act>
 
+      {openCase && (
+        /* keyed so each case gets a fresh mount, and with it a fresh capture of
+           where the page was when it opened */
+        <CaseReader
+          key={openCase.id}
+          caseStudy={openCase}
+          onClose={close}
+          landOn={cold ? "act-proof" : undefined}
+        />
+      )}
+    </>
+  );
+}
+
+function Rail({
+  progress,
+  stacked,
+  onOpen,
+  openId,
+}: {
+  progress: MotionValue<number>;
+  stacked: boolean;
+  onOpen: (id: string, from: HTMLButtonElement) => void;
+  openId: string | null;
+}) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [over, setOver] = useState(0);
+
+  /* Measured rather than assumed, and re-measured on resize: the rail's width
+     is five cards of clamp() plus the header, so it is a different number at
+     every viewport and there is no way to compute it up front. */
+  useLayoutEffect(() => {
+    if (stacked) {
+      setOver(0);
+      return;
+    }
+    const measure = () => {
+      const rail = railRef.current;
+      const frame = frameRef.current;
+      if (!rail || !frame) return;
+      setOver(Math.max(0, rail.scrollWidth - frame.clientWidth));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (railRef.current) ro.observe(railRef.current);
+    if (frameRef.current) ro.observe(frameRef.current);
+    return () => ro.disconnect();
+  }, [stacked]);
+
+  const x = useTransform(progress, [0, 1], [0, -(over * PAN_EXTRA)]);
+
+  /* KEYBOARD FOCUS ON A PANNED RAIL.
+     Tab moves focus to a card that is two screens of lateral pan away, and the
+     browser cannot scroll sideways to reach it because the rail is a transform.
+     So the page scrolls VERTICALLY by the amount that pans it into the frame.
+     Skipped while a case is open, and after it closes: close() hands focus back
+     to the card it came from, which fires this, and panning then would undo the
+     scroll restore that just ran. */
+  const onFocusCapture = useCallback(
+    (e: React.FocusEvent<HTMLDivElement>) => {
+      if (stacked || openId !== null || over <= 0) return;
+      const card = (e.target as HTMLElement).closest("[data-case]");
+      if (!card) return;
+      const act = document.getElementById("act-proof");
+      if (!act) return;
+      const runway = act.offsetHeight - window.innerHeight;
+      if (runway <= 0) return;
+      const r = card.getBoundingClientRect();
+      const pad = 32;
+      let need = 0;
+      if (r.left < pad) need = r.left - pad;
+      else if (r.right > window.innerWidth - pad) need = r.right - window.innerWidth + pad;
+      if (!need) return;
+      window.scrollTo(0, window.scrollY + (need / over) * runway);
+    },
+    [stacked, openId, over],
+  );
+
+  return (
+    <>
+      <div ref={frameRef} className="w-full">
+        <motion.div
+          ref={railRef}
+          onFocusCapture={onFocusCapture}
+          className={
+            /* Stacked, it WRAPS rather than running one card per row. Both
+               reasons for stacking arrive at the same markup, but not at the
+               same screen: a phone genuinely wants one column, and a 1440px
+               desktop with motion off was getting five 1360px cards, 5.3
+               screens of scrolling for a section that is one screen with the
+               pan on. */
+            stacked
+              ? "grid w-full grid-cols-1 items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3"
+              : "flex w-max items-center gap-[clamp(1.5rem,3vw,3rem)] px-[clamp(1.5rem,5vw,5rem)]"
+          }
+          style={stacked ? undefined : { x }}
+        >
+          <div
+            className={
+              stacked
+                ? "w-full sm:col-span-2 xl:col-span-3"
+                : "w-[clamp(17rem,26vw,24rem)] shrink-0"
+            }
+          >
+            {/* "impossible to ignore" was a promise. This is where it cashes. */}
+            <EyeDoodle className="mb-6 w-[clamp(6rem,11vw,9rem)] text-white" />
+            <ActLabel>The work</ActLabel>
+            {/* Not "Five brands, and…": counting them dates the section the
+                moment a sixth lands, and the count was never the interesting
+                part. */}
             <h2
+              className="mt-[1.2rem] mb-0"
               style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.03em",
+                fontFamily: SERIF,
                 fontWeight: 400,
-                marginBottom: "1.5rem",
+                fontSize: "clamp(2rem, 3.6vw, 3rem)",
+                lineHeight: 1.06,
+                letterSpacing: "-0.025em",
+                color: "#FFFFFF",
+                textWrap: "balance",
               }}
               data-testid="text-work-heading"
             >
-              We are marketing's{" "}
-              <span className="italic" style={{ opacity: 0.6 }}>
-                missing middle.
-              </span>
+              The stories we've shaped.
             </h2>
-
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.75,
-                marginBottom: "3.5rem",
-                maxWidth: "800px",
-              }}
-              data-testid="text-work-intro"
-            >
-              We're not an agency. We're not consultants. We're marketing's missing middle — senior leaders who embed with your team, find the thread that holds your brand together, and build the systems that keep it running.
-            </p>
-          </motion.div>
-
-          <div
-            style={{
-              borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-            }}
-          >
-            {blocks.map((block, i) => (
-              <WorkBlock key={i} block={block} index={i} isInView={isInView} />
-            ))}
           </div>
-        </div>
+
+          {ORDERED_CASES.map((c) => (
+            <Card key={c.id} c={c} stacked={stacked} onOpen={onOpen} />
+          ))}
+
+          {/* trailing air, so the fifth card does not end flush against the
+              edge of the frame. The paragraph about where the numbers come from
+              used to live here; Fatema cut it, and she is right — a disclaimer
+              is the wrong last thing to read after five case studies. */}
+          {!stacked && <span aria-hidden="true" className="w-[clamp(1.5rem,5vw,5rem)] shrink-0" />}
+        </motion.div>
+
+        {/* STACKED, THIS HAS TO BE INSIDE THE FRAME. The act's stage is a flex
+            row, so a second child sitting beside the rail is a second COLUMN:
+            the two split the width and every card came out half a screen wide.
+            Panning, it is absolutely positioned and therefore out of flow, so
+            it can stay a sibling and pin itself to the bottom of the stage —
+            which is where it has to be, a footnote under the cards rather than
+            a strip under the rail. */}
+        {stacked && <Brands stacked />}
       </div>
-    </section>
+
+      {!stacked && <Brands stacked={false} />}
+    </>
   );
 }
+
+function Card({
+  c,
+  stacked,
+  onOpen,
+}: {
+  c: Case & { n: string };
+  stacked: boolean;
+  onOpen: (id: string, from: HTMLButtonElement) => void;
+}) {
+  return (
+    <button
+      type="button"
+      data-case={c.id}
+      aria-haspopup="dialog"
+      onClick={(e) => onOpen(c.id, e.currentTarget)}
+      className={
+        "group flex cursor-pointer flex-col overflow-hidden rounded-[3px] border p-0 text-left transition-[border-color,background-color,transform] duration-200 hover:-translate-y-[3px] focus-visible:-translate-y-[3px] focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#cf81cd] " +
+        (stacked
+          ? "w-full "
+          : "w-[clamp(19rem,28vw,26rem)] shrink-0 self-stretch max-h-[37rem] ")
+      }
+      style={{
+        borderColor: "rgba(255,255,255,0.13)",
+        backgroundColor: "rgba(255,255,255,0.028)",
+        color: "inherit",
+        font: "inherit",
+      }}
+      data-testid={`card-case-${c.id}`}
+    >
+      {/* THE PLATE IS A PHOTOGRAPH.
+          It used to be a drawn mark per case, in the page's own ink. Fatema's
+          verdict was that those looked weird and that she wanted the real
+          thing. Five real pictures, one design language — and the language has
+          to be the TREATMENT, because the subjects have nothing in common: a
+          phone in a hand, a shopping collage, a night venue, a match. So every
+          one gets the same three things: a 16:10 band, a navy veil weighted to
+          the bottom, and the figure standing on that veil. At rest the rail
+          reads as one muted index; the card under the pointer comes back to
+          full colour. That is what makes five unrelated photographs a set. */}
+      <span
+        className={
+          "relative block w-full overflow-hidden " +
+          (stacked ? "aspect-[19/10] " : "aspect-[16/10] ")
+        }
+        style={{ backgroundColor: "#06041A", borderBottom: "1px solid rgba(255,255,255,0.1)" }}
+      >
+        {/* lazy, and off the main thread: five 1400px photographs are the whole
+            weight of this page, and four of them are a viewport and a half of
+            lateral pan away from anything a reader has looked at yet */}
+        <img
+          src={c.img}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full scale-[1.015] object-cover object-center transition-[filter,transform] duration-500 [filter:saturate(0.6)_contrast(1.05)_brightness(0.9)] group-hover:scale-[1.055] group-hover:[filter:none] group-focus-visible:scale-[1.055] group-focus-visible:[filter:none] [@media(hover:none)]:scale-100 [@media(hover:none)]:[filter:saturate(0.88)_contrast(1.02)_brightness(0.95)]"
+        />
+        {/* Weighted to the bottom, not flat. Flat enough to unify five pictures
+            is already too dark to see any of them. The top of the band is not
+            clear glass either — a flat navy tint costs a dark photograph almost
+            nothing and pulls a pale one (Tuisa's is nearly white) back into the
+            set. Without it that card read as a hole in the rail. */}
+        <span
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(6,4,26,0.94) 0%, rgba(6,4,26,0.87) 14%, rgba(8,6,34,0.58) 40%, rgba(12,10,62,0.36) 70%, rgba(12,10,62,0.3) 100%)",
+          }}
+        />
+
+        {/* The brand sits ON the picture. In the card footer it was a caption
+            filed under a photograph that could have been anybody's; up here it
+            is what the picture IS, and the number beside it is the card's
+            position in the rail. It sits on the lightest part of the veil, so
+            it carries its own shadow. */}
+        <span
+          className="absolute left-[clamp(1.2rem,2vw,1.7rem)] top-[clamp(0.95rem,1.6vw,1.3rem)] z-[2] flex items-baseline gap-[0.7rem]"
+          style={{
+            fontFamily: MONO,
+            fontSize: "0.72rem",
+            fontWeight: 500,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "#fff",
+            textShadow: "0 1px 8px rgba(6,4,26,0.85), 0 0 22px rgba(6,4,26,0.6)",
+          }}
+        >
+          <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.62)" }}>{c.n}</span>
+          {c.shortClient ?? c.client}
+        </span>
+
+        <span className="absolute bottom-[clamp(1rem,1.6vw,1.4rem)] left-[clamp(1.2rem,2vw,1.7rem)] z-[2] grid gap-[0.25rem]">
+          <span
+            style={{
+              fontFamily: SERIF,
+              fontWeight: 700,
+              fontSize: "clamp(1.7rem, 2.7vw, 2.3rem)",
+              lineHeight: 0.95,
+              letterSpacing: "-0.03em",
+              color: "#fff",
+              textShadow: "0 1px 10px rgba(6,4,26,0.8)",
+            }}
+          >
+            {c.fig}
+          </span>
+          <span
+            className="max-w-[13rem]"
+            style={{
+              fontSize: "0.74rem",
+              lineHeight: 1.35,
+              letterSpacing: "0.01em",
+              color: "rgba(255,255,255,0.72)",
+              textShadow: "0 1px 8px rgba(6,4,26,0.85)",
+            }}
+          >
+            {c.figLab}
+          </span>
+        </span>
+      </span>
+
+      <span
+        className={
+          "flex flex-1 flex-col " +
+          (stacked ? "px-[1.3rem] py-[1.4rem] " : "p-[clamp(1.4rem,2.2vw,1.9rem)] ")
+        }
+      >
+        {/* This slot held a rhetorical question and now holds the TENSION: the
+            thing that was actually wrong, named in a sentence a reader might
+            recognise as their own. Longer than a question, so a step down in
+            size — the number above it is the loud element, and this earns it. */}
+        <span
+          className="block"
+          style={{
+            fontFamily: SERIF,
+            fontWeight: 400,
+            fontSize: stacked ? "1.14rem" : "clamp(1.12rem, 1.55vw, 1.36rem)",
+            lineHeight: 1.32,
+            letterSpacing: "-0.015em",
+            color: "rgba(255,255,255,0.96)",
+            textWrap: "pretty",
+          }}
+        >
+          {c.q}
+        </span>
+
+        <span
+          className="mt-auto flex items-baseline justify-between gap-4 pt-[1.3rem]"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}
+        >
+          {/* the client name moved onto the picture, so the footer carries the
+              category instead — one word, and the thing a reader scans for */}
+          <span
+            style={{
+              fontFamily: MONO,
+              fontSize: "0.7rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.6)",
+            }}
+          >
+            {c.kind}
+          </span>
+          <span
+            className="shrink-0 transition-colors duration-200 group-hover:text-white group-focus-visible:text-white"
+            style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.5)" }}
+          >
+            Read the case <span aria-hidden="true">→</span>
+          </span>
+        </span>
+      </span>
+    </button>
+  );
+}
+
+/**
+ * THE BRANDS, INSIDE THE WORK.
+ *
+ * This was a section of its own between the rail and the services, and it read
+ * as exactly that: a strip nobody had introduced, sitting in the gap between two
+ * things that did belong. Fatema's word was orphaned. It is a footnote to the
+ * work, so it is a footnote to the work — pinned to the bottom of this act's own
+ * frame, under a rule, while the cards pan above it.
+ *
+ * A marquee, in type, at the site's own weights. No logo wall: nine grey
+ * trademarks at nine different optical weights is the least designed thing a
+ * page like this can do, and half of them would need permission we do not have.
+ *
+ * With motion off it becomes an ordinary wrapped list. A strip that never stops
+ * moving is the single worst thing on a page for anyone who asked for stillness.
+ */
+function Brands({ stacked }: { stacked: boolean }) {
+  const reduced = useReducedMotion();
+  const still = stacked || !!reduced;
+
+  return (
+    <div
+      className={
+        still
+          ? "relative z-[2] mt-[clamp(2rem,5vh,3rem)] w-full"
+          : "pointer-events-none absolute inset-x-0 bottom-[clamp(1.4rem,4vh,2.8rem)] z-[2]"
+      }
+    >
+      <div
+        className={
+          "grid items-center gap-y-[0.9rem] " +
+          (still
+            ? "grid-cols-1 "
+            : "mx-[clamp(1.5rem,5vw,5rem)] grid-cols-[auto_minmax(0,1fr)] gap-x-[clamp(1.2rem,3vw,2.4rem)] ")
+        }
+        style={{
+          paddingTop: "clamp(0.9rem, 2vh, 1.3rem)",
+          borderTop: "1px solid rgba(255,255,255,0.14)",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: MONO,
+            fontSize: "0.66rem",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.55)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Also worked with
+        </span>
+
+        {still ? (
+          <p className="m-0 flex flex-wrap items-center gap-y-2">
+            {BRANDS.map((b, i) => (
+              <span key={b} className="flex items-center">
+                <Brand>{b}</Brand>
+                {i < BRANDS.length - 1 && <Dot />}
+              </span>
+            ))}
+          </p>
+        ) : (
+          <div className="marquee pointer-events-auto relative overflow-hidden">
+            <div className="marquee__track flex w-max">
+              {/* twice, so translateX(-50%) lands exactly where it started */}
+              {[0, 1].map((set) => (
+                <div key={set} className="flex shrink-0 items-center" aria-hidden="true">
+                  {BRANDS.map((b) => (
+                    <span key={b} className="flex items-center">
+                      <Brand>{b}</Brand>
+                      <Dot />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+            {/* the moving copy is hidden from assistive tech; this is the
+                readable one */}
+            <p className="sr-only">Brands we have worked with: {BRANDS.join(", ")}.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Brand({ children }: { children: string }) {
+  return (
+    <span
+      className="marquee__b whitespace-nowrap transition-colors duration-200"
+      style={{
+        fontFamily: SERIF,
+        fontSize: "clamp(1rem, 1.5vw, 1.3rem)",
+        letterSpacing: "-0.015em",
+        /* 0.42 measured 3.96:1 at 18px against 4.5:1 required — a name at this
+           size is under the large-text threshold, so the alpha carries it */
+        color: "rgba(255,255,255,0.5)",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function Dot() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mx-[clamp(0.9rem,2.4vw,2rem)] block h-1 w-1 shrink-0 rounded-full"
+      style={{ backgroundColor: "rgba(207,129,205,0.55)" }}
+    />
+  );
+}
+

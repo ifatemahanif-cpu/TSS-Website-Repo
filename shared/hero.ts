@@ -22,16 +22,30 @@
  *
  * Bump HERO_VERSION when the shipped hero copy below changes.
  */
-export const HERO_VERSION = 3;
+export const HERO_VERSION = 4;
 
+/**
+ * v4 is the scroll-carve hero. The film is no longer a timed sequence of two
+ * headlines; it is one sentence that cuts itself down to "We shape stories." as
+ * the reader scrolls, and every word of the last line is already in the first.
+ *
+ * So `heading` is now the END of the film and `subheading` is its BEGINNING —
+ * which is also the right way round for a search engine, since the short line
+ * is the claim and the long one is the description. And there is one button
+ * rather than two: the film has just said what this is, and a second link
+ * printed under it is the film explaining itself.
+ *
+ * `secondaryCta*` stays in the shape because the admin form and the stored rows
+ * still carry it. Nothing renders it.
+ */
 export const HERO_CONTENT = {
   version: HERO_VERSION,
-  heading: "We make brands impossible to ignore",
-  headingLine2: "by marketing them for who they really are",
+  heading: "We shape stories.",
+  headingLine2: "The Story Shapers is a senior-led marketing collective.",
   subheading:
-    "The Story Shapers is a senior-led marketing collective that helps growing companies clarify their position, build authority, improve organic discovery and add experienced marketing leadership.",
+    "We are a full-service, senior-led marketing collective that helps ambitious companies shape brand strategy, positioning, content and go-to-market stories that genuinely land.",
   ctaText: "Start a conversation",
-  ctaLink: "/contact#talk",
+  ctaLink: "#act-close",
   secondaryCtaText: "What we do",
   secondaryCtaLink: "#services",
 };

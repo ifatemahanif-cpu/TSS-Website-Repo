@@ -10,16 +10,30 @@
  * and remote URLs pass straight through.
  */
 
-/** Widest the image will ever be drawn. "sm" covers cards, thumbnails, avatars. */
-export type ImageSize = "full" | "sm";
+/**
+ * Widest the image will ever be drawn.
+ *
+ *   sm    cards, thumbnails, avatars      longest edge <= 480
+ *   full  article heroes, body pictures   longest edge <= 1600
+ *   lg    portraits                       WIDTH <= 1600
+ *
+ * "lg" is not "bigger than full", it is measured differently, and only the
+ * team and portfolio portraits should ask for it. A tall photograph capped on
+ * its longest edge is capped on its HEIGHT, which leaves a 3000x4500 portrait
+ * 1067px wide — narrower than the ~1479 device pixels Aakanksha's zoomed /team
+ * card needs, so it would visibly soften. See script/optimize-images.ts, which
+ * only emits .lg.webp for images the portfolios API refers to.
+ */
+export type ImageSize = "full" | "sm" | "lg";
 
 const CMS_IMAGE = /^\/api\/images\/(\d+)$/;
+const SUFFIX: Record<ImageSize, string> = { full: "", sm: ".sm", lg: ".lg" };
 
 export function imageSrc(src: string | null | undefined, size: ImageSize = "full"): string {
   if (!src) return "";
   const match = CMS_IMAGE.exec(src);
   if (!match) return src;
-  return size === "sm" ? `/img/${match[1]}.sm.webp` : `/img/${match[1]}.webp`;
+  return `/img/${match[1]}${SUFFIX[size]}.webp`;
 }
 
 /**

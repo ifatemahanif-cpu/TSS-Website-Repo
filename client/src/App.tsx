@@ -24,6 +24,11 @@ const PORTFOLIO_SLUGS = ["fatema", "shaili", "aakanksha"];
 function ScrollToTop() {
   const [location] = useLocation();
   useEffect(() => {
+    /* A hash owns the scroll. The footer's "The Shapers" is /#act-peak from
+       anywhere but the homepage, and scrolling to the top on arrival would put
+       the reader six screens above the thing they asked for. Home reads the
+       hash itself once its acts have their real heights. */
+    if (window.location.hash) return;
     window.scrollTo(0, 0);
   }, [location]);
   return null;

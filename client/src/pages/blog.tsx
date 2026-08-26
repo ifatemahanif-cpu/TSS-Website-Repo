@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
@@ -43,7 +44,7 @@ function SubscribeModule() {
     >
       <p
         style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.6rem",
           letterSpacing: "0.25em",
           color: "#a78bfa",
@@ -55,7 +56,7 @@ function SubscribeModule() {
       </p>
       <h3
         style={{
-          fontFamily: "'Libre Baskerville', serif",
+          fontFamily: "'Zodiak', serif",
           fontSize: "1.35rem",
           color: "#FFFFFF",
           fontWeight: 400,
@@ -66,7 +67,7 @@ function SubscribeModule() {
       </h3>
       <p
         style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.85rem",
           color: "rgba(255,255,255,0.55)",
           marginBottom: "1.5rem",
@@ -78,7 +79,7 @@ function SubscribeModule() {
       {state === "success" ? (
         <p
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.9rem",
             color: "#4ade80",
           }}
@@ -95,7 +96,7 @@ function SubscribeModule() {
             placeholder="your@email.com"
             required
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.85rem",
               color: "#FFFFFF",
               backgroundColor: "rgba(255,255,255,0.06)",
@@ -111,7 +112,7 @@ function SubscribeModule() {
             type="submit"
             disabled={state === "loading"}
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.6rem",
               letterSpacing: "0.1em",
               color: "#FFFFFF",
@@ -129,12 +130,12 @@ function SubscribeModule() {
         </form>
       )}
       {state === "duplicate" && (
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "#a78bfa", marginTop: "0.5rem" }}>
+        <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem", color: "#a78bfa", marginTop: "0.5rem" }}>
           You're already subscribed.
         </p>
       )}
       {state === "error" && (
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "#f87171", marginTop: "0.5rem" }}>
+        <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem", color: "#f87171", marginTop: "0.5rem" }}>
           Something went wrong. Please try again.
         </p>
       )}
@@ -200,7 +201,7 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
               {getCategoryName(post.categoryId) && (
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.55rem",
                     letterSpacing: "0.1em",
                     color: "#a78bfa",
@@ -216,7 +217,7 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
               )}
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.55rem",
                   color: "rgba(255,255,255,0.35)",
                   letterSpacing: "0.05em",
@@ -228,7 +229,7 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
 
             <h3
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Zodiak', serif",
                 fontSize: "1.05rem",
                 color: "#FFFFFF",
                 lineHeight: 1.4,
@@ -243,7 +244,7 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
             {post.excerpt && (
               <p
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.82rem",
                   color: "rgba(255,255,255,0.55)",
                   lineHeight: 1.6,
@@ -266,7 +267,7 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
             >
               <span
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.75rem",
                   color: "rgba(255,255,255,0.4)",
                 }}
@@ -276,7 +277,7 @@ function PostCard({ post, categories, index }: { post: BlogPost; categories: any
               </span>
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.6rem",
                   color: "rgba(255,255,255,0.3)",
                 }}
@@ -340,7 +341,7 @@ export default function Blog() {
             <span
               className="block mb-4"
               style={{
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.7rem",
                 color: "rgba(255, 255, 255, 0.5)",
                 letterSpacing: "0.3em",
@@ -354,7 +355,7 @@ export default function Blog() {
             <h1
               className="mb-4"
               style={{
-                fontFamily: "'Libre Baskerville', serif",
+                fontFamily: "'Zodiak', serif",
                 fontSize: "clamp(2rem, 4vw, 3rem)",
                 color: "#FFFFFF",
                 fontWeight: 400,
@@ -369,7 +370,7 @@ export default function Blog() {
             <p
               className="mb-8"
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "1rem",
                 color: "rgba(255, 255, 255, 0.6)",
                 maxWidth: "600px",
@@ -399,7 +400,7 @@ export default function Blog() {
               <button
                 onClick={() => { setSelectedCategory(undefined); setPage(1); }}
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.65rem",
                   letterSpacing: "0.1em",
                   color: !selectedCategory ? "#FFFFFF" : "rgba(255,255,255,0.5)",
@@ -419,7 +420,7 @@ export default function Blog() {
                   key={cat.id}
                   onClick={() => { setSelectedCategory(cat.id); setPage(1); }}
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.65rem",
                     letterSpacing: "0.1em",
                     color: selectedCategory === cat.id ? "#FFFFFF" : "rgba(255,255,255,0.5)",
@@ -441,7 +442,7 @@ export default function Blog() {
 
           {isLoading ? (
             <div className="flex justify-center py-20">
-              <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif" }}>Loading...</p>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif" }}>Loading...</p>
             </div>
           ) : posts.length === 0 && !featuredPost ? (
             <motion.div
@@ -462,7 +463,7 @@ export default function Blog() {
               >
                 <p
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "1.1rem",
                     color: "rgba(255,255,255,0.7)",
                     marginBottom: "0.75rem",
@@ -471,7 +472,7 @@ export default function Blog() {
                 >
                   No posts yet.
                 </p>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
+                <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
                   Check back soon for insights on brand strategy, content systems, and marketing that makes sense.
                 </p>
               </div>
@@ -533,7 +534,7 @@ export default function Blog() {
                         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
                           <span
                             style={{
-                              fontFamily: "'JetBrains Mono', monospace",
+                              fontFamily: "'Switzer', sans-serif",
                               fontSize: "0.55rem",
                               letterSpacing: "0.2em",
                               color: "#a78bfa",
@@ -545,7 +546,7 @@ export default function Blog() {
                           {getCategoryName(featuredPost.categoryId) && (
                             <span
                               style={{
-                                fontFamily: "'JetBrains Mono', monospace",
+                                fontFamily: "'Switzer', sans-serif",
                                 fontSize: "0.55rem",
                                 letterSpacing: "0.1em",
                                 color: "#a78bfa",
@@ -562,7 +563,7 @@ export default function Blog() {
 
                         <h2
                           style={{
-                            fontFamily: "'Libre Baskerville', serif",
+                            fontFamily: "'Zodiak', serif",
                             fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
                             color: "#FFFFFF",
                             fontWeight: 400,
@@ -578,7 +579,7 @@ export default function Blog() {
                         {featuredPost.excerpt && (
                           <p
                             style={{
-                              fontFamily: "'Inter', sans-serif",
+                              fontFamily: "'Switzer', sans-serif",
                               fontSize: "0.9rem",
                               color: "rgba(255,255,255,0.6)",
                               lineHeight: 1.7,
@@ -597,7 +598,7 @@ export default function Blog() {
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <span
                             style={{
-                              fontFamily: "'Inter', sans-serif",
+                              fontFamily: "'Switzer', sans-serif",
                               fontSize: "0.8rem",
                               color: "rgba(255,255,255,0.45)",
                             }}
@@ -609,7 +610,7 @@ export default function Blog() {
                           </span>
                           <span
                             style={{
-                              fontFamily: "'JetBrains Mono', monospace",
+                              fontFamily: "'Switzer', sans-serif",
                               fontSize: "0.6rem",
                               letterSpacing: "0.1em",
                               color: "#a78bfa",
@@ -629,7 +630,7 @@ export default function Blog() {
                   {!selectedCategory && featuredPost && (
                     <h2
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontFamily: "'Switzer', sans-serif",
                         fontSize: "0.6rem",
                         letterSpacing: "0.2em",
                         color: "rgba(255,255,255,0.4)",
@@ -654,7 +655,7 @@ export default function Blog() {
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page <= 1}
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.65rem",
                       color: page <= 1 ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.7)",
                       backgroundColor: "rgba(255,255,255,0.05)",
@@ -670,7 +671,7 @@ export default function Blog() {
                   </button>
                   <span
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.65rem",
                       color: "rgba(255,255,255,0.5)",
                     }}
@@ -682,7 +683,7 @@ export default function Blog() {
                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page >= totalPages}
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Switzer', sans-serif",
                       fontSize: "0.65rem",
                       color: page >= totalPages ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.7)",
                       backgroundColor: "rgba(255,255,255,0.05)",
@@ -704,6 +705,7 @@ export default function Blog() {
           <SubscribeModule />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

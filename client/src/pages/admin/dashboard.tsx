@@ -5,14 +5,11 @@ import type { BlogPost, BlogCategory, Author, EmailSubscriber } from "@shared/sc
 import { uploadImage as uploadImageFile } from "@/lib/image-upload";
 const RichTextEditor = lazy(() => import("@/components/admin/rich-text-editor"));
 
-type Tab = "submissions" | "settings" | "problems" | "whatwedo" | "team" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios" | "security";
+type Tab = "submissions" | "settings" | "services" | "ourstory" | "joinpage" | "contactpage" | "blogpage" | "blogcategories" | "blogposts" | "authors" | "subscribers" | "portfolios" | "security";
 
 const tabLabels: Record<Tab, string> = {
   submissions: "Form Entries",
   settings: "Site Settings",
-  problems: "Problem Section",
-  whatwedo: "What We Do",
-  team: "Team Members",
   services: "Services",
   ourstory: "Our Story",
   joinpage: "Join Page",
@@ -27,7 +24,7 @@ const tabLabels: Record<Tab, string> = {
 };
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.85rem",
   color: "#FFFFFF",
   backgroundColor: "rgba(255,255,255,0.04)",
@@ -45,7 +42,7 @@ const textareaStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.55rem",
   color: "rgba(255,255,255,0.5)",
   letterSpacing: "0.15em",
@@ -63,7 +60,7 @@ const cardStyle: React.CSSProperties = {
 };
 
 const btnPrimary: React.CSSProperties = {
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'Switzer', sans-serif",
   fontSize: "0.6rem",
   letterSpacing: "0.1em",
   color: "#FFFFFF",
@@ -98,7 +95,7 @@ function SuccessMessage({ show }: { show: boolean }) {
   return (
     <span
       style={{
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Switzer', sans-serif",
         fontSize: "0.75rem",
         color: "#4ade80",
         marginLeft: "0.75rem",
@@ -167,7 +164,7 @@ function SecurityPanel() {
       <p style={{ ...labelStyle, marginBottom: "0.75rem" }}>Change admin password</p>
       <p
         style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.75rem",
           lineHeight: 1.6,
           color: "rgba(255,255,255,0.55)",
@@ -222,7 +219,7 @@ function SecurityPanel() {
           <p
             role="status"
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.75rem",
               lineHeight: 1.6,
               marginBottom: "1rem",
@@ -259,7 +256,7 @@ function SubmissionsViewer() {
 
   if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
   if (!submissions || submissions.length === 0) {
-    return <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No form submissions yet.</p>;
+    return <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No form submissions yet.</p>;
   }
 
   const markRead = async (id: number, read: boolean) => {
@@ -359,7 +356,7 @@ function SubmissionsViewer() {
               )}
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.55rem",
                   letterSpacing: "0.1em",
                   color: (BADGE[sub.formType] ?? BADGE.talk).color,
@@ -372,20 +369,20 @@ function SubmissionsViewer() {
                 {(BADGE[sub.formType] ?? BADGE.talk).label}
               </span>
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem",
                 color: "#FFFFFF", flex: 1,
                 fontWeight: sub.read ? 400 : 600,
               }}>
                 {data.name || "—"}
               </span>
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.75rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem",
                 color: "rgba(255,255,255,0.4)",
               }}>
                 {data.email || ""}
               </span>
               <span style={{
-                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem",
                 color: "rgba(255,255,255,0.3)", flexShrink: 0,
               }}>
                 {formatDate(sub.createdAt)}
@@ -401,14 +398,14 @@ function SubmissionsViewer() {
                   {Object.entries(data).map(([key, value]) => (
                     <div key={key} style={{ display: "contents" }}>
                       <span style={{
-                        fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                        fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem",
                         letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)",
                         textTransform: "uppercase", paddingTop: "0.15rem",
                       }}>
                         {fieldLabels[key] || key}
                       </span>
                       <span style={{
-                        fontFamily: "'Inter', sans-serif", fontSize: "0.8rem",
+                        fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem",
                         color: "#FFFFFF", whiteSpace: "pre-wrap", wordBreak: "break-word",
                       }}>
                         {value || "—"}
@@ -425,7 +422,7 @@ function SubmissionsViewer() {
                     borderRadius: "4px",
                   }}>
                     <span style={{
-                      fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem",
+                      fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem",
                       letterSpacing: "0.12em", color: "rgba(255,255,255,0.55)",
                       textTransform: "uppercase",
                     }}>
@@ -433,7 +430,7 @@ function SubmissionsViewer() {
                     </span>
                     <ul style={{
                       margin: "0.4rem 0 0", paddingLeft: "1.1rem",
-                      fontFamily: "'Inter', sans-serif", fontSize: "0.78rem",
+                      fontFamily: "'Switzer', sans-serif", fontSize: "0.78rem",
                       lineHeight: 1.7, color: "#FFFFFF",
                     }}>
                       {offerFlags(data).map((flag) => (
@@ -512,43 +509,15 @@ function SettingsEditor() {
       title: "Hero Section",
       // The animated lines are written into the Hero component, not here. These
       // are the parts around the film: the headline search engines read, and
-      // the two buttons it rests on.
+      // the one button it rests on. The secondary button's fields were removed
+      // with the rest of the dead surfaces — the hero has had a single call to
+      // action since v4, and nothing rendered them.
       fields: [
         { name: "heading", label: "Headline, line 1 (for search engines)", type: "text" },
         { name: "headingLine2", label: "Headline, line 2 (for search engines)", type: "text" },
         { name: "subheading", label: "Subheading (for search engines)", type: "textarea" },
         { name: "ctaText", label: "Primary button text", type: "text" },
         { name: "ctaLink", label: "Primary button link", type: "text" },
-        { name: "secondaryCtaText", label: "Secondary button text", type: "text" },
-        { name: "secondaryCtaLink", label: "Secondary button link", type: "text" },
-      ],
-    },
-    {
-      key: "problem",
-      title: "Problem Section",
-      fields: [
-        { name: "label", label: "Section Label", type: "text" },
-        { name: "heading", label: "Heading (HTML allowed)", type: "text" },
-        { name: "subheading", label: "Subheading", type: "text" },
-      ],
-    },
-    {
-      key: "origin",
-      title: "What We Do Section",
-      fields: [
-        { name: "label", label: "Section Label", type: "text" },
-        { name: "heading", label: "Heading", type: "text" },
-        { name: "subtitle", label: "Subtitle", type: "textarea" },
-      ],
-    },
-    {
-      key: "team",
-      title: "Team Section",
-      fields: [
-        { name: "label", label: "Section Label", type: "text" },
-        { name: "headingLine1", label: "Heading Line 1", type: "text" },
-        { name: "headingLine2", label: "Heading Line 2 (italic)", type: "text" },
-        { name: "intro", label: "Intro Paragraph", type: "textarea" },
       ],
     },
     {
@@ -557,18 +526,6 @@ function SettingsEditor() {
       fields: [
         { name: "label", label: "Section Label", type: "text" },
         { name: "heading", label: "Heading", type: "text" },
-        { name: "subheading", label: "Subheading", type: "text" },
-      ],
-    },
-    {
-      key: "cta",
-      title: "CTA Section",
-      fields: [
-        { name: "label", label: "Section Label", type: "text" },
-        { name: "heading", label: "Heading", type: "text" },
-        { name: "paragraph", label: "Paragraph", type: "textarea" },
-        { name: "buttonText", label: "Button Text", type: "text" },
-        { name: "buttonLink", label: "Button Link", type: "text" },
       ],
     },
   ];
@@ -579,7 +536,7 @@ function SettingsEditor() {
         <div key={section.key} style={cardStyle}>
           <h3
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.95rem",
               fontWeight: 600,
               color: "#FFFFFF",
@@ -629,399 +586,6 @@ function SettingsEditor() {
           </div>
         </div>
       ))}
-    </div>
-  );
-}
-
-function ProblemsEditor() {
-  const queryClient = useQueryClient();
-  const { data: problems = [], isLoading } = useQuery<any[]>({
-    queryKey: ["/api/cms/problems"],
-  });
-  const [editData, setEditData] = useState<Record<number, any>>({});
-  const [saving, setSaving] = useState<number | null>(null);
-  const [saved, setSaved] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (problems.length) {
-      const map: Record<number, any> = {};
-      problems.forEach((p) => (map[p.id] = { ...p }));
-      setEditData(map);
-    }
-  }, [problems]);
-
-  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
-
-  const saveProblem = async (id: number) => {
-    setSaving(id);
-    await fetch(`/api/cms/problems/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editData[id]),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/problems"] });
-    setSaving(null);
-    setSaved(id);
-    setTimeout(() => setSaved(null), 2000);
-  };
-
-  const deleteProblem = async (id: number) => {
-    if (!confirm("Delete this problem?")) return;
-    await fetch(`/api/cms/problems/${id}`, { method: "DELETE" });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/problems"] });
-  };
-
-  const addProblem = async () => {
-    const nextNum = String(problems.length + 1).padStart(2, "0");
-    await fetch("/api/cms/problems", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        displayId: nextNum,
-        text: "New problem statement",
-        sortOrder: problems.length,
-      }),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/problems"] });
-  };
-
-  return (
-    <div>
-      {problems.map((p: any) => (
-        <div key={p.id} style={cardStyle}>
-          <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
-            <div style={{ width: "60px" }}>
-              <label style={labelStyle}>ID</label>
-              <input
-                type="text"
-                value={editData[p.id]?.displayId || ""}
-                onChange={(e) =>
-                  setEditData((prev) => ({
-                    ...prev,
-                    [p.id]: { ...prev[p.id], displayId: e.target.value },
-                  }))
-                }
-                style={inputStyle}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Text</label>
-              <input
-                type="text"
-                value={editData[p.id]?.text || ""}
-                onChange={(e) =>
-                  setEditData((prev) => ({
-                    ...prev,
-                    [p.id]: { ...prev[p.id], text: e.target.value },
-                  }))
-                }
-                style={inputStyle}
-              />
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <SaveButton onClick={() => saveProblem(p.id)} saving={saving === p.id} />
-            <SuccessMessage show={saved === p.id} />
-            <button onClick={() => deleteProblem(p.id)} style={btnDanger}>DELETE</button>
-          </div>
-        </div>
-      ))}
-      <button onClick={addProblem} style={btnPrimary} data-testid="button-add-problem">
-        + ADD PROBLEM
-      </button>
-    </div>
-  );
-}
-
-function WhatWeDoEditor() {
-  const queryClient = useQueryClient();
-  const { data: blocks = [], isLoading } = useQuery<any[]>({
-    queryKey: ["/api/cms/whatwedo"],
-  });
-  const [editData, setEditData] = useState<Record<number, any>>({});
-  const [saving, setSaving] = useState<number | null>(null);
-  const [saved, setSaved] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (blocks.length) {
-      const map: Record<number, any> = {};
-      blocks.forEach((b) => (map[b.id] = { ...b }));
-      setEditData(map);
-    }
-  }, [blocks]);
-
-  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
-
-  const saveBlock = async (id: number) => {
-    setSaving(id);
-    await fetch(`/api/cms/whatwedo/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editData[id]),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/whatwedo"] });
-    setSaving(null);
-    setSaved(id);
-    setTimeout(() => setSaved(null), 2000);
-  };
-
-  const deleteBlock = async (id: number) => {
-    if (!confirm("Delete this block?")) return;
-    await fetch(`/api/cms/whatwedo/${id}`, { method: "DELETE" });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/whatwedo"] });
-  };
-
-  const addBlock = async () => {
-    await fetch("/api/cms/whatwedo", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: "New block title",
-        description: "Description here",
-        teaser: "Case study teaser",
-        expanded: "Full case study text",
-        sortOrder: blocks.length,
-      }),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/whatwedo"] });
-  };
-
-  const updateField = (id: number, field: string, value: string) => {
-    setEditData((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], [field]: value },
-    }));
-  };
-
-  return (
-    <div>
-      {blocks.map((b: any) => (
-        <div key={b.id} style={cardStyle}>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Title</label>
-            <input
-              type="text"
-              value={editData[b.id]?.title || ""}
-              onChange={(e) => updateField(b.id, "title", e.target.value)}
-              style={inputStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Description</label>
-            <textarea
-              value={editData[b.id]?.description || ""}
-              onChange={(e) => updateField(b.id, "description", e.target.value)}
-              style={textareaStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Case Study Teaser</label>
-            <textarea
-              value={editData[b.id]?.teaser || ""}
-              onChange={(e) => updateField(b.id, "teaser", e.target.value)}
-              style={textareaStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Case Study Expanded</label>
-            <textarea
-              value={editData[b.id]?.expanded || ""}
-              onChange={(e) => updateField(b.id, "expanded", e.target.value)}
-              style={{ ...textareaStyle, minHeight: "120px" }}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Full Story Link — when filled, "Read the full story" links here instead of expanding (e.g. /blog/your-case-study)</label>
-            <input
-              type="text"
-              value={editData[b.id]?.linkUrl || ""}
-              onChange={(e) => updateField(b.id, "linkUrl", e.target.value)}
-              style={inputStyle}
-              placeholder="/blog/case-study-slug"
-            />
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <SaveButton onClick={() => saveBlock(b.id)} saving={saving === b.id} />
-            <SuccessMessage show={saved === b.id} />
-            <button onClick={() => deleteBlock(b.id)} style={btnDanger}>DELETE</button>
-          </div>
-        </div>
-      ))}
-      <button onClick={addBlock} style={btnPrimary} data-testid="button-add-whatwedo">
-        + ADD BLOCK
-      </button>
-    </div>
-  );
-}
-
-function TeamEditor() {
-  const queryClient = useQueryClient();
-  const { data: members = [], isLoading } = useQuery<any[]>({
-    queryKey: ["/api/cms/team"],
-  });
-  const [editData, setEditData] = useState<Record<number, any>>({});
-  const [saving, setSaving] = useState<number | null>(null);
-  const [saved, setSaved] = useState<number | null>(null);
-  const [uploading, setUploading] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (members.length) {
-      const map: Record<number, any> = {};
-      members.forEach((m) => (map[m.id] = { ...m }));
-      setEditData(map);
-    }
-  }, [members]);
-
-  if (isLoading) return <p style={{ color: "rgba(255,255,255,0.5)" }}>Loading...</p>;
-
-  const saveMember = async (id: number) => {
-    setSaving(id);
-    await fetch(`/api/cms/team/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editData[id]),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/team"] });
-    setSaving(null);
-    setSaved(id);
-    setTimeout(() => setSaved(null), 2000);
-  };
-
-  const deleteMember = async (id: number) => {
-    if (!confirm("Delete this team member?")) return;
-    await fetch(`/api/cms/team/${id}`, { method: "DELETE" });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/team"] });
-  };
-
-  const uploadImage = async (id: number, file: File) => {
-    setUploading(id);
-    try {
-      const { url } = await uploadImageFile(file);
-      setEditData((prev) => ({
-        ...prev,
-        [id]: { ...prev[id], image: url },
-      }));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to upload image");
-    } finally {
-      setUploading(null);
-    }
-  };
-
-  const addMember = async () => {
-    await fetch("/api/cms/team", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: "New Team Member",
-        image: "",
-        decisionsLed: "",
-        brands: "",
-        brandsLabel: "Brands",
-        whatSheBrings: [""],
-        sortOrder: members.length,
-      }),
-    });
-    queryClient.invalidateQueries({ queryKey: ["/api/cms/team"] });
-  };
-
-  const updateField = (id: number, field: string, value: any) => {
-    setEditData((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], [field]: value },
-    }));
-  };
-
-  return (
-    <div>
-      {members.map((m: any) => (
-        <div key={m.id} style={cardStyle}>
-          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-            <div style={{ width: "80px", height: "80px", borderRadius: "8px", overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.15)" }}>
-              {editData[m.id]?.image && (
-                <img src={editData[m.id].image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              )}
-            </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Name</label>
-              <input
-                type="text"
-                value={editData[m.id]?.name || ""}
-                onChange={(e) => updateField(m.id, "name", e.target.value)}
-                style={inputStyle}
-              />
-              <div style={{ marginTop: "0.5rem" }}>
-                <label style={labelStyle}>Photo</label>
-                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                  <input
-                    type="text"
-                    value={editData[m.id]?.image || ""}
-                    onChange={(e) => updateField(m.id, "image", e.target.value)}
-                    style={{ ...inputStyle, fontSize: "0.75rem" }}
-                    placeholder="Image URL or upload"
-                  />
-                  <label
-                    style={{
-                      ...btnPrimary,
-                      fontSize: "0.5rem",
-                      padding: "0.5rem 0.75rem",
-                      whiteSpace: "nowrap",
-                      opacity: uploading === m.id ? 0.6 : 1,
-                    }}
-                  >
-                    {uploading === m.id ? "..." : "UPLOAD"}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={{ display: "none" }}
-                      onChange={(e) => {
-                        const f = e.target.files?.[0];
-                        if (f) uploadImage(m.id, f);
-                      }}
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Decisions Led</label>
-            <input
-              type="text"
-              value={editData[m.id]?.decisionsLed || ""}
-              onChange={(e) => updateField(m.id, "decisionsLed", e.target.value)}
-              style={inputStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Brands</label>
-            <input
-              type="text"
-              value={editData[m.id]?.brands || ""}
-              onChange={(e) => updateField(m.id, "brands", e.target.value)}
-              style={inputStyle}
-            />
-          </div>
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label style={labelStyle}>Bio</label>
-            <textarea
-              value={(editData[m.id]?.whatSheBrings || []).join("\n\n")}
-              onChange={(e) =>
-                updateField(m.id, "whatSheBrings", e.target.value.split("\n\n").filter(Boolean))
-              }
-              style={{ ...textareaStyle, minHeight: "100px" }}
-            />
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <SaveButton onClick={() => saveMember(m.id)} saving={saving === m.id} />
-            <SuccessMessage show={saved === m.id} />
-            <button onClick={() => deleteMember(m.id)} style={btnDanger}>DELETE</button>
-          </div>
-        </div>
-      ))}
-      <button onClick={addMember} style={btnPrimary} data-testid="button-add-team">
-        + ADD MEMBER
-      </button>
     </div>
   );
 }
@@ -1214,7 +778,7 @@ function OurStoryEditor() {
           )}
         </div>
       ))}
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -1401,7 +965,7 @@ function JoinPageEditor() {
         <input style={inputStyle} value={formData.howToJoinButton || ""} onChange={(e) => update("howToJoinButton", e.target.value)} />
       </div>
 
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -1460,7 +1024,7 @@ function BlogPageEditor() {
         <textarea style={{ ...inputStyle, minHeight: "70px" }} value={formData.subtext || ""} onChange={(e) => update("subtext", e.target.value)} placeholder="Because good brands are built on thinking, not just things to post." data-testid="input-blog-subtext" />
       </div>
 
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -1539,7 +1103,7 @@ function ContactPageEditor() {
           )}
         </div>
       ))}
-      {saveError && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
+      {saveError && <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "#f87171" }}>Save failed. Please try again.</span>}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <SaveButton onClick={save} saving={saving} />
         <SuccessMessage show={saved} />
@@ -2100,7 +1664,7 @@ function BlogPostsEditor() {
       </div>
 
       {posts.length === 0 ? (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No blog posts yet. Create your first post above.</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No blog posts yet. Create your first post above.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           {posts.map((post) => (
@@ -2119,7 +1683,7 @@ function BlogPostsEditor() {
             >
               <span
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.55rem",
                   letterSpacing: "0.1em",
                   color: post.status === "published" ? "#4ade80" : "#fbbf24",
@@ -2133,22 +1697,22 @@ function BlogPostsEditor() {
                 {post.status}
               </span>
               {post.featured && (
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "#fbbf24", flexShrink: 0 }} title="Featured post">★</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", color: "#fbbf24", flexShrink: 0 }} title="Featured post">★</span>
               )}
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.85rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem",
                 color: "#FFFFFF", flex: 1, fontWeight: 500,
               }}>
                 {post.title}
               </span>
               <span style={{
-                fontFamily: "'Inter', sans-serif", fontSize: "0.75rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem",
                 color: "rgba(255,255,255,0.4)", flexShrink: 0,
               }}>
                 {getCategoryName(post.categoryId)}
               </span>
               <span style={{
-                fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem",
+                fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem",
                 color: "rgba(255,255,255,0.3)", flexShrink: 0,
               }}>
                 {formatDate(post.publishedAt || post.createdAt)}
@@ -2335,7 +1899,7 @@ function SubscribersEditor() {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>
+        <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>
           <span style={{ color: "#4ade80", fontWeight: 600 }}>{active.length}</span> active · {inactive.length} unsubscribed
         </p>
         <a
@@ -2354,7 +1918,7 @@ function SubscribersEditor() {
       </div>
 
       {subscribers.length === 0 ? (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No subscribers yet.</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No subscribers yet.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
           {subscribers.map((sub) => (
@@ -2370,16 +1934,16 @@ function SubscribersEditor() {
               }}
               data-testid={`subscriber-row-${sub.id}`}
             >
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.08em", color: sub.status === "active" ? "#4ade80" : "rgba(255,255,255,0.3)", backgroundColor: sub.status === "active" ? "rgba(74,222,128,0.1)" : "rgba(255,255,255,0.05)", padding: "0.15rem 0.45rem", borderRadius: "4px", flexShrink: 0, textTransform: "uppercase" }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.08em", color: sub.status === "active" ? "#4ade80" : "rgba(255,255,255,0.3)", backgroundColor: sub.status === "active" ? "rgba(74,222,128,0.1)" : "rgba(255,255,255,0.05)", padding: "0.15rem 0.45rem", borderRadius: "4px", flexShrink: 0, textTransform: "uppercase" }}>
                 {sub.status}
               </span>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "#FFFFFF", flex: 1 }} data-testid={`text-subscriber-email-${sub.id}`}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "#FFFFFF", flex: 1 }} data-testid={`text-subscriber-email-${sub.id}`}>
                 {sub.email}
               </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>
                 {sub.source}
               </span>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", flexShrink: 0 }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", flexShrink: 0 }}>
                 {formatDate(sub.createdAt)}
               </span>
               {sub.status === "active" && (
@@ -2500,7 +2064,7 @@ function PortfoliosEditor() {
 
   if (editing) {
     const sectionHeader: React.CSSProperties = {
-      fontFamily: "'JetBrains Mono', monospace",
+      fontFamily: "'Switzer', sans-serif",
       fontSize: "0.65rem",
       letterSpacing: "0.2em",
       color: "#FFAEDA",
@@ -2530,7 +2094,7 @@ function PortfoliosEditor() {
         </button>
 
         <div style={cardStyle}>
-          <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.1rem", color: "#fff", marginBottom: "1rem" }}>
+          <h3 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.1rem", color: "#fff", marginBottom: "1rem" }}>
             {editing.name} <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem" }}>/{editing.slug}</span>
           </h3>
 
@@ -2635,7 +2199,7 @@ function PortfoliosEditor() {
           {(editing.caseStudies?.items || []).map((c: any, i: number) => (
             <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.75rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>CASE #{i + 1}</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>CASE #{i + 1}</span>
                 <button style={btnDanger} onClick={() => removeArrayItem("caseStudies", "items", i)}>REMOVE</button>
               </div>
               <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Tag (e.g. Headout · Content Leadership)" value={c.tag || ""} onChange={(e) => updateArrayItem("caseStudies", "items", i, "tag", e.target.value)} />
@@ -2685,7 +2249,7 @@ function PortfoliosEditor() {
           {(editing.testimonials || []).map((t: any, i: number) => (
             <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>QUOTE #{i + 1}</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>QUOTE #{i + 1}</span>
                 <button style={btnDanger} onClick={() => removeTopArrayItem("testimonials", i)}>REMOVE</button>
               </div>
               <textarea style={{ ...textareaStyle, marginBottom: "0.4rem" }} placeholder="Quote" value={t.quote || ""} onChange={(e) => updateTopArray("testimonials", i, "quote", e.target.value)} />
@@ -2753,7 +2317,7 @@ function PortfoliosEditor() {
           {(editing.workWithMe?.cards || []).map((card: any, i: number) => (
             <div key={i} style={{ ...cardStyle, padding: "1rem", marginBottom: "0.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>OFFER #{i + 1}</span>
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.5)" }}>OFFER #{i + 1}</span>
                 <button style={btnDanger} onClick={() => removeArrayItem("workWithMe", "cards", i)}>REMOVE</button>
               </div>
               <input style={{ ...inputStyle, marginBottom: "0.4rem" }} placeholder="Eyebrow (e.g. Start here)" value={card.eyebrow || ""} onChange={(e) => updateArrayItem("workWithMe", "cards", i, "eyebrow", e.target.value)} />
@@ -2805,15 +2369,15 @@ function PortfoliosEditor() {
   return (
     <div>
       {(portfolios || []).length === 0 ? (
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem" }}>No portfolios yet.</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem" }}>No portfolios yet.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           {(portfolios || []).map((p: any) => (
             <div key={p.id} style={{ ...cardStyle, marginBottom: 0, display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }} onClick={() => startEdit(p)} data-testid={`portfolio-row-${p.slug}`}>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.95rem", color: "#FFFFFF", flex: 1, fontWeight: 500 }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.95rem", color: "#FFFFFF", flex: 1, fontWeight: 500 }}>
                 {p.name}
               </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.4)" }}>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.4)" }}>
                 /{p.slug}
               </span>
               <button onClick={(e) => { e.stopPropagation(); startEdit(p); }} style={{ ...btnPrimary, fontSize: "0.55rem" }} data-testid={`button-edit-portfolio-${p.slug}`}>
@@ -2856,7 +2420,7 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif" }}>Loading...</p>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif" }}>Loading...</p>
       </div>
     );
   }
@@ -2866,7 +2430,7 @@ export default function AdminDashboard() {
   /* Kept in step with `tabLabels` by hand — this list drives the sidebar, and
      `Tab[]` accepts a subset, so leaving one out compiles cleanly and simply
      makes that panel unreachable. Add to both. */
-  const tabs: Tab[] = ["submissions", "settings", "problems", "whatwedo", "team", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios", "security"];
+  const tabs: Tab[] = ["submissions", "settings", "services", "ourstory", "joinpage", "contactpage", "blogpage", "blogcategories", "blogposts", "authors", "subscribers", "portfolios", "security"];
 
   return (
     <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
@@ -2886,7 +2450,7 @@ export default function AdminDashboard() {
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
           <h1
             style={{
-              fontFamily: "'Libre Baskerville', serif",
+              fontFamily: "'Zodiak', serif",
               fontSize: "1rem",
               color: "#FFFFFF",
             }}
@@ -2897,7 +2461,7 @@ export default function AdminDashboard() {
             href="/"
             target="_blank"
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.55rem",
               color: "rgba(255,255,255,0.4)",
               textDecoration: "none",
@@ -2910,7 +2474,7 @@ export default function AdminDashboard() {
         <button
           onClick={handleLogout}
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.55rem",
             color: "rgba(255,255,255,0.5)",
             background: "none",
@@ -2943,7 +2507,7 @@ export default function AdminDashboard() {
                 display: "block",
                 width: "100%",
                 textAlign: "left",
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Switzer', sans-serif",
                 fontSize: "0.8rem",
                 color: activeTab === tab ? "#FFFFFF" : "rgba(255,255,255,0.5)",
                 backgroundColor: activeTab === tab ? "rgba(123,30,122,0.2)" : "transparent",
@@ -2965,7 +2529,7 @@ export default function AdminDashboard() {
                   backgroundColor: "#7B1E7A",
                   color: "#FFFFFF",
                   fontSize: "0.55rem",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   padding: "0.1rem 0.4rem",
                   borderRadius: "10px",
                   minWidth: "18px",
@@ -2982,7 +2546,7 @@ export default function AdminDashboard() {
         <div style={{ flex: 1, padding: "1.5rem", maxWidth: "800px" }}>
           <h2
             style={{
-              fontFamily: "'Libre Baskerville', serif",
+              fontFamily: "'Zodiak', serif",
               fontSize: "1.25rem",
               color: "#FFFFFF",
               marginBottom: "1.5rem",
@@ -2993,9 +2557,6 @@ export default function AdminDashboard() {
 
           {activeTab === "submissions" && <SubmissionsViewer />}
           {activeTab === "settings" && <SettingsEditor />}
-          {activeTab === "problems" && <ProblemsEditor />}
-          {activeTab === "whatwedo" && <WhatWeDoEditor />}
-          {activeTab === "team" && <TeamEditor />}
           {activeTab === "services" && <ServicesEditor />}
           {activeTab === "ourstory" && <OurStoryEditor />}
           {activeTab === "joinpage" && <JoinPageEditor />}

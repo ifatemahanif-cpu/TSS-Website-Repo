@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Footer } from "@/components/layout/Footer";
 import { Link, useParams } from "wouter";
 import { imageSrc, fallbackToOriginal, applyBodyImageFallbacks } from "@/lib/image-src";
 import { motion } from "framer-motion";
@@ -134,18 +135,18 @@ function SubscribeModule({ slug }: { slug: string }) {
       }}
       data-testid="subscribe-module-post"
     >
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.2em", color: "#a78bfa", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+      <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.2em", color: "#a78bfa", textTransform: "uppercase", marginBottom: "0.5rem" }}>
         Stay in the loop
       </p>
-      <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.1rem", color: "#FFFFFF", fontWeight: 400, marginBottom: "0.35rem" }}>
+      <h3 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.1rem", color: "#FFFFFF", fontWeight: 400, marginBottom: "0.35rem" }}>
         New pieces, when they're ready.
       </h3>
-      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.5)", marginBottom: "1.25rem" }}>
+      <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.5)", marginBottom: "1.25rem" }}>
         No newsletters. Just a note when something worth reading goes live.
       </p>
 
       {state === "success" ? (
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "#4ade80" }} data-testid="subscribe-success-post">
+        <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "#4ade80" }} data-testid="subscribe-success-post">
           You're in. We'll let you know when new pieces go live.
         </p>
       ) : (
@@ -157,7 +158,7 @@ function SubscribeModule({ slug }: { slug: string }) {
             placeholder="your@email.com"
             required
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.82rem",
               color: "#FFFFFF",
               backgroundColor: "rgba(255,255,255,0.06)",
@@ -173,7 +174,7 @@ function SubscribeModule({ slug }: { slug: string }) {
             type="submit"
             disabled={state === "loading"}
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.58rem",
               letterSpacing: "0.1em",
               color: "#FFFFFF",
@@ -190,8 +191,8 @@ function SubscribeModule({ slug }: { slug: string }) {
           </button>
         </form>
       )}
-      {state === "duplicate" && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.78rem", color: "#a78bfa", marginTop: "0.5rem" }}>You're already subscribed.</p>}
-      {state === "error" && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.78rem", color: "#f87171", marginTop: "0.5rem" }}>Something went wrong. Please try again.</p>}
+      {state === "duplicate" && <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.78rem", color: "#a78bfa", marginTop: "0.5rem" }}>You're already subscribed.</p>}
+      {state === "error" && <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.78rem", color: "#f87171", marginTop: "0.5rem" }}>Something went wrong. Please try again.</p>}
     </div>
   );
 }
@@ -221,7 +222,7 @@ function SharingRow({ title, slug }: { title: string; slug: string }) {
   };
 
   const btnBase: React.CSSProperties = {
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'Switzer', sans-serif",
     fontSize: "0.58rem",
     letterSpacing: "0.1em",
     borderRadius: "6px",
@@ -239,7 +240,7 @@ function SharingRow({ title, slug }: { title: string; slug: string }) {
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }} data-testid="sharing-row">
-      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.15em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", marginRight: "0.25rem" }}>
+      <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.15em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", marginRight: "0.25rem" }}>
         Share
       </span>
       <button onClick={copyLink} style={btnBase} data-testid="button-copy-link">
@@ -269,7 +270,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
         id="author"
         data-testid="author-block"
       >
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.5)" }}>
+        <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.5)" }}>
           By <span style={{ color: "rgba(255,255,255,0.8)" }}>{authorName}</span>
         </p>
       </div>
@@ -304,7 +305,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
       <div style={{ flex: 1 }}>
         <p
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.55rem",
             letterSpacing: "0.2em",
             color: "rgba(255,255,255,0.4)",
@@ -321,7 +322,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
         >
           <p
             style={{
-              fontFamily: "'Libre Baskerville', serif",
+              fontFamily: "'Zodiak', serif",
               fontSize: "1.05rem",
               color: "#FFFFFF",
               fontWeight: 400,
@@ -335,7 +336,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
         {author.bio && (
           <p
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Switzer', sans-serif",
               fontSize: "0.85rem",
               color: "rgba(255,255,255,0.6)",
               lineHeight: 1.7,
@@ -352,7 +353,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
               href={author.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.1em", color: "#a78bfa", textDecoration: "none" }}
+              style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.1em", color: "#a78bfa", textDecoration: "none" }}
               data-testid="link-author-linkedin"
             >
               LinkedIn →
@@ -363,7 +364,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
               href={author.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.1em", color: "#a78bfa", textDecoration: "none" }}
+              style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.1em", color: "#a78bfa", textDecoration: "none" }}
               data-testid="link-author-twitter"
             >
               𝕏 →
@@ -374,7 +375,7 @@ function AuthorBlock({ authorId, authorName, authors }: { authorId: number | nul
               href={author.website}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.1em", color: "#a78bfa", textDecoration: "none" }}
+              style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.1em", color: "#a78bfa", textDecoration: "none" }}
               data-testid="link-author-website"
             >
               Website →
@@ -400,7 +401,7 @@ function RelatedPosts({ slug, categories }: { slug: string; categories: any[] })
     <div style={{ marginTop: "3rem", paddingTop: "2.5rem", borderTop: "1px solid rgba(255,255,255,0.08)" }} data-testid="related-posts">
       <h3
         style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "'Switzer', sans-serif",
           fontSize: "0.6rem",
           letterSpacing: "0.2em",
           color: "rgba(255,255,255,0.4)",
@@ -446,19 +447,19 @@ function RelatedPosts({ slug, categories }: { slug: string; categories: any[] })
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
                   {getCategoryName(post.categoryId) && (
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.5rem", letterSpacing: "0.1em", color: "#a78bfa", textTransform: "uppercase" }}>
+                    <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.5rem", letterSpacing: "0.1em", color: "#a78bfa", textTransform: "uppercase" }}>
                       {getCategoryName(post.categoryId)}
                     </span>
                   )}
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.5rem", color: "rgba(255,255,255,0.3)" }}>
+                  <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.5rem", color: "rgba(255,255,255,0.3)" }}>
                     {post.readingTime} min read
                   </span>
                 </div>
-                <p style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "0.95rem", color: "#FFFFFF", fontWeight: 400, lineHeight: 1.4 }}>
+                <p style={{ fontFamily: "'Zodiak', serif", fontSize: "0.95rem", color: "#FFFFFF", fontWeight: 400, lineHeight: 1.4 }}>
                   {post.title}
                 </p>
               </div>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>→</span>
+              <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>→</span>
             </div>
           </Link>
         ))}
@@ -578,7 +579,7 @@ export default function BlogPost() {
       <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
         <Navbar />
         <div className="flex justify-center items-center pt-32">
-          <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Inter', sans-serif" }}>Loading...</p>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'Switzer', sans-serif" }}>Loading...</p>
         </div>
       </div>
     );
@@ -589,13 +590,16 @@ export default function BlogPost() {
       <div style={{ backgroundColor: "#0C0A3E", minHeight: "100vh" }}>
         <Navbar />
         <div className="flex flex-col items-center justify-center pt-32 px-4">
-          <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.5rem", color: "#FFFFFF", marginBottom: "1rem" }}>
+          <h1 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.5rem", color: "#FFFFFF", marginBottom: "1rem" }}>
             Post not found
           </h1>
-          <Link href="/blog" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textDecoration: "none" }} data-testid="link-back-to-blog">
+          <Link href="/blog" style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.7rem", color: "rgba(255,255,255,0.6)", letterSpacing: "0.1em", textDecoration: "none" }} data-testid="link-back-to-blog">
             &larr; BACK TO BLOG
           </Link>
         </div>
+        {/* the deadest end on the site: an article that is not there, offering
+            one link back. This is where a map is worth most. */}
+        <Footer />
       </div>
     );
   }
@@ -613,7 +617,7 @@ export default function BlogPost() {
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 mb-10 group"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", color: "rgba(255, 255, 255, 0.5)", letterSpacing: "0.15em", textDecoration: "none", transition: "color 0.2s" }}
+              style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", color: "rgba(255, 255, 255, 0.5)", letterSpacing: "0.15em", textDecoration: "none", transition: "color 0.2s" }}
               data-testid="link-back-to-blog"
             >
               <span style={{ transition: "transform 0.2s", display: "inline-block" }} className="group-hover:-translate-x-1">&larr;</span>
@@ -625,14 +629,14 @@ export default function BlogPost() {
             <div className="flex items-center gap-3 mb-5">
               {categoryName && (
                 <span
-                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em", color: "#a78bfa", backgroundColor: "rgba(167,139,250,0.12)", padding: "0.25rem 0.6rem", borderRadius: "4px", textTransform: "uppercase" }}
+                  style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.1em", color: "#a78bfa", backgroundColor: "rgba(167,139,250,0.12)", padding: "0.25rem 0.6rem", borderRadius: "4px", textTransform: "uppercase" }}
                   data-testid="text-post-category"
                 >
                   {categoryName}
                 </span>
               )}
               <span
-                style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}
+                style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}
                 data-testid="text-post-reading-time"
               >
                 {post.readingTime} min read
@@ -640,7 +644,7 @@ export default function BlogPost() {
             </div>
 
             <h1
-              style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "#FFFFFF", fontWeight: 400, lineHeight: 1.25, letterSpacing: "-0.02em", marginBottom: "1.25rem" }}
+              style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "#FFFFFF", fontWeight: 400, lineHeight: 1.25, letterSpacing: "-0.02em", marginBottom: "1.25rem" }}
               data-testid="text-post-title"
             >
               {post.title}
@@ -662,13 +666,13 @@ export default function BlogPost() {
                 })()}
                 <a
                   href="#author"
-                  style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
+                  style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
                   data-testid="text-post-author"
                 >
                   {post.authorName}
                 </a>
                 <span style={{ color: "rgba(255,255,255,0.2)" }}>·</span>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.45)" }} data-testid="text-post-date">
+                <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.45)" }} data-testid="text-post-date">
                   {post.publishedAt ? formatDate(post.publishedAt) : ""}
                 </span>
               </div>
@@ -701,7 +705,7 @@ export default function BlogPost() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="blog-content"
             ref={bodyRef}
-            style={{ fontFamily: "'Inter', sans-serif", fontSize: "1.05rem", color: "rgba(255, 255, 255, 0.82)", lineHeight: 1.85 }}
+            style={{ fontFamily: "'Switzer', sans-serif", fontSize: "1.05rem", color: "rgba(255, 255, 255, 0.82)", lineHeight: 1.85 }}
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
             data-testid="text-post-content"
           />
@@ -731,7 +735,7 @@ export default function BlogPost() {
           >
             <Link
               href="/blog"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", color: "rgba(255,255,255,0.5)", letterSpacing: "0.1em", textDecoration: "none", transition: "color 0.2s" }}
+              style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.7rem", color: "rgba(255,255,255,0.5)", letterSpacing: "0.1em", textDecoration: "none", transition: "color 0.2s" }}
               data-testid="link-back-to-blog-bottom"
             >
               &larr; ALL POSTS
@@ -751,6 +755,7 @@ export default function BlogPost() {
           margin: 1.5rem 0;
         }
       `}</style>
+      <Footer />
     </div>
   );
 }

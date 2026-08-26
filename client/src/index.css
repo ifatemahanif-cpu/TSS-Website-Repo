@@ -1,12 +1,41 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* =========================================================================
+   THE TYPEFACES
+
+   Zodiak for display, Switzer for everything else. Self-hosted from
+   /public/fonts rather than fetched from Google, which is what the three
+   previous faces did: Libre Baskerville for display, Inter for body, JetBrains
+   Mono for the small tracked labels. All 156KB of woff2 sits in the repo, so
+   there is no third-party request in the critical path and no FOUT from a
+   stylesheet that has to resolve a DNS lookup first.
+
+   `font-display: block` on purpose, not `swap`. The homepage's opening move is
+   a sentence sized to fill the screen; swapping a fallback for Zodiak halfway
+   through that would reflow every word mid-film. A short invisible beat is the
+   cheaper artefact.
+
+   Only two families now. The mono was never doing a mono's job here — every
+   use was a 0.55–0.65rem label with 0.1–0.25em of tracking, which is Switzer's
+   job. The one place that genuinely wants fixed pitch is `.blog-content pre`,
+   and that now takes the system mono stack: no download, and it is the face a
+   reader's own editor uses.
+   ========================================================================= */
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-400-normal.woff2')  format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-400-italic.woff2')  format('woff2'); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-700-normal.woff2')  format('woff2'); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: 'Zodiak';  src: url('/fonts/zodiak-700-italic.woff2')  format('woff2'); font-weight: 700; font-style: italic; font-display: block; }
+@font-face { font-family: 'Switzer'; src: url('/fonts/switzer-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: 'Switzer'; src: url('/fonts/switzer-500-normal.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: 'Switzer'; src: url('/fonts/switzer-600-normal.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: block; }
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Libre Baskerville', serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Switzer', sans-serif;
+  --font-serif: 'Zodiak', serif;
+  --font-mono: 'Switzer', sans-serif;
 
   --color-background: #0C0A3E; 
   --color-foreground: #FFFFFF;
@@ -40,8 +69,8 @@
   --color-magenta: #7b1e7a;
   --color-magenta-lift: #942493;
 
-  --font-display: 'Libre Baskerville', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Zodiak', Georgia, serif;
+  --font-body: 'Switzer', system-ui, sans-serif;
 }
 
 @layer base {
@@ -78,11 +107,11 @@
   }
 
   .serif-display {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Zodiak', serif;
   }
   
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Switzer', sans-serif;
   }
 
 }
@@ -194,7 +223,7 @@
   margin: 0 auto;
   column-gap: 0.3em;
   row-gap: 0.06em;
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   /* Sized to fill the screen it is standing on. At the previous cap the film
      ran at 78px and the sentence occupied 21% of a 900px-tall hero, so most
      of the screen was empty for the whole story and only filled up once the
@@ -310,7 +339,7 @@
 .story-hero__offer-number {
   display: block;
   margin-bottom: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   color: #cf81cd;
@@ -321,7 +350,7 @@
    the ratio was 1:9. Size does the lifting, not weight: Inter at 600 on
    navy starts to look like navigation chrome instead of editorial support. */
 .story-hero__offer-label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Switzer', sans-serif;
   font-size: clamp(1rem, 1.35vw, 1.2rem);
   font-weight: 500;
   line-height: 1.4;
@@ -402,7 +431,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.055);
   color: #ffffff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Switzer', sans-serif;
   /* 14.4px was app-chrome size — the pill had more padding than label. */
   font-size: 1rem;
   font-weight: 500;
@@ -453,7 +482,7 @@
   border: 0;
   background: none;
   color: rgba(255, 255, 255, 0.32);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.6rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -517,7 +546,7 @@
 }
 
 .blog-content h2 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.4rem;
   color: #FFFFFF;
   margin-top: 2.5rem;
@@ -527,7 +556,7 @@
 }
 
 .blog-content h3 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.15rem;
   color: #FFFFFF;
   margin-top: 2rem;
@@ -594,12 +623,14 @@
   padding: 1rem;
   overflow-x: auto;
   margin-bottom: 1.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  /* the one place on the site that genuinely wants fixed pitch, so it keeps a
+     real mono — the system stack, so nothing is downloaded for it */
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
   font-size: 0.85rem;
 }
 
 .blog-content code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.08);
   padding: 0.15rem 0.35rem;
@@ -615,7 +646,7 @@
 }
 
 .tiptap h2 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: #FFFFFF;
@@ -623,7 +654,7 @@
 }
 
 .tiptap h3 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Zodiak', serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: #FFFFFF;
@@ -674,13 +705,13 @@
   border-radius: 6px;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.82rem;
   overflow-x: auto;
 }
 
 .tiptap code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Switzer', sans-serif;
   font-size: 0.85em;
   background: rgba(255, 255, 255, 0.08);
   padding: 0.15rem 0.35rem;
@@ -723,5 +754,115 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   .services-grid > * {
     grid-column: span 3 !important;
+  }
+}
+
+
+/* =========================================================================
+   THE BRANDS MARQUEE  (the work rail's footnote)
+
+   In CSS rather than framer for two reasons: an infinite linear loop is what
+   keyframes are for, and `animation-play-state` gives hover-to-pause for one
+   line, which no JS animation does as cheaply. The React side owns everything
+   ELSE about this strip — with motion off, or on a phone, it never renders the
+   marquee at all and becomes an ordinary wrapped list, so there is no
+   prefers-reduced-motion block here to keep in step with it.
+   ========================================================================= */
+@keyframes mqRun {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee__track { animation: mqRun 42s linear infinite; }
+.marquee:hover .marquee__track { animation-play-state: paused; }
+.marquee:hover .marquee__b { color: rgba(255, 255, 255, 0.8); }
+/* the ends fade into the ground so the loop point never shows */
+.marquee::before,
+.marquee::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: clamp(2rem, 6vw, 5rem);
+  pointer-events: none;
+  z-index: 2;
+}
+.marquee::before { left: 0; background: linear-gradient(to right, #0C0A3E, transparent); }
+.marquee::after { right: 0; background: linear-gradient(to left, #0C0A3E, transparent); }
+
+
+/* =========================================================================
+   THE HERO'S SCROLL CUE
+
+   A hairline travelling down its own track. The opening frame is a sentence
+   sitting still and nothing on it says it is about to be edited; this says
+   "this moves" without adding a word of subtext. It is gone before the first
+   word is struck out — that fade is driven by the act's progress in Hero.tsx,
+   and only the travel lives here, because an infinite loop is what keyframes
+   are for.
+
+   THE MARK MAY NEVER REST OUTSIDE THE TRACK, and that is the whole rule.
+
+   It used to: `55%, 100% { top: 100% }` parked it below the track's clipping
+   edge for the back half of every cycle. Measured at twelve phases of the 2.2s
+   loop, SEVEN of them drew nothing but the static 18%-white hairline — 58% of
+   the time the cue was a motionless grey line under the headline, which is
+   indistinguishable from a rendering fault. It is what Fatema saw, and asking
+   "is that a glitch" is the correct reading of a line that does not move.
+
+   So the travel is continuous now and the rest is gone. The mark fades in as
+   it enters and out as it leaves, so the loop seam is a dissolve rather than a
+   jump, and at every instant there is something in the track going down.
+   ========================================================================= */
+@keyframes cueRun {
+  0%   { top: -42%; opacity: 0; }
+  22%  { top: 0%;   opacity: 1; }
+  78%  { top: 58%;  opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.hero-cue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 42%;
+  background: #cf81cd;
+  animation: cueRun 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cue::after { animation: none; top: 0; }
+}
+
+
+/* =========================================================================
+   THE HERO'S OPENING SIZE, BEFORE THE JAVASCRIPT ARRIVES
+
+   Hero.tsx sizes the sentence imperatively — paint() measures the words and
+   writes an exact px font-size onto this paragraph, because "fill nine rows of
+   whatever is left of the sentence" is not a thing CSS can be asked. Inline
+   px always wins over this rule, so on a live page these numbers are never
+   used.
+
+   They are used for the second or two before that: the prerendered HTML on a
+   cold phone, and the SPA shell. The prerender snapshots at 1440x900, so
+   without a rule here that first paint drew 71px words on a 375px screen —
+   54px of sideways overflow and a hero three screens tall, which then
+   collapsed the moment React hydrated. script/prerender.ts strips the inline
+   size from the snapshot so this shows through instead.
+
+   THE BREAKPOINT IS 40rem BECAUSE rowsOpen() IN Hero.tsx BREAKS AT 40rem.
+   Below it the sentence opens over nine rows, above it over 5.4, and the
+   settled size steps DOWN as the viewport gets wider at that seam — which is
+   why this cannot be one clamp. The vw figures are fitted to what paint()
+   actually computes (measured: 31.1px at 375, 39.2px at 768, 71.1px at 1440),
+   so hydration's correction is a rounding error rather than a relayout. If
+   rowsOpen() or the caps in paint() change, re-measure and refit.
+   ========================================================================= */
+.hero-flow {
+  font-size: 8.3vw;
+}
+@media (min-width: 40rem) {
+  .hero-flow {
+    /* 4.45rem is where paint()'s own fill term stops growing, because the
+       container hits max-w-[78rem] and stops widening with the viewport. */
+    font-size: min(4.95vw, 4.45rem);
   }
 }

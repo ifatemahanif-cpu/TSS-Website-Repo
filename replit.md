@@ -41,12 +41,12 @@ Preferred communication style: Simple, everyday language.
 ## CMS Architecture
 
 ### Content Models (Database Tables)
-- **site_settings** — Global key-value store for all page section text (hero, problem, origin, team, services, cta settings as JSON)
-- **team_members** — Name, image path, decisionsLed, brands, whatSheBrings (text array), sort order
+- **site_settings** — Global key-value store for all page section text (hero and services, plus ourStory/join/contact/blog, as JSON). The `problem`, `origin`, `team` and `cta` keys still EXIST in the database but nothing reads or writes them any more — see "Retired, not deleted" below.
+- **team_members** — Name, image path, decisionsLed, brands, whatSheBrings (text array), sort order *(retired — the homepage's three Shapers are constants in the repo now; portfolios still drive /team's cards and the three personal pages)*
 - **services** — serviceId, title, subtitle, items (text array), sort order
-- **problems** — displayId, text, sort order
-- **what_we_do_blocks** — title, description, teaser, expanded text, sort order
-- **page_sections** — Flexible key-value store for arbitrary page copy
+- **problems** — displayId, text, sort order *(retired — no reader, no writer)*
+- **what_we_do_blocks** — title, description, teaser, expanded text, sort order *(retired — no reader, no writer)*
+- **page_sections** — Flexible key-value store for arbitrary page copy *(retired — had endpoints but never had a UI or a reader)*
 - **form_submissions** — formType ("join"/"talk"), data (jsonb of form fields), read (boolean), createdAt (timestamp)
 - **blog_categories** — name, slug (unique), description, sort order
 - **blog_posts** — title, slug (unique), content (HTML), excerpt, featuredImage, authorName, authorId (FK→authors), categoryId (FK→blog_categories), status (draft/published enum), featured (boolean), publishedAt, metaTitle, metaDescription, ogImage, focusKeyword, canonicalUrl, readingTime, sortOrder, createdAt, updatedAt
@@ -54,7 +54,7 @@ Preferred communication style: Simple, everyday language.
 - **email_subscribers** — email (unique), status (active/unsubscribed enum), unsubscribeToken, source, createdAt
 
 ### API Endpoints
-- Public read: `GET /api/cms/settings`, `/api/cms/team`, `/api/cms/services`, `/api/cms/problems`, `/api/cms/whatwedo`
+- Public read: `GET /api/cms/settings`, `/api/cms/services`, `/api/portfolios/summaries`, `/api/cms/portfolios/:slug`
 - Public blog: `GET /api/blog/posts` (pagination + category filter), `GET /api/blog/posts/:slug`, `GET /api/blog/posts/:slug/related`, `GET /api/blog/categories`, `GET /api/blog/authors`, `GET /api/blog/featured`
 - Public subscribe: `POST /api/subscribers`, `GET /api/subscribers/unsubscribe?token=...`
 - Public submit: `POST /api/forms/submit` (Zod-validated: formType enum + data record)
@@ -62,27 +62,45 @@ Preferred communication style: Simple, everyday language.
 - Admin blog: `GET/POST /api/cms/blog/categories`, `PUT/DELETE /api/cms/blog/categories/:id`, `GET/POST /api/cms/blog/posts`, `GET/PUT/DELETE /api/cms/blog/posts/:id`, `POST /api/cms/blog/posts/:id/feature`
 - Admin authors: `GET/POST /api/cms/authors`, `PUT/DELETE /api/cms/authors/:id`
 - Admin subscribers: `GET /api/cms/subscribers`, `PUT /api/cms/subscribers/:id/unsubscribe`, `DELETE /api/cms/subscribers/:id`, `GET /api/cms/subscribers/export`
-- Admin write (auth required): `PUT /api/cms/settings`, `POST/PUT/DELETE` for team/services/problems/whatwedo
+- Admin write (auth required): `PUT /api/cms/settings`, `POST/PUT/DELETE` for services and portfolios
 - Auth: `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
 - File upload: `POST /api/upload` (multer, saves to uploads/)
 
 ### Admin Dashboard
 - Located at `/admin` (login at `/admin/login`)
-- Default credentials: admin / storyshapers2024 (bcrypt hashed)
-- Tabs: Form Entries (with unread badge), Site Settings, Problems, What We Do, Team, Services, Our Story, Join Page, Contact Page, Blog Categories, Blog Posts, Authors, Subscribers
+- Admin user is seeded from `ADMIN_SEED_PASSWORD` and only when no admin exists.
+  Never record the password here — this repo is public.
+- Rotate it at `/admin` → Security, which also clears every other session.
+- Tabs: Form Entries (with unread badge), Site Settings, Services, Our Story, Join Page, Contact Page, Blog Page, Blog Categories, Blog Posts, Authors, Subscribers, Portfolios, Security
 - Blog Posts editor: Author Name + Author Profile (links to authors table), Category, Status, Featured toggle (☆ SET AS FEATURED / ★ FEATURED), SEO fields, video embed in editor
 - Authors tab: Manage author profiles (name, slug, bio, photo upload, LinkedIn, Twitter, Website)
 - Subscribers tab: View all subscribers (status, email, source, date), CSV export, unsubscribe, delete
 
 ### Frontend CMS Integration
-- Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsProblems, useCmsWhatWeDo, useCmsTeam, useCmsServices, useBlogPosts, useBlogPost, useBlogCategories, useBlogAuthors, useFeaturedPost, useRelatedPosts
+- Custom hooks in `client/src/hooks/use-cms.ts`: useCmsSettings, useCmsServices, useBlogPosts, useBlogPost, useBlogCategories, useBlogAuthors, useFeaturedPost, useRelatedPosts
 - All homepage and subpage components fetch from API with hardcoded fallback values
 - Subpage CMS keys: `ourStory`, `join`, `contact` in site_settings table
 - Blog listing (`/blog`): Editorial homepage — featured hero card + category filter tabs + recent posts grid + email subscribe module
 - Blog post (`/blog/:slug`): Author avatar + bio block, sharing row (copy link/X/LinkedIn), subscribe module, related posts section, SEO meta/JSON-LD, video iframe support (YouTube/Vimeo only, sanitized via DOMPurify)
 - Rich text editor: Tiptap with video embed button (converts YouTube/Vimeo watch URLs to embed URLs)
-- Hero and Problem headings use dangerouslySetInnerHTML for HTML formatting (admin-only content)
+- Hero headings use dangerouslySetInnerHTML for HTML formatting (admin-only content)
 - React Query with 60s staleTime for CMS data
+
+### Retired, not deleted
+The homepage rework left several CMS surfaces with nothing on either end of
+them. Their admin tabs, endpoints, hooks and seed writes are gone; **their
+tables and storage methods are deliberately still there.** Nothing points at
+them, so this is one revert away from working again and no copy has been
+thrown away — but a `drizzle-kit push` that drops them takes the text with it,
+which is a separate decision and has not been made.
+
+Retired: `problems`, `what_we_do_blocks`, `page_sections`, `team_members`, and
+the `problem` / `origin` / `team` / `cta` keys in `site_settings`.
+
+Still CMS-driven: blog posts, categories and authors; form submissions;
+subscribers; portfolios (read by `/team`'s cards **and** the three personal
+pages, so it can never go); the homepage services stages; the hero's copy; and
+the full text of `/our-story`, `/join`, `/contact` and the `/blog` header.
 
 ### Email / Subscriptions
 - Email sending via **SendGrid** (`@sendgrid/mail`). Requires `SENDGRID_API_KEY` and `SENDGRID_FROM_EMAIL` secrets.
@@ -119,7 +137,7 @@ Preferred communication style: Simple, everyday language.
 ## Data Storage
 
 - **ORM**: Drizzle ORM with PostgreSQL dialect
-- **Schema**: CMS tables (site_settings, team_members, services, problems, what_we_do_blocks, page_sections, blog_categories, blog_posts, authors, email_subscribers) + users table
+- **Schema**: CMS tables (site_settings, services, portfolios, blog_categories, blog_posts, authors, email_subscribers, form_submissions) + users table, plus the retired-but-present team_members, problems, what_we_do_blocks and page_sections — see "Retired, not deleted" 
 - **Validation**: drizzle-zod generates Zod schemas from Drizzle table definitions
 - **Runtime Storage**: `DatabaseStorage` class using Drizzle queries against PostgreSQL
 - **Database Config**: `drizzle.config.ts` expects `DATABASE_URL` environment variable pointing to PostgreSQL

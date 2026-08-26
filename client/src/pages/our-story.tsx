@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { useCmsSettings } from "@/hooks/use-cms";
@@ -56,7 +57,7 @@ export default function OurStory() {
                 href="/"
                 className="inline-flex items-center gap-2 mb-12 group"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.65rem",
                   color: "rgba(255, 255, 255, 0.6)",
                   letterSpacing: "0.15em",
@@ -80,7 +81,7 @@ export default function OurStory() {
               <span
                 className="block mb-4"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "0.7rem",
                   color: "rgba(255, 255, 255, 0.5)",
                   letterSpacing: "0.3em",
@@ -102,7 +103,7 @@ export default function OurStory() {
               >
                 <span
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(2rem, 4vw, 3.2rem)",
                     fontWeight: 400,
                   }}
@@ -111,7 +112,7 @@ export default function OurStory() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(2rem, 4vw, 3.2rem)",
                     fontWeight: 300,
                     fontStyle: "italic",
@@ -141,7 +142,7 @@ export default function OurStory() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(1.05rem, 1.5vw, 1.2rem)",
                   color: "rgba(255, 255, 255, 0.85)",
                   lineHeight: 2,
@@ -155,7 +156,7 @@ export default function OurStory() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
                   color: "#FFFFFF",
                   lineHeight: 1.8,
@@ -169,7 +170,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -187,7 +188,7 @@ export default function OurStory() {
                 <div className="space-y-6">
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                       color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.9,
@@ -197,7 +198,7 @@ export default function OurStory() {
                   </p>
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                       color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.9,
@@ -207,7 +208,7 @@ export default function OurStory() {
                   </p>
                   <p
                     style={{
-                      fontFamily: "'Libre Baskerville', serif",
+                      fontFamily: "'Zodiak', serif",
                       fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                       color: "rgba(255, 255, 255, 0.85)",
                       lineHeight: 1.9,
@@ -229,7 +230,7 @@ export default function OurStory() {
                 <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.5rem",
                     color: "rgba(255, 255, 255, 0.25)",
                     letterSpacing: "0.3em",
@@ -243,7 +244,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -255,7 +256,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -267,7 +268,7 @@ export default function OurStory() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
                   color: "#FFFFFF",
                   lineHeight: 1.8,
@@ -289,7 +290,7 @@ export default function OurStory() {
                 <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.5rem",
                     color: "rgba(255, 255, 255, 0.25)",
                     letterSpacing: "0.3em",
@@ -303,7 +304,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -315,7 +316,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -327,7 +328,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -339,7 +340,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -360,7 +361,7 @@ export default function OurStory() {
               >
                 <p
                   style={{
-                    fontFamily: "'Libre Baskerville', serif",
+                    fontFamily: "'Zodiak', serif",
                     fontSize: "clamp(1.05rem, 1.5vw, 1.2rem)",
                     color: "#FFFFFF",
                     lineHeight: 1.8,
@@ -382,7 +383,7 @@ export default function OurStory() {
                 <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.5rem",
                     color: "rgba(255, 255, 255, 0.25)",
                     letterSpacing: "0.3em",
@@ -396,7 +397,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -408,7 +409,7 @@ export default function OurStory() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Switzer', sans-serif",
                   fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)",
                   color: "#FFFFFF",
                   lineHeight: 1.8,
@@ -422,7 +423,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -442,7 +443,7 @@ export default function OurStory() {
                 <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255, 255, 255, 0.1)" }} />
                 <span
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.5rem",
                     color: "rgba(255, 255, 255, 0.25)",
                     letterSpacing: "0.3em",
@@ -456,7 +457,7 @@ export default function OurStory() {
               <p
                 className="mb-8"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -468,7 +469,7 @@ export default function OurStory() {
               <p
                 className="mb-10"
                 style={{
-                  fontFamily: "'Libre Baskerville', serif",
+                  fontFamily: "'Zodiak', serif",
                   fontSize: "clamp(0.88rem, 1.15vw, 0.98rem)",
                   color: "rgba(255, 255, 255, 0.8)",
                   lineHeight: 2,
@@ -482,7 +483,7 @@ export default function OurStory() {
               >
                 <p
                   style={{
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "clamp(1.1rem, 1.6vw, 1.35rem)",
                     color: "#FFFFFF",
                     fontWeight: 600,
@@ -506,6 +507,7 @@ export default function OurStory() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

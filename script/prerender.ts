@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { existsSync } from "fs";
-import { optimizeImages } from "./optimize-images";
+import { optimizeImages, optimizeStaticAssets } from "./optimize-images";
 
 /**
  * Prerenders the public routes of the built SPA to static HTML so that
@@ -70,14 +70,14 @@ const ROUTES: RouteDef[] = [
     title: "One website. ₹80,000. Live in 10 working days. — The Story Shapers",
     description:
       "Five selected brands this August. A brand website written, designed and built for ₹80,000 all in, live in 10 working days.",
-    image: "/offer-opengraph.jpg",
+    image: "/offer-opengraph.jpg?v=2026-08-25",
   },
   {
     route: "/offer/terms",
     title: "The August website offer — terms — The Story Shapers",
     description:
       "The full terms and conditions for The Story Shapers' August website offer: scope, timeline, payment, revisions and cancellation.",
-    image: "/offer-opengraph.jpg",
+    image: "/offer-opengraph.jpg?v=2026-08-25",
   },
 ];
 
@@ -236,6 +236,16 @@ export async function prerender() {
       console.warn("[images] optimisation pass failed, serving originals:", err);
     }
 
+    // And the other kind: the plain files copied out of attached_assets/, whose
+    // URLs are seeded into the portfolios table as "/assets/<name>". Same
+    // filename, same format, resized in place — see optimize-images.ts. Its own
+    // try/catch because a failure here is likewise only a slower page.
+    try {
+      await optimizeStaticAssets(page, DIST);
+    } catch (err) {
+      console.warn("[assets] resize pass failed, serving originals:", err);
+    }
+
     for (const { route, title, description, image } of allRoutes) {
       const url = `http://localhost:${PORT}${route}`;
       await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
@@ -258,6 +268,30 @@ export async function prerender() {
         window.scrollTo(0, 0);
       })()`);
       await new Promise((r) => setTimeout(r, 800));
+
+      // UNBAKE THE ONE MEASUREMENT THAT ONLY HOLDS AT THIS VIEWPORT.
+      //
+      // Everything above snapshots a page rendered at 1440x900, which is fine
+      // for markup and fine for anything sized in rem, em, svh or %. The hero
+      // is the exception: it measures its own words and writes a px font-size
+      // onto the flow paragraph, so the file we are about to serve to every
+      // device carried "71.122px" — and a 375px phone drew that, overflowing
+      // sideways by 54px and standing three screens tall until React hydrated
+      // and collapsed it.
+      //
+      // Removing the property lets the .hero-flow rule in index.css take over,
+      // which is viewport-relative and lands within a rounding error of what
+      // paint() will compute a moment later. The word widths are all in `em`,
+      // so they follow whatever size applies and are left exactly as rendered.
+      //
+      // Narrow on purpose: one property, one element, addressed through the DOM
+      // rather than by rewriting the serialized HTML. If another component ever
+      // writes px from a measurement, it needs its own line here — there is no
+      // general way to tell a measured px from an intentional one.
+      await page.evaluate(`(() => {
+        const flow = document.querySelector('#act-shape p[aria-hidden="true"]');
+        if (flow) flow.style.removeProperty("font-size");
+      })()`);
 
       // Per-route head: canonical always, title/description where the SPA
       // doesn't manage them itself

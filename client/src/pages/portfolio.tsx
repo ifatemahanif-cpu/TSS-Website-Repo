@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { imageSrc, fallbackToOriginal } from "@/lib/image-src";
 import { motion, AnimatePresence } from "framer-motion";
 import DOMPurify from "dompurify";
 import { Navbar } from "@/components/layout/Navbar";
@@ -68,7 +69,7 @@ export default function PortfolioPage() {
   }, [openCase]);
 
   if (isLoading) {
-    return <div style={{ minHeight: "100vh", backgroundColor: BG, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.2em" }}>LOADING…</div>;
+    return <div style={{ minHeight: "100vh", backgroundColor: BG, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Switzer', sans-serif", fontSize: "0.7rem", letterSpacing: "0.2em" }}>LOADING…</div>;
   }
   if (error || !portfolio) {
     return <div style={{ minHeight: "100vh", backgroundColor: BG, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>Portfolio not found</div>;
@@ -77,7 +78,7 @@ export default function PortfolioPage() {
   const { hero, brands, stats, caseStudies, testimonials, about, workWithMe, footer } = portfolio;
 
   return (
-    <div style={{ backgroundColor: BG, color: "#FFFFFF", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }} data-testid={`portfolio-${portfolio.slug}`}>
+    <div style={{ backgroundColor: BG, color: "#FFFFFF", minHeight: "100vh", fontFamily: "'Switzer', sans-serif" }} data-testid={`portfolio-${portfolio.slug}`}>
       <Navbar />
 
       {/* BACK BUTTON */}
@@ -88,7 +89,7 @@ export default function PortfolioPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: "0.4rem",
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Switzer', sans-serif",
             fontSize: "0.6rem",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
@@ -109,11 +110,11 @@ export default function PortfolioPage() {
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-12 items-center">
           <div>
             {hero.eyebrow && (
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED, marginBottom: "1.5rem" }} data-testid="text-hero-eyebrow">
+              <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED, marginBottom: "1.5rem" }} data-testid="text-hero-eyebrow">
                 {hero.eyebrow}
               </div>
             )}
-            <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2.4rem, 5vw, 4.4rem)", lineHeight: 1.1, fontWeight: 400, letterSpacing: "-0.02em", marginBottom: "1.5rem" }} data-testid="text-hero-headline">
+            <h1 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(2.4rem, 5vw, 4.4rem)", lineHeight: 1.1, fontWeight: 400, letterSpacing: "-0.02em", marginBottom: "1.5rem" }} data-testid="text-hero-headline">
               <span>{hero.headlineLine1 || `${portfolio.name}.`}</span>
               {hero.headlineLine2 ? (
                 <>
@@ -136,7 +137,7 @@ export default function PortfolioPage() {
               {(hero.ctas || []).map((cta, i) => (
                 <a key={i} href={cta.href} target={cta.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "'Switzer', sans-serif",
                     fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase",
                     padding: "0.95rem 1.5rem", borderRadius: "6px",
                     backgroundColor: i === 0 ? ACCENT : "transparent",
@@ -157,7 +158,7 @@ export default function PortfolioPage() {
           {hero.portrait && (
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}
               style={{ aspectRatio: "4/5", overflow: "hidden", borderRadius: "16px", border: `1px solid ${BORDER}`, backgroundColor: CARD }}>
-              <img src={hero.portrait} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-hero-portrait" />
+              <img src={imageSrc(hero.portrait, "lg")} onError={fallbackToOriginal(hero.portrait)} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-hero-portrait" />
             </motion.div>
           )}
         </div>
@@ -167,7 +168,7 @@ export default function PortfolioPage() {
       {brands.items && brands.items.length > 0 && (
         <section style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, padding: "2.5rem 0", overflow: "hidden", backgroundColor: "#0a0833" }}>
           <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 1.5rem", marginBottom: "1.5rem" }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED }}>
+            <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MUTED }}>
               {brands.title || "Brands"}
             </div>
           </div>
@@ -176,7 +177,7 @@ export default function PortfolioPage() {
               style={{ display: "flex", gap: "3rem", paddingRight: "3rem", flexShrink: 0 }}>
               {[...brands.items, ...brands.items].map((b, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.6rem", whiteSpace: "nowrap", color: MUTED, fontSize: "1rem" }} data-testid={`text-brand-${i}`}>
-                  {b.logo && <img src={b.logo} alt="" style={{ width: 18, height: 18, objectFit: "contain", opacity: 0.8 }} />}
+                  {b.logo && <img src={imageSrc(b.logo, "sm")} onError={fallbackToOriginal(b.logo)} alt="" style={{ width: 18, height: 18, objectFit: "contain", opacity: 0.8 }} />}
                   <span>{b.name}</span>
                 </div>
               ))}
@@ -189,11 +190,11 @@ export default function PortfolioPage() {
       {caseStudies.items && caseStudies.items.length > 0 ? (
         <section id="work" style={{ padding: "5rem 1.5rem 6rem", maxWidth: "1280px", margin: "0 auto" }}>
           {caseStudies.label && (
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
+            <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
               {caseStudies.label}
             </div>
           )}
-          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "3rem", maxWidth: "760px" }} data-testid="text-cases-title">
+          <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "3rem", maxWidth: "760px" }} data-testid="text-cases-title">
             {caseStudies.title || "Selected work"}
           </h2>
           <div style={{ display: "grid", gap: "1.25rem" }}>
@@ -214,27 +215,27 @@ export default function PortfolioPage() {
                   >
                     {c.image && (
                       <div style={{ width: "100%", aspectRatio: "16/6", overflow: "hidden", borderBottom: `1px solid ${BORDER}` }}>
-                        <img src={c.image} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid={`img-case-${i}`} />
+                        <img src={imageSrc(c.image, "full")} onError={fallbackToOriginal(c.image)} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid={`img-case-${i}`} />
                       </div>
                     )}
                     <div style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: MUTED }}>
+                      <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: MUTED }}>
                         {c.tag}
                       </div>
-                      <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.4rem", lineHeight: 1.3, fontWeight: 400 }}>
+                      <div style={{ fontFamily: "'Zodiak', serif", fontSize: "1.4rem", lineHeight: 1.3, fontWeight: 400 }}>
                         {c.cardTitle}
                       </div>
                       {c.metrics && c.metrics.length > 0 && (
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", marginTop: "0.5rem" }}>
                           {c.metrics.map((m, mi) => (
                             <div key={mi}>
-                              <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.4rem", color: "#FFAEDA" }}>{m.value}</div>
+                              <div style={{ fontFamily: "'Zodiak', serif", fontSize: "1.4rem", color: "#FFAEDA" }}>{m.value}</div>
                               <div style={{ fontSize: "0.75rem", color: MUTED }}>{m.label}</div>
                             </div>
                           ))}
                         </div>
                       )}
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#FFAEDA", marginTop: "0.5rem" }}>
+                      <span style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#FFAEDA", marginTop: "0.5rem" }}>
                         Read full case →
                       </span>
                     </div>
@@ -245,14 +246,14 @@ export default function PortfolioPage() {
                       style={{ padding: "1.75rem 2rem", borderLeft: `3px solid ${ACCENT}`, margin: "0 0 0 1rem", backgroundColor: "rgba(123,30,122,0.08)", borderRadius: "0 12px 12px 0" }}
                       data-testid={`testimonial-${i}`}
                     >
-                      <p style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.05rem", lineHeight: 1.6, fontStyle: "italic", marginBottom: "1rem", color: "rgba(255,255,255,0.92)" }}>
+                      <p style={{ fontFamily: "'Zodiak', serif", fontSize: "1.05rem", lineHeight: 1.6, fontStyle: "italic", marginBottom: "1rem", color: "rgba(255,255,255,0.92)" }}>
                         "{t.quote}"
                       </p>
                       <footer style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
                         {t.avatar ? (
-                          <img src={t.avatar} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
+                          <img src={imageSrc(t.avatar, "sm")} onError={fallbackToOriginal(t.avatar)} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
                         ) : (
-                          <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", color: "#fff" }}>
+                          <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", color: "#fff" }}>
                             {(t.name || "").split(" ").map((n) => n[0]).slice(0, 2).join("")}
                           </div>
                         )}
@@ -274,11 +275,11 @@ export default function PortfolioPage() {
                   style={{ padding: "1.75rem 2rem", borderLeft: `3px solid ${ACCENT}`, margin: "0 0 0 1rem", backgroundColor: "rgba(123,30,122,0.08)", borderRadius: "0 12px 12px 0" }}
                   data-testid={`testimonial-extra-${i}`}
                 >
-                  <p style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.05rem", lineHeight: 1.6, fontStyle: "italic", marginBottom: "1rem", color: "rgba(255,255,255,0.92)" }}>
+                  <p style={{ fontFamily: "'Zodiak', serif", fontSize: "1.05rem", lineHeight: 1.6, fontStyle: "italic", marginBottom: "1rem", color: "rgba(255,255,255,0.92)" }}>
                     "{t.quote}"
                   </p>
                   <footer style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
-                    <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", color: "#fff" }}>
+                    <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", color: "#fff" }}>
                       {(t.name || "").split(" ").map((n) => n[0]).slice(0, 2).join("")}
                     </div>
                     <div>
@@ -292,10 +293,10 @@ export default function PortfolioPage() {
         </section>
       ) : (
         <section id="work" style={{ padding: "5rem 1.5rem 6rem", maxWidth: "1280px", margin: "0 auto" }}>
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
+          <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
             Selected work
           </div>
-          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }}>
+          <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }}>
             Case studies coming soon.
           </h2>
           <p style={{ color: MUTED, fontSize: "1rem", maxWidth: "560px" }}>
@@ -308,11 +309,11 @@ export default function PortfolioPage() {
       {about && about.paragraphs && about.paragraphs.length > 0 ? (
         <section id="about" style={{ padding: "6rem 1.5rem", maxWidth: "1080px", margin: "0 auto" }}>
           {about.label && (
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
+            <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
               {about.label}
             </div>
           )}
-          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "2.5rem" }} data-testid="text-about-title">
+          <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "2.5rem" }} data-testid="text-about-title">
             {about.title}
           </h2>
           <div className={about.photo ? "grid grid-cols-1 md:grid-cols-[1.6fr_1fr] gap-12 items-start" : "grid grid-cols-1 gap-12 items-start"}>
@@ -323,14 +324,14 @@ export default function PortfolioPage() {
                 </p>
               ))}
               {about.pullQuote && (
-                <blockquote style={{ borderLeft: `3px solid ${ACCENT}`, padding: "0.5rem 0 0.5rem 1.25rem", margin: "2rem 0", fontFamily: "'Libre Baskerville', serif", fontStyle: "italic", fontSize: "1.25rem", lineHeight: 1.5, color: "#FFAEDA" }} data-testid="text-about-pullquote">
+                <blockquote style={{ borderLeft: `3px solid ${ACCENT}`, padding: "0.5rem 0 0.5rem 1.25rem", margin: "2rem 0", fontFamily: "'Zodiak', serif", fontStyle: "italic", fontSize: "1.25rem", lineHeight: 1.5, color: "#FFAEDA" }} data-testid="text-about-pullquote">
                   "{about.pullQuote}"
                 </blockquote>
               )}
               {about.tags && about.tags.length > 0 && (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "2rem" }}>
                   {about.tags.map((t, i) => (
-                    <span key={i} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.15em", textTransform: "uppercase", padding: "0.5rem 0.85rem", borderRadius: "999px", border: `1px solid ${BORDER}`, color: MUTED }}>
+                    <span key={i} style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.15em", textTransform: "uppercase", padding: "0.5rem 0.85rem", borderRadius: "999px", border: `1px solid ${BORDER}`, color: MUTED }}>
                       {t}
                     </span>
                   ))}
@@ -340,11 +341,11 @@ export default function PortfolioPage() {
             {about.photo && (
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div style={{ aspectRatio: "4/5", overflow: "hidden", borderRadius: "12px", border: `1px solid ${BORDER}` }}>
-                  <img src={about.photo} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-photo" />
+                  <img src={imageSrc(about.photo, "lg")} onError={fallbackToOriginal(about.photo)} alt={portfolio.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-photo" />
                 </div>
                 {about.secondaryPhoto && (
                   <div style={{ aspectRatio: "4/3", overflow: "hidden", borderRadius: "12px", border: `1px solid ${BORDER}` }}>
-                    <img src={about.secondaryPhoto} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-secondary" />
+                    <img src={imageSrc(about.secondaryPhoto, "lg")} onError={fallbackToOriginal(about.secondaryPhoto)} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} data-testid="img-about-secondary" />
                   </div>
                 )}
               </div>
@@ -353,10 +354,10 @@ export default function PortfolioPage() {
         </section>
       ) : (
         <section id="about" style={{ padding: "6rem 1.5rem", maxWidth: "1080px", margin: "0 auto" }}>
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
+          <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: ACCENT, marginBottom: "1rem" }}>
             About
           </div>
-          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }}>
+          <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }}>
             More about {portfolio.name} is on the way.
           </h2>
           <p style={{ color: MUTED, fontSize: "1rem", maxWidth: "560px" }}>
@@ -369,7 +370,7 @@ export default function PortfolioPage() {
       {workWithMe && workWithMe.cards && workWithMe.cards.length > 0 && (
         <section style={{ padding: "5rem 1.5rem", borderTop: `1px solid ${BORDER}`, backgroundColor: "#0a0833" }}>
           <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
-            <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }} data-testid="text-work-title">
+            <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }} data-testid="text-work-title">
               {workWithMe.title}
             </h2>
             {workWithMe.subtitle && (
@@ -383,16 +384,16 @@ export default function PortfolioPage() {
                   style={{ padding: "2rem", backgroundColor: CARD, borderRadius: "12px", border: `1px solid ${BORDER}`, display: "flex", flexDirection: "column", gap: "0.85rem" }}
                   data-testid={`work-card-${i}`}>
                   {card.eyebrow && (
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#FFAEDA" }}>
+                    <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#FFAEDA" }}>
                       {card.eyebrow}
                     </div>
                   )}
-                  <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.35rem", lineHeight: 1.3 }}>{card.title}</h3>
-                  {card.price && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem", color: MUTED, letterSpacing: "0.05em" }}>{card.price}</div>}
+                  <h3 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.35rem", lineHeight: 1.3 }}>{card.title}</h3>
+                  {card.price && <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.7rem", color: MUTED, letterSpacing: "0.05em" }}>{card.price}</div>}
                   <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.78)", flex: 1 }}>{card.description}</p>
                   {card.ctaHref && (
                     <a href={card.ctaHref} target={card.ctaHref.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
-                      style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#FFAEDA", textDecoration: "none", marginTop: "0.5rem" }}
+                      style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#FFAEDA", textDecoration: "none", marginTop: "0.5rem" }}
                       data-testid={`button-work-cta-${i}`}>
                       {card.ctaLabel || "Get in touch →"}
                     </a>
@@ -406,13 +407,13 @@ export default function PortfolioPage() {
 
       {!workWithMe || !workWithMe.cards || workWithMe.cards.length === 0 ? (
         <section style={{ padding: "5rem 1.5rem", borderTop: `1px solid ${BORDER}`, backgroundColor: "#0a0833", textAlign: "center" }}>
-          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }}>
+          <h2 style={{ fontFamily: "'Zodiak', serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", lineHeight: 1.2, fontWeight: 400, marginBottom: "1rem" }}>
             Want to work with {portfolio.name}?
           </h2>
           <p style={{ color: MUTED, fontSize: "1rem", marginBottom: "1.5rem", maxWidth: "560px", marginLeft: "auto", marginRight: "auto" }}>
             Specific offers will be listed here soon. Until then, reach out to start a conversation.
           </p>
-          <a href="/contact" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase", padding: "0.95rem 1.5rem", borderRadius: "6px", backgroundColor: ACCENT, color: "#FFFFFF", border: `1px solid ${ACCENT}`, textDecoration: "none", display: "inline-block" }}
+          <a href="/contact" style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase", padding: "0.95rem 1.5rem", borderRadius: "6px", backgroundColor: ACCENT, color: "#FFFFFF", border: `1px solid ${ACCENT}`, textDecoration: "none", display: "inline-block" }}
             data-testid="button-work-fallback-contact">
             Get in touch →
           </a>
@@ -446,13 +447,13 @@ export default function PortfolioPage() {
             data-testid="img-footer-logo"
           />
           {footer.tagline && (
-            <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "0.95rem", color: "rgba(255,255,255,0.75)", fontStyle: "italic", marginBottom: "1rem" }} data-testid="text-footer-tagline">
+            <div style={{ fontFamily: "'Zodiak', serif", fontSize: "0.95rem", color: "rgba(255,255,255,0.75)", fontStyle: "italic", marginBottom: "1rem" }} data-testid="text-footer-tagline">
               {footer.tagline}
             </div>
           )}
           <a
             href={`mailto:${footer.email || "hello@storyshaperscollective.com"}`}
-            style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)", textDecoration: "none", display: "block", marginBottom: footer.links && footer.links.length ? "1rem" : "1.5rem" }}
+            style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.6)", textDecoration: "none", display: "block", marginBottom: footer.links && footer.links.length ? "1rem" : "1.5rem" }}
             data-testid="link-footer-email"
           >
             {footer.email || "hello@storyshaperscollective.com"}
@@ -461,14 +462,14 @@ export default function PortfolioPage() {
             <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
               {footer.links.map((l, i) => (
                 <a key={i} href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
-                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
+                  style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
                   data-testid={`link-footer-${i}`}>
                   {l.label}
                 </a>
               ))}
             </div>
           )}
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", opacity: 0.4 }}>
+          <p style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.75rem", opacity: 0.4 }}>
             {footer.copyright || "© 2026 The Story Shapers. All rights reserved."}
           </p>
         </div>
@@ -491,14 +492,14 @@ export default function PortfolioPage() {
                 const c = caseStudies.items![openCase];
                 return (
                   <>
-                    {c.tag && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#FFAEDA", marginBottom: "1rem" }}>{c.tag}</div>}
-                    <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.8rem", lineHeight: 1.25, marginBottom: "2rem", fontWeight: 400 }}>{c.modalTitle || c.cardTitle}</h3>
+                    {c.tag && <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#FFAEDA", marginBottom: "1rem" }}>{c.tag}</div>}
+                    <h3 style={{ fontFamily: "'Zodiak', serif", fontSize: "1.8rem", lineHeight: 1.25, marginBottom: "2rem", fontWeight: 400 }}>{c.modalTitle || c.cardTitle}</h3>
                     {c.situation && (
                       <CaseBlock label="The situation">{c.situation}</CaseBlock>
                     )}
                     {c.image && (
                       <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", borderRadius: "8px", marginBottom: "1.5rem", border: `1px solid ${BORDER}` }}>
-                        <img src={c.image} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        <img src={imageSrc(c.image, "full")} onError={fallbackToOriginal(c.image)} alt={c.cardTitle || ""} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     )}
                     {c.whatIBuilt && (
@@ -511,7 +512,7 @@ export default function PortfolioPage() {
                       <div style={{ marginTop: "2rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1rem" }}>
                         {c.metrics.map((m, mi) => (
                           <div key={mi} style={{ padding: "1rem", borderRadius: "8px", border: `1px solid ${BORDER}`, backgroundColor: CARD }}>
-                            <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "1.5rem", color: "#FFAEDA" }}>{m.value}</div>
+                            <div style={{ fontFamily: "'Zodiak', serif", fontSize: "1.5rem", color: "#FFAEDA" }}>{m.value}</div>
                             <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: "0.25rem" }}>{m.label}</div>
                           </div>
                         ))}
@@ -531,7 +532,7 @@ export default function PortfolioPage() {
 function CaseBlock({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: "1.5rem" }}>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>
+      <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>
         {label}
       </div>
       <p style={{ fontSize: "1rem", lineHeight: 1.7, color: "rgba(255,255,255,0.85)" }}>{children}</p>
@@ -547,7 +548,7 @@ function CaseBlockHtml({ label, children }: { label: string; children: string })
   const sanitized = DOMPurify.sanitize(children, { ALLOWED_TAGS: ["p", "br", "strong", "em", "u", "a", "ul", "ol", "li", "h2", "h3", "h4", "blockquote", "code", "pre"], ALLOWED_ATTR: ["href", "target", "rel"] });
   return (
     <div style={{ marginBottom: "1.5rem" }}>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>
+      <div style={{ fontFamily: "'Switzer', sans-serif", fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.5rem" }}>
         {label}
       </div>
       <div className="portfolio-rich" style={{ fontSize: "1rem", lineHeight: 1.7, color: "rgba(255,255,255,0.85)" }} dangerouslySetInnerHTML={{ __html: sanitized }} />

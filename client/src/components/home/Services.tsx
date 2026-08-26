@@ -1,263 +1,257 @@
-import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { SectionLabel, SectionHeading } from "./SectionAnimations";
-import { GradientBlobs, servicesBlobs } from "./GradientBlobs";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import { Act, ActLabel, ActWrap } from "./Act";
 import { useCmsSettings, useCmsServices } from "@/hooks/use-cms";
 
-const hardcodedServices = [
+const DEEP = "#09072B";
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/**
+ * The three stages, as the CMS serves them. Unlike the peak's bios, this is a
+ * FALLBACK and not the source of truth — /api/cms/services already returns
+ * exactly these three with exactly these six things inside each, so the section
+ * stays wired to the CMS and this is what shows when the database is
+ * unreachable (which includes `npm run dev:client`).
+ *
+ * It is worth keeping in step by hand. The old fallback listed five services
+ * with subtitles, none of which had been true since the CMS rows were rewritten,
+ * so every reader who arrived during a database blip got a different offer from
+ * everyone else.
+ */
+const FALLBACK = [
   {
-    id: "clarity",
-    title: "Clarity & Direction",
-    subtitle: "When your team can't agree on what the brand stands for.",
+    id: "shape",
+    title: "Shape your story",
     items: [
-      "Brand audits",
-      "Positioning",
-      "Messaging architecture",
-      "Go-to-market frameworks",
-    ],
-  },
-  {
-    id: "website",
-    title: "Website, Messaging & Discoverability",
-    subtitle: "When the product has evolved but the website hasn't — and good work isn't showing up where it should.",
-    items: [
-      "Core messaging",
-      "Conversion copy",
-      "Landing pages",
-      "SEO",
-    ],
-  },
-  {
-    id: "content",
-    title: "Content Systems",
-    subtitle: "When content exists but nothing compounds.",
-    items: [
+      "Market & category research",
+      "Product-market fit narrative",
+      "Go-to-market strategy",
+      "Brand voice & messaging document",
       "Content strategy",
-      "Editorial calendars",
-      "Storytelling frameworks",
-      "Repurposing systems",
+      "Social starter kit",
     ],
   },
   {
-    id: "campaigns",
-    title: "Brand & Campaign Strategy",
-    subtitle: "When launches spike and fade instead of building on each other.",
+    id: "scale",
+    title: "Scale your story",
     items: [
-      "Campaign architecture",
-      "Integrated planning",
-      "Launch messaging",
-      "Always-on systems",
+      "Multi-channel content",
+      "SEO/AEO content & strategy",
+      "Performance marketing",
+      "Social media marketing",
+      "Customer retention marketing",
+      "Content operations",
     ],
   },
   {
-    id: "leadership",
-    title: "Senior Marketing Leadership",
-    subtitle: "When you need experienced judgment without a full-time hire.",
+    id: "sharpen",
+    title: "Sharpen your story",
     items: [
-      "Strategic planning",
-      "Quarterly reviews",
-      "Decision support",
-      "Team playbooks",
+      "Brand strategy audit",
+      "Content strategy audit",
+      "Repositioning strategy",
+      "Digital PR",
+      "Brand partnerships",
+      "Brand retrospective",
     ],
   },
 ];
 
+/**
+ * WHAT WE DO — three stages, eighteen things, no sentence in front of them.
+ *
+ * The study had invented a four-way "a symptom you'd recognise" framing that
+ * exists nowhere else in the business. This is the live site's offer verbatim,
+ * because the three named stages ARE the answer to "how we work with you" and a
+ * standfirst in front of them only delayed it. Fatema cut that standfirst on
+ * 25 Aug along with the work rail's, which is why the heading carries the gap
+ * down to the list itself.
+ *
+ * The eighteen things used to be a faint list at 0.74 white and 15px, which is
+ * how a full service offer ends up looking like small print. Each one now gets
+ * an accent rule of its own and enough weight to be read as a line item —
+ * eighteen ruled entries is what "full-stack" looks like without anyone having
+ * to claim it.
+ */
 export function Services() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  return (
+    <Act id="services" kind="flow" ground="dark" bg={DEEP}>
+      {(progress) => <Do progress={progress} />}
+    </Act>
+  );
+}
+
+function Do({ progress }: { progress: MotionValue<number> }) {
+  const headRef = useRef<HTMLDivElement>(null);
+  const headIn = useInView(headRef, { once: true, margin: "-80px" });
 
   const { data: settings } = useCmsSettings();
-  const { data: cmsServicesData } = useCmsServices();
+  const { data: cmsServices } = useCmsServices();
 
   const serviceSettings = settings?.services;
-  const services = cmsServicesData
-    ? cmsServicesData.map((s: any, i: number) => ({
-        id: s.id?.toString() ?? `service-${i}`,
-        title: s.title,
-        subtitle: s.subtitle,
-        items: s.items || [],
-      }))
-    : hardcodedServices;
+  const rows =
+    cmsServices && cmsServices.length
+      ? cmsServices.map((s: any, i: number) => ({
+          id: s.id?.toString() ?? `service-${i}`,
+          title: (s.title ?? "").trim(),
+          /* the CMS rows carry trailing spaces from whoever typed them, and a
+             trailing space inside a grid cell is a wider cell */
+          items: (s.items ?? []).map((t: string) => t.trim()).filter(Boolean),
+        }))
+      : FALLBACK;
 
   return (
-    <section
-      ref={sectionRef}
-      id="services"
-      className="relative px-2 md:px-4 lg:px-6 py-4"
-      style={{ backgroundColor: "#0C0A3E" }}
-      data-testid="services-section"
+    <ActWrap>
+      <div ref={headRef}>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={headIn ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: EASE }}
+        >
+          <ActLabel className="mb-[1.1rem]" data-testid="text-services-label">
+            {serviceSettings?.label ?? "Services"}
+          </ActLabel>
+
+          {/* the standfirst below this used to carry the gap down to the list;
+              with it gone the heading owns that space itself */}
+          <h2
+            className="mb-[clamp(2.2rem,4.5vh,3.4rem)]"
+            style={{
+              fontFamily: "'Zodiak', Georgia, serif",
+              fontWeight: 400,
+              fontSize: "clamp(2.2rem, 4.4vw, 3.4rem)",
+              lineHeight: 1.06,
+              letterSpacing: "-0.025em",
+              textWrap: "balance",
+              color: "#FFFFFF",
+              margin: 0,
+            }}
+            data-testid="text-services-heading"
+          >
+            {serviceSettings?.heading ?? "How we work with you."}
+          </h2>
+        </motion.div>
+      </div>
+
+      <div className="grid">
+        {rows.map((row, i) => (
+          <Row key={row.id} row={row} index={i} progress={progress} />
+        ))}
+      </div>
+    </ActWrap>
+  );
+}
+
+function Row({
+  row,
+  index,
+  progress,
+}: {
+  row: { id: string; title: string; items: string[] };
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const reduced = useReducedMotion();
+
+  /* windows sit around p 0.26-0.62: this is a FLOW act, so progress runs across
+     the section's whole visible life and 0.5 is the moment it is centred */
+  const q = useTransform(progress, [0.26 + 0.085 * index, 0.37 + 0.085 * index], [0, 1], {
+    clamp: true,
+  });
+  const y = useTransform(q, (v) => (1 - v) * 16);
+
+  return (
+    <motion.div
+      className="group grid grid-cols-[2.2rem_1fr] items-start gap-x-[clamp(1rem,3vw,3rem)] gap-y-[0.9rem] border-t border-white/[0.13] py-[clamp(1.6rem,3vh,2.4rem)] last:border-b md:grid-cols-[3rem_1fr_1.5fr]"
+      style={reduced ? undefined : { opacity: q, y }}
+      data-testid={`services-row-${index + 1}`}
     >
       <div
-        className="relative overflow-hidden"
         style={{
-          backgroundColor: "#0C0A3E",
-          color: "#FFFFFF",
-          borderRadius: "20px",
-          padding: "clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem)",
+          fontFamily: "ui-monospace, monospace",
+          fontSize: "0.72rem",
+          letterSpacing: "0.16em",
+          /* 0.34 measured 2.99:1 at 11.5px against 4.5:1 required — the numbers
+             read as accidental marks in a gutter rather than as a ranking */
+          color: "rgba(255,255,255,0.54)",
+          paddingTop: "0.45rem",
         }}
       >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-        <GradientBlobs blobs={servicesBlobs} />
-        <div className="max-w-[1100px] mx-auto relative z-[1]">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-10 md:mb-14"
-          >
-            <SectionLabel isInView={isInView} testId="text-services-label">{serviceSettings?.label ?? "Services"}</SectionLabel>
-
-            <SectionHeading isInView={isInView} testId="text-services-heading">
-              {serviceSettings?.heading ?? "How we work with you."}
-            </SectionHeading>
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
-                lineHeight: 1.8,
-                opacity: 0.8,
-                fontStyle: "italic",
-              }}
-            >
-              {serviceSettings?.subheading ?? "Every brand arrives with different questions. The starting point is always the same."}
-            </p>
-          </motion.div>
-
-          <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "1.5rem" }}
-            className="services-grid"
-          >
-            {services.map((service, i) => (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 25 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.15 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  gridColumn: i < 3 ? "span 2" : "span 3",
-                  backgroundColor: "rgba(255, 255, 255, 0.04)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderRadius: "16px",
-                  padding: "clamp(1.5rem, 2.5vw, 2rem)",
-                  display: "flex",
-                  flexDirection: "column",
-                  transition: "border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(123, 30, 122, 0.35)";
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.07)";
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 8px 32px rgba(123, 30, 122, 0.15), 0 2px 8px rgba(0,0,0,0.2)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-                data-testid={`card-service-${service.id}`}
-              >
-                <div
-                  className="absolute top-0 left-0 right-0"
-                  style={{
-                    height: "2px",
-                    background: "linear-gradient(90deg, transparent, rgba(123, 30, 122, 0.5), rgba(42, 40, 112, 0.4), transparent)",
-                  }}
-                />
-
-                <div className="flex items-start gap-4 mb-3">
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "1.4rem",
-                      fontWeight: 700,
-                      letterSpacing: "-0.02em",
-                      color: "rgba(123, 30, 122, 0.5)",
-                      flexShrink: 0,
-                      lineHeight: 1,
-                      marginTop: "2px",
-                    }}
-                  >
-                    0{i + 1}
-                  </span>
-                  <h3
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "clamp(0.95rem, 1.1vw, 1.05rem)",
-                      fontWeight: 600,
-                      letterSpacing: "0.02em",
-                      lineHeight: 1.3,
-                    }}
-                    data-testid={`text-service-title-${i}`}
-                  >
-                    {service.title}
-                  </h3>
-                </div>
-
-                <p
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(0.82rem, 0.95vw, 0.9rem)",
-                    lineHeight: 1.65,
-                    opacity: 0.7,
-                    fontStyle: "italic",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {service.subtitle}
-                </p>
-
-                <div
-                  className="flex flex-col gap-2"
-                  style={{
-                    marginTop: "auto",
-                    paddingTop: "1rem",
-                    borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-                  }}
-                >
-                  {service.items.map((item, itemIdx) => (
-                    <span
-                      key={itemIdx}
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.7rem",
-                        letterSpacing: "0.04em",
-                        padding: "0.35rem 0.75rem",
-                        borderRadius: "8px",
-                        backgroundColor: "rgba(255, 255, 255, 0.06)",
-                        border: "1px solid rgba(255, 255, 255, 0.12)",
-                        color: "rgba(255, 255, 255, 0.85)",
-                        lineHeight: 1.2,
-                        alignSelf: "flex-start",
-                        transition: "border-color 0.2s ease, background-color 0.2s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(123, 30, 122, 0.4)";
-                        e.currentTarget.style.backgroundColor = "rgba(123, 30, 122, 0.1)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.12)";
-                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.06)";
-                      }}
-                      data-testid={`badge-service-item-${i}-${itemIdx}`}
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {`0${index + 1}`}
       </div>
-    </section>
+
+      <h3
+        style={{
+          fontFamily: "'Zodiak', Georgia, serif",
+          fontWeight: 400,
+          fontSize: "clamp(1.3rem, 2.2vw, 1.8rem)",
+          lineHeight: 1.18,
+          letterSpacing: "-0.02em",
+          color: "#FFFFFF",
+          margin: 0,
+        }}
+        data-testid={`text-services-title-${index + 1}`}
+      >
+        {row.title}
+      </h3>
+
+      {/* two columns per stage above 46rem, so a service reads as a short menu
+          rather than as a scroll of its own. Starts in the second column on a
+          phone, under the title rather than under the number. */}
+      <ul className="col-start-2 m-0 grid list-none grid-cols-1 gap-x-[1.8rem] gap-y-[0.7rem] p-0 sm:grid-cols-2 md:col-start-3">
+        {row.items.map((item, j) => (
+          <Item
+            key={item}
+            label={item}
+            progress={progress}
+            at={0.29 + 0.085 * index + 0.016 * j}
+          />
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
+
+/**
+ * A rule, not a bullet. It sits on the item's own baseline grid and reads as an
+ * index entry rather than as a list of features.
+ *
+ * The six inside a stage come up one after another, the same way the pillars do
+ * under the hero — a service is a list, and a list that arrives as one block is
+ * a paragraph pretending to be one.
+ */
+function Item({
+  label,
+  progress,
+  at,
+}: {
+  label: string;
+  progress: MotionValue<number>;
+  at: number;
+}) {
+  const reduced = useReducedMotion();
+  const opacity = useTransform(progress, [at, at + 0.05], [0, 1], { clamp: true });
+
+  return (
+    <motion.li
+      className="grid grid-cols-[1.1rem_minmax(0,1fr)] items-baseline gap-[0.75rem] transition-colors duration-200 text-white/90 group-hover:text-white"
+      style={{
+        fontSize: "clamp(0.96rem, 1.14vw, 1.08rem)",
+        lineHeight: 1.45,
+        ...(reduced ? null : { opacity }),
+      }}
+    >
+      <span
+        aria-hidden="true"
+        className="block h-px w-full -translate-y-[0.34em] bg-[#cf81cd] opacity-70 transition-opacity duration-200 group-hover:opacity-100"
+      />
+      {label}
+    </motion.li>
   );
 }
