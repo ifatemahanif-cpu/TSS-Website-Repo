@@ -227,7 +227,7 @@ function Intro({ stacked }: { stacked?: boolean }) {
           data-testid="text-peak-intro"
         >
           We've built teams and fixed broken brand systems from inside
-          fast-scaling companies.
+          fast-scaling companies. But we are storytellers first.
         </p>
       </div>
     </div>
