@@ -8,12 +8,9 @@ export function useCmsSettings() {
   });
 }
 
-export function useCmsServices() {
-  return useQuery<any[]>({
-    queryKey: ["/api/cms/services"],
-    staleTime: 60000,
-  });
-}
+/* useCmsServices was removed on 26 Aug along with the route it called. A hook
+   pointing at a deleted endpoint is worse than no hook — it compiles, it looks
+   available, and it 404s at runtime. */
 
 export function useBlogPosts(options?: { page?: number; categoryId?: number }) {
   const params = new URLSearchParams();

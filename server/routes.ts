@@ -214,10 +214,28 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.send(buffer);
   });
 
+  /**
+   * The settings the SITE still reads. Anything else in the table is retired
+   * copy and is not sent.
+   *
+   * Five keys — team, cta, origin, services, problem — belong to sections that
+   * no longer exist. They were 1,076 bytes, a tenth of this payload, shipped to
+   * every visitor on every page for nothing. They are still in the database and
+   * still recoverable; they are simply not published any more.
+   *
+   * A key REMOVED from here disappears from the site, so a section wired back
+   * up later has to be added back here too. `/api/cms/settings/:key` is
+   * deliberately not filtered — the admin reads single keys directly and
+   * anything retired should stay inspectable.
+   */
+  const PUBLISHED_SETTINGS = new Set(["hero", "ourStory", "join", "contact", "blog"]);
+
   app.get("/api/cms/settings", async (_req: Request, res: Response) => {
     const all = await storage.getAllSettings();
     const settingsMap: Record<string, any> = {};
-    for (const s of all) settingsMap[s.key] = s.value;
+    for (const s of all) {
+      if (PUBLISHED_SETTINGS.has(s.key)) settingsMap[s.key] = s.value;
+    }
     res.json(settingsMap);
   });
 
@@ -232,25 +250,11 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json(result);
   });
 
-  app.get("/api/cms/services", async (_req: Request, res: Response) => {
-    res.json(await storage.getServices());
-  });
-
-  app.post("/api/cms/services", requireAuth, async (req: Request, res: Response) => {
-    res.json(await storage.createService(req.body));
-  });
-
-  app.put("/api/cms/services/:id", requireAuth, async (req: Request, res: Response) => {
-    const service = await storage.updateService(parseInt(req.params.id), req.body);
-    if (!service) return res.status(404).json({ message: "Not found" });
-    res.json(service);
-  });
-
-  app.delete("/api/cms/services/:id", requireAuth, async (req: Request, res: Response) => {
-    const deleted = await storage.deleteService(parseInt(req.params.id));
-    if (!deleted) return res.status(404).json({ message: "Not found" });
-    res.json({ message: "Deleted" });
-  });
+  /* The four /api/cms/services routes were removed on 26 Aug. The homepage's
+     "How we work with you" reads three constants in Services.tsx now — the rows
+     were being rewritten for the new design, so anything the CMS served would
+     have fought the copy. The table, the storage methods and the rows are all
+     still there, which is what makes this one revert rather than a retype. */
 
 
   const formSubmissionBody = z.object({
