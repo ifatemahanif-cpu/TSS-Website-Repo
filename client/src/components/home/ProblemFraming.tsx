@@ -86,7 +86,7 @@ function Turn({ progress }: { progress: MotionValue<number> }) {
         style={{ ...LINE, color: "rgba(255,255,255,0.38)", opacity: reduced ? 1 : before }}
         data-testid="text-turn-before"
       >
-        Most marketing problems aren't execution problems.
+        Most marketing problems aren't just execution problems.
       </motion.p>
 
       <motion.p
@@ -95,12 +95,18 @@ function Turn({ progress }: { progress: MotionValue<number> }) {
           marginTop: "0.24em",
           fontWeight: 700,
           color: "#FFFFFF",
+          /* the line runs to two rows at 1440 now that it says "primarily", and
+             unbalanced it left "problems." stranded on a row of its own with the
+             stitch orphaned at the break. Balanced it splits after "primarily",
+             which puts "story problems." on its own row and gives the stitched
+             word more weight than it had as a one-liner. */
+          textWrap: "balance",
           ...(reduced ? null : { clipPath }),
         }}
         data-testid="text-turn-after"
       >
-        They're <Stitch progress={progress} from={0.5} to={0.62}>story</Stitch>{" "}
-        problems.
+        They are primarily{" "}
+        <Stitch progress={progress} from={0.5} to={0.62}>story</Stitch> problems.
       </motion.p>
     </ActWrap>
   );
