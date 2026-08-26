@@ -7,27 +7,55 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { Act, ActLabel, ActWrap } from "./Act";
-import { useCmsSettings, useCmsServices } from "@/hooks/use-cms";
 
 const DEEP = "#09072B";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
- * The three stages, as the CMS serves them. Unlike the peak's bios, this is a
- * FALLBACK and not the source of truth — /api/cms/services already returns
- * exactly these three with exactly these six things inside each, so the section
- * stays wired to the CMS and this is what shows when the database is
- * unreachable (which includes `npm run dev:client`).
+ * WHAT WE DO — three stages, eighteen things, and the two answers a reader
+ * cannot buy without.
  *
- * It is worth keeping in step by hand. The old fallback listed five services
- * with subtitles, none of which had been true since the CMS rows were rewritten,
- * so every reader who arrived during a database blip got a different offer from
- * everyone else.
+ * NO LONGER CMS-DRIVEN. This section used to read /api/cms/services with the
+ * constant below as a fallback. Fatema cut that tie on 26 Aug: the CMS rows are
+ * being rewritten for the new design anyway, and until they are, anything they
+ * served would fight the copy here. The peak's bios and the case studies went
+ * the same way. The rows still exist and are still editable in /admin — they
+ * simply are not read, which is the honest version of the same divergence
+ * already recorded for the peak.
+ *
+ * THE TITLES ARE ONE WORD EACH. "Shape your story / Scale your story /
+ * Sharpen your story" ended three display headings with the same two words, and
+ * the section heading already establishes whose story is being talked about.
+ * The verb is the only part that differs, so the verb is all that is left. The
+ * subtitle underneath carries the meaning the trailing words used to.
+ *
+ * THE SUBTITLES NAME A SITUATION, NOT A STEP.
+ *
+ * A client arrives already inside one of these three and can take it on its
+ * own; they are three doors, not one corridor. The 01/02/03 numbering that used
+ * to sit in the left column said the opposite — see the note on Row.
  */
-const FALLBACK = [
+const LABEL = "Services";
+const HEADING = "How we work with you.";
+
+/* Half of these eighteen are execution — performance marketing, content
+   operations, digital PR, social — but every one is a bare noun phrase, and a
+   noun cannot say whether we advise on a thing or run it. That is what the
+   second sentence of each subtitle is for: "We run the channels that make it
+   travel" sits directly above the six items it is describing, so the answer
+   arrives where the doubt does. A paragraph under the heading was tried on
+   26 Aug and cut the same day for cluttering the section.
+
+   The word "strategy" appeared in SIX of the eighteen and now appears in three:
+   "Brand strategy audit" and "Content strategy audit" lost a word that added
+   nothing, and "Repositioning strategy" is just repositioning. Six of eighteen
+   was enough to answer "are you only strategy?" with a yes this business never
+   meant. */
+const STAGES = [
   {
     id: "shape",
-    title: "Shape your story",
+    subtitle: "The story isn't clear yet. We find it, and build what carries it.",
+    title: "Shape",
     items: [
       "Market & category research",
       "Product-market fit narrative",
@@ -39,7 +67,8 @@ const FALLBACK = [
   },
   {
     id: "scale",
-    title: "Scale your story",
+    subtitle: "The story works. We run the channels that make it travel.",
+    title: "Scale",
     items: [
       "Multi-channel content",
       "SEO/AEO content & strategy",
@@ -51,11 +80,12 @@ const FALLBACK = [
   },
   {
     id: "sharpen",
-    title: "Sharpen your story",
+    subtitle: "The story has stopped landing. We find out why, and fix it.",
+    title: "Sharpen",
     items: [
-      "Brand strategy audit",
-      "Content strategy audit",
-      "Repositioning strategy",
+      "Brand audit",
+      "Content audit",
+      "Repositioning",
       "Digital PR",
       "Brand partnerships",
       "Brand retrospective",
@@ -64,15 +94,6 @@ const FALLBACK = [
 ];
 
 /**
- * WHAT WE DO — three stages, eighteen things, no sentence in front of them.
- *
- * The study had invented a four-way "a symptom you'd recognise" framing that
- * exists nowhere else in the business. This is the live site's offer verbatim,
- * because the three named stages ARE the answer to "how we work with you" and a
- * standfirst in front of them only delayed it. Fatema cut that standfirst on
- * 25 Aug along with the work rail's, which is why the heading carries the gap
- * down to the list itself.
- *
  * The eighteen things used to be a faint list at 0.74 white and 15px, which is
  * how a full service offer ends up looking like small print. Each one now gets
  * an accent rule of its own and enough weight to be read as a line item —
@@ -91,20 +112,7 @@ function Do({ progress }: { progress: MotionValue<number> }) {
   const headRef = useRef<HTMLDivElement>(null);
   const headIn = useInView(headRef, { once: true, margin: "-80px" });
 
-  const { data: settings } = useCmsSettings();
-  const { data: cmsServices } = useCmsServices();
-
-  const serviceSettings = settings?.services;
-  const rows =
-    cmsServices && cmsServices.length
-      ? cmsServices.map((s: any, i: number) => ({
-          id: s.id?.toString() ?? `service-${i}`,
-          title: (s.title ?? "").trim(),
-          /* the CMS rows carry trailing spaces from whoever typed them, and a
-             trailing space inside a grid cell is a wider cell */
-          items: (s.items ?? []).map((t: string) => t.trim()).filter(Boolean),
-        }))
-      : FALLBACK;
+  const rows = STAGES;
 
   return (
     <ActWrap>
@@ -115,13 +123,20 @@ function Do({ progress }: { progress: MotionValue<number> }) {
           transition={{ duration: 0.7, ease: EASE }}
         >
           <ActLabel className="mb-[1.1rem]" data-testid="text-services-label">
-            {serviceSettings?.label ?? "Services"}
+            {LABEL}
           </ActLabel>
 
-          {/* the standfirst below this used to carry the gap down to the list;
-              with it gone the heading owns that space itself */}
+          {/* THE GAP IS IN THE INLINE STYLE, NOT A CLASS, AND THAT IS THE FIX.
+
+              This carried `mb-[clamp(2.2rem,4.5vh,3.4rem)]` next to an inline
+              `margin: 0`. Inline wins, so the computed margin-bottom was 0 and
+              the heading sat -8px from the first rule — overlapping it. The
+              intent was written down ("with it gone the heading owns that
+              space") and had never once rendered.
+
+              Everything about this element's spacing now lives in one place, so
+              a class and a style cannot silently disagree again. */}
           <h2
-            className="mb-[clamp(2.2rem,4.5vh,3.4rem)]"
             style={{
               fontFamily: "'Zodiak', Georgia, serif",
               fontWeight: 400,
@@ -130,12 +145,14 @@ function Do({ progress }: { progress: MotionValue<number> }) {
               letterSpacing: "-0.025em",
               textWrap: "balance",
               color: "#FFFFFF",
-              margin: 0,
+              marginTop: 0,
+              marginBottom: "clamp(2.2rem, 4.5vh, 3.4rem)",
             }}
             data-testid="text-services-heading"
           >
-            {serviceSettings?.heading ?? "How we work with you."}
+            {HEADING}
           </h2>
+
         </motion.div>
       </div>
 
@@ -153,7 +170,7 @@ function Row({
   index,
   progress,
 }: {
-  row: { id: string; title: string; items: string[] };
+  row: { id: string; title: string; subtitle: string; items: string[] };
   index: number;
   progress: MotionValue<number>;
 }) {
@@ -168,24 +185,20 @@ function Row({
 
   return (
     <motion.div
-      className="group grid grid-cols-[2.2rem_1fr] items-start gap-x-[clamp(1rem,3vw,3rem)] gap-y-[0.9rem] border-t border-white/[0.13] py-[clamp(1.6rem,3vh,2.4rem)] last:border-b md:grid-cols-[3rem_1fr_1.5fr]"
+      className="group grid grid-cols-1 items-start gap-x-[clamp(1rem,3vw,3rem)] gap-y-[0.9rem] border-t border-white/[0.13] py-[clamp(1.6rem,3vh,2.4rem)] last:border-b md:grid-cols-[1fr_1.5fr]"
       style={reduced ? undefined : { opacity: q, y }}
       data-testid={`services-row-${index + 1}`}
     >
-      <div
-        style={{
-          fontFamily: "ui-monospace, monospace",
-          fontSize: "0.72rem",
-          letterSpacing: "0.16em",
-          /* 0.34 measured 2.99:1 at 11.5px against 4.5:1 required — the numbers
-             read as accidental marks in a gutter rather than as a ranking */
-          color: "rgba(255,255,255,0.54)",
-          paddingTop: "0.45rem",
-        }}
-      >
-        {`0${index + 1}`}
-      </div>
+      {/* THE 01/02/03 THAT USED TO SIT HERE IS GONE, AND MUST NOT COME BACK.
 
+          Numbering three things makes them a sequence — step one, then two,
+          then three — and these are not stages of one engagement. They are
+          three situations a company is already in when it arrives, any one of
+          which can be bought on its own. The numerals were quietly answering
+          "can I just take go-to-market?" with no, which is the opposite of the
+          truth, and they were the single biggest reason this section read as
+          all-or-nothing. The subtitle under each title does the job the numeral
+          was pretending to. */}
       <h3
         style={{
           fontFamily: "'Zodiak', Georgia, serif",
@@ -199,12 +212,30 @@ function Row({
         data-testid={`text-services-title-${index + 1}`}
       >
         {row.title}
+        {/* inside the h3 rather than a sibling, so the title column is one
+            block and the items column stays aligned to the top of both. Set
+            plainly, at the same size as an item: it is the reader working out
+            whether this row is about them, not a piece of display copy. */}
+        <span
+          className="mt-[0.5rem] block"
+          style={{
+            fontFamily: "'Switzer', sans-serif",
+            fontSize: "clamp(0.88rem, 1.1vw, 0.97rem)",
+            fontWeight: 400,
+            lineHeight: 1.4,
+            letterSpacing: "0",
+            color: "rgba(255,255,255,0.60)",
+          }}
+          data-testid={`text-services-subtitle-${index + 1}`}
+        >
+          {row.subtitle}
+        </span>
       </h3>
 
       {/* two columns per stage above 46rem, so a service reads as a short menu
-          rather than as a scroll of its own. Starts in the second column on a
-          phone, under the title rather than under the number. */}
-      <ul className="col-start-2 m-0 grid list-none grid-cols-1 gap-x-[1.8rem] gap-y-[0.7rem] p-0 sm:grid-cols-2 md:col-start-3">
+          rather than as a scroll of its own. Full width on a phone, where the
+          title block sits above it rather than beside it. */}
+      <ul className="m-0 grid list-none grid-cols-1 gap-x-[1.8rem] gap-y-[0.7rem] p-0 sm:grid-cols-2">
         {row.items.map((item, j) => (
           <Item
             key={item}
